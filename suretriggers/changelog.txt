@@ -1,3 +1,14 @@
+Version 1.0.61 - Wednesday, 2nd October 2024
+- Improvement: "CartFlows" - Added new Triggers
+- Improvement: "SureForms" - Added new Action
+- Improvement: "Advanced Custom Fields" - Added new Actions
+- Improvement: "WooCommerce" - Resolved checkbox issue for "Create Coupon" Action
+- Improvement: "Bricks Builder" - Resolved trigger response issue with name attribute for "Form Submitted" Trigger
+- Improvement: "BuddyBoss" - Added improvement for different field types in "Set User Extended Profile" Action
+- Improvement: "LearnDash" - Added improvements for group courses in Triggers
+- Improvement: "WordPress" - Added improvement for default taxonomy in "Create/Update Post" Action
+- Improvement: "WordPress" - Added new Actions
+
 Version 1.0.60 - Wednesday, 18th September 2024
 - Improvement: "WordPress" - Added support for taxonomy and featured images in "Create/Update Post" Action
 - Improvement: "WooCommerce Subscriptions" - Added new Actions

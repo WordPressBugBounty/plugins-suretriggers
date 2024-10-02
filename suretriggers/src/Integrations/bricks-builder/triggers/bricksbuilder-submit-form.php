@@ -122,6 +122,8 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 					if ( str_contains( $key, 'form-field-' ) ) {
 						$field_id            = str_replace( 'form-field-', '', $key );
 						$fields[ $field_id ] = $value;
+					} else {
+						$fields[ $key ] = $value;
 					}
 				}
 
@@ -141,13 +143,13 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 
 				$templates = get_posts( $args );
 
-				if ( ! empty( $fields ) && ! empty( $templates ) ) { // Check if submitted form has fields.
+				if ( ! empty( $templates ) ) { // Check if submitted form has fields.
 					foreach ( $templates as $template ) {
 						$bb_contents = get_post_meta( $template->ID, BRICKS_DB_PAGE_CONTENT, true ); // Fetch form contents.
 						if ( ! empty( $bb_contents ) ) {
 							foreach ( $bb_contents as $content ) {
 								if ( $form_id === $content['id'] ) {
-									$context['template_name'] = get_the_title( $template->ID );
+									$context['template_name'] = html_entity_decode( get_the_title( $template->ID ), ENT_QUOTES, 'UTF-8' );
 									$form_fields              = ( isset( $content['settings']['fields'] ) ) ? $content['settings']['fields'] : [];
 								}
 							}
@@ -156,12 +158,18 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 
 					if ( ! empty( $form_fields ) ) {
 						foreach ( $form_fields as $field ) {
+							if ( is_array( $field ) && isset( $field['name'] ) ) {
+								$field_name = str_replace( ' ', '_', $field['name'] );
+							}
 							if ( isset( $fields[ $field['id'] ] ) ) {
 								$fd_label = ! empty( $field['label'] ) ? $field['label'] : $field['id'];
 								$context[ $this->modify_field_label( $fd_label ) ] = $fields[ $field['id'] ];
+							} elseif ( is_array( $field ) && isset( $field_name ) && isset( $fields[ (string) $field_name ] ) ) {
+								$fd_label = ! empty( $field['label'] ) ? $field['label'] : $field_name;
+								$context[ $this->modify_field_label( $fd_label ) ] = $fields[ (string) $field_name ];
 							} else {
 								$file_fields[]                     = $field['id'];
-								$file_field_labels[ $field['id'] ] = $field['label'];
+								$file_field_labels[ $field['id'] ] = ! empty( $field['label'] ) ? $field['label'] : $field['id'];
 							}
 						}
 						if ( ! empty( $file_fields ) ) {

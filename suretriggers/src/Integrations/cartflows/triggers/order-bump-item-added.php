@@ -1,9 +1,9 @@
 <?php
 /**
- * UserAcceptUpsell.
+ * OrderBumpItemAdded.
  * php version 5.6
  *
- * @category UserAcceptUpsell
+ * @category OrderBumpItemAdded
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -14,15 +14,15 @@
 namespace SureTriggers\Integrations\CartFlows\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
-use SureTriggers\Integrations\WordPress\WordPress;
+use SureTriggers\Integrations\WooCommerce\WooCommerce;
 use SureTriggers\Traits\SingletonLoader;
 
-if ( ! class_exists( 'UserAcceptUpsell' ) ) :
+if ( ! class_exists( 'OrderBumpItemAdded' ) ) :
 
 	/**
-	 * UserAcceptUpsell
+	 * OrderBumpItemAdded
 	 *
-	 * @category UserAcceptUpsell
+	 * @category OrderBumpItemAdded
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -31,7 +31,7 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class UserAcceptUpsell {
+	class OrderBumpItemAdded {
 
 		/**
 		 * Integration type.
@@ -45,7 +45,7 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		 *
 		 * @var string
 		 */
-		public $trigger = 'cartflows_upsell_offer_accepted';
+		public $trigger = 'wcf_order_bump_item_added';
 
 		use SingletonLoader;
 
@@ -66,11 +66,11 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		 */
 		public function register( $triggers ) {
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'User accepts a one click upsell', 'suretriggers' ),
+				'label'         => __( 'Order Bump Item Added', 'suretriggers' ),
 				'action'        => $this->trigger,
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
-				'accepted_args' => 2,
+				'accepted_args' => 1,
 			];
 
 			return $triggers;
@@ -79,25 +79,32 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		/**
 		 * Trigger listener
 		 *
-		 * @param object $order order object.
-		 * @param array  $offer_product offer_product.
+		 * @param int $product_id order object.
 		 * @since 1.0.0
 		 *
 		 * @return void
 		 */
-		public function trigger_listener( $order, $offer_product ) {
-			$user_id = ap_get_current_user_id();
-			// Ensure $order is an instance of WC_Order.
-			if ( ! $order instanceof \WC_Order ) {
-				return;
+		public function trigger_listener( $product_id ) {
+			$product_data['product_id'] = $product_id;
+			$product_data['product']    = WooCommerce::get_product_context( $product_id );
+			$terms                      = get_the_terms( $product_id, 'product_cat' );
+			if ( ! empty( $terms ) && is_array( $terms ) && isset( $terms[0] ) ) {
+				$cat_name = [];
+				foreach ( $terms as $cat ) {
+					$cat_name[] = $cat->name;
+				}
+				$product_data['product']['category'] = implode( ', ', $cat_name );
 			}
-			if ( is_int( $user_id ) ) {
-				$context = WordPress::get_user_context( $user_id );
+			$terms_tags = get_the_terms( $product_id, 'product_tag' );
+			if ( ! empty( $terms_tags ) && is_array( $terms_tags ) && isset( $terms_tags[0] ) ) {
+				$tag_name = [];
+				foreach ( $terms_tags as $tag ) {
+					$tag_name[] = $tag->name;
+				}
+				$product_data['product']['tag'] = implode( ', ', $tag_name );
 			}
-			$context['order']          = $order->get_data();
-			$context['upsell']         = $offer_product;
-			$context['funnel_step_id'] = $offer_product['step_id'];
-			$context['funnel_id']      = get_post_meta( $offer_product['step_id'], 'wcf-flow-id', true );
+			unset( $product_data['product']['id'] ); //phpcs:ignore
+			$context = $product_data;
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger' => $this->trigger,
@@ -112,6 +119,6 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	UserAcceptUpsell::get_instance();
+	OrderBumpItemAdded::get_instance();
 
 endif;

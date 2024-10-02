@@ -94,12 +94,12 @@ class CreateCouponCode extends AutomateAction {
 		$description              = $selected_options['description'];
 		$discount_type            = $selected_options['discount_type'];
 		$coupon_amt               = $selected_options['coupon_amt'];
-		$is_free_shipping         = 1 === $selected_options['is_free_shipping'] ? 'yes' : 'no';
+		$is_free_shipping         = $selected_options['is_free_shipping'] ? 'yes' : 'no';
 		$expiry_date              = $selected_options['expiry_date'];
 		$min_spend                = $selected_options['min_spend'];
 		$max_spend                = $selected_options['max_spend'];
-		$is_individual            = 1 === $selected_options['is_individual'] ? 'yes' : 'no';
-		$exclude_sale_items       = 1 === $selected_options['exclude_sale_items'] ? 'yes' : 'no';
+		$is_individual            = $selected_options['is_individual'] ? 'yes' : 'no';
+		$exclude_sale_items       = $selected_options['exclude_sale_items'] ? 'yes' : 'no';
 		$allowed_emails           = ! empty( $selected_options['allowed_emails'] ) ? array_filter( array_map( 'sanitize_email', explode( ',', $selected_options['allowed_emails'] ) ) ) : '';
 		$usage_limit_per_coupon   = $selected_options['usage_limit_per_coupon'];
 		$limit_items              = $selected_options['limit_items'];
@@ -153,11 +153,11 @@ class CreateCouponCode extends AutomateAction {
 		$coupon_data = [
 			'discount_type'                        => $discount_type,
 			'coupon_amount'                        => $coupon_amt,
-			'is_free_shipping'                     => $is_free_shipping,
+			'free_shipping'                        => $is_free_shipping,
 			'expiry_date'                          => $expiry_date,
 			'minimum_amount'                       => $min_spend,
 			'maximum_amount'                       => $max_spend,
-			'is_individual'                        => $is_individual,
+			'individual_use'                       => $is_individual,
 			'exclude_sale_items'                   => $exclude_sale_items,
 			'product_ids'                          => $products,
 			'product_ids_list'                     => implode( ',', $product_ids ),

@@ -45,7 +45,7 @@ if ( ! class_exists( 'UserDeclineUpsell' ) ) :
 		 *
 		 * @var string
 		 */
-		public $trigger = 'cartflows_offer_rejected';
+		public $trigger = 'cartflows_upsell_offer_rejected';
 
 		use SingletonLoader;
 
@@ -80,16 +80,24 @@ if ( ! class_exists( 'UserDeclineUpsell' ) ) :
 		 * Trigger listener
 		 *
 		 * @param object $order order object.
-		 * @param object $offer_product offer_product.
+		 * @param array  $offer_product offer_product.
 		 * @since 1.0.0
 		 *
 		 * @return void
 		 */
 		public function trigger_listener( $order, $offer_product ) {
-			$user_id           = ap_get_current_user_id();
-			$context           = WordPress::get_user_context( $user_id );
-			$context['order']  = $order->get_data();
-			$context['upsell'] = $offer_product;
+			$user_id = ap_get_current_user_id();
+			// Ensure $order is an instance of WC_Order.
+			if ( ! $order instanceof \WC_Order ) {
+				return;
+			}
+			if ( is_int( $user_id ) ) {
+				$context = WordPress::get_user_context( $user_id );
+			}
+			$context['order']          = $order->get_data();
+			$context['upsell']         = $offer_product;
+			$context['funnel_step_id'] = $offer_product['step_id'];
+			$context['funnel_id']      = get_post_meta( $offer_product['step_id'], 'wcf-flow-id', true );
 
 			AutomationController::sure_trigger_handle_trigger(
 				[

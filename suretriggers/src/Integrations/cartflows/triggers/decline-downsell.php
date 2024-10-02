@@ -1,9 +1,9 @@
 <?php
 /**
- * UserAcceptUpsell.
+ * UserDeclineDownsell.
  * php version 5.6
  *
- * @category UserAcceptUpsell
+ * @category UserDeclineDownsell
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -17,12 +17,12 @@ use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
 
-if ( ! class_exists( 'UserAcceptUpsell' ) ) :
+if ( ! class_exists( 'UserDeclineDownsell' ) ) :
 
 	/**
-	 * UserAcceptUpsell
+	 * UserDeclineDownsell
 	 *
-	 * @category UserAcceptUpsell
+	 * @category UserDeclineDownsell
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -31,7 +31,7 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class UserAcceptUpsell {
+	class UserDeclineDownsell {
 
 		/**
 		 * Integration type.
@@ -45,7 +45,7 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		 *
 		 * @var string
 		 */
-		public $trigger = 'cartflows_upsell_offer_accepted';
+		public $trigger = 'cartflows_downsell_offer_rejected';
 
 		use SingletonLoader;
 
@@ -66,7 +66,7 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		 */
 		public function register( $triggers ) {
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'User accepts a one click upsell', 'suretriggers' ),
+				'label'         => __( 'User declines downsell', 'suretriggers' ),
 				'action'        => $this->trigger,
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
@@ -95,9 +95,10 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 				$context = WordPress::get_user_context( $user_id );
 			}
 			$context['order']          = $order->get_data();
-			$context['upsell']         = $offer_product;
+			$context['downsell']       = $offer_product;
 			$context['funnel_step_id'] = $offer_product['step_id'];
 			$context['funnel_id']      = get_post_meta( $offer_product['step_id'], 'wcf-flow-id', true );
+
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger' => $this->trigger,
@@ -112,6 +113,6 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	UserAcceptUpsell::get_instance();
+	UserDeclineDownsell::get_instance();
 
 endif;

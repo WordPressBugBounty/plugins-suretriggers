@@ -15,6 +15,7 @@ namespace SureTriggers\Integrations\LearnDash\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Integrations\WordPress\WordPress;
+use SureTriggers\Integrations\LearnDash\LearnDash;
 use SureTriggers\Traits\SingletonLoader;
 
 if ( ! class_exists( 'GroupLeaderRemovedFromLDGroup' ) ) :
@@ -100,6 +101,14 @@ if ( ! class_exists( 'GroupLeaderRemovedFromLDGroup' ) ) :
 			$context['group_url']                = get_permalink( $group_id );
 			$context['group_featured_image_id']  = get_post_meta( $group_id, '_thumbnail_id', true );
 			$context['group_featured_image_url'] = get_the_post_thumbnail_url( $group_id );
+			if ( function_exists( 'learndash_group_enrolled_courses' ) ) {
+				$group_courses_id = learndash_group_enrolled_courses( $group_id );
+				if ( ! empty( $group_courses_id ) ) {
+					foreach ( $group_courses_id as $key => $course_id ) {
+						$context['group_courses'][ $key ] = LearnDash::get_course_pluggable_data( $course_id );
+					}
+				}
+			}
 
 			AutomationController::sure_trigger_handle_trigger(
 				[

@@ -407,6 +407,24 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * Search sureemails data.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_pluggables_sureemails_mail( $data ) {
+		$context['pluggable_data']    = [
+			'to'          => [ 'johnDoe@xyz.com' ],
+			'subject'     => 'Test Email',
+			'message'     => 'This is a test email',
+			'headers'     => [ 'X-Mailer' => 'PHP/8.1.29' ],
+			'attachments' => [ 'Sample Attachment' ],
+		];
+			$context['response_type'] = 'sample';
+		return $context;
+	}
+
+	/**
 	 * List Taxonomy Terms.
 	 *
 	 * @param array $data Search Params.
@@ -429,6 +447,60 @@ class GlobalSearchController {
 		return [
 			'options' => $result,
 			'hasMore' => $terms['has_more'],
+		];
+	}
+
+	/**
+	 * List Taxonomy Tags.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	public function search_term_list_tags( $data ) {
+		$result = [];
+		$terms  = Utilities::get_terms( '', $data['page'], [ 'post_tag' ] );
+		foreach ( $terms['result'] as $tax_term ) {
+			$result[] = [
+				'label' => $tax_term->name,
+				'value' => $tax_term->term_id,
+			];
+		}
+
+		return [
+			'options' => $result,
+			'hasMore' => $terms['has_more'],
+		];
+	}
+
+	/**
+	 * List Role Capabilities.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	public function search_role_capabilities( $data ) {
+		$user_roles = wp_roles();
+		$result     = [];
+
+		foreach ( $user_roles->roles as $name => $role ) {
+			foreach ( $role['capabilities'] as $key => $cap ) {
+				$result[] = [
+					'label' => $key,
+					'value' => esc_attr( $key ),
+				];
+			}
+		}
+		$result = array_unique( $result, SORT_REGULAR );
+
+		return [
+			'options' => $result,
+			'hasMore' => false,
 		];
 	}
 
@@ -799,7 +871,7 @@ class GlobalSearchController {
 			'hasMore' => false,
 		];
 	}
-
+	
 	/**
 	 * Get Taxonomies.
 	 *
@@ -5698,34 +5770,38 @@ class GlobalSearchController {
 		];
 
 		$order_data = [
-			'order_id'             => '500',
-			'total_order_value'    => '45',
-			'currency'             => 'USD',
-			'shipping_total'       => '5',
-			'order_payment_method' => 'cod',
-			'billing_firstname'    => 'John',
-			'billing_lastname'     => 'Doe',
-			'billing_company'      => 'BSF',
-			'billing_address_1'    => '1004 Beaumont',
-			'billing_address_2'    => '',
-			'billing_city'         => 'Casper',
-			'billing_state'        => 'Wyoming',
-			'billing_postcode'     => '82601',
-			'billing_country'      => 'US',
-			'billing_email'        => 'john_doe@gmail.com',
-			'billing_phone'        => '(307) 7626541',
-			'shipping_firstname'   => 'John',
-			'shipping_lastname'    => 'Doe',
-			'shipping_company'     => 'BSF',
-			'shipping_address_1'   => '1004 Beaumont',
-			'shipping_address_2'   => '',
-			'shipping_city'        => 'Casper',
-			'shipping_state'       => 'Wyoming',
-			'shipping_postcode'    => '82601',
-			'shipping_country'     => 'US',
-			'coupon_codes'         => 'e3mstekq, f24sjakb',
-			'total_items_in_order' => '1',
-			'user_id'              => '1',
+			'order_id'              => '500',
+			'total_order_value'     => '45',
+			'currency'              => 'USD',
+			'shipping_total'        => '5',
+			'order_payment_method'  => 'cod',
+			'billing_firstname'     => 'John',
+			'billing_lastname'      => 'Doe',
+			'billing_company'       => 'BSF',
+			'billing_address_1'     => '1004 Beaumont',
+			'billing_address_2'     => '',
+			'billing_city'          => 'Casper',
+			'billing_state'         => 'Wyoming',
+			'billing_state_name'    => 'Wyoming',
+			'billing_postcode'      => '82601',
+			'billing_country'       => 'US',
+			'billing_country_name'  => 'US',
+			'billing_email'         => 'john_doe@gmail.com',
+			'billing_phone'         => '(307) 7626541',
+			'shipping_firstname'    => 'John',
+			'shipping_lastname'     => 'Doe',
+			'shipping_company'      => 'BSF',
+			'shipping_address_1'    => '1004 Beaumont',
+			'shipping_address_2'    => '',
+			'shipping_city'         => 'Casper',
+			'shipping_state'        => 'Wyoming',
+			'shipping_state_name'   => 'Wyoming',
+			'shipping_postcode'     => '82601',
+			'shipping_country'      => 'US',
+			'shipping_country_name' => 'US',
+			'coupon_codes'          => 'e3mstekq, f24sjakb',
+			'total_items_in_order'  => '1',
+			'user_id'               => '1',
 		];
 
 		$variation_data = [
@@ -6578,31 +6654,206 @@ class GlobalSearchController {
 	public function search_cartflows_last_data( $data ) {
 		global $wpdb;
 		$trigger = $data['search_term'];
-		$context = [];
-		if ( 'cartflows_offer_accepted' === $trigger ) {
-			$result = $wpdb->get_results( "SELECT * FROM  {$wpdb->prefix}posts as posts  JOIN {$wpdb->prefix}postmeta as postmeta ON posts.ID=postmeta.post_id WHERE posts.post_type ='shop_order' AND postmeta.meta_value='upsell' AND postmeta.meta_key= '_cartflows_offer_type'" );
+
+		if ( ! function_exists( 'wcf_pro' ) ) {
+			return [];
 		}
+
+		$context  = [];
 		$response = [];
-		if ( ! empty( $result ) ) {
-			$context                    = [];
-			$order_upsell_id            = $result[0]->post_id;
-			$step_id                    = get_post_meta( $order_upsell_id, '_cartflows_offer_step_id', true );
-			$order_id                   = get_post_meta( $order_upsell_id, '_cartflows_offer_parent_id', true );
-			$order                      = wc_get_order( $order_id );
-			$upsell_order               = wc_get_order( $order_upsell_id );
-			$variation_id               = $upsell_order->get_items()[0]['product_id'];
-			$input_qty                  = $upsell_order->get_items()[0]['quantity'];
-			$offer_product              = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
-			$user_id                    = get_post_meta( $order_upsell_id, '_customer_user', true );
-			$context                    = WordPress::get_user_context( $user_id );
-			$context['order']           = $order->get_data();
-			$context['upsell']          = $offer_product;
+		if ( 'cartflows_upsell_offer_accepted' === $trigger || 'cartflows_upsell_offer_rejected' === $trigger ) {
+			$result = $wpdb->get_results( "SELECT * FROM  {$wpdb->prefix}posts as posts  JOIN {$wpdb->prefix}postmeta as postmeta ON posts.ID=postmeta.post_id WHERE posts.post_type ='shop_order' AND postmeta.meta_value='upsell' AND postmeta.meta_key= '_cartflows_offer_type'" );
+		} elseif ( 'cartflows_downsell_offer_accepted' === $trigger || 'cartflows_downsell_offer_rejected' === $trigger ) {
+			$result = $wpdb->get_results( "SELECT * FROM  {$wpdb->prefix}posts as posts  JOIN {$wpdb->prefix}postmeta as postmeta ON posts.ID=postmeta.post_id WHERE posts.post_type ='shop_order' AND postmeta.meta_value='downsell' AND postmeta.meta_key= '_cartflows_offer_type'" );
+		} elseif ( 'wcf_order_bump_item_added' === $trigger || 'wcf_order_bump_item_removed' === $trigger || 'wcf_order_bump_item_replaced' === $trigger ) {
+			$args     = [
+				'post_type'   => 'product',
+				'orderby'     => 'ID',
+				'order'       => 'DESC',
+				'post_status' => 'publish',
+				'numberposts' => 1,
+			];
+			$products = get_posts( $args );
+
+			if ( count( $products ) > 0 ) {
+				$product_id                 = $products[0]->ID;
+				$product_data['product_id'] = $product_id;
+				$product_data['product']    = WooCommerce::get_product_context( $product_id );
+				$terms                      = get_the_terms( $product_id, 'product_cat' );
+				if ( ! empty( $terms ) && is_array( $terms ) && isset( $terms[0] ) ) {
+					$cat_name = [];
+					foreach ( $terms as $cat ) {
+						$cat_name[] = $cat->name;
+					}
+					$product_data['product']['category'] = implode( ', ', $cat_name );
+				}
+				$terms_tags = get_the_terms( $product_id, 'product_tag' );
+				if ( ! empty( $terms_tags ) && is_array( $terms_tags ) && isset( $terms_tags[0] ) ) {
+					$tag_name = [];
+					foreach ( $terms_tags as $tag ) {
+						$tag_name[] = $tag->name;
+					}
+					$product_data['product']['tag'] = implode( ', ', $tag_name );
+				}
+				unset( $product_data['product']['id'] ); //phpcs:ignore
+				$response['response_type'] = 'live';
+			} else {
+				$product_data['product']   = [
+					'name'              => 'Sample Product',
+					'description'       => 'This is description of sample product.',
+					'short_description' => 'This is short description of sample product.',
+					'image_url'         => SURE_TRIGGERS_URL . 'assets/images/sample.svg',
+					'slug'              => 'sample-product',
+					'status'            => 'publish',
+					'type'              => 'simple',
+					'price'             => '89',
+					'featured'          => '0',
+					'sku'               => 'hoodie-blue-sm',
+					'regular_price'     => '90',
+					'sale_price'        => '89',
+					'total_sales'       => '21',
+					'category'          => 'Uncategorized',
+					'tags'              => 'sample, new, 2022',
+					'category_ids'      => [ 40 ],
+					'date_created'      => [
+						'date'          => '2024-09-19 09:28:57.000000',
+						'timezone_type' => '1',
+						'timezone'      => '+00:00',
+					],
+					'date_modified'     => [
+						'date'          => '2024-09-19 09:28:57.000000',
+						'timezone_type' => '1',
+						'timezone'      => '+00:00',
+					],
+					'product_id'        => 9935,
+				];
+				$response['response_type'] = 'sample';
+			}
+			$response['pluggable_data'] = $product_data;
+		}
+		if ( ! empty( $result ) && ( 'cartflows_upsell_offer_accepted' === $trigger || 'cartflows_upsell_offer_rejected' === $trigger ) ) {
+			$context         = [];
+			$order_upsell_id = $result[0]->post_id;
+			$step_id         = get_post_meta( $order_upsell_id, '_cartflows_offer_step_id', true );
+			$order_id        = get_post_meta( $order_upsell_id, '_cartflows_offer_parent_id', true );
+			$order           = wc_get_order( $order_id );
+			$upsell_order    = wc_get_order( $order_upsell_id );
+			$items           = $upsell_order->get_items();
+			if ( ! empty( $items ) && isset( $items[0] ) ) {
+				$variation_id = $items[0]['product_id'];
+				$input_qty    = $items[0]['quantity'];
+			} else {
+				$variation_id = null;
+				$input_qty    = null;
+			}
+			$offer_product             = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
+			$user_id                   = get_post_meta( $order_upsell_id, '_customer_user', true );
+			$context                   = WordPress::get_user_context( $user_id );
+			$context['order']          = $order->get_data();
+			$context['upsell']         = $offer_product;
+			$context['funnel_step_id'] = $step_id;
+			if ( is_scalar( $step_id ) ) {
+				$context['funnel_id'] = get_post_meta( intval( $step_id ), 'wcf-flow-id', true );
+			} else {
+				$context['funnel_id'] = null;
+			}
+			$response['pluggable_data'] = $context;
+			$response['response_type']  = 'live';
+		} elseif ( ! empty( $result ) && ( 'cartflows_downsell_offer_accepted' === $trigger || 'cartflows_downsell_offer_rejected' === $trigger ) ) {
+			$context           = [];
+			$order_downsell_id = $result[0]->post_id;
+			$step_id           = get_post_meta( $order_downsell_id, '_cartflows_offer_step_id', true );
+			$order_id          = get_post_meta( $order_downsell_id, '_cartflows_offer_parent_id', true );
+			$order             = wc_get_order( $order_id );
+			$downsell_order    = wc_get_order( $order_downsell_id );
+			$items             = $downsell_order->get_items();
+			if ( ! empty( $items ) && isset( $items[0] ) ) {
+				$variation_id = $items[0]['product_id'];
+				$input_qty    = $items[0]['quantity'];
+			} else {
+				$variation_id = null;
+				$input_qty    = null;
+			}
+			$offer_product             = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
+			$user_id                   = get_post_meta( $order_downsell_id, '_customer_user', true );
+			$context                   = WordPress::get_user_context( $user_id );
+			$context['order']          = $order->get_data();
+			$context['downsell']       = $offer_product;
+			$context['funnel_step_id'] = $step_id;
+			if ( is_scalar( $step_id ) ) {
+				$context['funnel_id'] = get_post_meta( intval( $step_id ), 'wcf-flow-id', true );
+			} else {
+				$context['funnel_id'] = null;
+			}
 			$response['pluggable_data'] = $context;
 			$response['response_type']  = 'live';
 		}
-
 		return $response;
+	}
 
+	/**
+	 * Prepare CartFlows Steps list.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_cartflows_funnel_step_list( $data ) {
+		$page   = $data['page'];
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+
+		$args               = [
+			'posts_per_page' => $limit,
+			'offset'         => $offset,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+			'post_type'      => 'cartflows_step',
+			'post_status'    => 'publish',
+			'fields'         => 'ids',
+		];
+		$args['meta_query'] = [
+			[
+				'key'     => 'wcf-flow-id',
+				'value'   => $data['dynamic'],
+				'compare' => '=',
+			],
+		];
+
+		$flow_step_list       = get_posts( $args );
+		$flow_step_list_count = count(
+			get_posts(
+				[
+					'posts_per_page' => -1,
+					'orderby'        => 'title',
+					'order'          => 'ASC',
+					'post_type'      => 'cartflows_step',
+					'post_status'    => 'publish',
+					'fields'         => 'ids',
+					'meta_query'     => [
+						[
+							'key'     => 'wcf-flow-id',
+							'value'   => $data['dynamic'],
+							'compare' => '=',
+						],
+					],
+				] 
+			)
+		);
+
+		$options = [];
+		if ( ! empty( $flow_step_list ) ) {
+			foreach ( $flow_step_list as $step ) {
+				$options[] = [
+					'label' => html_entity_decode( get_the_title( $step ), ENT_QUOTES, 'UTF-8' ),
+					'value' => $step,
+				];
+			}
+		}
+		return [
+			'options' => $options,
+			'hasMore' => $flow_step_list_count > $limit && $flow_step_list_count > $offset,
+		];
 	}
 
 
@@ -15115,7 +15366,7 @@ class GlobalSearchController {
 			$context['group_url']                = get_permalink( $group_id );
 			$context['group_featured_image_id']  = get_post_meta( $group_id, '_thumbnail_id', true );
 			$context['group_featured_image_url'] = get_the_post_thumbnail_url( $group_id );
-			if ( 'user_added_group' == $term && function_exists( 'learndash_group_enrolled_courses' ) ) {
+			if ( function_exists( 'learndash_group_enrolled_courses' ) ) {
 				$group_courses_id = learndash_group_enrolled_courses( $group_id );
 				if ( ! empty( $group_courses_id ) ) {
 					foreach ( $group_courses_id as $key => $course_id ) {
@@ -15131,6 +15382,16 @@ class GlobalSearchController {
 			$context['group_url']                = 'https://example.com/test-group';
 			$context['group_featured_image_id']  = 113;
 			$context['group_featured_image_url'] = 'https://example.com/test-group-img';
+			$context['group_courses']            = [
+				[
+					'ID'                 => 7915,
+					'title'              => 'Example Course',
+					'URL'                => 'https://example.com/courses/example-course/',
+					'status'             => 'publish',
+					'featured_image_id'  => '',
+					'featured_image_url' => false,
+				],
+			];
 			$context['response_type']            = 'sample';
 		}
 
@@ -15402,7 +15663,15 @@ class GlobalSearchController {
 				$context_data['course_featured_image_url'] = get_the_post_thumbnail_url( $courses[0] );
 				$context_data['sfwd_group_id']             = $group_id;
 				$context_data['group_name']                = get_the_title( $group_id );
-				$context['response_type']                  = 'live';
+				if ( function_exists( 'learndash_group_enrolled_courses' ) ) {
+					$group_courses_id = learndash_group_enrolled_courses( $group_id );
+					if ( ! empty( $group_courses_id ) ) {
+						foreach ( $group_courses_id as $key => $course_id ) {
+							$context_data['group_courses'][ $key ] = LearnDash::get_course_pluggable_data( $course_id );
+						}
+					}
+				}
+				$context['response_type'] = 'live';
 			} else {
 				$context_data                              = WordPress::get_sample_user_context();
 				$context_data['course_name']               = 'Test Course';
@@ -15413,6 +15682,16 @@ class GlobalSearchController {
 				$context_data['course_access_expiry_date'] = '2023-10-20';
 				$context_data['sfwd_group_id']             = 12;
 				$context_data['group_name']                = 'Test Group';
+				$context_data['group_courses']             = [
+					[
+						'ID'                 => 7915,
+						'title'              => 'Example Course',
+						'URL'                => 'https://example.com/courses/example-course/',
+						'status'             => 'publish',
+						'featured_image_id'  => '',
+						'featured_image_url' => false,
+					],
+				];
 				$context['response_type']                  = 'sample';
 			}
 		} elseif ( 'group_course_completed' == $term ) {
@@ -15423,7 +15702,15 @@ class GlobalSearchController {
 				$context_data['group_url']                = get_permalink( $courses[0]->post_id );
 				$context_data['group_featured_image_id']  = get_post_meta( $courses[0]->post_id, '_thumbnail_id', true );
 				$context_data['group_featured_image_url'] = get_the_post_thumbnail_url( $courses[0]->post_id );
-				$course_ids                               = null;
+				if ( function_exists( 'learndash_group_enrolled_courses' ) ) {
+					$group_courses_id = learndash_group_enrolled_courses( $courses[0]->post_id );
+					if ( ! empty( $group_courses_id ) ) {
+						foreach ( $group_courses_id as $key => $course_id ) {
+							$context_data['group_courses'][ $key ] = LearnDash::get_course_pluggable_data( $course_id );
+						}
+					}
+				}
+				$course_ids = null;
 				foreach ( $activity_meta as $item ) {
 					if ( 'course_ids' === $item->activity_meta_key ) {
 						$course_ids = unserialize( $item->activity_meta_value );
@@ -15473,6 +15760,16 @@ class GlobalSearchController {
 					'course_url'                => 'https://example.com/test-course',
 					'course_featured_image_id'  => 14,
 					'course_featured_image_url' => 'https://example.com/test-course-img',
+				];
+				$context_data['group_courses']            = [
+					[
+						'ID'                 => 7915,
+						'title'              => 'Example Course',
+						'URL'                => 'https://example.com/courses/example-course/',
+						'status'             => 'publish',
+						'featured_image_id'  => '',
+						'featured_image_url' => false,
+					],
 				];
 				$context['response_type']                 = 'sample';
 			}

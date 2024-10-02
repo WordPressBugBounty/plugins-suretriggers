@@ -134,9 +134,16 @@ class CreatePost extends AutomateAction {
 		$last_response     = get_post( $post_id );
 		$response_taxonomy = '';
 		$taxonomy_terms    = [];
-		
 
-			// Set taxonomy terms for new post.
+		if ( ! empty( $selected_options['taxonomy'] ) ) {
+			$uncategorized_term = get_term_by( 'slug', 'uncategorized', 'category' );
+
+			if ( $uncategorized_term && isset( $uncategorized_term->term_id ) ) {
+				wp_remove_object_terms( $post_id, $uncategorized_term->term_id, 'category' );
+			}
+		}
+
+		// Set taxonomy terms for new post.
 		if ( isset( $selected_options['taxonomy'] ) && isset( $selected_options['taxonomy_term'] ) ) {
 
 			$terms    = [];

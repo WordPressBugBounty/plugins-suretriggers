@@ -1,9 +1,9 @@
 <?php
 /**
- * UserAcceptUpsell.
+ * SureEmailsMailSent.
  * php version 5.6
  *
- * @category UserAcceptUpsell
+ * @category SureEmailsMailSent
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -11,18 +11,17 @@
  * @since    1.0.0
  */
 
-namespace SureTriggers\Integrations\CartFlows\Triggers;
+namespace SureTriggers\Integrations\SureEmails\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
-use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
 
-if ( ! class_exists( 'UserAcceptUpsell' ) ) :
+if ( ! class_exists( 'SureEmailsMailSent' ) ) :
 
 	/**
-	 * UserAcceptUpsell
+	 * SureEmailsMailSent
 	 *
-	 * @category UserAcceptUpsell
+	 * @category SureEmailsMailSent
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -31,23 +30,26 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class UserAcceptUpsell {
+	class SureEmailsMailSent {
+
 
 		/**
 		 * Integration type.
 		 *
 		 * @var string
 		 */
-		public $integration = 'CartFlows';
+		public $integration = 'SureEmails';
+
 
 		/**
 		 * Trigger name.
 		 *
 		 * @var string
 		 */
-		public $trigger = 'cartflows_upsell_offer_accepted';
+		public $trigger = 'sureemails_mail_sent';
 
 		use SingletonLoader;
+
 
 		/**
 		 * Constructor
@@ -65,39 +67,29 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		 * @return array
 		 */
 		public function register( $triggers ) {
+
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'User accepts a one click upsell', 'suretriggers' ),
+				'label'         => __( 'Mail Sent', 'suretriggers' ),
 				'action'        => $this->trigger,
+				'common_action' => 'wp_mail_succeeded',
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
-				'accepted_args' => 2,
+				'accepted_args' => 1,
 			];
-
 			return $triggers;
+
 		}
 
 		/**
-		 * Trigger listener
+		 *  Trigger listener
 		 *
-		 * @param object $order order object.
-		 * @param array  $offer_product offer_product.
-		 * @since 1.0.0
+		 * @param array $mail_data trigger data.
 		 *
 		 * @return void
 		 */
-		public function trigger_listener( $order, $offer_product ) {
-			$user_id = ap_get_current_user_id();
-			// Ensure $order is an instance of WC_Order.
-			if ( ! $order instanceof \WC_Order ) {
-				return;
-			}
-			if ( is_int( $user_id ) ) {
-				$context = WordPress::get_user_context( $user_id );
-			}
-			$context['order']          = $order->get_data();
-			$context['upsell']         = $offer_product;
-			$context['funnel_step_id'] = $offer_product['step_id'];
-			$context['funnel_id']      = get_post_meta( $offer_product['step_id'], 'wcf-flow-id', true );
+		public function trigger_listener( $mail_data ) {
+			$context = $mail_data;
+
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger' => $this->trigger,
@@ -112,6 +104,6 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	UserAcceptUpsell::get_instance();
+	SureEmailsMailSent::get_instance();
 
 endif;

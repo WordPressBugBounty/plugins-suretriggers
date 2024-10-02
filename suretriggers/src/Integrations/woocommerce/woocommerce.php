@@ -248,9 +248,37 @@ class WooCommerce extends Integrations {
 			$line_items_fee      = $order->get_items( 'fee' );
 			$line_items_shipping = $order->get_items( 'shipping' );
 
+			$billing_country = $order->get_billing_country();
+			$billing_state   = $order->get_billing_state();
+			if ( ! empty( $billing_country ) && ! empty( $billing_state ) ) {
+				$related_states = WC()->countries->get_states( $billing_country );
+				if ( $related_states ) {
+					$countries_list  = WC()->countries->get_countries();
+					$billing_country = $countries_list[ $billing_country ];
+					$billing_state   = $related_states[ $billing_state ];
+				}
+			}
+
+			$shipping_country = $order->get_shipping_country();
+			$shipping_state   = $order->get_shipping_state();
+			if ( ! empty( $shipping_country ) && ! empty( $shipping_state ) ) {
+				$related_shipping_states = WC()->countries->get_states( $shipping_country );
+				if ( $related_shipping_states ) {
+					$countries_list   = WC()->countries->get_countries();
+					$shipping_country = $countries_list[ $shipping_country ];
+					$shipping_state   = $related_shipping_states[ $shipping_state ];
+				}
+			}
+
 			return array_merge(
 				[ 'product_id' => $product_ids[0] ],
 				$order->get_data(),
+				[
+					'billing_state_fullname'    => $billing_state,
+					'billing_country_fullname'  => $billing_country,
+					'shipping_state_fullname'   => $shipping_state,
+					'shipping_country_fullname' => $shipping_country,
+				],
 				[ 'coupons' => $coupon_codes ],
 				[ 'products' => self::get_order_items_context_array( $items ) ],
 				[ 'line_items' => self::get_order_items_context( $items ) ],

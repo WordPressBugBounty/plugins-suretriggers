@@ -91,6 +91,7 @@ class SetUserExtendedProfile extends AutomateAction {
 				$field_id = $user_selector['bb_fields']['value'];
 				if ( ! empty( $user_selector['custom_field_value'] ) ) {
 					$value = $user_selector['custom_field_value'];
+					$value = ( strpos( $value, ', ' ) !== false ) ? explode( ', ', $value ) : $value;
 					if ( function_exists( 'xprofile_set_field_data' ) ) {
 						xprofile_set_field_data( $field_id, $user_id, $value );
 						if ( function_exists( 'xprofile_get_field_data' ) ) {

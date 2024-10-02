@@ -1,9 +1,9 @@
 <?php
 /**
- * UserAcceptUpsell.
+ * PreCheckoutOfferItemAdded.
  * php version 5.6
  *
- * @category UserAcceptUpsell
+ * @category PreCheckoutOfferItemAdded
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -17,12 +17,12 @@ use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
 
-if ( ! class_exists( 'UserAcceptUpsell' ) ) :
+if ( ! class_exists( 'PreCheckoutOfferItemAdded' ) ) :
 
 	/**
-	 * UserAcceptUpsell
+	 * PreCheckoutOfferItemAdded
 	 *
-	 * @category UserAcceptUpsell
+	 * @category PreCheckoutOfferItemAdded
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -31,7 +31,7 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class UserAcceptUpsell {
+	class PreCheckoutOfferItemAdded {
 
 		/**
 		 * Integration type.
@@ -45,7 +45,7 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		 *
 		 * @var string
 		 */
-		public $trigger = 'cartflows_upsell_offer_accepted';
+		public $trigger = 'wcf_pre_checkout_offer_item_added';
 
 		use SingletonLoader;
 
@@ -66,7 +66,7 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		 */
 		public function register( $triggers ) {
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'User accepts a one click upsell', 'suretriggers' ),
+				'label'         => __( 'Pre Checkout Offer Item Added', 'suretriggers' ),
 				'action'        => $this->trigger,
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
@@ -79,25 +79,22 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 		/**
 		 * Trigger listener
 		 *
-		 * @param object $order order object.
-		 * @param array  $offer_product offer_product.
+		 * @param int    $checkout_id Checkout ID.
+		 * @param string $cart_hash Cart Hash.
 		 * @since 1.0.0
 		 *
 		 * @return void
 		 */
-		public function trigger_listener( $order, $offer_product ) {
-			$user_id = ap_get_current_user_id();
-			// Ensure $order is an instance of WC_Order.
-			if ( ! $order instanceof \WC_Order ) {
-				return;
+		public function trigger_listener( $checkout_id, $cart_hash ) {
+			$pre_checkout_offer_product        = get_post_meta( $checkout_id, 'wcf-pre-checkout-offer-product', true );
+			$pre_checkout_product              = get_post_meta( $checkout_id, 'wcf-checkout-products', true );
+			$context['checkout_offer_product'] = $pre_checkout_offer_product;
+			if ( is_array( $pre_checkout_product ) && isset( $pre_checkout_product['product'] ) ) {
+				$checkout_products            = $pre_checkout_product['product'];
+				$context['checkout_products'] = $checkout_products;
 			}
-			if ( is_int( $user_id ) ) {
-				$context = WordPress::get_user_context( $user_id );
-			}
-			$context['order']          = $order->get_data();
-			$context['upsell']         = $offer_product;
-			$context['funnel_step_id'] = $offer_product['step_id'];
-			$context['funnel_id']      = get_post_meta( $offer_product['step_id'], 'wcf-flow-id', true );
+			$context['funnel_id']      = get_post_meta( $checkout_id, '	wcf-flow-id', true );
+			$context['funnel_step_id'] = $checkout_id;
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger' => $this->trigger,
@@ -112,6 +109,6 @@ if ( ! class_exists( 'UserAcceptUpsell' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	UserAcceptUpsell::get_instance();
+	PreCheckoutOfferItemAdded::get_instance();
 
 endif;
