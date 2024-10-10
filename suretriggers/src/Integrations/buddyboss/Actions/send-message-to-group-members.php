@@ -136,6 +136,8 @@ class SendMessageToGroupMembers extends AutomateAction {
 							}
 							return $context;
 						}
+					} else {
+						throw new Exception( 'BuddyBoss Private Messaging module is not active.' );
 					}
 				} else {
 					throw new Exception( 'Group members not found.' );

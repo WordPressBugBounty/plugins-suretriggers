@@ -76,7 +76,7 @@ class AddTagToPost extends AutomateAction {
 		$tag_id  = $selected_options['tag'];
 		$post_id = $selected_options['post_id'];
 
-		$tag = wp_set_object_terms( $post_id, $tag_id, 'post_tag', true );
+		$tag = wp_set_object_terms( $post_id, (int) $tag_id, 'post_tag', true );
 
 		if ( ! $tag ) {
 			throw new Exception( 'Failed to add tag.' );

@@ -81,6 +81,7 @@ use PeepSoField;
 use Mint\MRM\DataBase\Models\ContactModel;
 use Mint\MRM\DataBase\Models\ContactGroupModel;
 use SureTriggers\Integrations\Voxel\Voxel;
+use Surelywp_Support_Portal;
 
 /**
  * GlobalSearchController- Add ajax related functions here.
@@ -19026,6 +19027,95 @@ class GlobalSearchController {
 				$context = json_decode( '{"pluggable_data":{"delivery_date": null,"order_id": "a3830048-9a43-4088-a78e-285537f16ecc","product_id": "f59f62cc-fd70-4007-8bcf-56d07f1ac871","service_setting_id": "2","service_status": "service_completed","wp_user_id":84,"user_login":"johnd@example.com","display_name":"johnd@example.com","user_firstname":"John","user_lastname":"D","user_email":"johnd@example.com","user_registered":"2023-02-02 13:08:44","user_role":["customer"]},"response_type":"sample"}', true );
 			} elseif ( 'contract_signed' === $term ) {
 				$context = json_decode( '{"pluggable_data":{"service_id":"4","signature":"signature","contract_details":"Contract Details","wp_user_id":84,"user_login":"johnd@example.com","display_name":"johnd@example.com","user_firstname":"John","user_lastname":"D","user_email":"johnd@example.com","user_registered":"2023-02-02 13:08:44","user_role":["customer"],"service_setting_id":"u2pDYtDF","user_id":"84","order_id":"8e8ca710-13cd-4c94-8de5-98a19a3b9de6","product_id":"a39c7d4f-50bd-49ba-b56c-4f17aac61306","service_status":"service_start","delivery_date":"2024-08-25","created_at":"2024-08-22 15:15:27","updated_at":"2024-08-22 09:46:02"},"response_type":"sample"}', true );
+			}
+		}
+		return (array) $context;
+	}
+
+	/**
+	 * Get SurelyWP Support Portal - SureCart Addons Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_sc_support_portal_triggers_last_data( $data ) {
+		$context = [];
+		if ( ! class_exists( 'Surelywp_Support_Portal' ) ) {
+			return [];
+		}
+		global $wpdb;
+		$term = $data['search_term'] ? $data['search_term'] : '';
+		$data = [];
+		
+		if ( 'new_ticket_created' === $term || 'ticket_status_changed' === $term ) {
+			$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}surelywp_sp_support WHERE support_status = 1 ORDER BY support_id DESC Limit 1", ARRAY_A );
+		} elseif ( 'new_message_sent' === $term ) {
+			$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}surelywp_sp_messages ORDER BY message_id DESC Limit 1", ARRAY_A );
+		} elseif ( 'tickets_closed' === $term ) {
+			$result = $wpdb->get_results( "SELECT support_id FROM {$wpdb->prefix}surelywp_sp_support WHERE support_status = 0 AND updated_at IN ( SELECT updated_at FROM {$wpdb->prefix}surelywp_sp_support WHERE support_status = 0 GROUP BY updated_at HAVING COUNT(*) > 1);", ARRAY_A );
+		} elseif ( 'tickets_opens' === $term ) {
+			$result = $wpdb->get_results( "SELECT support_id FROM {$wpdb->prefix}surelywp_sp_support WHERE support_status = 3 AND updated_at IN ( SELECT updated_at FROM {$wpdb->prefix}surelywp_sp_support WHERE support_status = 3 GROUP BY updated_at HAVING COUNT(*) > 1);", ARRAY_A );
+		} elseif ( 'new_email_message_fetched' === $term ) {
+			$context = json_decode( '{"pluggable_data":{"mail_id": 21,"mail_message_id": 20,"mail_references": "test","mail_subject": "test","sender_type": "admin","sender_id": 1,"receiver_id": 1,"support_id": 1,"message_text": "test","attachment_tmp_paths": "var/www","attachment_file_name": "test.png","created_at": "2024-10-10 00:00:00"},"response_type":"sample"}', true );
+		}
+		if ( ! empty( $result ) ) {
+			if ( 'new_ticket_created' === $term || 'ticket_status_changed' === $term ) {
+				$support_res               = $wpdb->get_results( $wpdb->prepare( "SELECT field_label, field_value FROM {$wpdb->prefix}surelywp_sp_support_form_fields WHERE support_id = %d", $result['support_id'] ), ARRAY_A );
+				$support_data              = [
+					'support_id'     => $result['support_id'],
+					'order_id'       => $result['order_id'],
+					'product_id'     => $result['product_id'],
+					'support_title'  => $result['support_title'],
+					'support_status' => Surelywp_Support_Portal::surelywp_sp_get_support_status( $result['support_status'] ),
+					'support_data'   => $support_res,
+				];
+				$context['pluggable_data'] = array_merge( $support_data, WordPress::get_user_context( $result['user_id'] ) );
+				$context['response_type']  = 'live';
+			} elseif ( 'tickets_closed' === $term || 'tickets_opens' === $term ) {
+				$support_data = [];
+				$support_ids  = $result;
+				foreach ( $support_ids as $key => $id ) {
+					$result               = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}surelywp_sp_support WHERE support_id = %d", $id ), ARRAY_A );
+					$support_res          = $wpdb->get_results( $wpdb->prepare( "SELECT field_label, field_value FROM {$wpdb->prefix}surelywp_sp_support_form_fields WHERE support_id = %d", $id ), ARRAY_A );
+					$support_data[ $key ] = WordPress::get_user_context( $result['user_id'] );
+					$support_data[ $key ] = [
+						'support_id'     => $result['support_id'],
+						'order_id'       => $result['order_id'],
+						'product_id'     => $result['product_id'],
+						'support_title'  => $result['support_title'],
+						'support_status' => Surelywp_Support_Portal::surelywp_sp_get_support_status( $result['support_status'] ),
+						'support_data'   => $support_res,
+					];
+				}
+				$context['pluggable_data'] = $support_data;
+				$context['response_type']  = 'live';
+			} elseif ( 'new_message_sent' === $term ) {
+				$upload_dir   = wp_upload_dir();
+				$support_data = [
+					'sender_id'    => $result['sender_id'],
+					'receiver_id'  => $result['receiver_id'],
+					'support_id'   => $result['support_id'],
+					'message_text' => $result['message_text'],
+					'sender'       => WordPress::get_user_context( $result['sender_id'] ),
+					'receiver'     => WordPress::get_user_context( $result['receiver_id'] ),
+				];
+				if ( ! empty( $result['attachment_file_name'] ) ) {
+					$attachment_file_names = json_decode( $result['attachment_file_name'], true );
+					foreach ( (array) $attachment_file_names as $attachment_file_name ) {
+						$support_data['attachment_file'][] = $upload_dir['baseurl'] . '/surelywp-support-portal-data/' . $result['support_id'] . '/messages/' . $attachment_file_name;
+					}
+				}
+				$context['pluggable_data'] = $support_data;
+				$context['response_type']  = 'live';
+			}
+		} else {
+			if ( 'new_ticket_created' === $term || 'ticket_status_changed' === $term ) {
+				$context = json_decode( '{"pluggable_data":{"support_id":"1","order_id":"0d0c3a6a-9846-42d0-9bc2-84485985358c","product_id":"a39c7d4f-50bd-49ba-b56c-4f17aac61306","support_title":"Not Delivered","support_status":"Closed","wp_user_id":84,"user_login":"johnd@gmail.com","display_name":"john","user_firstname":"john","user_lastname":"john","user_email":"johnd@gmail.com","user_registered":"2023-02-02 13:08:44","user_role":["customer"]},"response_type":"sample"}', true );
+			} elseif ( 'tickets_closed' === $term || 'tickets_opens' === $term ) {
+				$context = json_decode( '{"pluggable_data":[{"support_id":"1","order_id":"0d0c3a6a-9846-42d0-9bc2-84485985358c","product_id":"a39c7d4f-50bd-49ba-b56c-4f17aac61306","support_title":"Not Delivered","support_status":"Closed"}],"response_type":"sample"}', true );
+			} elseif ( 'new_message_sent' === $term ) {
+				$context = json_decode( '{"pluggable_data":{"sender_id":"1","receiver_id":"84","support_id":"2","message_text":"<p>asdasd</p>","sender":{"wp_user_id":1,"user_login":"johnd","display_name":"johnd","user_firstname":"john","user_lastname":"d","user_email":"johnd@example.com","user_registered":"2023-01-16 09:23:31","user_role":{"0":"customer"}},"receiver":{"wp_user_id":84,"user_login":"johnd@gmail.com","display_name":"johnd","user_firstname":"johnny","user_lastname":"d","user_email":"johndd@gmail.com","user_registered":"2023-02-02 13:08:44","user_role":["customer"]}},"response_type":"sample"}', true );
 			}
 		}
 		return (array) $context;

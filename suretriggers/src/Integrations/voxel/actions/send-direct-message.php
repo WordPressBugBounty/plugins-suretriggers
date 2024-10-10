@@ -79,7 +79,7 @@ class SendDirectMessage extends AutomateAction {
 		$sender_id   = $selected_options['wp_user_email'];
 		$receiver_id = $selected_options['receiver_email'];
 
-		if ( ! class_exists( 'Voxel\Direct_Messages\Message' ) ) {
+		if ( ! class_exists( 'Voxel\Direct_Messages\Message' ) || ! class_exists( 'Voxel\User' ) || ! class_exists( 'Voxel\Events\Direct_Messages\User_Received_Message_Event' ) ) {
 			return false;
 		}
 
@@ -90,7 +90,19 @@ class SendDirectMessage extends AutomateAction {
 				if ( $receiver ) {
 					$sender_id   = $sender->ID;
 					$receiver_id = $receiver->ID;
-					$message     = \Voxel\Direct_Messages\Message::create(
+					global $wpdb;
+					// Get the sender user.
+					$sender_user = \Voxel\User::get( $sender_id );
+
+					// Get the receiver user.
+					$receiver_user = \Voxel\User::get( $receiver_id );
+					
+					// check if users have blocked each other.
+					if ( $sender_user->get_follow_status( 'user', $receiver_user->get_id() ) === -1 || $receiver_user->get_follow_status( 'user', $sender_user->get_id() ) === -1 ) {
+						throw new Exception( 'You cannot message the user.' );
+					}
+
+					$message = \Voxel\Direct_Messages\Message::create(
 						[
 							'sender_type'      => 'user',
 							'sender_id'        => $sender_id,
@@ -102,6 +114,40 @@ class SendDirectMessage extends AutomateAction {
 							'seen'             => 0,
 						] 
 					);
+
+					$receiver_user->set_inbox_activity( true );
+					$receiver_author = $receiver_user;
+					if ( $receiver_author ) {
+						$receiver_author->update_inbox_meta(
+							[
+								'unread' => true,
+							]
+						);
+					}
+
+					$message->update_chat();
+
+					$has_recently_received_message = ! ! $wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT id FROM {$wpdb->prefix}voxel_messages
+							WHERE
+								sender_type = %s AND sender_id = %d
+								AND receiver_type = %s AND receiver_id = %d
+								AND created_at > %s
+								AND id != %d
+							LIMIT 1",
+							'user',
+							$sender_id,
+							'user',
+							$receiver_id,
+							gmdate( 'Y-m-d H:i:s', time() - ( 15 * MINUTE_IN_SECONDS ) ),
+							$message->get_id()
+						) 
+					);
+					// Dispatch the message.
+					if ( ! $has_recently_received_message ) {
+						( new \Voxel\Events\Direct_Messages\User_Received_Message_Event() )->dispatch( $message->get_id() );
+					}
 					return [
 						'sender'   => WordPress::get_user_context( $message->get_sender_id() ),
 						'receiver' => WordPress::get_user_context( $message->get_receiver_id() ),
