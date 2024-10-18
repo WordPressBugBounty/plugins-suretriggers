@@ -172,6 +172,7 @@ class AddTopicInForum extends AutomateAction {
 		}
 
 		/** Topic Status */
+		$topic_status = '';
 		// Maybe put into moderation.
 		if ( function_exists( 'bbp_get_pending_status_id' ) && function_exists( 'bbp_check_for_moderation' ) && ! bbp_check_for_moderation( $anonymous_data, $user_id, $topic_title, $topic_description ) ) {
 			$topic_status = bbp_get_pending_status_id();
@@ -179,7 +180,6 @@ class AddTopicInForum extends AutomateAction {
 		} elseif ( function_exists( 'bbp_get_public_status_id' ) ) {
 			$topic_status = bbp_get_public_status_id();
 		}
-		$topic_status = '';
 		/** No Errors */
 		// Add the content of the form to $topic_data as an array.
 		// Just in time manipulation of topic data before being created.

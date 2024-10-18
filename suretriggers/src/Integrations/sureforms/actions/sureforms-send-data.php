@@ -75,6 +75,7 @@ class SureFormsSendData extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		$method       = $selected_options['method'] ? $selected_options['method'] : 'post';
 		$endpoint_url = $selected_options['endpoint_url'];
+		$payload_type = $selected_options['payload_type'];
 
 		// Handling SSRF Attack.
 		$blocked_hosts = [
@@ -102,8 +103,6 @@ class SureFormsSendData extends AutomateAction {
 		if ( ! empty( $selected_options['header'] ) ) {
 			$headers = $this->prepare_params( $selected_options['header'] );
 		}
-		// Add query arguments to the endpoint URL.
-		$endpoint_url = $this->add_query_arg( $body, $endpoint_url );
 
 		$args = [
 			'method'    => strtoupper( $method ),
@@ -116,6 +115,17 @@ class SureFormsSendData extends AutomateAction {
 			'sslverify' => true,
 			'timeout'   => 30, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
+
+		switch ( $payload_type ) {
+			case 'query_params':
+				// Add query arguments to the endpoint URL.
+				$endpoint_url = $this->add_query_arg( $body, $endpoint_url );
+				break;
+			case 'form_data':
+				$args['body']                    = $body;
+				$args['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
+				break;
+		}
 
 		if ( null === $endpoint_url ) {
 			return [];

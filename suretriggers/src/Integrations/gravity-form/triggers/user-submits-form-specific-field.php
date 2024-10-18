@@ -92,7 +92,7 @@ if ( ! class_exists( 'UserSubmitsSpecificFieldGravityForm' ) ) :
 		 */
 		public function trigger_listener( $entry, $form ) {
 
-			if ( empty( $entry ) ) {
+			if ( empty( $entry ) || 'spam' === rgar( $entry, 'status' ) ) {
 				return;
 			}
 			$user_id = ap_get_current_user_id();

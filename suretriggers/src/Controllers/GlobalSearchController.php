@@ -5538,6 +5538,15 @@ class GlobalSearchController {
 		$term     = $data['search_term'];
 
 		if ( 'event_register' === $term || 'attendee_registered_event' === $term ) {
+			if ( -1 === $event_id ) {
+				$args     = [
+					'numberposts' => 1,
+					'orderby'     => 'rand',
+					'post_type'   => 'tribe_events',
+				];
+				$posts    = get_posts( $args );
+				$event_id = $posts[0]->ID;
+			}
 			$args = [
 				'post_type'   => 'tribe_rsvp_attendees',
 				'orderby'     => 'ID',
@@ -5566,6 +5575,32 @@ class GlobalSearchController {
 
 				$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
 
+				if ( ! empty( $event_context ) ) {
+					$event_data               = $event_context;
+					$context['response_type'] = 'live';
+				}
+			} else {
+				$args = [
+					'post_type'   => 'tec_tc_attendee',
+					'orderby'     => 'ID',
+					'order'       => 'DESC',
+					'post_status' => 'publish',
+					'numberposts' => 1,
+				];
+				if ( -1 !== $event_id ) {
+					$args['meta_query'] = [
+						[
+							'key'   => '_tec_tickets_commerce_event',
+							'value' => $event_id,
+						],
+					];
+				}
+				$attendees     = get_posts( $args );
+				$attendee      = $attendees[0];
+				$attendee_id   = $attendee->ID;
+				$product_id    = get_post_meta( $attendee_id, '_tec_tickets_commerce_ticket', true );
+				$order_id      = $attendee_id;
+				$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
 				if ( ! empty( $event_context ) ) {
 					$event_data               = $event_context;
 					$context['response_type'] = 'live';
@@ -12990,7 +13025,7 @@ class GlobalSearchController {
 		}
 
 		return [
-			'options' => $options,
+			'options' => array_unique( $options ),
 			'hasMore' => false,
 		];
 	}
@@ -19116,6 +19151,54 @@ class GlobalSearchController {
 				$context = json_decode( '{"pluggable_data":[{"support_id":"1","order_id":"0d0c3a6a-9846-42d0-9bc2-84485985358c","product_id":"a39c7d4f-50bd-49ba-b56c-4f17aac61306","support_title":"Not Delivered","support_status":"Closed"}],"response_type":"sample"}', true );
 			} elseif ( 'new_message_sent' === $term ) {
 				$context = json_decode( '{"pluggable_data":{"sender_id":"1","receiver_id":"84","support_id":"2","message_text":"<p>asdasd</p>","sender":{"wp_user_id":1,"user_login":"johnd","display_name":"johnd","user_firstname":"john","user_lastname":"d","user_email":"johnd@example.com","user_registered":"2023-01-16 09:23:31","user_role":{"0":"customer"}},"receiver":{"wp_user_id":84,"user_login":"johnd@gmail.com","display_name":"johnd","user_firstname":"johnny","user_lastname":"d","user_email":"johndd@gmail.com","user_registered":"2023-02-02 13:08:44","user_role":["customer"]}},"response_type":"sample"}', true );
+			}
+		}
+		return (array) $context;
+	}
+
+	/**
+	 * Get Fluent Boards Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_fbs_triggers_last_data( $data ) {
+		$context = [];
+		global $wpdb;
+		$term = $data['search_term'] ? $data['search_term'] : '';
+		if ( ! class_exists( 'FluentBoards\App\Models\Board' ) || ! class_exists( 'FluentBoards\App\Models\User' ) ) {
+			return [];
+		}
+		$data = [];
+		
+		if ( 'board_created' === $term ) {
+			$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_boards ORDER BY id DESC Limit 1", ARRAY_A );
+		} elseif ( 'board_member_added' === $term ) {
+			$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_relations WHERE object_type = 'board_user' ORDER BY id DESC Limit 1", ARRAY_A );
+		} elseif ( 'task_created' === $term ) {
+			$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_tasks ORDER BY id DESC Limit 1", ARRAY_A );
+		}
+		if ( ! empty( $result ) ) {
+			if ( 'board_created' === $term ) {
+				$board_id                  = $result['id'];
+				$context['pluggable_data'] = \FluentBoards\App\Models\Board::findOrFail( $board_id );
+				$context['response_type']  = 'live';
+			} elseif ( 'board_member_added' === $term ) {
+				$context['pluggable_data']['board_id']     = $result['object_id'];
+				$context['pluggable_data']['board_member'] = \FluentBoards\App\Models\User::find( $result['foreign_id'] );
+				$context['response_type']                  = 'live';
+			} elseif ( 'task_created' === $term ) {
+				$context['pluggable_data'] = $result;
+				$context['response_type']  = 'live';
+			}
+		} else {
+			if ( 'board_created' === $term ) {
+				$context = json_decode( '{"pluggable_data":{"id":2,"parent_id":null,"title":"testing","description":"testing","type":"to-do","currency":"USD","background":{"id":"solid_1","is_image":false,"image_url":null,"color":"#d1d8e0"},"settings":null,"created_by":"1","archived_at":null,"meta":[]},"response_type":"sample"}', true );
+			} elseif ( 'board_member_added' === $term ) {
+				$context = json_decode( '{"pluggable_data":{"board_id":"2","board_member":{"ID":1,"user_login":"johnd","user_nicename":"johnd","user_email":"johnd@example.com","user_url":"https://example.com","user_registered":"2023-01-16 09:23:31","user_status":"0","display_name":"johnd","photo":"https://www.gravatar.com/avatar/c2b06ae950033b392998ada50767b50e?s=128&d=https%3A%2F%2Fui-avatars.com%2Fapi%2Fodeploll/128"}},"response_type":"sample"}', true );
+			} elseif ( 'task_created' === $term ) {
+				$context = json_decode( '{"pluggable_data":{"id":"1","parent_id":null,"board_id":"1","crm_contact_id":null,"title":"Task1","slug":"task1","type":"task","status":"open","stage_id":"6","source":"web","source_id":null,"priority":"low","description":null,"lead_value":"0.00","created_by":"1","position":"1.00","comments_count":"0","issue_number":null,"reminder_type":"none","settings":"a:4:{s:5:\"cover\";a:1:{s:15:\"backgroundColor\";s:0:\"\";}s:13:\"subtask_count\";i:0;s:16:\"attachment_count\";i:0;s:23:\"subtask_completed_count\";i:0;}","remind_at":null,"started_at":null,"due_at":null,"last_completed_at":null,"archived_at":null,"created_at":"2024-10-14 17:11:20","updated_at":"2024-10-14 17:11:20"},"response_type":"sample"}', true );
 			}
 		}
 		return (array) $context;

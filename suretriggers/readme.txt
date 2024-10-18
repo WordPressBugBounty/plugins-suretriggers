@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.6
-Stable tag: 1.0.62
+Stable tag: 1.0.63
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -326,6 +326,13 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 4. Dashboard of your task consumption.
 
 == Changelog ==
+= Version 1.0.63 - Friday, 18th October 2024 =
+* Improvement: "Meta Box" - Added new Actions
+* Improvement: "bbPress" - Improved the topic status functionality in the "Add Topic in Forum" Action
+* Improvement: "Gravity Forms" - Added spam entry check in the "Form Submitted" Trigger
+* Improvement: "The Events Calendar" - Improved the fetch data response for "New Attendee" and "Attendee Registered for Event" Triggers
+* Improvement: "Thrive Leads" - Improved the response for "Form Submitted" Trigger
+
 = Version 1.0.62 - Thursday, 10th October 2024 =
 * New: Added "Support Portal for SureCart" Integration
 * Improvement: "BuddyBoss" - Improved the map field functionality in the "Send Message To Group Members" Action

@@ -1,9 +1,9 @@
 <?php
 /**
- * FormSubmitted.
+ * TaskCreated.
  * php version 5.6
  *
- * @category FormSubmitted
+ * @category TaskCreated
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -11,17 +11,17 @@
  * @since    1.0.0
  */
 
-namespace SureTriggers\Integrations\ThriveLeads\Triggers;
+namespace SureTriggers\Integrations\FluentBoards\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Traits\SingletonLoader;
 
-if ( ! class_exists( 'FormSubmitted' ) ) :
+if ( ! class_exists( 'TaskCreated' ) ) :
 
 	/**
-	 * FormSubmitted
+	 * TaskCreated
 	 *
-	 * @category FormSubmitted
+	 * @category TaskCreated
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -30,23 +30,26 @@ if ( ! class_exists( 'FormSubmitted' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class FormSubmitted {
+	class TaskCreated {
+
 
 		/**
 		 * Integration type.
 		 *
 		 * @var string
 		 */
-		public $integration = 'ThriveLeads';
+		public $integration = 'FluentBoards';
+
 
 		/**
 		 * Trigger name.
 		 *
 		 * @var string
 		 */
-		public $trigger = 'tl_form_submitted';
+		public $trigger = 'fbs_task_created';
 
 		use SingletonLoader;
+
 
 		/**
 		 * Constructor
@@ -64,10 +67,11 @@ if ( ! class_exists( 'FormSubmitted' ) ) :
 		 * @return array
 		 */
 		public function register( $triggers ) {
+
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'Form Submitted', 'suretriggers' ),
-				'action'        => 'tl_form_submitted',
-				'common_action' => 'tcb_api_form_submit',
+				'label'         => __( 'New Task Created', 'suretriggers' ),
+				'action'        => $this->trigger,
+				'common_action' => 'fluent_boards/task_created',
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
 				'accepted_args' => 1,
@@ -79,22 +83,20 @@ if ( ! class_exists( 'FormSubmitted' ) ) :
 		/**
 		 * Trigger listener
 		 *
-		 * @param array $data data.
-		 *
+		 * @param object $task Board.
 		 * @return void
 		 */
-		public function trigger_listener( $data ) {
-			if ( ! empty( $data ) ) {
-				if ( array_key_exists( 'thrive_leads', $data ) ) {
-					$data['post_id'] = $data['thrive_leads']['tl_data']['form_type_id'];
-				}
-				AutomationController::sure_trigger_handle_trigger(
-					[
-						'trigger' => $this->trigger,
-						'context' => $data,
-					]
-				);
+		public function trigger_listener( $task ) {
+			if ( empty( $task ) ) {
+				return;
 			}
+			$context = $task;
+			AutomationController::sure_trigger_handle_trigger(
+				[
+					'trigger' => $this->trigger,
+					'context' => $context,
+				]
+			);
 		}
 	}
 
@@ -103,6 +105,6 @@ if ( ! class_exists( 'FormSubmitted' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	FormSubmitted::get_instance();
+	TaskCreated::get_instance();
 
 endif;

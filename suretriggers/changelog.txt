@@ -1,3 +1,10 @@
+Version 1.0.63 - Friday, 18th October 2024
+- Improvement: "Meta Box" - Added new Actions
+- Improvement: "bbPress" - Improved the topic status functionality in the "Add Topic in Forum" Action
+- Improvement: "Gravity Forms" - Added spam entry check in the "Form Submitted" Trigger
+- Improvement: "The Events Calendar" - Improved the fetch data response for "New Attendee" and "Attendee Registered for Event" Triggers
+- Improvement: "Thrive Leads" - Improved the response for "Form Submitted" Trigger
+
 Version 1.0.62 - Thursday, 10th October 2024
 - New: Added "Support Portal for SureCart" Integration
 - Improvement: "BuddyBoss" - Improved the map field functionality in the "Send Message To Group Members" Action
