@@ -113,6 +113,7 @@ if ( ! class_exists( 'ReplyToTopic' ) ) :
 			];
 
 			$topic = [
+				'topic'             => $topic_id,
 				'topic_title'       => $topic,
 				'topic_link'        => $topic_link,
 				'topic_description' => $topic_description,
@@ -126,12 +127,26 @@ if ( ! class_exists( 'ReplyToTopic' ) ) :
 			];
 
 			$user_id = ap_get_current_user_id();
-			$context = array_merge(
-				WordPress::get_user_context( intval( '"' . $user_id . '"' ) ),
-				$forum,
-				$topic,
-				$reply
-			);
+			if ( is_int( $user_id ) ) {
+				$context = array_merge(
+					WordPress::get_user_context( $user_id ),
+					$forum,
+					$topic,
+					$reply
+				);
+			} else {
+				$anonymous_data = [
+					'bbp_anonymous_name'    => get_post_meta( $reply_id, '_bbp_anonymous_name', true ),
+					'bbp_anonymous_email'   => get_post_meta( $reply_id, '_bbp_anonymous_email', true ),
+					'bbp_anonymous_website' => get_post_meta( $reply_id, '_bbp_anonymous_website', true ),
+				];
+				$context        = array_merge(
+					$anonymous_data,
+					$forum,
+					$topic,
+					$reply
+				);
+			}
 		
 			AutomationController::sure_trigger_handle_trigger(
 				[

@@ -10718,12 +10718,12 @@ class GlobalSearchController {
 				$forum_id          = $result[0]->meta_value;
 				$topic             = get_the_title( $topic_id );
 				$topic_link        = get_the_permalink( $topic_id );
-				$topic_description = get_the_content( $topic_id );
+				$topic_description = get_the_content( null, false, $topic_id );
 				$topic_status      = get_post_status( $topic_id );
 
 				$forum             = get_the_title( $forum_id );
 				$forum_link        = get_the_permalink( $forum_id );
-				$forum_description = get_the_content( $forum_id );
+				$forum_description = get_the_content( null, false, $forum_id );
 				$forum_status      = get_post_status( $forum_id );
 
 				$forum = [
@@ -10742,11 +10742,24 @@ class GlobalSearchController {
 				];
 
 				$user_id = $result[0]->post_author;
-				$context = array_merge(
-					WordPress::get_user_context( $user_id ),
-					$forum,
-					$topic
-				);
+				if ( '0' != $user_id ) {
+					$context = array_merge(
+						WordPress::get_user_context( $user_id ),
+						$forum,
+						$topic
+					);
+				} else {
+					$anonymous_data = [
+						'bbp_anonymous_name'    => get_post_meta( $result[0]->ID, '_bbp_anonymous_name', true ),
+						'bbp_anonymous_email'   => get_post_meta( $result[0]->ID, '_bbp_anonymous_email', true ),
+						'bbp_anonymous_website' => get_post_meta( $result[0]->ID, '_bbp_anonymous_website', true ),
+					];
+					$context        = array_merge(
+						$anonymous_data,
+						$forum,
+						$topic
+					);
+				}
 
 				$response['pluggable_data'] = $context;
 				$response['response_type']  = 'live';
@@ -10757,13 +10770,13 @@ class GlobalSearchController {
 				$forum_id          = intval( '"' . $forum_id . '"' );
 				$reply             = get_the_title( $reply_id );
 				$reply_link        = get_the_permalink( $reply_id );
-				$reply_description = get_the_content( $reply_id );
+				$reply_description = get_the_content( null, false, $reply_id );
 				$reply_status      = get_post_status( $reply_id );
 
 
 				$topic             = get_the_title( $topic_id );
 				$topic_link        = get_the_permalink( $topic_id );
-				$topic_description = get_the_content( $topic_id );
+				$topic_description = get_the_content( null, false, $topic_id );
 				$topic_status      = get_post_status( $topic_id );
 
 				$forum             = get_the_title( $forum_id );
@@ -10793,12 +10806,26 @@ class GlobalSearchController {
 					'reply_status'      => $reply_status,
 				];
 				$user_id = $result[0]->post_author;
-				$context = array_merge(
-					WordPress::get_user_context( $user_id ),
-					$forum,
-					$topic, 
-					$reply
-				);
+				if ( '0' != $user_id ) {
+					$context = array_merge(
+						WordPress::get_user_context( $user_id ),
+						$forum,
+						$topic, 
+						$reply
+					);
+				} else {
+					$anonymous_data = [
+						'bbp_anonymous_name'    => get_post_meta( $result[0]->ID, '_bbp_anonymous_name', true ),
+						'bbp_anonymous_email'   => get_post_meta( $result[0]->ID, '_bbp_anonymous_email', true ),
+						'bbp_anonymous_website' => get_post_meta( $result[0]->ID, '_bbp_anonymous_website', true ),
+					];
+					$context        = array_merge(
+						$anonymous_data,
+						$forum,
+						$topic,
+						$reply
+					);
+				}
 
 				$response['pluggable_data'] = $context;
 				$response['response_type']  = 'live';

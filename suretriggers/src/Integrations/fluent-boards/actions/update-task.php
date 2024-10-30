@@ -100,7 +100,11 @@ class UpdateTask extends AutomateAction {
 			foreach ( $task_data as $key => $value ) {
 				FluentBoardsApi( 'tasks' )->updateProperty( $task_id, $key, $value );
 			}
-			return FluentBoardsApi( 'tasks' )->getTask( $task_id );
+			$task = FluentBoardsApi( 'tasks' )->getTask( $task_id );
+			if ( empty( $task ) ) {
+				throw new Exception( 'There is error while creating a Task.' );
+			}
+			return $task; 
 	}
 }
 

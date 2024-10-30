@@ -76,24 +76,38 @@ class CreateTask extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$title          = sanitize_text_field( $selected_options['title'] );
-		$board_id       = sanitize_text_field( $selected_options['board_id'] );
-		$stage_id       = sanitize_text_field( $selected_options['stage_id'] );
-		$priority       = sanitize_text_field( $selected_options['priority'] );
-		$status         = sanitize_text_field( $selected_options['status'] );
-		$crm_contact_id = sanitize_text_field( $selected_options['crm_contact_id'] );
-		$task_data      = [
-			'title'          => $title,
-			'board_id'       => $board_id,
-			'stage_id'       => $stage_id,
-			'priority'       => $priority,
-			'status'         => $status,
-			'crm_contact_id' => $crm_contact_id,
-		];
-		if ( ! function_exists( 'FluentBoardsApi' ) ) {
-			return;
-		}
-		return FluentBoardsApi( 'tasks' )->create( $task_data );
+		$title          = $selected_options['title'] ? sanitize_text_field( $selected_options['title'] ) : '';
+		$description    = $selected_options['description'] ? sanitize_text_field( $selected_options['description'] ) : '';
+		$board_id       = $selected_options['board_id'] ? sanitize_text_field( $selected_options['board_id'] ) : '';
+		$stage_id       = $selected_options['stage_id'] ? sanitize_text_field( $selected_options['stage_id'] ) : '';
+		$priority       = $selected_options['priority'] ? sanitize_text_field( $selected_options['priority'] ) : '';
+		$status         = $selected_options['status'] ? sanitize_text_field( $selected_options['status'] ) : '';
+		$labels         = $selected_options['labels'] ? explode( ',', sanitize_text_field( $selected_options['labels'] ) ) : '';
+		$crm_contact_id = $selected_options['crm_contact_id'] ? sanitize_text_field( $selected_options['crm_contact_id'] ) : '';
+		$created_by     = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
+		$task_data      = array_filter(
+			[
+				'title'          => $title,
+				'description'    => $description,
+				'board_id'       => $board_id,
+				'stage_id'       => $stage_id,
+				'priority'       => $priority,
+				'status'         => $status,
+				'labels'         => $labels,
+				'crm_contact_id' => $crm_contact_id,
+				'created_by'     => $created_by,
+			],
+			fn( $value) => '' !== $value
+		);
+			if ( ! function_exists( 'FluentBoardsApi' ) ) {
+				return;
+			}
+
+			$task = FluentBoardsApi( 'tasks' )->create( $task_data );
+			if ( empty( $task ) ) {
+				throw new Exception( 'There is error while creating a Task.' );
+			}
+			return $task;
 	}
 }
 

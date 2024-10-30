@@ -76,26 +76,39 @@ class CreateSubTask extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$title     = sanitize_text_field( $selected_options['title'] );
-		$task_id   = sanitize_text_field( $selected_options['task_id'] );
-		$board_id  = sanitize_text_field( $selected_options['board_id'] );
-		$stage_id  = sanitize_text_field( $selected_options['stage_id'] );
-		$priority  = sanitize_text_field( $selected_options['priority'] );
-		$status    = sanitize_text_field( $selected_options['status'] );
-		$task_data = [
-			'title'    => $title,
-			'stage_id' => $stage_id,
-			'priority' => $priority,
-			'status'   => $status,
-		];
-		if ( ! class_exists( 'FluentBoards\App\Models\Task' ) ) {
-			return;
-		}
-		$sub_task = \FluentBoards\App\Models\Task::createSubtask(
-			$board_id,
-			$task_id,
-			$task_data
+		$task_id     = $selected_options['task_id'] ? sanitize_text_field( $selected_options['task_id'] ) : '';
+		$title       = $selected_options['title'] ? sanitize_text_field( $selected_options['title'] ) : '';
+		$description = $selected_options['description'] ? sanitize_text_field( $selected_options['description'] ) : '';
+		$board_id    = $selected_options['board_id'] ? sanitize_text_field( $selected_options['board_id'] ) : '';
+		$stage_id    = $selected_options['stage_id'] ? sanitize_text_field( $selected_options['stage_id'] ) : '';
+		$priority    = $selected_options['priority'] ? sanitize_text_field( $selected_options['priority'] ) : '';
+		$status      = $selected_options['status'] ? sanitize_text_field( $selected_options['status'] ) : '';
+		$labels      = $selected_options['labels'] ? explode( ',', sanitize_text_field( $selected_options['labels'] ) ) : '';
+		$created_by  = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
+		$task_data   = array_filter(
+			[
+				'title'       => $title,
+				'description' => $description,
+				'board_id'    => $board_id,
+				'stage_id'    => $stage_id,
+				'priority'    => $priority,
+				'status'      => $status,
+				'labels'      => $labels,
+				'created_by'  => $created_by,
+			],
+			fn( $value) => '' !== $value
 		);
+			if ( ! class_exists( 'FluentBoards\App\Models\Task' ) ) {
+				return;
+			}
+			$sub_task = \FluentBoards\App\Models\Task::createSubtask(
+				$board_id,
+				$task_id,
+				$task_data
+			);
+		if ( empty( $sub_task ) ) {
+			throw new Exception( 'There is error while creating a Sub Task.' );
+		}
 		return $sub_task;
 	}
 }

@@ -1,3 +1,7 @@
+Version 1.0.64 - Wednesday, 30th October 2024
+- Improvement: "bbPress" - Added improvements for response data in Triggers
+- Improvement: "SureForms" - Added improvements in "Send Data" Action
+
 Version 1.0.63 - Friday, 18th October 2024
 - Improvement: "Meta Box" - Added new Actions
 - Improvement: "bbPress" - Improved the topic status functionality in the "Add Topic in Forum" Action

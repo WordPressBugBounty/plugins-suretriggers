@@ -77,8 +77,8 @@ class AddUserToBoard extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$board_id = sanitize_text_field( $selected_options['board_id'] );
-		$assignee = sanitize_text_field( $selected_options['assignee'] );
+		$board_id = $selected_options['board_id'] ? sanitize_text_field( $selected_options['board_id'] ) : '';
+		$assignee = $selected_options['assignee'] ? sanitize_text_field( $selected_options['assignee'] ) : '';
 		if ( ! class_exists( 'FluentBoards\App\Services\BoardService' ) ) {
 			return;
 		}

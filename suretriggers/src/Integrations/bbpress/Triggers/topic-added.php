@@ -115,11 +115,19 @@ if ( ! class_exists( 'TopicCreated' ) ) :
 			];
 			
 			$user_id = ap_get_current_user_id();
-			$context = array_merge(
-				WordPress::get_user_context( intval( '"' . $user_id . '"' ) ),
-				$forum,
-				$topic
-			);
+			if ( is_int( $user_id ) ) {
+				$context = array_merge(
+					WordPress::get_user_context( $user_id ),
+					$forum,
+					$topic
+				);
+			} else {
+				$context = array_merge(
+					$anonymous_data,
+					$forum,
+					$topic
+				);
+			}
 		
 			AutomationController::sure_trigger_handle_trigger(
 				[

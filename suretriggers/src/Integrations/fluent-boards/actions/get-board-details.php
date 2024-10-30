@@ -82,7 +82,11 @@ class GetBoardDetails extends AutomateAction {
 		if ( ! class_exists( 'FluentBoards\App\Models\Board' ) ) {
 			return;
 		}
-		return \FluentBoards\App\Models\Board::findOrFail( $board_id );
+		$board = \FluentBoards\App\Models\Board::find( $board_id );
+		if ( empty( $board ) ) {
+			throw new Exception( 'There is error while getting board details.' );
+		}
+		return $board;
 	}
 }
 

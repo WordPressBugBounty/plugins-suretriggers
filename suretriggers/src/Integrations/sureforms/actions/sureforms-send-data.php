@@ -73,9 +73,9 @@ class SureFormsSendData extends AutomateAction {
 	 * @return array|mixed
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$method       = $selected_options['method'] ? $selected_options['method'] : 'post';
-		$endpoint_url = $selected_options['endpoint_url'];
-		$payload_type = $selected_options['payload_type'];
+		$endpoint_url    = isset( $selected_options['endpoint_url'] ) ? esc_url( $selected_options['endpoint_url'] ) : '';
+		$sf_data         = isset( $selected_options['sf_data_body'] ) ? $selected_options['sf_data_body'] : '';
+		$file_attachment = isset( $selected_options['sf_attachment'] ) ? $selected_options['sf_attachment'] : '';
 
 		// Handling SSRF Attack.
 		$blocked_hosts = [
@@ -95,37 +95,26 @@ class SureFormsSendData extends AutomateAction {
 		if ( in_array( $host, $blocked_hosts ) ) {
 			throw new \Exception( 'Access blocked.' );
 		}
-		$body = [];
-		if ( ! empty( $selected_options['parameters'] ) ) {
-			$body = $this->prepare_params( $selected_options['parameters'] );
-		}
-		$headers = [];
-		if ( ! empty( $selected_options['header'] ) ) {
-			$headers = $this->prepare_params( $selected_options['header'] );
+
+		$form_data = [
+			'body'       => $sf_data,
+			'attachment' => $file_attachment,
+		];
+		$json_body = wp_json_encode( $form_data );
+		if ( false === $json_body ) {
+			throw new \Exception( 'Failed to encode form data to JSON.' );
 		}
 
 		$args = [
-			'method'    => strtoupper( $method ),
-			'headers'   => array_merge(
-				$headers,
-				[
-					'User-Agent' => 'SureTriggers',
-				]
-			),
+			'method'    => 'POST',
+			'headers'   => [
+				'Content-Type' => 'application/json',
+				'User-Agent'   => 'SureTriggers',
+			],
 			'sslverify' => true,
 			'timeout'   => 30, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
+			'body'      => $json_body,
 		];
-
-		switch ( $payload_type ) {
-			case 'query_params':
-				// Add query arguments to the endpoint URL.
-				$endpoint_url = $this->add_query_arg( $body, $endpoint_url );
-				break;
-			case 'form_data':
-				$args['body']                    = $body;
-				$args['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
-				break;
-		}
 
 		if ( null === $endpoint_url ) {
 			return [];
@@ -162,56 +151,6 @@ class SureFormsSendData extends AutomateAction {
 		}
 		return $result;
 	}
-
-	/**
-	 * Prepare params
-	 * 
-	 * @param array $parameters_input parameters_input.
-	 *
-	 * @return array
-	 */
-	public static function prepare_params( array $parameters_input = [] ) {
-		$parameters = [];
-		if ( is_array( $parameters_input ) && count( $parameters_input ) ) {
-			$param_key   = array_column( $parameters_input, 'key' );
-			$param_value = array_column( $parameters_input, 'value' );
-			$parameters  = array_combine( $param_key, $param_value );
-		}
-
-		return $parameters;
-	}
-
-	/**
-	 * Added query argument
-	 *
-	 * @param  array  $args Args.
-	 * @param  string $url URL.
-	 * 
-	 * @return string|null
-	 */
-	public static function add_query_arg( $args, $url ) {
-		$url_parts = wp_parse_url( $url );
-		if ( false === $url_parts ) {
-			return $url;
-		}
-		$query      = isset( $url_parts['query'] ) ? $url_parts['query'] : '';
-		$query_args = [];
-		$query      = str_replace( '+', '%2B', $query );
-		parse_str( $query, $query_args );
-		$query_args = array_merge( $query_args, $args );
-		$query      = http_build_query( $query_args );
-		$scheme     = isset( $url_parts['scheme'] ) ? $url_parts['scheme'] . '://' : '';
-		$host       = isset( $url_parts['host'] ) ? $url_parts['host'] : '';
-		$path       = isset( $url_parts['path'] ) ? $url_parts['path'] : '';
-		
-		$result = $scheme . $host . $path;
-		if ( ! empty( $query ) ) {
-			$result .= ( strpos( $result, '?' ) === false ? '?' : '&' ) . $query;
-		}
-
-		return preg_replace( '/%5B\d+%5D/', '[]', $result );
-	}
-
 }
 
 SureFormsSendData::get_instance();

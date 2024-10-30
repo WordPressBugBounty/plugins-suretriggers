@@ -82,7 +82,11 @@ class GetTaskDetails extends AutomateAction {
 		if ( ! function_exists( 'FluentBoardsApi' ) ) {
 			return;
 		}
-		return FluentBoardsApi( 'tasks' )->getTask( $task_id );
+		$task = FluentBoardsApi( 'tasks' )->getTask( $task_id );
+		if ( empty( $task ) ) {
+			throw new Exception( 'There is error while getting task details.' );
+		}
+		return $task;
 	}
 }
 
