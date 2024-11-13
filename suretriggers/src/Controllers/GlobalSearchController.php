@@ -82,6 +82,7 @@ use Mint\MRM\DataBase\Models\ContactModel;
 use Mint\MRM\DataBase\Models\ContactGroupModel;
 use SureTriggers\Integrations\Voxel\Voxel;
 use Surelywp_Support_Portal;
+use SureTriggers\Integrations\ProfileGrid\ProfileGrid;
 
 /**
  * GlobalSearchController- Add ajax related functions here.
@@ -1567,6 +1568,7 @@ class GlobalSearchController {
 			if ( is_object( $context['pluggable_data'] ) ) {
 				$context['pluggable_data'] = get_object_vars( $context['pluggable_data'] );
 			}
+			$context['pluggable_data']['featured_image'] = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $posts[0]->ID ), 'full' )[0]; // @phpstan-ignore-line
 			if ( $posts[0] instanceof WP_Post ) {
 				$taxonomies = get_object_taxonomies( get_post( $posts[0] ), 'objects' );
 				if ( ! empty( $taxonomies ) ) {
@@ -1611,6 +1613,7 @@ class GlobalSearchController {
 				'post_mime_type'        => '',
 				'comment_count'         => 0,
 				'filter'                => 'raw',
+				'featured_image'        => 'https://abc.com/test-post/',
 			];
 			$context['response_type']  = 'sample';
 		}
@@ -19227,6 +19230,81 @@ class GlobalSearchController {
 			} elseif ( 'task_created' === $term ) {
 				$context = json_decode( '{"pluggable_data":{"id":"1","parent_id":null,"board_id":"1","crm_contact_id":null,"title":"Task1","slug":"task1","type":"task","status":"open","stage_id":"6","source":"web","source_id":null,"priority":"low","description":null,"lead_value":"0.00","created_by":"1","position":"1.00","comments_count":"0","issue_number":null,"reminder_type":"none","settings":"a:4:{s:5:\"cover\";a:1:{s:15:\"backgroundColor\";s:0:\"\";}s:13:\"subtask_count\";i:0;s:16:\"attachment_count\";i:0;s:23:\"subtask_completed_count\";i:0;}","remind_at":null,"started_at":null,"due_at":null,"last_completed_at":null,"archived_at":null,"created_at":"2024-10-14 17:11:20","updated_at":"2024-10-14 17:11:20"},"response_type":"sample"}', true );
 			}
+		}
+		return (array) $context;
+	}
+
+	/**
+	 * Get Profile Grid Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_profile_grid_triggers_last_data( $data ) {
+		$context = [];
+		global $wpdb;
+		$term = $data['search_term'] ? $data['search_term'] : '';
+		
+		if ( 'user_added_group' === $term || 'user_removed_from_group' === $term || 'user_assigned_group_manager' === $term || 'user_unassigned_group_manager' === $term || 'membership_request_approved' === $term ) {
+			$users = get_users(
+				[
+					'orderby'    => 'meta_value',
+					'meta_key'   => 'pm_group',
+					'order'      => 'DESC',
+					'number'     => 1,
+					'meta_query' => [
+						[
+							'key'     => 'pm_group',
+							'compare' => 'EXISTS',
+						],
+					],
+					'fields'     => 'ids',
+				] 
+			);
+		} elseif ( 'payment_complete' === $term || 'payment_failed' === $term ) {
+			$users = get_users(
+				[
+					'orderby'    => 'meta_value',
+					'meta_key'   => 'pm_group_payment_status',
+					'order'      => 'DESC',
+					'number'     => 1,
+					'meta_query' => [
+						[
+							'key'     => 'pm_group_payment_status',
+							'compare' => 'EXISTS',
+						],
+					],
+					'fields'     => 'ids',
+				] 
+			);
+		} elseif ( 'membership_request' === $term ) {
+			$results = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}promag_group_requests WHERE status = 1 ORDER BY id DESC Limit 1", ARRAY_A );
+		}
+		if ( ! empty( $users ) ) {
+			if ( 'user_added_group' === $term || 'user_removed_from_group' === $term || 'user_assigned_group_manager' === $term || 'user_unassigned_group_manager' === $term || 'payment_complete' === $term || 'payment_failed' === $term || 'membership_request_approved' === $term ) {
+				$context     = WordPress::get_user_context( $users[0] );
+				$user_groups = get_user_meta( $users[0], 'pm_group', true );
+				if ( is_array( $user_groups ) ) {
+					$last_element        = end( $user_groups );
+					$context['group_id'] = $last_element;
+					$context             = array_merge( $context, ProfileGrid::pg_group_details( $last_element ) );
+				}
+				$context['pluggable_data'] = $context;
+				$context['response_type']  = 'live';
+			}
+		} elseif ( ! empty( $results ) && 'membership_request' === $term ) {
+			$context                   = WordPress::get_user_context( $results[0]['uid'] );
+			$context['group_id']       = $results[0]['gid'];
+			$context                   = array_merge( $context, ProfileGrid::pg_group_details( $results[0]['gid'] ) );
+			$context['pluggable_data'] = $context;
+			$context['response_type']  = 'live';
+		} elseif ( 'group_manager_resets_password' === $term ) {
+			$context = json_decode( '{"pluggable_data":{"wp_user_id":2,"user_login":"johnd@gmail.com","display_name":"JohnD","user_firstname":"johnd","user_lastname":"johnd","user_email":"johnd@gmail.com","user_registered":"2023-01-19 09:14:50","user_role":["editor"]},"response_type":"sample"}', true );
+		} elseif ( 'group_deleted' === $term ) {
+			$context = json_decode( '{"pluggable_data":{"group_name":"Test Group","group_description":"Testing Group","group_id":"2"},"response_type":"sample"}', true );
+		} else {
+			$context = json_decode( '{"pluggable_data":{"wp_user_id":2,"user_login":"johnd@gmail.com","display_name":"JohnD","user_firstname":"johnd","user_lastname":"johnd","user_email":"johnd@gmail.com","user_registered":"2023-01-19 09:14:50","user_role":["editor"],"group_id":"2","group_name":"Test Group","group_description":"Testing Group"},"response_type":"sample"}', true );
 		}
 		return (array) $context;
 	}

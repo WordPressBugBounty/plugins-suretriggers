@@ -16,6 +16,8 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
+use FluentBoardsPro\App\Services\SubtaskService;
+
 /**
  * CreateSubTask
  *
@@ -98,11 +100,12 @@ class CreateSubTask extends AutomateAction {
 			],
 			fn( $value) => '' !== $value
 		);
-			if ( ! class_exists( 'FluentBoards\App\Models\Task' ) ) {
+			if ( ! class_exists( '\FluentBoardsPro\App\Services\SubtaskService' ) ) {
 				return;
 			}
-			$sub_task = \FluentBoards\App\Models\Task::createSubtask(
-				$board_id,
+			
+			$task_service = new SubtaskService();
+			$sub_task     = $task_service->createSubtask(
 				$task_id,
 				$task_data
 			);

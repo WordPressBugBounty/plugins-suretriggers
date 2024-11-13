@@ -90,12 +90,13 @@ class ViewPost {
 			return;
 		}
 
-		$post_id         = get_queried_object_id();
-		$user_id         = ap_get_current_user_id();
-		$context         = WordPress::get_post_context( $post_id );
-		$context         = array_merge( $context, WordPress::get_user_context( $user_id ) );
-		$context['post'] = $post_id;
-		$post            = get_post( $post_id );
+		$post_id                   = get_queried_object_id();
+		$user_id                   = ap_get_current_user_id();
+		$context                   = WordPress::get_post_context( $post_id );
+		$context                   = array_merge( $context, WordPress::get_user_context( $user_id ) );
+		$context['post']           = $post_id;
+		$context['featured_image'] = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post_id ), 'full' );
+		$post                      = get_post( $post_id );
 		if ( $post instanceof WP_Post ) {
 			$taxonomies = get_object_taxonomies( $post, 'objects' );
 			if ( ! empty( $taxonomies ) && is_array( $taxonomies ) ) {

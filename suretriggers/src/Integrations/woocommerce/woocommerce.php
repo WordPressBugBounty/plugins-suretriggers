@@ -206,7 +206,14 @@ class WooCommerce extends Integrations {
 	 */
 	public static function get_product_context( $product_id ) {
 		$product = wc_get_product( $product_id );
-		return array_merge( [ 'product_id' => $product_id ], $product->get_data(), $product->get_attributes() );
+		return array_merge(
+			[
+				'product_id'  => $product_id,
+				'product_sku' => $product->get_sku(),
+			],
+			$product->get_data(),
+			$product->get_attributes() 
+		);
 	}
 
 	/**
@@ -240,8 +247,10 @@ class WooCommerce extends Integrations {
 			$quantities  = [];
 			$items       = $order->get_items();
 			foreach ( $items as $item ) {
-				$product_ids[] = $item->get_product_id();
-				$quantities[]  = $item->get_quantity();
+				$product_ids[]  = $item->get_product_id();
+				$product        = wc_get_product( $item->get_product_id() );
+				$product_skus[] = $product->get_sku();
+				$quantities[]   = $item->get_quantity();
 			}
 
 			$discounts           = $order->get_items( 'discount' );
@@ -340,8 +349,10 @@ class WooCommerce extends Integrations {
 			$item_data = [];
 			$item_data = $item->get_data();
 			unset( $item_data['meta_data'] );
-			$item_data['meta_data'] = $item->get_formatted_meta_data( '_', true );
-			$new_items[]            = $item_data;
+			$item_data['meta_data']             = $item->get_formatted_meta_data( '_', true );
+			$item_data['product_sku']           = get_post_meta( $item_data['product_id'], '_sku', true );
+			$item_data['variation_product_sku'] = get_post_meta( $item_data['variation_id'], '_sku', true );
+			$new_items[]                        = $item_data;
 		}
 
 		$product = [];

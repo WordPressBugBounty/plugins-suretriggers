@@ -1,3 +1,10 @@
+Version 1.0.65 - Wednesday, 13th November 2024
+- New: Added "ProfileGrid" Integration
+- Improvement: "WordPress" - Added improvements for featured image data in "Post Created" Trigger
+- Improvement: "WordPress" - Added improvements for post excerpt in "Create/Update Post" Action and added new "Update Post Excerpt" Action
+- Improvement: "WooCommerce" - Added improvements for SKU data in Triggers
+- Improvement: Make WordPress 6.7 compatible
+
 Version 1.0.64 - Wednesday, 30th October 2024
 - Improvement: "bbPress" - Added improvements for response data in Triggers
 - Improvement: "SureForms" - Added improvements in "Send Data" Action

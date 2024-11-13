@@ -80,12 +80,13 @@ class CreateBoard extends AutomateAction {
 		$title          = $selected_options['title'] ? sanitize_text_field( $selected_options['title'] ) : '';
 		$description    = $selected_options['description'] ? sanitize_text_field( $selected_options['description'] ) : '';
 		$crm_contact_id = $selected_options['crm_contact_id'] ? sanitize_text_field( $selected_options['crm_contact_id'] ) : '';
+		$created_by     = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
 		$board_data     = array_filter(
 			[
 				'title'          => $title,
 				'description'    => $description,
 				'crm_contact_id' => $crm_contact_id,
-				'created_by'     => ap_get_current_user_id(),
+				'created_by'     => $created_by,
 			],
 			fn( $value) => '' !== $value
 		);
