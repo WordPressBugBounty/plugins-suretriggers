@@ -116,10 +116,13 @@ class PostSetToStatus {
 	 */
 	public function trigger_handler( $post, $request, $creating ) {
 
-		$context                   = WordPress::get_post_context( $post->ID );
-		$context['post_type']      = $post->post_type;
-		$context['post_status']    = $post->post_status;
-		$context['featured_image'] = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post->ID ), 'full' );
+		$context                = WordPress::get_post_context( $post->ID );
+		$context['post_type']   = $post->post_type;
+		$context['post_status'] = $post->post_status;
+		$featured_image         = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post->ID ), 'full' ); // @phpstan-ignore-line
+		if ( ! empty( $featured_image ) && is_array( $featured_image ) ) {
+			$context['featured_image'] = $featured_image[0];
+		}
 		if ( $post instanceof WP_Post ) {
 			$taxonomies = get_object_taxonomies( $post, 'objects' );
 			if ( ! empty( $taxonomies ) && is_array( $taxonomies ) ) {

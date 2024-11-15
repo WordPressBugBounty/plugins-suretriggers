@@ -1,3 +1,6 @@
+Version 1.0.66 - Friday, 15th November 2024
+- Improvement: "WordPress" - Added fix for featured image response data in  WordPress Triggers
+
 Version 1.0.65 - Wednesday, 13th November 2024
 - New: Added "ProfileGrid" Integration
 - Improvement: "WordPress" - Added improvements for featured image data in "Post Created" Trigger

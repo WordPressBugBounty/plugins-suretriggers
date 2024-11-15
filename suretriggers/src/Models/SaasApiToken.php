@@ -37,12 +37,15 @@ class SaasApiToken {
 	 * Save and encrypt the API token.
 	 *
 	 * @param string|null $value The API token.
-	 * @return void|null
+	 * @return void|null|string
 	 */
 	protected function save( $value ) {
-		if ( null === $value ) {
+		if ( null === $value || empty( $value ) ) {
 			return OptionController::set_option( $this->key, $value );
 		} else {
+			if ( strlen( $value ) > 80 ) {
+				return $value;
+			}
 			return OptionController::set_option( $this->key, Encryption::encrypt( $value ) );
 		}
 	}
@@ -53,12 +56,12 @@ class SaasApiToken {
 	 * @return mixed|string The decoded API token.
 	 */
 	protected function get() {
-		$token = Encryption::decrypt( OptionController::get_option( $this->key ) );
+		$plain_token = OptionController::get_option( $this->key );
+		$token       = Encryption::decrypt( $plain_token );
 		if ( ! $token ) {
-			$old_token = OptionController::get_option( $this->key );
-			if ( is_string( $old_token ) && ! empty( $old_token ) ) {
-				self::save( $old_token );
-				$token = self::get();
+			if ( is_string( $plain_token ) && ! empty( $plain_token ) ) {
+				self::save( $plain_token );
+				$token = $plain_token;
 			} else {
 				$token = null;
 			}

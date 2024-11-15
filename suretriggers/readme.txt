@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.65
+Stable tag: 1.0.66
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -326,6 +326,9 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 4. Dashboard of your task consumption.
 
 == Changelog ==
+= Version 1.0.66 - Friday, 15th November 2024 =
+* Improvement: "WordPress" - Added fix for featured image response data in  WordPress Triggers
+
 = Version 1.0.65 - Wednesday, 13th November 2024 =
 * New: Added "ProfileGrid" Integration
 * Improvement: "WordPress" - Added improvements for featured image data in "Post Created" Trigger
