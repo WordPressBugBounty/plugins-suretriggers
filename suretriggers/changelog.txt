@@ -1,3 +1,10 @@
+Version 1.0.67 - Wednesday, 11th December 2024
+- New: Added "FluentSMTP" Integration
+- Improvement: "Presto Player" - Added improvements for creating posts with Presto Video URL in the "Create Media Hub" Action
+- Improvement: "WooCommerce Bookings" - Added fix for response in "Booking Created" Trigger
+- Improvement: "FluentCRM" - Added improvements in error status in Actions
+- Improvement: "ConvertPro" - Added improvements in response data in "Form Submitted" Trigger
+
 Version 1.0.66 - Friday, 15th November 2024
 - Improvement: "WordPress" - Added fix for featured image response data in  WordPress Triggers
 

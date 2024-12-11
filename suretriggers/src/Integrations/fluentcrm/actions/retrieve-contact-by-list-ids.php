@@ -88,7 +88,11 @@ class RetrieveContactByListIDs extends AutomateAction {
 		$contacts = json_decode( $contact, true );
 
 		if ( empty( $contacts ) ) {
-			throw new Exception( 'No Contacts Found.' );
+			return [
+				'message'     => __( 'No contacts found', 'suretriggers' ),
+				'status'      => 'false',
+				'user_exists' => 'false',
+			];
 		}
 
 		$context = [];
@@ -127,6 +131,7 @@ class RetrieveContactByListIDs extends AutomateAction {
 				}
 			}
 		}
+		$context['user_exists'] = 'true';
 		return $context;
 	}
 

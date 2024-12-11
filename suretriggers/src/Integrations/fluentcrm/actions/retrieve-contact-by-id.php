@@ -82,10 +82,15 @@ class RetrieveContactById extends AutomateAction {
 		$contact = $contact_api->getContact( $selected_options['contact_id'] );
 
 		if ( is_null( $contact ) ) {
-			throw new Exception( 'Invalid contact.' );
+			return [
+				'message'     => __( 'Can not find the contact with the ID.', 'suretriggers' ),
+				'status'      => 'false',
+				'user_exists' => 'false',
+			];
 		}
 
 		$context                   = [];
+		$context['user_exists']    = 'true';
 		$context['id']             = $contact->id;
 		$context['user_id']        = $contact->user_id;
 		$context['full_name']      = $contact->full_name;

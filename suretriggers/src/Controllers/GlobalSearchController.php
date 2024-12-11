@@ -14768,7 +14768,6 @@ class GlobalSearchController {
 							$booking['total_person_counts'] = $total_count;
 						}
 						$booking['bookable_product'] = $bookable_product_id;
-						$booking['bookable_product'] = $booking->get_product_id();
 						$context['response_type']    = 'live';
 						$context['pluggable_data']   = array_merge( $booking, WordPress::get_user_context( $booking['customer_id'] ) );
 					}
@@ -19305,6 +19304,35 @@ class GlobalSearchController {
 			$context = json_decode( '{"pluggable_data":{"group_name":"Test Group","group_description":"Testing Group","group_id":"2"},"response_type":"sample"}', true );
 		} else {
 			$context = json_decode( '{"pluggable_data":{"wp_user_id":2,"user_login":"johnd@gmail.com","display_name":"JohnD","user_firstname":"johnd","user_lastname":"johnd","user_email":"johnd@gmail.com","user_registered":"2023-01-19 09:14:50","user_role":["editor"],"group_id":"2","group_name":"Test Group","group_description":"Testing Group"},"response_type":"sample"}', true );
+		}
+		return (array) $context;
+	}
+
+	/**
+	 * Get Fluent SMTP Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_fluent_smtp_last_data( $data ) {
+		$context = [];
+		global $wpdb;
+		$results = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fsmpt_email_logs WHERE status = 'failed' ORDER BY id DESC Limit 1", ARRAY_A );
+		if ( ! empty( $results ) ) {
+			$context['to']             = unserialize( $results['to'] );
+			$context['from']           = $results['from'];
+			$context['subject']        = $results['subject'];
+			$context['body']           = $results['body'];
+			$context['attachments']    = unserialize( $results['attachments'] );
+			$context['status']         = $results['status'];
+			$context['response']       = unserialize( $results['response'] );
+			$context['headers']        = unserialize( $results['headers'] );
+			$context['extra']          = unserialize( $results['extra'] );
+			$context['pluggable_data'] = $context;
+			$context['response_type']  = 'live';
+		} else {
+			$context = json_decode( '{"pluggable_data":{"to":[{"email":"johnd@example.com"}],"from":"johnd <johnd@example.com>","subject":"We received your message","body":"Your message has been successfully sent. We appreciate you contacting us and we will be in touch soon.\n<br><br>","attachments":[],"status":"failed","response":{"code":422,"message":"SMTP Error: data not accepted.","errors":["SMTP Error: data not accepted."]},"headers":{"reply-to":[{"email":"johnd@example.com"}],"cc":[],"bcc":[],"content-type":"text/html"},"extra":{"provider":"smtp"}},"response_type":"sample"}', true );
 		}
 		return (array) $context;
 	}

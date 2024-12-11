@@ -75,35 +75,57 @@ class CreateMediaHub extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		
-		$title     = $selected_options['media_hub_title'];
-		$video_url = $selected_options['media_hub_youtube_video_url'];
-		$preset    = $selected_options['video_preset'];
+		$title           = $selected_options['media_hub_title'];
+		$video_url       = $selected_options['media_hub_youtube_video_url'];
+		$basic_video_url = $selected_options['media_hub_video_url'];
+		$preset          = $selected_options['video_preset'];
 		if ( '' == $preset ) {
 			$preset = 4;
 		}
-		$post_author = $selected_options['post_author'];
+		$post_author    = $selected_options['post_author'];
+		$media_hub_post = [];
+		
+		if ( empty( $video_url ) && empty( $basic_video_url ) ) {
+			return [
+				'message' => __( 'Both YouTube and self-hosted video URLs are empty. Please provide at least one.', 'suretriggers' ),
+			];
+		}
 
-		// Pattern to match YouTube video ID.
-		$pattern = '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/';
+		if ( ! empty( $video_url ) ) {
 
-		// Execute the regex pattern on the URL.
-		if ( preg_match( $pattern, $video_url, $matches ) ) {
-			// Get the matched video ID.
-			$video_id       = $matches[1];
+			// Pattern to match YouTube video ID.
+			$pattern = '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/';
+
+			// Execute the regex pattern on the URL.
+			if ( preg_match( $pattern, $video_url, $matches ) ) {
+				// Get the matched video ID.
+				$video_id       = $matches[1];
+				$media_hub_post = [
+					'post_title'   => $title,
+					'post_content' => '<!-- wp:presto-player/reusable-edit --><div class="wp-block-presto-player-reusable-edit"><!-- wp:presto-player/youtube {"id":1,"src":"' . $video_url . '","preset":' . $preset . ',"video_id":"' . $video_id . '"} /--></div><!-- /wp:presto-player/reusable-edit -->',
+					'post_status'  => 'publish',
+					'post_type'    => 'pp_video_block',
+					'post_author'  => $post_author,
+				];
+			} else {
+				return [
+					'message' => __( 'Invalid YouTube URL.', 'suretriggers' ),
+				];
+			}
+		}
+		if ( ! empty( $basic_video_url ) ) {
 			$media_hub_post = [
 				'post_title'   => $title,
-				'post_content' => '<!-- wp:presto-player/reusable-edit --><div class="wp-block-presto-player-reusable-edit"><!-- wp:presto-player/youtube {"id":1,"src":"' . $video_url . '","preset":' . $preset . ',"video_id":"' . $video_id . '"} /--></div><!-- /wp:presto-player/reusable-edit -->',
+				'post_content' => '<!-- wp:presto-player/reusable-edit --><div class="wp-block-presto-player-reusable-edit"><!-- wp:presto-player/self-hosted {"id":1,"attachment_id":null,"src":"' . $basic_video_url . '","preset":' . $preset . '} /--></div>
+				<!-- /wp:presto-player/reusable-edit -->',
 				'post_status'  => 'publish',
 				'post_type'    => 'pp_video_block',
 				'post_author'  => $post_author,
 			];
-		} else {
-			return [
-				'message' => __( 'Invalid YouTube URL.', 'suretriggers' ),
-			];
 		}
-		
+
 		$id = wp_insert_post( $media_hub_post );
+
 		if ( $id ) {
 			return WordPress::get_post_context( $id );
 		} else {
