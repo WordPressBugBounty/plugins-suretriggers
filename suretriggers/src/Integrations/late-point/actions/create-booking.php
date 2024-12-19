@@ -54,7 +54,7 @@ class CreateBooking extends AutomateAction {
 	 */
 	public function register( $actions ) {
 		$actions[ $this->integration ][ $this->action ] = [
-			'label'    => __( 'Create Booking', 'suretriggers' ),
+			'label'    => __( 'Create Order', 'suretriggers' ),
 			'action'   => 'lp_create_booking',
 			'function' => [ $this, 'action_listener' ],
 		];

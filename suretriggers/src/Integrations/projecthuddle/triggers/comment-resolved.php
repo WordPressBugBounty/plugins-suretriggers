@@ -15,6 +15,7 @@ namespace SureTriggers\Integrations\ProjectHuddle\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Traits\SingletonLoader;
+use PH\Models\Post;
 
 if ( ! class_exists( 'CommentResolved' ) ) :
 
@@ -87,6 +88,9 @@ if ( ! class_exists( 'CommentResolved' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $comment ) {
+			if ( ! class_exists( 'PH\Models\Post' ) || ! function_exists( 'ph_get_the_title' ) ) {
+				return;
+			}
 			global $wpdb;
 
 			if ( is_object( $comment ) ) {
@@ -116,6 +120,13 @@ if ( ! class_exists( 'CommentResolved' ) ) :
 				$context['comment_item_id']         = $comment_item_id[0];
 				$context['comment_item_page_title'] = get_the_title( (int) $comment_item_id[0] );
 				$context['comment_item_page_url']   = get_post_meta( (int) $comment_item_id[0], 'page_url', true );
+			}
+			$context['ph_project_name']   = ph_get_the_title( Post::get( $comment['comment_post_ID'] )->parentsIds()['project'] );
+			$context['ph_commenter_name'] = $comment['comment_author'];
+			if ( is_int( $comment['comment_post_ID'] ) ) {
+				$context['ph_project_type']  = ( get_post_type( $comment['comment_post_ID'] ) == 'ph-website' ) ? __( 'Website', 'suretriggers' ) : __( 'Mockup', 'suretriggers' );
+				$context['ph_action_status'] = get_post_meta( $comment['comment_post_ID'], 'resolved', true ) ? __( 'Resolved', 'suretriggers' ) : __( 'Unresolved', 'suretriggers' );
+				$context['ph_project_link']  = get_the_guid( $comment['comment_post_ID'] );
 			}
 			
 			AutomationController::sure_trigger_handle_trigger(

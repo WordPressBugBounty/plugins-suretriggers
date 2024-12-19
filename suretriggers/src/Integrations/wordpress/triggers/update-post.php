@@ -93,6 +93,14 @@ if ( ! class_exists( 'UpdatePost' ) ) :
 			if ( ! isset( $post->post_status ) ) {
 				return;
 			}
+			if ( 'auto-draft' === $post->post_status ) {
+				return;
+			}
+			if ( isset( $_POST['original_post_status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+				if ( ! empty( $_POST ) || 'auto-draft' === $_POST['original_post_status'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+					return;
+				}
+			}
 			if ( 'draft' !== $post->post_status && ! wp_is_post_revision( $post_ID ) && ! wp_is_post_autosave( $post_ID ) ) {
 				$user_id        = ap_get_current_user_id();
 				$context        = WordPress::get_post_context( $post_ID );

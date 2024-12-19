@@ -32,6 +32,7 @@ use OsAgentHelper;
 use OsBookingHelper;
 use OsCustomerHelper;
 use OsServiceHelper;
+use OsServiceModel;
 use OsWpUserHelper;
 use PrestoPlayer\Models\Video;
 use RGFormsModel;
@@ -64,6 +65,7 @@ use WP_REST_Response;
 use WPForms_Form_Handler;
 use CP_V2_Popups;
 use Project_Huddle;
+use PH\Models\Post;
 use FrmForm;
 use Forminator_API;
 use SureTriggers\Integrations\LearnPress\LearnPress;
@@ -9232,6 +9234,9 @@ class GlobalSearchController {
 		global $wpdb;
 
 		$context = [];
+		if ( ! class_exists( 'PH\Models\Post' ) || ! function_exists( 'ph_get_the_title' ) ) {
+			return [];
+		}
 
 		if ( -1 !== $data['dynamic'] ) {
 			$threads = get_posts(
@@ -9281,14 +9286,21 @@ class GlobalSearchController {
 					$comments['comment_item_page_title'] = get_the_title( (int) $comment_item_id[0] );
 					$comments['comment_item_page_url']   = get_post_meta( (int) $comment_item_id[0], 'page_url', true );
 				}
+				if ( isset( $comment_id['comment_post_ID'] ) || isset( $comment_id['comment_author'] ) ) {
+					$comments['ph_project_name']   = ph_get_the_title( Post::get( $comment_id['comment_post_ID'] )->parentsIds()['project'] );
+					$comments['ph_commenter_name'] = $comment_id['comment_author'];
+					$comments['ph_project_type']   = ( get_post_type( $comment_id['comment_post_ID'] ) == 'ph-website' ) ? __( 'Website', 'suretriggers' ) : __( 'Mockup', 'suretriggers' );
+					$comments['ph_action_status']  = get_post_meta( $comment_id['comment_post_ID'], 'resolved', true ) ? __( 'Resolved', 'suretriggers' ) : __( 'Unresolved', 'suretriggers' );
+					$comments['ph_project_link']   = get_the_guid( $comment_id['comment_post_ID'] );
+				}
 
 				$context['pluggable_data'] = $comments;
 				$context['response_type']  = 'live';
 			} else {
-				$context = json_decode( '{"response_type":"sample","pluggable_data":{"comment_ID":"1","comment_post_ID":"1","comment_author":"test","comment_author_email":"test@test.com","comment_date":"2023-03-27 13:44:26","comment_content":"<p>Leave comment<\/p>","comment_type":"ph_comment"}}', true );
+				$context = json_decode( '{"response_type":"sample","pluggable_data":{"comment_ID":"1","comment_post_ID":"1","comment_author":"test","comment_author_email":"test@test.com","comment_date":"2023-03-27 13:44:26","comment_content":"<p>Leave comment<\/p>","comment_type":"ph_comment","comment_item_id": 9579, "comment_item_page_title": "About Us","comment_item_page_url": "https://example.com/about-us","ph_project_name":"Test","ph_commenter_name":"Admin","ph_project_type":"Mockup","ph_action_status":"Unresolved","ph_project_link":"https://example.com"}}', true );
 			}
 		} else {
-			$context = json_decode( '{"response_type":"sample","pluggable_data":{"comment_ID":"1","comment_post_ID":"1","comment_author":"test","comment_author_email":"test@test.com","comment_date":"2023-03-27 13:44:26","comment_content":"<p>Leave comment<\/p>","comment_type":"ph_comment","comment_item_id": 9579, "comment_item_page_title": "About Us","comment_item_page_url": "https://example.com/abotu-us"}}', true );
+			$context = json_decode( '{"response_type":"sample","pluggable_data":{"comment_ID":"1","comment_post_ID":"1","comment_author":"test","comment_author_email":"test@test.com","comment_date":"2023-03-27 13:44:26","comment_content":"<p>Leave comment<\/p>","comment_type":"ph_comment","comment_item_id": 9579, "comment_item_page_title": "About Us","comment_item_page_url": "https://example.com/about-us","ph_project_name":"Test","ph_commenter_name":"Admin","ph_project_type":"Mockup","ph_action_status":"Unresolved","ph_project_link":"https://example.com"}}', true );
 		}
 
 		return $context;
@@ -9304,6 +9316,9 @@ class GlobalSearchController {
 		global $wpdb;
 
 		$context = [];
+		if ( ! class_exists( 'PH\Models\Post' ) || ! function_exists( 'ph_get_the_title' ) ) {
+			return [];
+		}
 
 		$get_comments = $wpdb->get_row(
 			'SELECT  ' . $wpdb->prefix . 'comments.comment_ID, ' . $wpdb->prefix . 'comments.comment_content
@@ -9342,10 +9357,17 @@ class GlobalSearchController {
 				$comments['comment_item_page_title'] = get_the_title( (int) $comment_item_id[0] );
 				$comments['comment_item_page_url']   = get_post_meta( (int) $comment_item_id[0], 'page_url', true );
 			}
+			if ( isset( $comment_id['comment_post_ID'] ) || isset( $comment_id['comment_author'] ) ) {
+				$comments['ph_project_name']   = ph_get_the_title( Post::get( $comment_id['comment_post_ID'] )->parentsIds()['project'] );
+				$comments['ph_commenter_name'] = $comment_id['comment_author'];
+				$comments['ph_project_type']   = ( get_post_type( $comment_id['comment_post_ID'] ) == 'ph-website' ) ? __( 'Website', 'suretriggers' ) : __( 'Mockup', 'suretriggers' );
+				$comments['ph_action_status']  = get_post_meta( $comment_id['comment_post_ID'], 'resolved', true ) ? __( 'Resolved', 'suretriggers' ) : __( 'Unresolved', 'suretriggers' );
+				$comments['ph_project_link']   = get_the_guid( $comment_id['comment_post_ID'] );
+			}
 			$context['pluggable_data'] = $comments;
 			$context['response_type']  = 'live';
 		} else {
-			$context = json_decode( '{"response_type":"sample","pluggable_data":{"comment_ID":"1","comment_post_ID":"1","comment_author":"test","comment_author_email":"test@test.com","comment_date":"2023-03-27 13:44:26","comment_content":"<p>Leave comment<\/p>","comment_type":"ph_comment","comment_status":"Resolved","comment_item_id": 9579, "comment_item_page_title": "About Us","comment_item_page_url": "https://example.com/abotu-us" }}', true );
+			$context = json_decode( '{"response_type":"sample","pluggable_data":{"comment_ID":"1","comment_post_ID":"1","comment_author":"test","comment_author_email":"test@test.com","comment_date":"2023-03-27 13:44:26","comment_content":"<p>Leave comment<\/p>","comment_type":"ph_comment","comment_status":"Resolved","comment_item_id": 9579, "comment_item_page_title": "About Us","comment_item_page_url": "https://example.com/abotu-us","ph_project_name":"Test","ph_commenter_name":"Admin","ph_project_type":"Mockup","ph_action_status":"Unresolved","ph_project_link":"https://example.com" }}', true );
 		}
 
 		return $context;

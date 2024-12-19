@@ -1,3 +1,9 @@
+Version 1.0.68 - Thursday, 19th December 2024
+- Improvement: "WordPress" - Added fix for twice running "Post Created / Updated" Trigger
+- Improvement: "SureFeedback" - Added improvements for response in Triggers
+- Improvement: "bbPress" - Added improvement to map forum ID in "Subscribe User in Forum" Action
+- Improvement: "LatePoint" - Added improvements to "Create Booking" and "Update Booking" Actions
+
 Version 1.0.67 - Wednesday, 11th December 2024
 - New: Added "FluentSMTP" Integration
 - Improvement: "Presto Player" - Added improvements for creating posts with Presto Video URL in the "Create Media Hub" Action

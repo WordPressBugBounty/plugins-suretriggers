@@ -80,8 +80,8 @@ class RetrieveContactByUserId extends AutomateAction {
 		$contact_api = FluentCrmApi( 'contacts' );
 
 		$contact = $contact_api->getContactByUserRef( $selected_options['user_id'] );
-		
-		if ( is_null( $contact ) ) {
+
+		if ( ! $contact ) {
 			return [
 				'message'     => __( 'Invalid contact.', 'suretriggers' ),
 				'status'      => 'false',

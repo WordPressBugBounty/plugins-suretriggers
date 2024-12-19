@@ -91,9 +91,16 @@ class SubscribeUserInForum extends AutomateAction {
 			return;
 		}
 		$forum_ids = [];
-		foreach ( $forums as $forum ) {
-			$forum_ids[] = $forum['value'];
 
+		if ( is_array( $forums ) ) {
+			foreach ( $forums as $forum ) {
+				$forum_ids[] = $forum['value'];
+			}
+		} else {
+			$forums = explode( ',', $forums );
+			foreach ( $forums as $forum ) {
+				$forum_ids[] = $forum;
+			}
 		}
 
 		if ( function_exists( 'bbp_is_user_subscribed' ) && ! empty( $forum_ids ) ) {

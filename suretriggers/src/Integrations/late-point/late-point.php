@@ -12,7 +12,9 @@ use Exception;
 use OsAgentModel;
 use OsBookingModel;
 use OsCustomerModel;
-use OsMetaModel;
+use OsOrderModel;
+use OsOrdersHelper;
+use OsOrderItemModel;
 use SureTriggers\Controllers\IntegrationsController;
 use SureTriggers\Integrations\Integrations;
 use SureTriggers\Traits\SingletonLoader;
@@ -53,8 +55,7 @@ class LatePoint extends Integrations {
 	 * @throws Exception Exception.
 	 */
 	public static function create_or_update_booking( $selected_options, $is_update = false ) {
-
-		if ( ! class_exists( 'OsBookingModel' ) || ! class_exists( 'OsCustomerModel' ) ) {
+		if ( ! class_exists( 'OsBookingModel' ) || ! class_exists( 'OsCustomerModel' ) || ! class_exists( 'OsOrderModel' ) || ! class_exists( 'OsOrderItemModel' ) || ! class_exists( 'OsOrdersHelper' ) ) {
 			throw new Exception( 'LatePoint plugin not installed.' );
 		}
 
@@ -84,8 +85,29 @@ class LatePoint extends Integrations {
 		}
 
 		$start_date = isset( $selected_options['start_date'] ) ? gmdate( 'Y-m-d', strtotime( $selected_options['start_date'] ) ) : '';
-		$start_time = isset( $selected_options['start_time'] ) ? gmdate( 'h:i a', strtotime( $selected_options['start_time'] ) ) : '';
-		$end_time   = isset( $selected_options['end_time'] ) ? gmdate( 'h:i a', strtotime( $selected_options['end_time'] ) ) : '';
+
+		$convert_to_minutes = function( $time ) {
+			if ( $time ) {
+				if ( ! preg_match( '/^\d{2}:\d{2}$/', $time ) ) {
+					throw new Exception( 'Invalid time format. Expected HH:MM format.' );
+				}
+				$time_parts = explode( ':', $time );
+				$hours      = (int) $time_parts[0];
+				$minutes    = (int) $time_parts[1];
+				return ( $hours * 60 ) + $minutes;
+			}
+			return null;
+		};
+		$start_time         = null;
+		$end_time           = null;
+		
+		if ( isset( $selected_options['start_time'] ) ) {
+			$start_time = $convert_to_minutes( $selected_options['start_time'] );
+		}
+		
+		if ( isset( $selected_options['end_time'] ) ) {
+			$end_time = $convert_to_minutes( $selected_options['end_time'] );
+		}
 
 		$booking_params        = [
 			'agent_id'         => isset( $selected_options['agent_id'] ) ? $selected_options['agent_id'] : null,
@@ -93,14 +115,8 @@ class LatePoint extends Integrations {
 			'status'           => isset( $selected_options['status'] ) ? $selected_options['status'] : '',
 			'service_id'       => isset( $selected_options['service_id'] ) ? $selected_options['service_id'] : null,
 			'start_date'       => $start_date,
-			'start_time'       => [
-				'formatted_value' => $start_time ? strtok( $start_time, ' ' ) : '',
-				'ampm'            => $start_time ? substr( $start_time, -2 ) : '',
-			],
-			'end_time'         => [
-				'formatted_value' => $end_time ? strtok( $end_time, ' ' ) : '',
-				'ampm'            => $end_time ? substr( $end_time, -2 ) : '',
-			],
+			'start_time'       => $start_time,
+			'end_time'         => $end_time,
 			'customer_comment' => isset( $selected_options['customer_comment'] ) ? $selected_options['customer_comment'] : '',
 			'payment_status'   => 'not_paid',
 			'buffer_before'    => isset( $selected_options['buffer_before'] ) ? $selected_options['buffer_before'] : 0,
@@ -114,17 +130,15 @@ class LatePoint extends Integrations {
 					foreach ( $field as $key => $value ) {
 						if ( false === strpos( $key, 'field_column' ) && '' !== $value ) {
 							$booking_custom_fields[ $key ] = $value;
-						}
+						} 
 					}
 				}
 			}
 		}
-		$total_attendies                   = $booking_custom_fields['total_attendies'] ? $booking_custom_fields['total_attendies'] : 1;
+
+		$total_attendies                   = isset( $booking_custom_fields['total_attendies'] ) ? $booking_custom_fields['total_attendies'] : 1;
 		$booking_params['total_attendies'] = $total_attendies;
 		$booking_params['custom_fields']   = $booking_custom_fields;
-		
-		
-		
 
 		$booking->set_data( $booking_params );
 
@@ -186,7 +200,41 @@ class LatePoint extends Integrations {
 			}
 		}
 
-		$booking->customer_id = $customer->id;
+		$order                     = new OsOrderModel();
+		$order->status             = isset( $selected_options['status'] ) ? $selected_options['status'] : OsOrdersHelper::get_default_order_status();
+		$order->fulfillment_status = $order->get_default_fulfillment_status();
+		$order->customer_comment   = isset( $selected_options['customer_comment'] ) ? $selected_options['customer_comment'] : '';
+		$order->customer_id        = $customer->id;
+		$order->payment_status     = 'not_paid';
+
+		// Save the order and check for errors.
+		if ( ! $order->save() ) {
+			$errors    = $order->get_error_messages();
+			$error_msg = isset( $errors[0] ) ? $errors[0] : 'Order could not be created.';
+			throw new Exception( $error_msg );
+		}
+
+		$order_item_model           = new OsOrderItemModel();
+		$order_item_model->variant  = 'booking';
+		$order_item_model->order_id = $order->id;
+
+		if ( $order_item_model->save() ) {
+			$booking->customer_id   = $order->customer_id;
+			$booking->order_item_id = $order_item_model->id;
+			if ( $booking->save() ) {
+				$order_item_model->item_data = $booking->generate_item_data();
+				$order_item_model->recalculate_prices();
+				$order->total    = $order_item_model->total;
+				$order->subtotal = $order_item_model->subtotal;
+				$order->save();
+				$order_item_model->save();
+			}
+		} else {
+			$errors    = $order_item_model->get_error_messages();
+			$error_msg = isset( $errors[0] ) ? $errors[0] : 'Order Item could not be created.';
+			throw new Exception( $error_msg );
+		}
+		
 		$booking->set_utc_datetimes();
 
 		if ( ! $booking->save() ) {
@@ -196,12 +244,16 @@ class LatePoint extends Integrations {
 			throw new Exception( $error_msg );
 		}
 
+
 		if ( $is_update ) {
 			do_action( 'latepoint_booking_updated', $booking, $old_booking );
 		} else {
+
 			do_action( 'latepoint_booking_created', $booking );
+			do_action( 'latepoint_order_created', $order );
 		}
 		$return_data                    = $booking->get_data_vars();
+		$return_data['order']           = $order->get_data_vars();
 		$return_data['total_attendies'] = $total_attendies;
 		return $return_data;
 	}

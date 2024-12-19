@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.67
+Stable tag: 1.0.68
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -326,6 +326,11 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 4. Dashboard of your task consumption.
 
 == Changelog ==
+= Version 1.0.68 - Thursday, 19th December 2024 =
+* Improvement: "WordPress" - Added fix for twice running "Post Created / Updated" Trigger
+* Improvement: "SureFeedback" - Added improvements for response in Triggers
+* Improvement: "bbPress" - Added improvement to map forum ID in "Subscribe User in Forum" Action
+* Improvement: "LatePoint" - Added improvements to "Create Booking" and "Update Booking" Actions
 
 = Version 1.0.67 - Wednesday, 11th December 2024 =
 * New: Added "FluentSMTP" Integration
