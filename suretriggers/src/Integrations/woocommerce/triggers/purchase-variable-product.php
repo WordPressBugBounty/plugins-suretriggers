@@ -65,7 +65,7 @@ class PurchaseVariableProduct {
 		$triggers[ $this->integration ][ $this->trigger ] = [
 			'label'         => __( 'User purchases a variable product with a variation selected', 'suretriggers' ),
 			'action'        => $this->trigger,
-			'common_action' => 'woocommerce_checkout_order_processed',
+			'common_action' => [ 'woocommerce_checkout_order_processed', 'woocommerce_store_api_checkout_order_processed' ],
 			'function'      => [ $this, 'trigger_listener' ],
 			'priority'      => 10,
 			'accepted_args' => 1,

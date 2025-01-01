@@ -135,63 +135,6 @@ function suretrigger_button( $atts, $content = null ) {
 		}
 		?>
 	</form>
-	<script>
-		function getCookie(cookieName) { 
-			const regex = new RegExp(cookieName + '=([^;]+)'); 
-			const cookieValue = document.cookie.match(regex); 
-			return cookieValue ? cookieValue[1] : null; 
-		}
-
-		function st_trigger_ajax(element) {
-			var button = element;
-			button.disabled = true;
-			var form = button.closest("form");
-			var formData = new FormData(form);
-
-			var inputTriggerId = button.parentNode.querySelector('input[name="st_trigger_id"]');
-			var inputLoadingLabel = button.parentNode.querySelector('input[name="st_loading_label"]');
-			var inputClickedLabel = button.parentNode.querySelector('input[name="st_clicked_label"]');
-			var inputButtonLabel = button.parentNode.querySelector('input[name="st_button_label"]');
-			var inputUserId = button.parentNode.querySelector('input[name="st_user_id"]');
-
-			var cookiename = 'st_trigger_button_clicked_' + inputTriggerId.value;
-			var cookie = 'yes_' + inputUserId.value;
-			var cookieValue = getCookie(cookiename);
-
-			if (cookieValue === null || cookieValue !== cookie) {
-				button.classList.add('st_trigger_button_loading');
-				if (inputLoadingLabel.value !== '') {
-				button.textContent = inputLoadingLabel.value;
-				}
-				var xhr = new XMLHttpRequest();
-				xhr.open('POST', '<?php echo esc_attr( admin_url( 'admin-ajax.php' ) ); ?>');
-				xhr.onreadystatechange = function() {
-					if (xhr.readyState === XMLHttpRequest.DONE) {
-						if (xhr.status === 200) {
-							button.classList.remove('st_trigger_button_loading');
-							button.disabled = false;
-							if (inputClickedLabel.value !== '') {
-								button.textContent = inputClickedLabel.value;
-							} else {
-								button.textContent = inputButtonLabel.value;
-							}
-							if( xhr.responseText != '' ){
-								var response = JSON.parse(xhr.responseText);
-								if (response.data) {
-									location.href = response.data;
-								}
-							}
-						}
-					}
-				};
-				xhr.send(formData);
-			} else {
-				if (inputClickedLabel.value !== '') {
-					button.textContent = inputClickedLabel.value;
-				}
-			}
-		}
-	</script>
 
 	<?php
 	return ob_get_clean();
@@ -205,6 +148,8 @@ add_shortcode( 'st_trigger_button', 'suretrigger_button' );
  */
 function suretrigger_button_custom_style() {
 	wp_enqueue_style( 'st-trigger-button-style', SURE_TRIGGERS_URL . 'assets/css/st-trigger-button.css', [], SURE_TRIGGERS_VER );
+	wp_enqueue_script( 'st-trigger-button-script', SURE_TRIGGERS_URL . 'assets/js/st-trigger-button.js', [], SURE_TRIGGERS_VER, true );
+	wp_localize_script( 'st-trigger-button-script', 'st_ajax_object', [ 'ajax_url' => admin_url( 'admin-ajax.php' ) ] );
 }
 add_action( 'wp_enqueue_scripts', 'suretrigger_button_custom_style' );
 

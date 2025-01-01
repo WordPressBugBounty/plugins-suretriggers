@@ -1,3 +1,11 @@
+Version 1.0.69 - Wednesday, 1st January 2025
+- Improvement: "WooCommerce" - Fixed issues related to order triggers
+- Improvement: "Divi" - Enhanced integration to support both the theme and plugin
+- Improvement: "UltimateMember" - Improved handling of custom fields for trigger responses
+- Improvement: "Trigger Button" - Enabled Trigger Button functionality on page templates
+- Improvement: "WordPress" - Added support for the parent category field in the "Create Category" Action
+- Improvement: "WooCommerce Subscriptions" - Added improvement for listing subscriptions products
+
 Version 1.0.68 - Thursday, 19th December 2024
 - Improvement: "WordPress" - Added fix for twice running "Post Created / Updated" Trigger
 - Improvement: "SureFeedback" - Added improvements for response in Triggers

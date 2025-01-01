@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.68
+Stable tag: 1.0.69
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -326,6 +326,14 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 4. Dashboard of your task consumption.
 
 == Changelog ==
+= Version 1.0.69 - Wednesday, 1st January 2025 =
+* Improvement: "WooCommerce" - Fixed issues related to order triggers
+* Improvement: "Divi" - Enhanced integration to support both the theme and plugin
+* Improvement: "UltimateMember" - Improved handling of custom fields for trigger responses
+* Improvement: "Trigger Button" - Enabled Trigger Button functionality on page templates
+* Improvement: "WordPress" - Added support for the parent category field in the "Create Category" Action
+* Improvement: "WooCommerce Subscriptions" - Added improvement for listing subscriptions products
+
 = Version 1.0.68 - Thursday, 19th December 2024 =
 * Improvement: "WordPress" - Added fix for twice running "Post Created / Updated" Trigger
 * Improvement: "SureFeedback" - Added improvements for response in Triggers

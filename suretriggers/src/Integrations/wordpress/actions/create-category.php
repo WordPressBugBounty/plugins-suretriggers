@@ -76,7 +76,7 @@ class CreateCategory extends AutomateAction {
 		$category_name        = $selected_options['cat_name'];
 		$category_description = $selected_options['cat_description'];
 		$category_slug        = $selected_options['cat_slug'];
-
+		$parent_category      = isset( $selected_options['parent_category'] ) && ! empty( $selected_options['parent_category'] ) ? $selected_options['parent_category'] : 0;
 
 		$category = wp_insert_term(
 			$category_name,
@@ -84,6 +84,7 @@ class CreateCategory extends AutomateAction {
 			[
 				'description' => $category_description,
 				'slug'        => $category_slug,
+				'parent'      => $parent_category,
 			]
 		);
 		if ( $category ) {

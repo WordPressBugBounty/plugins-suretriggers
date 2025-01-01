@@ -17,7 +17,7 @@ use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
 
-if ( ! class_exists( 'AddUserRole' ) ) :
+if ( ! class_exists( '\SureTriggers\Integrations\WordPress\Triggers\AddUserRole' ) ) :
 
 	/**
 	 * AddUserRole

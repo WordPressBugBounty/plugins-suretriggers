@@ -46,7 +46,7 @@ class DiviBuilder extends Integrations {
 	 * @return bool
 	 */
 	public function is_plugin_installed() {
-		return class_exists( ET_Builder_Plugin::class );
+		return defined( 'ET_BUILDER_THEME' ) || class_exists( ET_Builder_Plugin::class );
 	}
 }
 

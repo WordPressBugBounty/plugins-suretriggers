@@ -455,6 +455,41 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * List Category Terms.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	public function search_category_term_list( $data ) {
+		$result = [];
+		$terms  = Utilities::get_terms( '', $data['page'], [ 'category' ] );
+		foreach ( $terms['result'] as $tax_term ) {
+			if ( 0 == $tax_term->parent ) {
+				$result[] = [
+					'label' => $tax_term->name,
+					'value' => $tax_term->term_id,
+				];
+				foreach ( $terms['result'] as $child ) {
+					if ( $child->parent == $tax_term->term_id ) {
+						$result[] = [
+							'label' => ' - ' . $child->name,
+							'value' => $child->term_id,
+						];
+					}
+				}
+			}
+		}
+
+		return [
+			'options' => $result,
+			'hasMore' => $terms['has_more'],
+		];
+	}
+
+	/**
 	 * List Taxonomy Tags.
 	 *
 	 * @param array $data Search Params.
@@ -10240,8 +10275,16 @@ class GlobalSearchController {
 		$users   = get_users( $args );
 
 		if ( ! empty( $users ) ) {
-			$user                      = $users[0];
+			$user           = $users[0];
+			$submitted_data = get_user_meta( $user->ID, 'submitted', true );
+			if ( is_array( $submitted_data ) ) {
+				unset(
+					$submitted_data['user_password'],
+					$submitted_data['confirm_user_password']
+				);
+			}
 			$pluggable_data            = WordPress::get_user_context( $user->ID );
+			$pluggable_data['data']    = $submitted_data;
 			$context['pluggable_data'] = $pluggable_data;
 			$context['response_type']  = 'live';
 		} else {
@@ -10277,8 +10320,16 @@ class GlobalSearchController {
 		$users   = get_users( $args );
 
 		if ( ! empty( $users ) ) {
-			$user                      = $users[0];
+			$user           = $users[0];
+			$submitted_data = get_user_meta( $user->ID, 'submitted', true );
+			if ( is_array( $submitted_data ) ) {
+				unset(
+					$submitted_data['user_password'],
+					$submitted_data['confirm_user_password']
+				);
+			}
 			$pluggable_data            = WordPress::get_user_context( $user->ID );
+			$pluggable_data['data']    = $submitted_data;
 			$context['pluggable_data'] = $pluggable_data;
 			$context['response_type']  = 'live';
 		} else {
@@ -11280,7 +11331,7 @@ class GlobalSearchController {
 	public function search_wc_subscription_product_list( $data ) {
 		global $wpdb;
 
-		$subscriptions = $wpdb->get_results(
+		$subscriptions               = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT posts.ID, posts.post_title FROM $wpdb->posts as posts
 	LEFT JOIN $wpdb->term_relationships as rel ON (posts.ID = rel.object_id)
@@ -11298,6 +11349,25 @@ class GlobalSearchController {
 				'publish'
 			)
 		);
+		$page                        = $data['page'];
+		$limit                       = Utilities::get_search_page_limit();
+		$offset                      = $limit * ( $page - 1 );
+		$subscriptions_products      = [];
+		$subscription_products_count = 10;
+		if ( function_exists( 'wc_get_products' ) ) {
+			$product_query = wc_get_products(
+				[
+					'type'           => [ 'subscription', 'variable-subscription' ],
+					'posts_per_page' => $limit,
+					'offset'         => $offset,
+					'paginate'       => true,
+				]
+			);
+			if ( is_object( $product_query ) ) {
+				$subscriptions_products      = $product_query->products;
+				$subscription_products_count = $product_query->total;
+			}
+		}
 
 		$options = [];
 		if ( $subscriptions ) {
@@ -11307,12 +11377,28 @@ class GlobalSearchController {
 					'value' => $post->ID,
 				];
 			}
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		} elseif ( $subscriptions_products ) {
+			foreach ( $subscriptions_products as $product ) {
+				$title     = $product->get_name();
+				$options[] = [
+					'label' => ! empty( $title ) ? $title : $product->get_id(),
+					'value' => $product->get_id(),
+				];
+			}
+			return [
+				'options' => $options,
+				'hasMore' => $subscription_products_count > $limit && $subscription_products_count > $offset,
+			];
+		} else {
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
 		}
-
-		return [
-			'options' => $options,
-			'hasMore' => false,
-		];
 	}
 
 	/**
@@ -13097,7 +13183,7 @@ class GlobalSearchController {
 		if ( ! function_exists( 'wc_get_product' ) ) {
 			return [];
 		}
-		$subscriptions = $wpdb->get_results(
+		$subscriptions               = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT posts.ID, posts.post_title FROM $wpdb->posts as posts
 	LEFT JOIN $wpdb->term_relationships as rel ON (posts.ID = rel.object_id)
@@ -13115,6 +13201,25 @@ class GlobalSearchController {
 				'publish'
 			)
 		);
+		$page                        = $data['page'];
+		$limit                       = Utilities::get_search_page_limit();
+		$offset                      = $limit * ( $page - 1 );
+		$subscriptions_products      = [];
+		$subscription_products_count = 10;
+		if ( function_exists( 'wc_get_products' ) ) {
+			$product_query = wc_get_products(
+				[
+					'type'           => [ 'subscription', 'variable-subscription' ],
+					'posts_per_page' => $limit,
+					'offset'         => $offset,
+					'paginate'       => true,
+				]
+			);
+			if ( is_object( $product_query ) ) {
+				$subscriptions_products      = $product_query->products;
+				$subscription_products_count = $product_query->total;
+			}
+		}
 
 		if ( $subscriptions ) {
 			foreach ( $subscriptions as $product ) {
@@ -13149,12 +13254,54 @@ class GlobalSearchController {
 					}
 				}
 			}
-		}
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		} elseif ( ! empty( $subscriptions_products ) ) {
+			foreach ( $subscriptions_products as $product ) {
+				$title     = $product->get_name();
+				$options[] = [
+					'label' => $title . ' (#' . $product->get_id() . ')',
+					'value' => $product->get_id(),
+				];
+				$product_s = wc_get_product( $product->get_id() );
+				/**
+				*
+				* Ignore line
+				*
+				* @phpstan-ignore-next-line
+				*/
+				if ( 'variable-subscription' == $product_s->product_type ) {
+					$args = [
+						'post_type'      => 'product_variation',
+						'post_parent'    => $product->get_id(),
+						'posts_per_page' => -1,
+						'orderby'        => 'ID',
+						'order'          => 'ASC',
+						'post_status'    => 'publish',
+					];
 
-		return [
-			'options' => $options,
-			'hasMore' => false,
-		];
+					$variations = get_posts( $args );
+
+					foreach ( $variations as $var ) {
+						$options[] = [
+							'label' => $var->post_title . ' (#' . $var->ID . ')',
+							'value' => $var->ID,
+						];
+					}
+				}
+			}
+			return [
+				'options' => $options,
+				'hasMore' => $subscription_products_count > $limit && $subscription_products_count > $offset,
+			];
+		} else {
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		}
 	}
 
 	/**

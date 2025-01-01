@@ -95,10 +95,16 @@ if ( ! class_exists( 'UserLogsIn' ) ) :
 			} else {
 				return;
 			}
-			
+			if ( is_array( $um_args ) && isset( $um_args['submitted'] ) ) {
+				unset(
+					$um_args['submitted']['user_password'],
+					$um_args['submitted']['confirm_user_password']
+				);
+			}
 			$data    = [
 				'form_id' => absint( $um_args['form_id'] ),
 				WordPress::get_user_context( $user_id ),
+				'data'    => $um_args['submitted'],
 			];
 			$context = $data;
 			
