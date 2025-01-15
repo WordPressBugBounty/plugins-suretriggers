@@ -1,3 +1,8 @@
+Version 1.0.70 - Wednesday, 15th January 2025
+- Improvement: "wpForo" - Fixed issues related to "Create Topic" Action
+- Improvement: "FluentCRM" - Added support of multiple tags and lists and resolved campaign retrieving issue in "Send Email" Action
+- Improvement: "Voxel" - Updated "Add Post to Wall" and "Add Post to Profile Wall" Actions to newer version
+
 Version 1.0.69 - Wednesday, 1st January 2025
 - Improvement: "WooCommerce" - Fixed issues related to order triggers
 - Improvement: "Divi" - Enhanced integration to support both the theme and plugin

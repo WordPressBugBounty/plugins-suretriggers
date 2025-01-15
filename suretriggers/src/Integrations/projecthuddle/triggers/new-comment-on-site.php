@@ -100,7 +100,9 @@ if ( ! class_exists( 'NewCommentOnSite' ) ) :
 				$comment = get_object_vars( $comment );
 			}
 			
-			$context['website_id'] = (int) $comment['project_id'];
+			if ( isset( $comment['project_id'] ) ) {
+				$context['website_id'] = (int) $comment['project_id'];
+			}
 
 			$context         = $comment;
 			$comment_item_id = get_comment_meta( $comment['comment_ID'], 'item_id' );

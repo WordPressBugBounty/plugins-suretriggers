@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.69
+Stable tag: 1.0.70
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -326,6 +326,11 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 4. Dashboard of your task consumption.
 
 == Changelog ==
+= Version 1.0.70 - Wednesday, 15th January 2025 =
+* Improvement: "wpForo" - Fixed issues related to "Create Topic" Action
+* Improvement: "FluentCRM" - Added support of multiple tags and lists and resolved campaign retrieving issue in "Send Email" Action
+* Improvement: "Voxel" - Updated "Add Post to Wall" and "Add Post to Profile Wall" Actions to newer version
+
 = Version 1.0.69 - Wednesday, 1st January 2025 =
 * Improvement: "WooCommerce" - Fixed issues related to order triggers
 * Improvement: "Divi" - Enhanced integration to support both the theme and plugin

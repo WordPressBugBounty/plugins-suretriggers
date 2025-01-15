@@ -18,6 +18,7 @@ use SureTriggers\Traits\SingletonLoader;
 use SureTriggers\Integrations\WordPress\WordPress;
 use Exception;
 use wpforo\classes\Members;
+use wpforo\classes\Permissions;
 
 /**
  * WfCreateTopic
@@ -79,7 +80,7 @@ class WfCreateTopic extends AutomateAction {
 		$user_email = $selected_options['wp_user_email'];
 		
 		if ( ! function_exists( 'WPF' ) || ! class_exists( 'wpforo\classes\Members' ) || ! function_exists( 'wpfkey' ) || 
-		! function_exists( 'wpfval' ) || ! function_exists( 'wpforo_length' ) || ! function_exists( 'wpforo_setting' ) ) {
+		! function_exists( 'wpfval' ) || ! function_exists( 'wpforo_length' ) || ! function_exists( 'wpforo_setting' ) || ! class_exists( 'wpforo\classes\Permissions' ) ) {
 			return false;
 		}
 
@@ -105,6 +106,8 @@ class WfCreateTopic extends AutomateAction {
 				WPF()->current_user_secondary_groupids = WPF()->current_user['secondary_groupids'];
 				WPF()->current_user_groupids           = array_unique( array_filter( array_merge( (array) WPF()->current_user_groupid, (array) WPF()->current_user_secondary_groupids ) ) );
 				WPF()->current_user_status             = (string) wpfval( $user, 'status' );
+				$user_permissions                      = new Permissions();
+				WPF()->current_user_accesses           = $user_permissions->get_forum_accesses_by_usergroup();
 				if ( function_exists( 'WPF' ) ) {
 					$forum_id        = $selected_options['forum_id'];
 					$args['forumid'] = $forum_id;

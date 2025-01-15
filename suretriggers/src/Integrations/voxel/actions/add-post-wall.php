@@ -81,7 +81,7 @@ class AddPostWall extends AutomateAction {
 		$post_id    = (int) $selected_options['post_id'];
 		$file_ids   = isset( $selected_options['image_ids'] ) && '' !== $selected_options['image_ids'] ? explode( ',', $selected_options['image_ids'] ) : [];
 
-		if ( ! class_exists( 'Voxel\Post' ) || ! class_exists( 'Voxel\Timeline\Status' ) || ! class_exists( 'Voxel\Events\Wall_Post_Created_Event' ) ) {
+		if ( ! class_exists( 'Voxel\Post' ) || ! class_exists( 'Voxel\Timeline\Status' ) || ! class_exists( 'Voxel\Events\Timeline\Statuses\Post_Wall_Status_Created_Event' ) || ! defined( 'Voxel\MODERATION_APPROVED' ) || ! defined( 'Voxel\MODERATION_PENDING' ) ) {
 			return false;
 		}
 
@@ -103,15 +103,17 @@ class AddPostWall extends AutomateAction {
 
 		$status = \Voxel\Timeline\Status::create(
 			[
-				'user_id' => $user_id,
-				'post_id' => $post_id,
-				'content' => Voxel::sanitize_content( $content ),
-				'details' => ! empty( $details ) ? $details : null,
-			]
+				'feed'       => 'post_wall',
+				'user_id'    => $user_id,
+				'post_id'    => $post->get_id(),
+				'content'    => $content,
+				'details'    => ! empty( $details ) ? $details : null,
+				'moderation' => $post->post_type->timeline->wall_posts_require_approval() ? \Voxel\MODERATION_PENDING : \Voxel\MODERATION_APPROVED,
+			] 
 		);
 
 		// Create and send the wall post created event.
-		( new \Voxel\Events\Wall_Post_Created_Event( $post->post_type ) )->dispatch( $status->get_id() );
+		( new \Voxel\Events\Timeline\Statuses\Post_Wall_Status_Created_Event( $post->post_type ) )->dispatch( $status->get_id() );
 
 		return [
 			'success'   => true,
