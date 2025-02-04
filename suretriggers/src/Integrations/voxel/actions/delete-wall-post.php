@@ -15,7 +15,6 @@ namespace SureTriggers\Integrations\Voxel\Actions;
 
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
-use SureTriggers\Integrations\WordPress\WordPress;
 use Exception;
 
 /**

@@ -16,6 +16,7 @@ namespace SureTriggers\Integrations\FluentCRM\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
+use FluentCrm\App\Models\Tag;
 
 /**
  * AddTagToContact
@@ -81,12 +82,39 @@ class AddTagToContact extends AutomateAction {
 			throw new Exception( 'Invalid contact.' );
 		}
 
-		$tag_ids   = [];
-		$tag_names = [];
-		if ( is_array( $selected_options['tag_id'] ) && ! empty( $selected_options['tag_id'] ) ) {
-			foreach ( $selected_options['tag_id'] as $tag ) {
-				$tag_ids[]   = $tag['value'];
-				$tag_names[] = esc_html( $tag['label'] );
+		$tag_ids      = [];
+		$tag_names    = [];
+		$selected_tag = $selected_options['tag_id'];
+		if ( ! empty( $selected_tag ) ) {
+			if ( is_array( $selected_tag ) ) {
+				foreach ( $selected_tag as $tag ) {
+					$tag_ids[]   = $tag['value'];
+					$tag_names[] = esc_html( $tag['label'] );
+				}
+			} elseif ( is_string( $selected_tag ) ) {
+				$tags_arr = array_filter( explode( ',', $selected_tag ) );
+				if ( ! class_exists( 'FluentCrm\App\Models\Tag' ) ) {
+					throw new Exception( 'Tag model not found.' );
+				}
+				if ( ! empty( $tags_arr ) ) {
+					foreach ( $tags_arr as $tag ) {
+						$exist = Tag::where( 'title', $tag )
+						->orWhere( 'slug', $tag )
+						->first();
+						if ( is_null( $exist ) ) {
+							$new_tag     = Tag::create(
+								[
+									'title' => $tag,
+								]
+							);
+							$tag_ids[]   = $new_tag->id;
+							$tag_names[] = esc_html( $new_tag->title );
+						} else {
+							$tag_ids[]   = $exist->id;
+							$tag_names[] = esc_html( $exist->title );
+						}
+					}
+				}
 			}
 		}
 

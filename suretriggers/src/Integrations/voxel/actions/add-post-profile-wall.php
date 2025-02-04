@@ -15,7 +15,6 @@ namespace SureTriggers\Integrations\Voxel\Actions;
 
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
-use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Integrations\Voxel\Voxel;
 use Exception;
 
@@ -108,7 +107,8 @@ class AddPostProfileWall extends AutomateAction {
 				'content'    => $content,
 				'details'    => ! empty( $details ) ? $details : null,
 				'moderation' => $profile->timeline_posts_require_approval() ? \Voxel\MODERATION_PENDING : \Voxel\MODERATION_APPROVED,
-			]
+			],
+			[ 'link_preview' => 'instant' ]
 		);
 
 		$post = \Voxel\Post::force_get( $profile_id );

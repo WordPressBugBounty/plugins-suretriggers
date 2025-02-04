@@ -111,7 +111,7 @@ class WfCreateTopic extends AutomateAction {
 				if ( function_exists( 'WPF' ) ) {
 					$forum_id        = $selected_options['forum_id'];
 					$args['forumid'] = $forum_id;
-					$args['title']   = sanitize_title( $selected_options['title'] );
+					$args['title']   = $selected_options['title'];
 					$args['body']    = preg_replace( '#</pre>[\r\n\t\s\0]*<pre>#isu', "\r\n", (string) $selected_options['content'] );
 					$args['userid']  = $user_id;
 					$args['tags']    = $selected_options['topic_tags'];

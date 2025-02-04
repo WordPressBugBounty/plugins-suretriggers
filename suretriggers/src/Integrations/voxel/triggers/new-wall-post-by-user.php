@@ -103,11 +103,18 @@ if ( ! class_exists( 'NewWallPostByUser' ) ) :
 				$context['user_email']        = $user_data['user_email'];
 				$context['user_id']           = $event->status->get_author();
 			}
-			if ( function_exists( 'Voxel\Timeline\prepare_status_json' ) ) {
+			if ( class_exists( 'Voxel\Timeline\Status' ) ) {
 				// Get the status details.
-				$status_details = \Voxel\Timeline\prepare_status_json( $event->status );
+				$status_details = \Voxel\Timeline\Status::get( $event->status->get_id() );
 				foreach ( (array) $status_details as $key => $value ) {
-					$context['wall_post'][ $key ] = $value;
+					$clean_key = preg_replace( '/^\0.*?\0/', '', $key );
+					if ( is_object( $value ) ) {
+						$encoded_value = wp_json_encode( $value );
+						if ( is_string( $encoded_value ) ) {
+							$value = json_decode( $encoded_value, true );   
+						}
+					}
+					$context['wall_post'][ $clean_key ] = $value;
 				}
 			}
 			// Get the post type.

@@ -464,8 +464,9 @@ class GlobalSearchController {
 	 * @return array
 	 */
 	public function search_category_term_list( $data ) {
-		$result = [];
-		$terms  = Utilities::get_terms( '', $data['page'], [ 'category' ] );
+		$result   = [];
+		$taxonomy = $data['dynamic'];
+		$terms    = Utilities::get_terms( '', $data['page'], $taxonomy );
 		foreach ( $terms['result'] as $tax_term ) {
 			if ( 0 == $tax_term->parent ) {
 				$result[] = [
@@ -8501,17 +8502,45 @@ class GlobalSearchController {
 				)';
 			}
 		} else {
-			if ( -1 !== $event_status ) {
-				$query .= $wpdb->prepare(
-					' WHERE event_period.eventPeriodId = %d AND customer.status = %s',
-					$event_selected,
-					$event_status
-				);
+			$event_periods_result = $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT id
+					FROM ' . $wpdb->prefix . 'amelia_events_periods
+					WHERE eventId = %d',
+					[ $event_selected ]
+				),
+				ARRAY_A
+			);
+			if ( ! empty( $event_periods_result ) ) {
+				$ids = wp_list_pluck( $event_periods_result, 'id' ); 
+			}
+
+			if ( ! empty( $ids ) ) {
+				if ( -1 !== $event_status ) {
+					$query .= $wpdb->prepare(
+						' WHERE event_period.eventPeriodId IN (%s) AND customer.status = %s',
+						implode( ',', $ids ),
+						$event_status
+					);
+				} else {
+					$query .= $wpdb->prepare(
+						' WHERE event_period.eventPeriodId IN (%s)',
+						implode( ',', $ids )
+					);
+				}
 			} else {
-				$query .= $wpdb->prepare(
-					' WHERE event_period.eventPeriodId = %d',
-					$event_selected
-				);
+				if ( -1 !== $event_status ) {
+					$query .= $wpdb->prepare(
+						' WHERE event_period.eventPeriodId = %d AND customer.status = %s',
+						$event_selected,
+						$event_status
+					);
+				} else {
+					$query .= $wpdb->prepare(
+						' WHERE event_period.eventPeriodId = %d',
+						$event_selected
+					);
+				}
 			}
 		}
 
@@ -8521,14 +8550,15 @@ class GlobalSearchController {
 			$event      = $wpdb->get_row(
 				$wpdb->prepare(
 					'SELECT * FROM ' . $wpdb->prefix . 'amelia_events WHERE id = %d',
-					[ $result['eventPeriodId'] ]
+					[ $event_selected ]
 				),
 				ARRAY_A
 			);
+			$event      = isset( $event ) ? $event : [];
 			$event_tags = $wpdb->get_results(
 				$wpdb->prepare(
 					'SELECT * FROM ' . $wpdb->prefix . 'amelia_events_tags WHERE eventId = %d',
-					[ $result['eventPeriodId'] ]
+					[ $event_selected ]
 				),
 				ARRAY_A
 			);
@@ -8547,6 +8577,7 @@ class GlobalSearchController {
 				),
 				ARRAY_A
 			);
+			$customer_result = isset( $customer_result ) ? $customer_result : [];
 			if ( $result['couponId'] ) {
 				$coupon_result = $wpdb->get_row(
 					$wpdb->prepare(
@@ -8599,42 +8630,55 @@ class GlobalSearchController {
 
 		$event_selected = $data['filter']['amelia_events_list']['value'];
 
+		$query = 'SELECT * 
+			FROM ' . $wpdb->prefix . 'amelia_customer_bookings as customer 
+			INNER JOIN ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods as event_period 
+			ON customer.id = event_period.customerBookingId';
+
 		if ( -1 === $event_selected ) {
-			$result = $wpdb->get_row(
-				'SELECT * 
-				FROM ' . $wpdb->prefix . 'amelia_customer_bookings as customer 
-				INNER JOIN ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods as event_period 
-				ON customer.id = event_period.customerBookingId 
-				WHERE event_period.customerBookingId = ( Select max(customerBookingId) From ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods )',
-				ARRAY_A
-			);
+			$query .= ' 
+				WHERE event_period.customerBookingId = ( Select max(customerBookingId) From ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods )';
 		} else {
-			$result = $wpdb->get_row(
+			$event_periods_result = $wpdb->get_results(
 				$wpdb->prepare(
-					'SELECT * 
-					FROM ' . $wpdb->prefix . 'amelia_customer_bookings as customer 
-					INNER JOIN ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods as event_period 
-					ON customer.id = event_period.customerBookingId 
-					WHERE event_period.customerBookingId = ( Select max(customerBookingId) From ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods ) AND eventPeriodId = %d',
+					'SELECT id
+					FROM ' . $wpdb->prefix . 'amelia_events_periods
+					WHERE eventId = %d',
 					[ $event_selected ]
 				),
 				ARRAY_A
 			);
+			if ( ! empty( $event_periods_result ) ) {
+				$ids = wp_list_pluck( $event_periods_result, 'id' ); 
+			}
+			if ( ! empty( $ids ) ) {
+				$query .= $wpdb->prepare(
+					' WHERE event_period.customerBookingId = ( Select max(customerBookingId) From ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods ) AND event_period.eventPeriodId IN (%s)',
+					implode( ',', $ids )
+				);
+			} else {
+				$query .= $wpdb->prepare(
+					' WHERE event_period.customerBookingId = ( Select max(customerBookingId) From ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods ) AND event_period.eventPeriodId = %d',
+					[ $event_selected ]
+				);
+			}
 		}
+		$result = $wpdb->get_row( $query, ARRAY_A ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		if ( ! empty( $result ) ) {
 
 			$event      = $wpdb->get_row(
 				$wpdb->prepare(
 					'SELECT * FROM ' . $wpdb->prefix . 'amelia_events WHERE id = %d',
-					[ $result['eventPeriodId'] ]
+					[ $event_selected ]
 				),
 				ARRAY_A
 			);
+			$event      = isset( $event ) ? $event : [];
 			$event_tags = $wpdb->get_results(
 				$wpdb->prepare(
 					'SELECT * FROM ' . $wpdb->prefix . 'amelia_events_tags WHERE eventId = %d',
-					[ $result['eventPeriodId'] ]
+					[ $event_selected ]
 				),
 				ARRAY_A
 			);
@@ -8654,6 +8698,7 @@ class GlobalSearchController {
 				),
 				ARRAY_A
 			);
+			$customer_result = isset( $customer_result ) ? $customer_result : [];
 
 			if ( $result['couponId'] ) {
 				$coupon_result = $wpdb->get_row(
@@ -8714,31 +8759,50 @@ class GlobalSearchController {
 				ARRAY_A
 			);
 		} else {
-			$result = $wpdb->get_row(
+			$event_periods_result = $wpdb->get_results(
 				$wpdb->prepare(
-					'SELECT * 
-					FROM ' . $wpdb->prefix . 'amelia_customer_bookings as customer 
-					INNER JOIN ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods as event_period 
-					ON customer.id = event_period.customerBookingId 
-					WHERE event_period.customerBookingId = ( Select max(customerBookingId) From ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods ) AND eventPeriodId = %d AND customer.status = "canceled"',
+					'SELECT id
+					FROM ' . $wpdb->prefix . 'amelia_events_periods
+					WHERE eventId = %d',
 					[ $event_selected ]
 				),
 				ARRAY_A
 			);
+			if ( ! empty( $event_periods_result ) ) {
+				$ids = wp_list_pluck( $event_periods_result, 'id' ); 
+			}
+			$query = 'SELECT * 
+			FROM ' . $wpdb->prefix . 'amelia_customer_bookings as customer 
+			INNER JOIN ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods as event_period 
+			ON customer.id = event_period.customerBookingId';
+			if ( ! empty( $ids ) ) {
+				$query .= $wpdb->prepare(
+					' WHERE event_period.customerBookingId = ( Select max(customerBookingId) From ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods ) AND eventPeriodId IN (%s) AND customer.status = "canceled"',
+					implode( ',', $ids )
+				);
+			} else {
+				$query .= $wpdb->prepare(
+					' WHERE event_period.customerBookingId = ( Select max(customerBookingId) From ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods ) AND eventPeriodId = %d 
+					AND customer.status = "canceled"',
+					[ $event_selected ]
+				);
+			}
+			$result = $wpdb->get_row( $query, ARRAY_A ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		}
 
 		if ( ! empty( $result ) ) {
 			$event      = $wpdb->get_row(
 				$wpdb->prepare(
 					'SELECT * FROM ' . $wpdb->prefix . 'amelia_events WHERE id = %d',
-					[ $result['eventPeriodId'] ]
+					[ $event_selected ]
 				),
 				ARRAY_A
 			);
+			$event      = isset( $event ) ? $event : [];
 			$event_tags = $wpdb->get_results(
 				$wpdb->prepare(
 					'SELECT * FROM ' . $wpdb->prefix . 'amelia_events_tags WHERE eventId = %d',
-					[ $result['eventPeriodId'] ]
+					[ $event_selected ]
 				),
 				ARRAY_A
 			);
@@ -8757,6 +8821,7 @@ class GlobalSearchController {
 				),
 				ARRAY_A
 			);
+			$customer_result = isset( $customer_result ) ? $customer_result : [];
 			if ( $result['couponId'] ) {
 				$coupon_result = $wpdb->get_row(
 					$wpdb->prepare(
@@ -17926,6 +17991,12 @@ class GlobalSearchController {
 		if ( 'direct_message_received' === $term ) {
 			$sql     = "SELECT * FROM {$wpdb->prefix}voxel_messages WHERE receiver_type LIKE %s AND sender_type LIKE %s ORDER BY id DESC LIMIT 1";
 			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'user', 'user' ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'user_timeline_post_created' === $term ) {
+			$sql     = "SELECT vt.* FROM  {$wpdb->prefix}voxel_timeline vt WHERE vt.feed = %s AND vt.moderation = %d ORDER BY vt.id DESC LIMIT 1";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'user_timeline', 0 ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'user_timeline_post_approved' === $term ) {
+			$sql     = "SELECT vt.* FROM  {$wpdb->prefix}voxel_timeline vt WHERE vt.feed = %s AND vt.moderation = %d ORDER BY vt.id DESC LIMIT 1";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'user_timeline', 1 ), ARRAY_A );// @phpcs:ignore
 		}
 		if ( 'direct_message_received' === $term ) {
 			if ( ! empty( $results ) ) {
@@ -17935,6 +18006,20 @@ class GlobalSearchController {
 				$context['response_type']              = 'live';
 			} else {
 				$context = json_decode( '{"pluggable_data":{"sender": {"wp_user_id": 1,"user_login": "admin","display_name": "Arian","user_firstname": "john","user_lastname": "d","user_email": "johnd@gmail.com","user_role": ["subscriber"]}},"receiver": {"wp_user_id": 101,"user_login": "benni","display_name": "Benni Ben","user_firstname": "Benni","user_lastname": "Ben","user_email": "benni@mailinator.com","user_role": ["subscriber"]},"content": "new message"},"response_type":"sample"}', true );// @phpcs:ignore
+			}
+		} elseif ( 'user_timeline_post_created' === $term || 'user_timeline_post_approved' === $term ) {
+			if ( ! empty( $results ) ) {
+				$context['pluggable_data'] = WordPress::get_user_context( $results[0]['user_id'] );
+				if ( class_exists( 'Voxel\Timeline\Status' ) ) {
+					$status_details = \Voxel\Timeline\Status::get( $results[0]['id'] );
+					foreach ( (array) $status_details as $key => $value ) {
+						$clean_key                               = preg_replace( '/^\0.*?\0/', '', $key );
+						$context['pluggable_data'][ $clean_key ] = $value;
+					}
+				}
+				$context['response_type'] = 'live';
+			} else {
+				$context = json_decode( '{"pluggable_data":{"wp_user_id":2,"user_login":"johnd","display_name":"johnd","user_firstname":"john","user_lastname":"doe","user_email":"johnd@gmail.com","user_registered":"2024-12-16 06:00:43","user_role":{"16":"administrator"},"id":51,"user_id":2,"post_id":null,"published_as":null,"content":"test","feed":"user_timeline","moderation":0,"repost_of":null,"quote_of":null,"created_at":"2025-01-22 11:10:06","edited_at":null,"review_score":null,"like_count":0,"reply_count":0,"details":{"files":"541"},"liked_by_user":false,"reposted_by_user":false,"last3_liked":[],"friends_reposted":[],"friends_liked":[]},"response_type":"sample"}', true );// @phpcs:ignore
 			}
 		}
 		return $context;
@@ -18254,8 +18339,20 @@ class GlobalSearchController {
 			$sql = "SELECT * FROM {$wpdb->prefix}voxel_timeline_replies WHERE parent_id IS NULL ORDER BY id DESC LIMIT 1";
 		} elseif ( 'comment_reply_timeline' === $term ) {
 			$sql = "SELECT * FROM {$wpdb->prefix}voxel_timeline_replies WHERE parent_id IS NOT NULL ORDER BY id DESC LIMIT 1";
+		} elseif ( 'comment_liked' === $term ) {
+			$sql = "SELECT vtrl.user_id as like_user_id, vtrl.reply_id as like_reply_id, vtr.* FROM {$wpdb->prefix}voxel_timeline_reply_likes_v2 vtrl JOIN {$wpdb->prefix}voxel_timeline_replies vtr ON vtrl.reply_id = vtr.ID WHERE vtr.like_count > 0";
+		} elseif ( 'user_timeline_post_liked' === $term ) {
+			$sql = "SELECT vtsl.user_id as like_user_id, vtsl.status_id as like_status_id, vtr.* FROM {$wpdb->prefix}voxel_timeline_status_likes vtsl JOIN {$wpdb->prefix}voxel_timeline vt ON vtsl.status_id = vt.id WHERE vt.like_count > 0";
+		} elseif ( 'user_timeline_post_quoted' === $term ) {
+			$sql = "SELECT * FROM {$wpdb->prefix}voxel_timeline WHERE feed = %s AND quote_of IS NOT NULL ORDER BY id DESC LIMIT 1";
+		} elseif ( 'user_timeline_post_reposted' === $term ) {
+			$sql = "SELECT * FROM  {$wpdb->prefix}voxel_timeline WHERE feed = %s AND repost_of IS NOT NULL ORDER BY id DESC LIMIT 1";
 		}
-		$results      = $wpdb->get_results( $sql, ARRAY_A );// @phpcs:ignore
+		if ( 'user_timeline_post_reposted' === $term || 'user_timeline_post_quoted' === $term ) {
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'user_timeline' ), ARRAY_A );// @phpcs:ignore
+		} else {
+			$results      = $wpdb->get_results( $sql, ARRAY_A );// @phpcs:ignore
+		}
 		if ( 'new_comment_timeline' === $term ) {
 			if ( ! empty( $results ) ) {
 				$context['pluggable_data']['comment_by'] = WordPress::get_user_context( $results[0]['user_id'] );
@@ -18279,6 +18376,103 @@ class GlobalSearchController {
 				$context['response_type']                = 'live';
 			} else {
 				$context = json_decode( '{"pluggable_data":{"replied_by": {"wp_user_id": 101,"user_login": "johnd","display_name": "JohnD","user_firstname": "John","user_lastname": "D","user_email": "johnd@gmail.com","user_role": ["subscriber"]},"comment_by": {"wp_user_id": 1,"user_login": "admin","display_name": "Arian","user_firstname": "Arian","user_lastname": "D","user_email": "arian2@gmail.com","user_role": ["subscriber"]},"comment": "Nice","comment_id": "16","reply_id": "17","reply": "Nice too"},"response_type":"sample"}', true );// @phpcs:ignore
+			}
+		} elseif ( 'comment_liked' === $term ) {
+			if ( ! empty( $results ) ) {
+				$user = get_userdata( $results[0]['user_id'] );
+				if ( $user ) {
+					$user_data                                      = (array) $user->data;
+					$context['pluggable_data']['user_display_name'] = $user_data['display_name'];
+					$context['pluggable_data']['user_name']         = $user_data['user_nicename'];
+					$context['pluggable_data']['user_email']        = $user_data['user_email'];
+				}
+				$recipient_user = get_userdata( $results[0]['like_user_id'] );
+				if ( $recipient_user ) {
+					$recipient_user_data = (array) $recipient_user->data;
+					$context['pluggable_data']['recipient']['user_display_name'] = $recipient_user_data['display_name'];
+					$context['pluggable_data']['recipient']['user_name']         = $recipient_user_data['user_nicename'];
+					$context['pluggable_data']['recipient']['user_email']        = $recipient_user_data['user_email'];
+				}
+				if ( class_exists( 'Voxel\Timeline\Reply' ) ) {
+					$reply_details = \Voxel\Timeline\Reply::get( $results[0]['id'] );
+					foreach ( (array) $reply_details as $key => $value ) {
+						$clean_key                               = preg_replace( '/^\0.*?\0/', '', $key );
+						$context['pluggable_data'][ $clean_key ] = $value;
+					}
+				}
+				$context['response_type'] = 'live';
+			} else {
+				$context = json_decode( '{"pluggable_data":{"user_display_name":"test test","user_name":"test","user_email":"test@yopmail.com","recipient":{"user_display_name":"Arian","user_name":"admin","user_email":"admin@example.com"},"id":1,"user_id":2,"published_as":null,"status_id":56,"parent_id":null,"content":"@admin test","details":[],"created_at":"2025-01-22 12:46:33","edited_at":null,"like_count":1,"reply_count":0,"liked_by_user":false,"last3_liked":[{"post_id":null,"user_id":1}]},"response_type":"sample"}', true );// @phpcs:ignore
+			}
+		} elseif ( 'user_timeline_post_liked' === $term ) {
+			if ( ! empty( $results ) ) {
+				$user = get_userdata( $results[0]['user_id'] );
+				if ( $user ) {
+					$user_data                                      = (array) $user->data;
+					$context['pluggable_data']['user_display_name'] = $user_data['display_name'];
+					$context['pluggable_data']['user_name']         = $user_data['user_nicename'];
+					$context['pluggable_data']['user_email']        = $user_data['user_email'];
+				}
+				$recipient_user = get_userdata( $results[0]['like_user_id'] );
+				if ( $recipient_user ) {
+					$recipient_user_data = (array) $recipient_user->data;
+					$context['pluggable_data']['recipient']['user_display_name'] = $recipient_user_data['display_name'];
+					$context['pluggable_data']['recipient']['user_name']         = $recipient_user_data['user_nicename'];
+					$context['pluggable_data']['recipient']['user_email']        = $recipient_user_data['user_email'];
+				}
+				if ( class_exists( 'Voxel\Timeline\Status' ) ) {
+					$reply_details = \Voxel\Timeline\Status::get( $results[0]['id'] );
+					foreach ( (array) $reply_details as $key => $value ) {
+						$clean_key                               = preg_replace( '/^\0.*?\0/', '', $key );
+						$context['pluggable_data'][ $clean_key ] = $value;
+					}
+				}
+				$context['response_type'] = 'live';
+			} else {
+				$context = json_decode( '{"pluggable_data":{"user_display_name":"test test","user_name":"test","user_email":"test@yopmail.com","recipient":{"user_display_name":"Arian","user_name":"admin","user_email":"admin@example.com"},"id":51,"user_id":2,"post_id":null,"published_as":null,"content":"test","feed":"user_timeline","moderation":0,"repost_of":null,"quote_of":null,"created_at":"2025-01-22 11:10:06","edited_at":null,"review_score":null,"like_count":0,"reply_count":0,"details":{"files":"541"},"liked_by_user":false,"reposted_by_user":false,"last3_liked":[],"friends_reposted":[],"friends_liked":[]},"response_type":"sample"}', true );// @phpcs:ignore
+			}
+		} elseif ( 'user_timeline_post_reposted' === $term || 'user_timeline_post_quoted' === $term ) {
+			if ( ! empty( $results ) ) {
+				$author = get_userdata( $results[0]['user_id'] );
+				if ( $author ) {
+					$author_data                                      = (array) $author->data;
+					$context['pluggable_data']['author_display_name'] = $author_data['display_name'];
+					$context['pluggable_data']['author_name']         = $author_data['user_nicename'];
+					$context['pluggable_data']['author_email']        = $author_data['user_email'];
+				}
+				$column            = 'user_timeline_post_reposted' === $term ? 'repost_of' : 'quote_of';
+				$recipient_sql     = "SELECT user_id FROM {$wpdb->prefix}voxel_timeline WHERE id = %d";
+				$recipient_results = $wpdb->get_results( $wpdb->prepare( $recipient_sql, $results[0][$column] ), ARRAY_A ); // @phpcs:ignore
+				if ( ! empty( $recipient_results ) ) {
+					$recipient_user = get_userdata( $recipient_results[0]['user_id'] );
+					if ( $recipient_user ) {
+						$recipient_user_data = (array) $recipient_user->data;
+						$context['pluggable_data']['recipient']['user_display_name'] = $recipient_user_data['display_name'];
+						$context['pluggable_data']['recipient']['user_name']         = $recipient_user_data['user_nicename'];
+						$context['pluggable_data']['recipient']['user_email']        = $recipient_user_data['user_email'];
+					}
+				}
+				if ( class_exists( 'Voxel\Timeline\Status' ) ) {
+					$status_details  = \Voxel\Timeline\Status::get( $results[0]['id'] );
+					$details_column  = 'user_timeline_post_reposted' === $term ? 'repost_of' : 'quote_of';
+					$related_details = \Voxel\Timeline\Status::get( $results[0][ $details_column ] );
+					foreach ( [
+						'status'        => $status_details,
+						$details_column => $related_details,
+					] as $key => $details ) {
+						foreach ( (array) $details as $sub_key => $value ) {
+							$clean_key                                       = preg_replace( '/^\0.*?\0/', '', $sub_key );
+							$context['pluggable_data'][ $key ][ $clean_key ] = $value;
+						}
+					}
+				}
+				$context['response_type'] = 'live';
+			} else {
+				if ( 'user_timeline_post_reposted' === $term ) {
+					$context = json_decode( '{"pluggable_data":{"author_display_name":"test test","author_name":"test","author_email":"test@yopmail.com","recipient":{"user_display_name":"Arian","user_name":"admin","user_email":"admin@example.com"},"status":{"id":59,"user_id":2,"post_id":null,"published_as":null,"content":"","feed":"user_timeline","moderation":1,"repost_of":12,"quote_of":null,"created_at":"2025-01-23 04:02:45","edited_at":null,"review_score":null,"like_count":0,"reply_count":0,"details":[],"liked_by_user":false,"reposted_by_user":false,"last3_liked":[],"friends_reposted":[],"friends_liked":[]},"repost_of":{"id":12,"user_id":1,"post_id":447,"published_as":null,"content":"hello\n\nhttps://example.com/mountain-bike/","feed":"post_wall","moderation":1,"repost_of":null,"quote_of":null,"created_at":"2025-01-17 05:26:23","edited_at":null,"review_score":null,"like_count":0,"reply_count":0,"details":{"link_preview":{"url":"https://example.com/mountain-bike/","title":"Mountain Bike - spacesdemo.wp1.sh","image":"https://example.comt/uploads/2025/01/test.jpg"}},"liked_by_user":false,"reposted_by_user":false,"last3_liked":[],"friends_reposted":[],"friends_liked":[]}},"response_type":"sample"}', true );// @phpcs:ignore
+				} else {
+					$context = json_decode( '{"pluggable_data":{"author_display_name":"test test","author_name":"test","author_email":"test@yopmail.com","recipient":{"user_display_name":"Arian","user_name":"admin","user_email":"admin@example.com"},"status":{"id":59,"user_id":2,"post_id":null,"published_as":null,"content":"","feed":"user_timeline","moderation":1,"quote_of":12,"quote_of":null,"created_at":"2025-01-23 04:02:45","edited_at":null,"review_score":null,"like_count":0,"reply_count":0,"details":[],"liked_by_user":false,"quoted_by_user":false,"last3_liked":[],"friends_quoted":[],"friends_liked":[]},"quote_of":{"id":12,"user_id":1,"post_id":447,"published_as":null,"content":"hello\n\nhttps://example.com/mountain-bike/","feed":"post_wall","moderation":1,"quote_of":null,"quote_of":null,"created_at":"2025-01-17 05:26:23","edited_at":null,"review_score":null,"like_count":0,"reply_count":0,"details":{"link_preview":{"url":"https://example.com/mountain-bike/","title":"Mountain Bike - spacesdemo.wp1.sh","image":"https://example.comt/uploads/2025/01/test.jpg"}},"liked_by_user":false,"quoted_by_user":false,"last3_liked":[],"friends_quoted":[],"friends_liked":[]}},"response_type":"sample"}', true );// @phpcs:ignore
+				}
 			}
 		}
 		return $context;
@@ -18310,6 +18504,10 @@ class GlobalSearchController {
 			$sql     = "SELECT * FROM {$wpdb->prefix}voxel_timeline vt JOIN {$wpdb->prefix}posts p ON vt.post_id = p.ID JOIN {$wpdb->prefix}postmeta pm ON vt.post_id = pm.post_id
 			WHERE pm.meta_key LIKE '%voxel:review_stats%' AND p.post_type LIKE %s AND vt.details IS NOT NULL AND vt.details LIKE %s";
 			$results      = $wpdb->get_results( $wpdb->prepare( $sql, $post_type, '%rating%' ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'post_review_approved' === $term ) {
+			$sql     = "SELECT * FROM {$wpdb->prefix}voxel_timeline vt JOIN {$wpdb->prefix}posts p ON vt.post_id = p.ID JOIN {$wpdb->prefix}postmeta pm ON vt.post_id = pm.post_id
+			WHERE vt.moderation = %d AND pm.meta_key LIKE '%voxel:review_stats%' AND p.post_type LIKE %s AND vt.details IS NOT NULL AND vt.details LIKE %s AND vt.feed = %s";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 1, $post_type, '%rating%', 'post_reviews' ), ARRAY_A );// @phpcs:ignore
 		} elseif ( 'post_submitted' === $term ) {
 			$sql     = "SELECT * FROM {$wpdb->prefix}posts WHERE post_type LIKE %s ORDER BY ID DESC LIMIT 1";
 			$results      = $wpdb->get_results( $wpdb->prepare($sql, $post_type), ARRAY_A );// @phpcs:ignore
@@ -18325,8 +18523,17 @@ class GlobalSearchController {
 		} elseif ( 'new_wall_post_by_user' === $term ) {
 			$sql     = "SELECT vt.* FROM  {$wpdb->prefix}voxel_timeline vt JOIN {$wpdb->prefix}posts p ON vt.post_id = p.ID JOIN  {$wpdb->prefix}postmeta pm ON pm.post_id = p.ID WHERE p.post_type LIKE %s AND vt.details IS NOT NULL AND vt.details NOT LIKE %s ORDER BY vt.id DESC LIMIT 1";
 			$results      = $wpdb->get_results( $wpdb->prepare( $sql, $post_type, '%rating%' ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'wall_post_approved' === $term ) {
+			$sql     = "SELECT vt.* FROM  {$wpdb->prefix}voxel_timeline vt JOIN {$wpdb->prefix}posts p ON vt.post_id = p.ID JOIN  {$wpdb->prefix}postmeta pm ON pm.post_id = p.ID WHERE vt.feed = %s AND p.post_type LIKE %s AND vt.moderation = %d AND vt.details IS NOT NULL ORDER BY vt.id DESC LIMIT 1";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'post_wall', $post_type, 1 ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'timeline_post_approved' === $term ) {
+			$sql     = "SELECT vt.* FROM  {$wpdb->prefix}voxel_timeline vt JOIN {$wpdb->prefix}posts p ON vt.post_id = p.ID JOIN  {$wpdb->prefix}postmeta pm ON pm.post_id = p.ID WHERE vt.feed = %s AND vt.moderation = %d AND p.post_type LIKE %s ORDER BY vt.id DESC LIMIT 1";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'post_timeline', 1, $post_type ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'post_followed' === $term ) {
+			$sql     = "SELECT * FROM {$wpdb->prefix}voxel_followers WHERE object_type = %s LIMIT 1";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'post' ), ARRAY_A );// @phpcs:ignore
 		}
-		if ( 'post_approved' === $term || 'post_rejected' === $term || 'post_submitted' === $term || 'post_updated' === $term ) {
+		if ( 'post_approved' === $term || 'post_rejected' === $term || 'post_submitted' === $term || 'post_updated' === $term || 'timeline_post_approved' === $term ) {
 			if ( ! empty( $results ) ) {
 				$context['pluggable_data']         = WordPress::get_post_context( $results[0]['ID'] );
 				$context['pluggable_data']['post'] = Voxel::get_post_fields( $results[0]['ID'] );
@@ -18361,7 +18568,7 @@ class GlobalSearchController {
 				];
 				$context['response_type']  = 'sample';
 			}
-		} elseif ( 'post_reviewed' === $term ) {
+		} elseif ( 'post_reviewed' === $term || 'post_review_approved' === $term ) {
 			if ( ! empty( $results ) ) {
 				$context['pluggable_data']                      = WordPress::get_post_context( $results[0]['post_id'] );
 				$context['pluggable_data']['post']              = Voxel::get_post_fields( $results[0]['post_id'] );
@@ -18383,7 +18590,7 @@ class GlobalSearchController {
 					'{"pluggable_data":{"field_step-general": null,"field_title": "First Collection","field_items": [8909,8293],"collection": {"ID": 9142,"post_author": "35",
                 "post_date": "2024-05-27 05:55:21","post_date_gmt": "2024-05-27 05:55:21","post_content": "This is a first collection","post_title": "First Collection","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "first-collection","to_ping": "","pinged": "","post_modified": "2024-05-27 05:55:21","post_modified_gmt": "2024-05-27 05:55:21","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/example.com\/collection\/first-collection\/","menu_order": 0,"post_type": "collection","post_mime_type": "","comment_count": "0","filter": "raw"}},"response_type":"sample"}', true );// @phpcs:ignore
 			}
-		} elseif ( 'new_wall_post_by_user' === $term ) {
+		} elseif ( 'new_wall_post_by_user' === $term || 'wall_post_approved' === $term ) {
 			if ( ! empty( $results ) ) {
 				$context['pluggable_data']['post'] = Voxel::get_post_fields( $results[0]['post_id'] );
 				$user                              = get_userdata( $results[0]['user_id'] );
@@ -18394,22 +18601,47 @@ class GlobalSearchController {
 					$context['pluggable_data']['user_email']        = $user_data['user_email'];
 					$context['pluggable_data']['user_id']           = $results[0]['user_id'];
 				}
-				if ( function_exists( 'Voxel\Timeline\prepare_status_json' ) && class_exists( 'Voxel\Timeline\Status' ) ) {
-					// Get the status details.
+				if ( class_exists( 'Voxel\Timeline\Status' ) ) {
 					$args           = [
-						'post_id'  => $results[0]['post_id'],
-						'order_by' => 'created_at',
-						'order'    => 'desc',
+						'post_id'    => $results[0]['post_id'],
+						'order_by'   => 'created_at',
+						'order'      => 'desc',
+						'feed'       => $results[0]['feed'],
+						'limit'      => 1,
+						'moderation' => $results[0]['moderation'],
 					];
 					$statuses       = \Voxel\Timeline\Status::query( $args );
-					$status_details = \Voxel\Timeline\prepare_status_json( $statuses[0] );
+					$status_details = $statuses['items'][0];
 					foreach ( (array) $status_details as $key => $value ) {
-						$context['pluggable_data']['wall_post'][ $key ] = $value;
+						$clean_key = preg_replace( '/^\0.*?\0/', '', $key );
+						if ( is_object( $value ) ) {
+							$encoded_value = wp_json_encode( $value );
+							if ( is_string( $encoded_value ) ) {
+								$value = json_decode( $encoded_value, true );   
+							}
+						}
+						$context['pluggable_data']['wall_post'][ $clean_key ] = $value;
 					}
 				}
 				$context['response_type'] = 'live';
 			} else {
-				$context = json_decode( '{"pluggable_data":{"post": {"step-general": null,"voxel:name": "johnd","voxel:avatar": [],"description": "","field_step-general": null,"field_voxel:name": "johnd","field_voxel:avatar": [],"field_description": ""},"user_display_name": "johnd","user_name": "johnd","user_email": "johnd@yopmail.com","user_id": "1","wall_post": {"content": "new wallpost","created_at": "2024-06-13 08:44:05","files": [{"source": "existing","id": 9331,"name": "download-1-1.png","alt": "","url": "https:\/\/example.com\/wp-content\/uploads\/2024\/06\/download-1-1.png","preview": "https:\/\/example.com\/wp-content\/uploads\/2024\/06\/download-1-1.png","type": "image\/png"}]}},"response_type":"sample"}', true );// @phpcs:ignore
+				$context = json_decode( '{"pluggable_data":{"post":{"field_step-general":null,"field_title":"How Data Fundamentally Changed Marketing","field__thumbnail_id":{"_thumbnail_id_0_url":"https://example.com/wp-content/uploads/2025/01/169cbc8.jpg"},"field_taxonomy":"General"},"user_display_name":"john d","user_name":"john","user_email":"johnd@example.com","user_id":"2","wall_post":{"id":31,"user_id":2,"post_id":447,"published_as":null,"content":"new hello","feed":"post_wall","moderation":0,"repost_of":null,"quote_of":null,"created_at":"2025-01-22 08:56:24","edited_at":null,"review_score":null,"like_count":0,"reply_count":0,"details":[],"liked_by_user":false,"reposted_by_user":false,"last3_liked":[],"friends_reposted":[],"friends_liked":[]}},"response_type":"sample"}', true );// @phpcs:ignore
+			}
+		} elseif ( 'post_followed' === $term ) {
+			if ( ! empty( $results ) ) {
+				$follow_data                    = [
+					'post_id' => $results[0]['object_id'],
+					'user_id' => $results[0]['follower_id'],
+					'status'  => $results[0]['status'],
+				];
+				$follow_data                    = array_merge( $follow_data, Voxel::get_post_fields( $results[0]['object_id'] ), WordPress::get_post_context( $results[0]['object_id'] ) );
+				$followers_sql                  = "SELECT COUNT(*) FROM {$wpdb->prefix}voxel_followers WHERE object_id= %d";
+				$followers      = $wpdb->get_var( $wpdb->prepare( $followers_sql, $results[0]['object_id'] ));// @phpcs:ignore
+				$follow_data['total_followers'] = $followers;
+				$context['pluggable_data']      = $follow_data;
+				$context['response_type']       = 'live';
+			} else {
+				$context = json_decode( '{"pluggable_data":{"field_step-general":null,"field_title":"How Data Fundamentally Changed Marketing","field__thumbnail_id":{"_thumbnail_id_0_url":"https://example.com/wp-content/uploads/2025/01/169cbc8.jpg"},"field_taxonomy":"General","ID": 8291,"post_author": "1","post_date": "2024-03-18 09:01:54","post_date_gmt": "2024-03-18 09:01:54","post_content": "<p>PizzaCrust - Since 2009! Whether it\u2019s our iconic Sandwiches, wooden baked pizzas, signature sauce, original fresh dough or toppings, we invest in bringing the freshest and best ingredients to bring you the tastiest meal.<\/p>","post_title": "Pizza Crust","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "sach-pizza","to_ping": "","pinged": "","post_modified": "2024-03-18 09:01:54","post_modified_gmt": "2024-03-18 09:01:54","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/suretriggers-wpnew.local\/places\/sach-pizza\/","menu_order": 0,"post_type": "places","post_mime_type": "","comment_count": "0","filter": "raw","total_followers":4,"post_id": 447,"user_id": 2,"status":1},"response_type":"sample"}', true );// @phpcs:ignore
 			}
 		}
 		return $context;
@@ -18428,8 +18660,8 @@ class GlobalSearchController {
 		$context = [];
 		$term    = $data['search_term'];
 
-		if ( ! class_exists( 'Voxel\Timeline\Status' ) || ! function_exists( 'Voxel\Timeline\prepare_status_json' ) || ! class_exists( 'Voxel\Post_Type' ) ) {
-				return;
+		if ( ! class_exists( 'Voxel\Timeline\Status' ) || ! class_exists( 'Voxel\Post_Type' ) ) {
+				return [];
 		}
 
 		if ( 'profile_created' === $term ) {
@@ -18481,39 +18713,53 @@ class GlobalSearchController {
 				}
 				// Get the status details.
 				$args           = [
-					'post_id'  => $results[0]['post_id'],
-					'order_by' => 'created_at',
-					'order'    => 'desc',
+					'post_id'    => $results[0]['post_id'],
+					'order_by'   => 'created_at',
+					'order'      => 'desc',
+					'feed'       => $results[0]['feed'],
+					'limit'      => 1,
+					'moderation' => $results[0]['moderation'],
 				];
 				$statuses       = \Voxel\Timeline\Status::query( $args );
-				$status_details = \Voxel\Timeline\prepare_status_json( $statuses[0] );
+				$status_details = $statuses['items'][0];
 				foreach ( (array) $status_details as $key => $value ) {
-					$context['pluggable_data']['wall_post'][ $key ] = $value;
+					$clean_key = preg_replace( '/^\0.*?\0/', '', $key );
+					if ( is_object( $value ) ) {
+						$encoded_value = wp_json_encode( $value );
+						if ( is_string( $encoded_value ) ) {
+							$value = json_decode( $encoded_value, true );   
+						}
+					}
+					$context['pluggable_data']['wall_post'][ $clean_key ] = $value;
 				}
 				$context['response_type'] = 'live';
 			} else {
-				$context = json_decode( '{"pluggable_data":{"profile": {"step-general": null,"voxel:name": "johnd","voxel:avatar": [],"description": "","field_step-general": null,"field_voxel:name": "johnd","field_voxel:avatar": [],"field_description": ""},"profile_display_name": "johnd","profile_name": "johnd","profile_email": "johnd@yopmail.com","profile_user_id": "1""wall_post": {"content": "new wallpost","created_at": "2024-06-13 08:44:05","files": [{"source": "existing","id": 9331,"name": "download-1-1.png","alt": "","url": "https:\/\/example.com\/wp-content\/uploads\/2024\/06\/download-1-1.png","preview": "https:\/\/example.com\/wp-content\/uploads\/2024\/06\/download-1-1.png","type": "image\/png"}]}},"response_type":"sample"}', true );// @phpcs:ignore
+				$context = json_decode( '{"pluggable_data":{"profile":{"field_step-general":null,"field_ui-image-2":null,"field_voxel:name":"John","field_voxel:avatar":null,"field_cover":null,"field_ui-step":null,"field_ui-image-3":null,"field_location":null,"field_ui-step-2":null,"field_ui-image":null,"field_description":""},"profile_display_name":"John","profile_name":"admin","profile_email":"johnd@gmail.com","profile_user_id":"1","wall_post":{"id":73,"user_id":1,"post_id":586,"published_as":null,"content":"Test content","feed":"post_reviews","moderation":1,"repost_of":null,"quote_of":null,"created_at":"2025-02-02 05:28:00","edited_at":null,"review_score":-2,"like_count":0,"reply_count":0,"details":{"rating":{"score":-2}},"liked_by_user":false,"reposted_by_user":false,"last3_liked":[],"friends_reposted":[],"friends_liked":[]}},"response_type":"sample"}', true );// @phpcs:ignore
 			}
 		} elseif ( 'profile_reviewed' === $term ) {
 			if ( ! empty( $results ) ) {
 				// Get the review details.
 				$args           = [
-					'post_id'  => $results[0]['post_id'],
-					'order_by' => 'created_at',
-					'order'    => 'desc',
+					'post_id'    => $results[0]['post_id'],
+					'order_by'   => 'created_at',
+					'order'      => 'desc',
+					'feed'       => $results[0]['feed'],
+					'limit'      => 1,
+					'moderation' => $results[0]['moderation'],
 				];
 				$statuses       = \Voxel\Timeline\Status::query( $args );
-				$review_details = \Voxel\Timeline\prepare_status_json( $statuses[0] );
+				$review_details = $statuses['items'][0];
 				foreach ( (array) $review_details as $key => $value ) {
-					if ( 'user_can_edit' == $key || 'publisher' == $key || 'user_can_edit' == $key || 'user_can_moderate' == $key ) {
+					$clean_key = preg_replace( '/^\0.*?\0/', '', $key );
+					if ( 'user_can_edit' == $clean_key || 'publisher' == $clean_key || 'user_can_edit' == $clean_key || 'user_can_moderate' == $clean_key ) {
 						continue;
 					}
-					if ( 'files' === $key ) {
+					if ( 'files' === $clean_key ) {
 						$value = wp_json_encode( $value );
-					} elseif ( 'reviews' === $key ) {
-						$review_ratings   = isset( $value['ratings'] ) && is_array( $value['ratings'] ) ? $value['ratings'] : [];
-						$value['ratings'] = [];
-						$type             = \Voxel\Post_Type::get( 'profile' );
+					} elseif ( 'details' === $clean_key ) {
+						$review_ratings  = isset( $value['rating'] ) && is_array( $value['rating'] ) ? $value['rating'] : [];
+						$value['rating'] = [];
+						$type            = \Voxel\Post_Type::get( 'profile' );
 					
 						if ( ! empty( $review_ratings ) ) {
 							$rating_levels = $type->reviews->get_rating_levels();
@@ -18526,7 +18772,7 @@ class GlobalSearchController {
 								if ( isset( $review_ratings[ $category_key ] ) && $category_label ) {
 									foreach ( $rating_levels as $rating_level ) {
 										if ( $review_ratings[ $category_key ] === $rating_level['score'] ) {
-											$value['ratings'][ $category_label ] = $rating_level['label'];
+											$value['rating'][ $category_label ] = $rating_level['label'];
 											break;
 										}
 									}
@@ -18534,16 +18780,13 @@ class GlobalSearchController {
 							}
 						}
 					} else {
-						$key = 'review_' . $key;
+						$clean_key = 'review_' . $clean_key;
 					}
-					$context['pluggable_data'][ $key ] = $value;
-				}
-				if ( isset( $context['pluggable_data']['review_user'] ) ) {
-					unset( $context['pluggable_data']['review_user']['avatar'] );
+					$context['pluggable_data'][ $clean_key ] = $value;
 				}
 				$context['response_type'] = 'live';
 			} else {
-				$context = json_decode( '{"pluggable_data":{"review_id":32,"review_key":"152b0720","review_link":"https://example.com/newsfeed/?status_id=32","review_time":"3 hours ago","review_edit_time":null,"review_content":"new review","review_raw_content":"new review","files":null,"review_is_review":true,"review_user":{"exists":true,"name":"johnd","link":"https://example.com/members/johnd/","id":217},"review_post":{"exists":true,"title":"admin","link":"https://example.com/members/admin/","is_profile":false,"post_type":"profile"},"review_liked_by_user":false,"review_like_count":null,"review_reply_count":null,"review_replies":{"requested":false,"visible":false,"page":1,"loading":false,"hasMore":false,"list":[]},"reviews":{"score":0,"score_formatted":"3.0","mode":"numeric","ratings":{"rating":"Good"}}},"response_type":"sample"}', true );// @phpcs:ignore
+				$context = json_decode( '{"pluggable_data":{"review_id":73,"review_user_id":1,"review_post_id":586,"review_published_as":null,"review_content":"test content","review_feed":"post_reviews","review_moderation":1,"review_repost_of":null,"review_quote_of":null,"review_created_at":"2025-02-02 05:28:00","review_edited_at":null,"review_review_score":-2,"review_like_count":0,"review_reply_count":0,"details":{"rating":[],"rating":{"rating":"Poor"}},"review_liked_by_user":false,"review_reposted_by_user":false,"review_last3_liked":[],"review_friends_reposted":[],"review_friends_liked":[]},"response_type":"sample"}', true );// @phpcs:ignore
 			}
 		}
 		return $context;
@@ -19505,6 +19748,8 @@ class GlobalSearchController {
 		}
 		return (array) $context;
 	}
+
 }
+
 
 GlobalSearchController::get_instance();

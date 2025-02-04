@@ -94,18 +94,36 @@ if ( ! class_exists( 'EventRescheduled' ) ) :
 			}
 
 			global $wpdb;
-
-			$result = $wpdb->get_row(
+			$event_periods_result = $wpdb->get_results(
 				$wpdb->prepare(
-					'SELECT * 
-					FROM ' . $wpdb->prefix . 'amelia_customer_bookings as customer 
-					INNER JOIN ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods as event_period 
-					ON customer.id = event_period.customerBookingId 
-					WHERE event_period.customerBookingId = ( Select max(id) From ' . $wpdb->prefix . 'amelia_customer_bookings ) AND event_period.eventPeriodId = %d',
+					'SELECT id
+					FROM ' . $wpdb->prefix . 'amelia_events_periods
+					WHERE eventId = %d',
 					[ $args['id'] ]
 				),
 				ARRAY_A
 			);
+			if ( ! empty( $event_periods_result ) ) {
+				$ids = wp_list_pluck( $event_periods_result, 'id' ); 
+			}
+
+			$query = 'SELECT * 
+			FROM ' . $wpdb->prefix . 'amelia_customer_bookings as customer 
+			INNER JOIN ' . $wpdb->prefix . 'amelia_customer_bookings_to_events_periods as event_period 
+			ON customer.id = event_period.customerBookingId';
+			if ( ! empty( $ids ) ) {
+				$query .= $wpdb->prepare(
+					' WHERE event_period.customerBookingId = ( Select max(id) From ' . $wpdb->prefix . 'amelia_customer_bookings ) AND event_period.eventPeriodId IN (%s)',
+					implode( ',', $ids )
+				);
+			} else {
+				$query .= $wpdb->prepare(
+					' WHERE event_period.customerBookingId = ( Select max(id) From ' . $wpdb->prefix . 'amelia_customer_bookings ) AND event_period.eventPeriodId = %d',
+					[ $args['id'] ]
+				);
+			}
+			$result = $wpdb->get_row( $query, ARRAY_A ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$result = isset( $result ) ? $result : [];
 
 			$event      = $wpdb->get_row(
 				$wpdb->prepare(
@@ -114,6 +132,7 @@ if ( ! class_exists( 'EventRescheduled' ) ) :
 				),
 				ARRAY_A
 			);
+			$event      = isset( $event ) ? $event : [];
 			$event_tags = $wpdb->get_results(
 				$wpdb->prepare(
 					'SELECT * FROM ' . $wpdb->prefix . 'amelia_events_tags WHERE eventId = %d',
@@ -138,6 +157,7 @@ if ( ! class_exists( 'EventRescheduled' ) ) :
 				),
 				ARRAY_A
 			);
+			$customer_result = isset( $customer_result ) ? $customer_result : [];
 
 			if ( $args['bookings'][ $customer_id ]['couponId'] ) {
 				$coupon_result = $wpdb->get_row(

@@ -49,7 +49,7 @@ class WooCommerce extends Integrations {
 	 */
 	public function woo_customer_created_trigger( $customer_id, $new_customer_data, $password_generated ) {
 		// Check if customer creation is happening during checkout.
-		if ( isset( $_POST['woocommerce-process-checkout-nonce'] ) && ! empty( $_POST['woocommerce-process-checkout-nonce'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( isset( $_POST['woocommerce-process-checkout-nonce'] ) && ! empty( $_POST['woocommerce-process-checkout-nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['woocommerce-process-checkout-nonce'] ), 'woocommerce-process_checkout' ) ) {
 			// Customer creation is happening during checkout, so return it.
 			return;
 		}

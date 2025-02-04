@@ -15,7 +15,6 @@ namespace SureTriggers\Integrations\Voxel\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Traits\SingletonLoader;
-use SureTriggers\Integrations\WordPress\WordPress;
 
 if ( ! class_exists( 'ProfileReviewed' ) ) :
 
@@ -88,8 +87,7 @@ if ( ! class_exists( 'ProfileReviewed' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $event ) {
-			if ( ! property_exists( $event, 'post' ) || ! class_exists( 'Voxel\Timeline\Status' )
-			|| ! function_exists( 'Voxel\Timeline\prepare_status_json' ) || ! class_exists( 'Voxel\Post_Type' ) ) {
+			if ( ! property_exists( $event, 'post' ) || ! class_exists( 'Voxel\Timeline\Status' ) || ! class_exists( 'Voxel\Post_Type' ) ) {
 				return;
 			}
 			$context = [];
@@ -98,17 +96,18 @@ if ( ! class_exists( 'ProfileReviewed' ) ) :
 				'post_id' => $event->post->get_id(),
 			];
 			$statuses       = \Voxel\Timeline\Status::query( $args );
-			$review_details = \Voxel\Timeline\prepare_status_json( $statuses[0] );
+			$review_details = $statuses['items'][0];
 			foreach ( (array) $review_details as $key => $value ) {
-				if ( 'user_can_edit' == $key || 'publisher' == $key || 'user_can_edit' == $key || 'user_can_moderate' == $key ) {
+				$clean_key = preg_replace( '/^\0.*?\0/', '', $key );
+				if ( 'user_can_edit' == $clean_key || 'publisher' == $clean_key || 'user_can_edit' == $clean_key || 'user_can_moderate' == $clean_key ) {
 					continue;
 				}
-				if ( 'files' === $key ) {
+				if ( 'files' === $clean_key ) {
 					$value = wp_json_encode( $value );
-				} elseif ( 'reviews' === $key ) {
-					$review_ratings   = isset( $value['ratings'] ) && is_array( $value['ratings'] ) ? $value['ratings'] : [];
-					$value['ratings'] = [];
-					$type             = \Voxel\Post_Type::get( 'profile' );
+				} elseif ( 'details' === $clean_key ) {
+					$review_ratings  = isset( $value['rating'] ) && is_array( $value['rating'] ) ? $value['rating'] : [];
+					$value['rating'] = [];
+					$type            = \Voxel\Post_Type::get( 'profile' );
 				
 					if ( ! empty( $review_ratings ) ) {
 						$rating_levels = $type->reviews->get_rating_levels();
@@ -121,7 +120,7 @@ if ( ! class_exists( 'ProfileReviewed' ) ) :
 							if ( isset( $review_ratings[ $category_key ] ) && $category_label ) {
 								foreach ( $rating_levels as $rating_level ) {
 									if ( $review_ratings[ $category_key ] === $rating_level['score'] ) {
-										$value['ratings'][ $category_label ] = $rating_level['label'];
+										$value['rating'][ $category_label ] = $rating_level['label'];
 										break;
 									}
 								}
@@ -129,12 +128,9 @@ if ( ! class_exists( 'ProfileReviewed' ) ) :
 						}
 					}
 				} else {
-					$key = 'review_' . $key;
+					$clean_key = 'review_' . $clean_key;
 				}
-				$context[ $key ] = $value;
-			}
-			if ( ! empty( $context ) && ! empty( $context['review_user'] ) ) {
-				unset( $context['review_user']['avatar'] );
+				$context[ $clean_key ] = $value;
 			}
 
 			AutomationController::sure_trigger_handle_trigger(

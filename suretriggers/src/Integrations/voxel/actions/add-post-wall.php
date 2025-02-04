@@ -109,7 +109,8 @@ class AddPostWall extends AutomateAction {
 				'content'    => $content,
 				'details'    => ! empty( $details ) ? $details : null,
 				'moderation' => $post->post_type->timeline->wall_posts_require_approval() ? \Voxel\MODERATION_PENDING : \Voxel\MODERATION_APPROVED,
-			] 
+			],
+			[ 'link_preview' => 'instant' ]
 		);
 
 		// Create and send the wall post created event.

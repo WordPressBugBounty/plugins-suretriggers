@@ -77,23 +77,28 @@ class CreateCategory extends AutomateAction {
 		$category_description = $selected_options['cat_description'];
 		$category_slug        = $selected_options['cat_slug'];
 		$parent_category      = isset( $selected_options['parent_category'] ) && ! empty( $selected_options['parent_category'] ) ? $selected_options['parent_category'] : 0;
-
+		$taxonomy             = ! empty( $selected_options['taxonomy'] ) ? $selected_options['taxonomy'] : 'category';
+		
 		$category = wp_insert_term(
 			$category_name,
-			'category',
+			$taxonomy,
 			[
 				'description' => $category_description,
 				'slug'        => $category_slug,
 				'parent'      => $parent_category,
 			]
 		);
+
 		if ( $category ) {
 			return [
 				$category,
+				$taxonomy,
+				$category_name,
 			];
 		} else {
 			throw new Exception( 'Not able to create a category.' );
 		}
+		
 	}
 }
 

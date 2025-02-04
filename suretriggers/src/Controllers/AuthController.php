@@ -193,7 +193,7 @@ class AuthController {
 		$connected_email = OptionController::get_option( 'connected_email_key' );
 
 		wp_remote_post(
-			trailingslashit( API_SERVER_URL ) . 'connection/create-sc',
+			trailingslashit( SURE_TRIGGERS_API_SERVER_URL ) . 'connection/create-sc',
 			[
 				'sslverify' => false,
 				'headers'   => [

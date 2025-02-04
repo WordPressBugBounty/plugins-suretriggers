@@ -3,12 +3,12 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.70
+Stable tag: 1.0.71
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-SureTriggers is an all in one WordPress Automation Plugin & Platform. Automate tasks, connect apps & streamline workflows with NO CODE! Powerful & Easy-to-Use for WordPress & Beyond.
+Experience the power of automation within WordPress: Connect 1,000+ apps, automate manual tasks, and unlock your full potential. Get started now!
 
 == Description ==
 
@@ -16,7 +16,7 @@ SureTriggers is an all in one WordPress Automation Plugin & Platform. Automate t
 ★★★★★
 
 👉 [Official Website Link](https://suretriggers.com/)
-👉 [Create a free account](https://app.suretriggers.com)
+👉 [Try it out on a free dummy site](https://zipwp.org/plugins/suretriggers/)
 
 [youtube https://www.youtube.com/watch?v=mSjEcwpOfIk]
 
@@ -320,12 +320,22 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 
 == Screenshots ==
 
-1. Create new automations.
-2. Track your automation execution.
-3. Create new connections to create your automations.
-4. Dashboard of your task consumption.
+1. Dashboard of your task consumption.
+2. Create new automations.
+3. Explore Recipes.
+4. Create new folders.
+5. Track your automation execution.
+6. Create new connections to create your automations.
 
 == Changelog ==
+= Version 1.0.71 - Tuesday, 4th February 2025 =
+* New: Added the submenu with a "Status" tab for viewing registered events and an "Outgoing Requests" tab for tracking plugin initiated request
+* Improvement: "WordPress" - Added custom taxonomy support in "Create Category" Action
+* Improvement: "Voxel" - Added new Triggers, updated existing Triggers to compatible with the Voxel version
+* Improvement: "FluentCRM" - Added support for tag input and creation of non-existing tags in Actions
+* Improvement: "wpForo" - Added improvement for title field in "Create Topic" Action
+* Improvement: "Amelia" - Added improvements for Events related Triggers
+
 = Version 1.0.70 - Wednesday, 15th January 2025 =
 * Improvement: "wpForo" - Fixed issues related to "Create Topic" Action
 * Improvement: "FluentCRM" - Added support of multiple tags and lists and resolved campaign retrieving issue in "Send Email" Action

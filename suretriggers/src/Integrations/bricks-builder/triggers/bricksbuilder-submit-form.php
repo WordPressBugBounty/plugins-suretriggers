@@ -107,7 +107,10 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $response, $obj ) {
-			$post_data = sanitize_post( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			if ( ! check_ajax_referer( 'bricks-nonce-form', 'nonce', false ) ) {
+				return;
+			}
+			$post_data = sanitize_post( $_POST );
 
 			$files_data = $obj->get_uploaded_files();
 			$context    = [];

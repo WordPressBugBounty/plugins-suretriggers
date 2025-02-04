@@ -19,6 +19,7 @@ use SureTriggers\Traits\SingletonLoader;
 use SureTriggers\Models\SaasApiToken;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_Error;
 
 /**
  * RestController
@@ -47,10 +48,11 @@ class RestController {
 	public function __construct() {
 		$this->secret_key = SaasApiToken::get();
 		add_filter( 'determine_current_user', [ $this, 'basic_auth_handler' ], 20 );
+		add_filter( 'debug_information', [ $this, 'sure_triggers_connection_info' ] );
 	}
 
 	/**
-	 * Permission callback for rest api after deterination of current user.
+	 * Permission callback for rest api after determination of current user.
 	 *
 	 * @param WP_REST_Request $request Request.
 	 */
@@ -63,6 +65,25 @@ class RestController {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Verify user token.
+	 * 
+	 * @return  array|WP_Error $response Response.
+	 */
+	public static function verify_user_token() {
+		$args     = [
+			'body'      => [
+				'token'      => SaasApiToken::get(),
+				'saas-token' => SaasApiToken::get(),
+				'base_url'   => str_replace( '/wp-json/', '', get_rest_url() ),
+			],
+			'sslverify' => false,
+		];
+		$response = wp_remote_post( SURE_TRIGGERS_WEBHOOK_SERVER_URL . '/token/verify', $args );
+
+		return $response;
 	}
 
 	/**
@@ -242,6 +263,7 @@ class RestController {
 	 */
 	public function manage_triggers( $request ) {
 		$events = $request->get_param( 'events' ) ? json_decode( stripslashes( $request->get_param( 'events' ) ), true ) : [];
+
 		// Selected field data from the trigger.
 		$data = $request->get_param( 'data' ) ? json_decode( stripslashes( $request->get_param( 'data' ) ), true ) : [];
 
@@ -250,6 +272,7 @@ class RestController {
 		if ( empty( $trigger_data ) ) {
 			$trigger_data = [];
 		}
+
 		if ( is_array( $data ) && is_array( $events ) ) {
 			$index = array_search( $data['trigger'], array_column( $events, 'trigger' ) );
 			if ( is_array( $trigger_data ) && false !== $index && $data['integration'] === $events[ $index ]['integration'] ) {
@@ -270,17 +293,24 @@ class RestController {
 	}
 
 	/**
-	 * Send response to Sasss that trigger is executed.
+	 * Send response to Saas that trigger is executed.
 	 *
-	 * @param string $trigger_data Trigger data.
+	 * @param array $trigger_data Trigger data.
 	 *
 	 * @return bool
 	 */
 	public function trigger_listener( $trigger_data ) {
-		$args = [
+		// Pass unique WordPress webhook id.
+		$wordpress_webhook_uuid                 = str_replace( '-', '', wp_generate_uuid4() );
+		$site_url                               = esc_url_raw( str_replace( '/wp-json/', '', get_site_url() ) );
+		$site_url                               = preg_replace( '/^https?:\/\//', '', $site_url );
+		$encoded_site_url                       = urlencode( (string) $site_url );
+		$trigger_data['wordpress_webhook_uuid'] = $wordpress_webhook_uuid . '_' . $encoded_site_url;
+		$args                                   = [
 			'headers'   => [
-				'Authorization' => 'Bearer ' . $this->secret_key,
-				'Referer'       => str_replace( '/wp-json/', '', get_site_url() ),
+				'Authorization'  => 'Bearer ' . $this->secret_key,
+				'Referer'        => str_replace( '/wp-json/', '', get_site_url() ),
+				'RefererRestUrl' => str_replace( '/wp-json/', '', get_rest_url() ),
 			],
 			'body'      => json_decode( wp_json_encode( $trigger_data ), 1 ),
 			'sslverify' => false,
@@ -292,7 +322,18 @@ class RestController {
 		 *
 		 * @phpstan-ignore-next-line
 		 */
-		$response = wp_remote_post( WEBHOOK_SERVER_URL . '/wordpress/webhook', $args );
+		$response = wp_remote_post( SURE_TRIGGERS_WEBHOOK_SERVER_URL . '/wordpress/webhook', $args );
+		// Store every webhook requests.
+		$error_info = wp_remote_retrieve_body( $response );
+		if ( 405 === wp_remote_retrieve_response_code( $response ) ) {
+			$error_info = wp_remote_retrieve_response_message( $response );
+		}
+		if ( 0 === wp_remote_retrieve_response_code( $response ) ) {
+			$error_info = __( 'Service not available', 'suretriggers' );
+		}
+		unset( $args['headers']['Authorization'] );
+		WebhookRequestsController::suretriggers_log_request( (string) wp_json_encode( $args ), (int) wp_remote_retrieve_response_code( $response ), $error_info );
+
 		if ( wp_remote_retrieve_response_code( $response ) === 200 ) {
 			return true;
 		}
@@ -363,6 +404,44 @@ class RestController {
 		}
 
 		OptionController::set_option( 'test_triggers', $tmp_test_triggers );
+	}
+
+	/**
+	 * SureTriggers Connection Info
+	 *
+	 * @param array $debug_info Info data.
+	 * @return array
+	 */
+	public function sure_triggers_connection_info( $debug_info ) {
+		// Verify if SureTriggers is connected successfully.
+		$response   = self::verify_user_token();
+		$connection = ( wp_remote_retrieve_response_code( $response ) === 200 );
+		if ( $connection ) {
+			$connection_status = 'Connection Successfully Set';
+		} else {
+			$connection_status = 'Error in Connection';
+		}
+		$debug_info['suretriggers'] = [
+			'label'  => __( 'SureTriggers', 'suretriggers' ),
+			'fields' => [
+				'suretriggers_status'  => [
+					'label'   => __( 'SureTriggers Status', 'suretriggers' ),
+					'value'   => $connection_status,
+					'private' => false,
+				],
+				'rest_url'             => [
+					'label'   => __( 'Rest URL', 'suretriggers' ),
+					'value'   => esc_url( get_rest_url() ),
+					'private' => false,
+				],
+				'suretriggers_version' => [
+					'label'   => __( 'SureTriggers Version', 'suretriggers' ),
+					'value'   => SURE_TRIGGERS_VER,
+					'private' => false,
+				],
+			],
+		];
+		return $debug_info;
 	}
 
 }

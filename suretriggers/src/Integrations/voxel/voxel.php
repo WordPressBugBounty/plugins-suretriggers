@@ -11,6 +11,7 @@ namespace SureTriggers\Integrations\Voxel;
 use SureTriggers\Controllers\IntegrationsController;
 use SureTriggers\Integrations\Integrations;
 use SureTriggers\Traits\SingletonLoader;
+use SureTriggers\Integrations\WordPress\WordPress;
 
 /**
  * Class SureTrigger
@@ -35,7 +36,8 @@ class Voxel extends Integrations {
 		$this->name        = __( 'Voxel', 'suretriggers' );
 		$this->description = __( 'Voxel is a complete no code solution in a single packageto create WordPress dynamic sites.', 'suretriggers' );
 		$this->icon_url    = SURE_TRIGGERS_URL . 'assets/icons/voxel.svg';
-
+		
+		add_action( 'init', [ $this, 'suretriggers_voxel_follow_post' ], 10 );
 		parent::__construct();
 	}
 
@@ -869,6 +871,45 @@ class Voxel extends Integrations {
 			}
 		}
 		return $context_data;
+	}
+
+	/**
+	 * Custom hook for Follow post and UnFollow Post triggers.
+	 *
+	 * @access public
+	 * @since 1.0
+	 * @return void
+	 */
+	public function suretriggers_voxel_follow_post() {
+		if ( ! function_exists( 'Voxel\current_user' ) || ! class_exists( 'Voxel\Post' ) ) {
+			return;
+		}
+		if ( isset( $_GET['_wpnonce'] ) ) {
+			if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'vx_user_follow' ) ) {
+				return;
+			}
+		}
+		if ( isset( $_GET['action'] ) && 'user.follow_post' === $_GET['action'] ) {
+			$current_user = \Voxel\current_user();
+			$post_id      = ! empty( $_GET['post_id'] ) ? absint( $_GET['post_id'] ) : null;
+			if ( ! $post_id ) {
+				return;
+			}
+			$post = \Voxel\Post::get( $post_id );
+
+			if ( $post && $current_user ) {
+				$current_status    = $current_user->get_follow_status( 'post', $post->get_id() );
+				$new_status        = ( 1 === $current_status ) ? 'unfollow' : 'follow';
+				$follow_data       = [
+					'post_id' => $post_id,
+					'user_id' => $current_user->get_id(),
+					'status'  => $new_status,
+				];
+				$follow_data       = array_merge( $follow_data, self::get_post_fields( $post_id ), WordPress::get_post_context( $post_id ) );
+				$action_to_perform = ( 'follow' === $new_status ) ? 'st_voxel_post_followed' : 'st_voxel_post_unfollowed';
+				do_action( $action_to_perform, $follow_data );
+			}
+		}
 	}
 
 	/**

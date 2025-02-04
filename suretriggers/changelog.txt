@@ -1,3 +1,11 @@
+Version 1.0.71 - Tuesday, 4th February 2025
+- New: Added the submenu with a "Status" tab for viewing registered events and an "Outgoing Requests" tab for tracking plugin initiated request
+- Improvement: "WordPress" - Added custom taxonomy support in "Create Category" Action
+- Improvement: "Voxel" - Added new Triggers, updated existing Triggers to compatible with the Voxel version
+- Improvement: "FluentCRM" - Added support for tag input and creation of non-existing tags in Actions
+- Improvement: "wpForo" - Added improvement for title field in "Create Topic" Action
+- Improvement: "Amelia" - Added improvements for Events related Triggers
+
 Version 1.0.70 - Wednesday, 15th January 2025
 - Improvement: "wpForo" - Fixed issues related to "Create Topic" Action
 - Improvement: "FluentCRM" - Added support of multiple tags and lists and resolved campaign retrieving issue in "Send Email" Action
