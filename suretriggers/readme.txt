@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.71
+Stable tag: 1.0.72
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -16,7 +16,7 @@ Experience the power of automation within WordPress: Connect 1,000+ apps, automa
 ★★★★★
 
 👉 [Official Website Link](https://suretriggers.com/)
-👉 [Try it out on a free dummy site](https://zipwp.org/plugins/suretriggers/)
+👉 [Try the live demo of SureTriggers](https://zipwp.org/plugins/suretriggers/)
 
 [youtube https://www.youtube.com/watch?v=mSjEcwpOfIk]
 
@@ -328,6 +328,11 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 6. Create new connections to create your automations.
 
 == Changelog ==
+= Version 1.0.72 - Monday, 17th February 2025 =
+- New: Added "SureMail" Integration
+- Improvement: "Easy Digital Downloads" - Added new "Create Discount" Action
+- Improvement: "WP Courseware" - Added improvement in "Remove user from course" Action
+
 = Version 1.0.71 - Tuesday, 4th February 2025 =
 * New: Added the submenu with a "Status" tab for viewing registered events and an "Outgoing Requests" tab for tracking plugin initiated request
 * Improvement: "WordPress" - Added custom taxonomy support in "Create Category" Action

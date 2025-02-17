@@ -1,3 +1,8 @@
+Version 1.0.72 - Monday, 17th February 2025
+- New: Added "SureMail" Integration
+- Improvement: "Easy Digital Downloads" - Added new "Create Discount" Action
+- Improvement: "WP Courseware" - Added improvement in "Remove user from course" Action
+
 Version 1.0.71 - Tuesday, 4th February 2025
 - New: Added the submenu with a "Status" tab for viewing registered events and an "Outgoing Requests" tab for tracking plugin initiated request
 - Improvement: "WordPress" - Added custom taxonomy support in "Create Category" Action

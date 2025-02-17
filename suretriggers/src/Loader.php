@@ -185,8 +185,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.71' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.71' );
+		define( 'SURE_TRIGGERS_VER', '1.0.72' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.0.72' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
