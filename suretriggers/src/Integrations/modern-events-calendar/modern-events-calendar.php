@@ -47,8 +47,8 @@ class ModernEventsCalendar extends Integrations {
 	 * @return array
 	 */
 	public static function get_event_context( $booking_id ) {
-		$event_id = absint( get_post_meta( $booking_id, 'mec_event_id', true ) );
-
+		$event_id = get_post_meta( $booking_id, 'mec_event_id', true );
+		$event_id = is_numeric( $event_id ) ? (int) $event_id : '';
 		if ( ! $event_id ) {
 			return [];
 		}
@@ -183,7 +183,7 @@ class ModernEventsCalendar extends Integrations {
 
 		$organizer_term = get_term( (int) $organizer_id, 'mec_organizer' );
 
-		if ( is_wp_error( $organizer_term ) || ! $organizer_term || ! isset( $organizer_term->name ) ) {
+		if ( is_wp_error( $organizer_term ) || ! $organizer_term || '' === $organizer_term->name ) {
 			return null;
 		}
 
@@ -205,7 +205,7 @@ class ModernEventsCalendar extends Integrations {
 		
 		$location_term = get_term( (int) $location_id, 'mec_location' );
 
-		if ( is_wp_error( $location_term ) || ! $location_term || ! isset( $location_term->name ) ) {
+		if ( is_wp_error( $location_term ) || ! $location_term || '' === $location_term->name ) {
 			return null;
 		}
 

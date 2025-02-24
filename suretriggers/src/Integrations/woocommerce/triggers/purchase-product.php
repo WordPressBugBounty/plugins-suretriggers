@@ -109,8 +109,13 @@ if ( ! class_exists( 'PurchaseProduct' ) ) :
 				$product_ids[] = $item['product_id'];
 			}
 
-			$is_virtual      = $product->is_virtual();
-			$is_downloadable = $product->is_downloadable();
+			if ( $product instanceof WC_Product ) { 
+				$is_virtual      = $product->is_virtual();
+				$is_downloadable = $product->is_downloadable();
+			} else {
+				$is_virtual      = false;
+				$is_downloadable = false;
+			}
 			
   
 			if ( ( ! $is_virtual || ! $is_downloadable ) && 'processing' !== $to_status ) {

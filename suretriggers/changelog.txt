@@ -1,3 +1,9 @@
+Version 1.0.73 - Monday, 24th February 2025
+- Improvement: "Fluent Support" - Added new "Block User" Action
+- Improvement: "Easy Digital Downloads" - Added improvement for "User has purchased a download" Action
+- Improvement: "WordPress" - Added improvement for "Create / Update User" Action using username
+- Improvement: "WooCommerce" - Added improvement for "Product Purchased" Trigger
+
 Version 1.0.72 - Monday, 17th February 2025
 - New: Added "SureMail" Integration
 - Improvement: "Easy Digital Downloads" - Added new "Create Discount" Action

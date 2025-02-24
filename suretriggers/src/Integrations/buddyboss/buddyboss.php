@@ -115,7 +115,7 @@ class BuddyBoss extends Integrations {
 		preg_match_all( $pattern, $content, $matches );
 	 
 		// Return the array of matched links.
-		return isset( $matches[1] ) ? $matches[1] : [];
+		return $matches[1];
 	}
 
 	/**

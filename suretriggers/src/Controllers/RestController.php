@@ -163,7 +163,7 @@ class RestController {
 			return self::error_message( 'Integration or action type is missing' );
 		}
 
-		if ( isset( $selected_options['wp_user_email'] ) ) {
+		if ( isset( $selected_options['wp_user_email'] ) && ! ( 'EDD' === $integration && 'find_user_purchased_download' === $action_type ) ) {
 			$is_valid = WordPress::validate_email( $selected_options['wp_user_email'] );
 
 			if ( ! $is_valid->valid ) {

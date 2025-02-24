@@ -860,7 +860,7 @@ class GlobalSearchController {
 	 * @return array
 	 */
 	public function search_post_types( $data ) {
-		$post_types = get_post_types( [ 'public' => true ], 'object' );
+		$post_types = get_post_types( [ 'public' => true ], 'objects' );
 		$post_types = apply_filters( 'suretriggers_post_types', $post_types );
 		if ( isset( $post_types['attachment'] ) ) {
 			unset( $post_types['attachment'] );
@@ -1276,7 +1276,7 @@ class GlobalSearchController {
 			];
 		}
 
-		foreach ( $form_posts as $form_post ) {
+		foreach ( (array) $form_posts as $form_post ) {
 			$pattern_regex = '/\[et_pb_contact_form(.*?)](.+?)\[\/et_pb_contact_form]/';
 			preg_match_all( $pattern_regex, $form_post['post_content'], $forms, PREG_SET_ORDER );
 			if ( empty( $forms ) ) {
@@ -1352,7 +1352,7 @@ class GlobalSearchController {
 				if ( is_object( $comment ) ) {
 					$comment = get_object_vars( $comment );
 				}
-				if ( is_array( $comment ) && isset( $comment['comment_post_ID'] ) ) {
+				if ( is_array( $comment ) && isset( $comment['comment_post_ID'] ) && is_int( $comment['comment_post_ID'] ) ) {
 					$post = get_post( absint( $comment['comment_post_ID'] ) );
 					if ( is_object( $post ) ) {
 						if ( property_exists( $post, 'ID' ) || property_exists( $post, 'post_author' ) || property_exists( $post, 'post_title' ) ) {
@@ -1935,7 +1935,7 @@ class GlobalSearchController {
 			];
 		}
 		$fields = [];
-		foreach ( $form_posts as $form_post ) {
+		foreach ( (array) $form_posts as $form_post ) {
 			$pattern_regex = '/\[et_pb_contact_form(.*?)](.+?)\[\/et_pb_contact_form]/';
 			preg_match_all( $pattern_regex, $form_post['post_content'], $forms, PREG_SET_ORDER );
 			if ( empty( $forms ) ) {
@@ -2029,7 +2029,7 @@ class GlobalSearchController {
 			];
 		}
 
-		foreach ( $form_posts as $form_post ) {
+		foreach ( (array) $form_posts as $form_post ) {
 			$blocks = parse_blocks( $form_post['post_content'] );
 			$i      = 1;
 			// Get form blocks.
@@ -2114,7 +2114,7 @@ class GlobalSearchController {
 			];
 		}
 
-		foreach ( $form_posts as $form_post ) {
+		foreach ( (array) $form_posts as $form_post ) {
 			$blocks = parse_blocks( $form_post['post_content'] );
 
 			foreach ( $blocks as $block ) {
@@ -10502,7 +10502,7 @@ class GlobalSearchController {
 	 */
 	public function search_je_posttype_list( $data ) {
 
-		$post_types = get_post_types( [ 'public' => true ], 'object' );
+		$post_types = get_post_types( [ 'public' => true ], 'objects' );
 		$post_types = apply_filters( 'suretriggers_post_types', $post_types );
 		if ( isset( $post_types['attachment'] ) ) {
 			unset( $post_types['attachment'] );

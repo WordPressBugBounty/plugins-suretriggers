@@ -111,8 +111,9 @@ class FindIfUserPurchasedDownload extends AutomateAction {
 		$payments         = edd_get_payments( $args );
 		$dynamic_response = [];
 		if ( ! $payments ) {
-			$dynamic_response['count'] = '0';
-			$dynamic_response['data']  = [];
+			$dynamic_response['count']   = '0';
+			$dynamic_response['message'] = 'User has not purchased any downloads.';
+			$dynamic_response['data']    = [];
 			
 		} else {
 			$data      = (array) EDD::get_all_product_purchase_context( $payments, 'edd_action', $download_id );
@@ -120,15 +121,18 @@ class FindIfUserPurchasedDownload extends AutomateAction {
 		
 			if ( $price_id > 0 ) {
 				if ( in_array( $price_id, $price_ids ) ) {
-					$dynamic_response['data']  = $data;
-					$dynamic_response['count'] = count( $data );
+					$dynamic_response['data']    = $data;
+					$dynamic_response['count']   = count( $data );
+					$dynamic_response['message'] = 'User has purchased downloads.';
 				} else {
-					$dynamic_response['count'] = '0';
-					$dynamic_response['data']  = [];
+					$dynamic_response['count']   = '0';
+					$dynamic_response['message'] = 'User has not purchased any downloads.';
+					$dynamic_response['data']    = [];
 				}
 			} else {
-				$dynamic_response['data']  = $data;
-				$dynamic_response['count'] = count( $data );
+				$dynamic_response['data']    = $data;
+				$dynamic_response['count']   = count( $data );
+				$dynamic_response['message'] = 'User has purchased downloads.';
 			}
 		}
 		

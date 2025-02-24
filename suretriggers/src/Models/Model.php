@@ -180,7 +180,10 @@ abstract class Model {
 	 * @return array|object|void|null
 	 */
 	public function all() {
-		return $this->db->get_results( "SELECT * FROM  {$this->table}", $this->output );
+		$valid_outputs = [ 'ARRAY_A', 'ARRAY_N', 'OBJECT', 'OBJECT_K' ];
+		$output        = in_array( $this->output, $valid_outputs, true ) ? $this->output : 'OBJECT';
+
+		return $this->db->get_results( "SELECT * FROM  {$this->table}", $output );
 	}
 
 	/**
@@ -222,7 +225,10 @@ abstract class Model {
 	 * @return array|object|void|null
 	 */
 	public function get() {
-		return $this->db->get_results( "SELECT {$this->get_select()} FROM {$this->table} {$this->get_left_join()} {$this->get_where_sql()} ", $this->output );
+		$valid_outputs = [ 'ARRAY_A', 'ARRAY_N', 'OBJECT', 'OBJECT_K' ];
+		$output        = in_array( $this->output, $valid_outputs, true ) ? $this->output : 'OBJECT';
+
+		return $this->db->get_results( "SELECT {$this->get_select()} FROM {$this->table} {$this->get_left_join()} {$this->get_where_sql()} ", $output );
 	}
 
 	/**
@@ -255,12 +261,14 @@ abstract class Model {
 	 * @return array|object|void|null
 	 */
 	public function find( $id ) {
+		$valid_outputs = [ 'ARRAY_A', 'ARRAY_N', 'OBJECT' ];
+		$output        = in_array( $this->output, $valid_outputs, true ) ? $this->output : 'OBJECT';
 		return $this->db->get_row(
 			$this->db->prepare(
 				"SELECT * FROM {$this->table} WHERE {$this->primary_id} = %d",
 				$id
 			),
-			$this->output
+			$output
 		);
 	}
 
@@ -273,7 +281,10 @@ abstract class Model {
 	 * @return array|object|void|null
 	 */
 	public function get_row( $query = null, $y = 0 ) {
-		return $this->db->get_row( $query, $this->output, $y );
+		$valid_outputs = [ 'ARRAY_A', 'ARRAY_N', 'OBJECT' ];
+		$output        = in_array( $this->output, $valid_outputs, true ) ? $this->output : 'OBJECT';
+		$y             = max( 0, (int) $y );
+		return $this->db->get_row( $query, $output, $y );
 	}
 
 	/**

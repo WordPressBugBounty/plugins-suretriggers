@@ -143,7 +143,7 @@ class LatePoint extends Integrations {
 		$booking->set_data( $booking_params );
 
 		// Set custom end time/date if it was passed in params.
-		if ( isset( $booking_params['end_time']['formatted_value'] ) ) { // @phpstan-ignore-line
+		if ( isset( $booking_params['end_time']['formatted_value'] ) ) {
 			$booking->set_custom_end_time_and_date( $booking_params );
 		}
 

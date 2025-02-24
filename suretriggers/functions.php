@@ -114,7 +114,7 @@ function suretrigger_button( $atts, $content = null ) {
 		<input type="hidden" name="st_clicked_label" value="<?php echo esc_attr( $atts['after_clicked_label'] ); ?>"/>
 		<input type="hidden" name="action" value="handle_trigger_button_click"/>
 		<input type="hidden" name="st_cookie_duration" value="<?php echo esc_attr( $atts['cookie_duration'] ); ?>"/>
-		<input type="hidden" name="st_user_id" value="<?php echo esc_attr( $user_id ); ?>"/>
+		<input type="hidden" name="st_user_id" value="<?php echo esc_attr( (string) $user_id ); ?>"/>
 		<?php
 		global $post;
 		if ( ! empty( $post ) && is_object( $post ) && isset( $post->ID ) && isset( $post->post_title ) ) {

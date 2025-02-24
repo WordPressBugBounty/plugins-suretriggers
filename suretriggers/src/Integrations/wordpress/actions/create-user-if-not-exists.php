@@ -72,7 +72,8 @@ class CreateUserIfNotExists extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$email = sanitize_email( $selected_options['user_email'] );
+		$email     = sanitize_email( $selected_options['user_email'] );
+		$user_name = sanitize_text_field( $selected_options['user_name'] );
 
 		/**
 		 * User Data
@@ -94,6 +95,9 @@ class CreateUserIfNotExists extends AutomateAction {
 		$show_password  = $selected_options['show_password'];
 
 		$user = get_user_by( 'email', $email );
+		if ( ! $user ) {
+			$user = get_user_by( 'login', $user_name );
+		}
 		
 		if ( $user ) {
 			$user_id        = $user->ID;
@@ -190,6 +194,8 @@ class CreateUserIfNotExists extends AutomateAction {
 					update_user_meta( $user_id, $meta['metaKey'], $meta_value );
 				}
 			}
+		} else {
+			return $user_id->errors;
 		}
 		
 		if ( $user_id ) {
@@ -210,7 +216,7 @@ class CreateUserIfNotExists extends AutomateAction {
 			}       
 		}
 			
-		return [];
+		return [ 'error' => 'No user has been created or updated' ];
 
 	}
 }
