@@ -108,27 +108,42 @@ if ( ! class_exists( 'TopicCreated' ) ) :
 			];
 
 			$topic = [
+				'topic'             => $topic_id,
 				'topic_title'       => $topic,
 				'topic_link'        => $topic_link,
 				'topic_description' => $topic_description,
 				'topic_status'      => $topic_status,
 			];
 			
-			$user_id = ap_get_current_user_id();
-			if ( is_int( $user_id ) ) {
-				$context = array_merge(
-					WordPress::get_user_context( $user_id ),
-					$forum,
-					$topic
-				);
+			$user_id = $topic_author;
+			if ( is_int( $user_id ) ) { 
+				$user_context = WordPress::get_user_context( $user_id );
+				$context      = [];
+			
+				if ( is_array( $user_context ) ) {
+					$context = array_merge( $context, $user_context );
+				}
+				if ( is_array( $forum ) ) {
+					$context = array_merge( $context, $forum );
+				}
+				if ( is_array( $topic ) ) {
+					$context = array_merge( $context, $topic );
+				}
+				if ( is_array( $anonymous_data ) ) {
+					$context = array_merge( $context, $anonymous_data );
+				}
 			} else {
-				$context = array_merge(
-					$anonymous_data,
-					$forum,
-					$topic
-				);
+				$context = [];
+				if ( is_array( $anonymous_data ) ) {
+					$context = array_merge( $context, $anonymous_data );
+				}
+				if ( is_array( $forum ) ) {
+					$context = array_merge( $context, $forum );
+				}
+				if ( is_array( $topic ) ) {
+					$context = array_merge( $context, $topic );
+				}
 			}
-		
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger' => $this->trigger,

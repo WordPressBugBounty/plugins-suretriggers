@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.73
+Stable tag: 1.0.74
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,11 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 6. Create new connections to create your automations.
 
 == Changelog ==
+= Version 1.0.74 - Thursday, 27th February 2025 =
+* Improvement: "LatePoint" - Added Coupon Actions & Group Booking Support in Booking Actions
+* Improvement: Enhanced WordPress connection reliability by pinging our server twice and sending a notification if no ping is received
+* Improvement: "bbPress" - Added response data improvements in "Topic Created" and "Reply To Topic" Triggers
+
 = Version 1.0.73 - Monday, 24th February 2025 =
 * Improvement: "Fluent Support" - Added new "Block User" Action
 * Improvement: "Easy Digital Downloads" - Added improvement for "User has purchased a download" Action

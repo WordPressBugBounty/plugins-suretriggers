@@ -81,8 +81,26 @@ class RestController {
 			],
 			'sslverify' => false,
 		];
-		$response = wp_remote_post( SURE_TRIGGERS_WEBHOOK_SERVER_URL . '/token/verify', $args );
+		$response = wp_remote_post( SURE_TRIGGERS_API_SERVER_URL . '/token/verify', $args );
 
+		return $response;
+	}
+
+	/**
+	 * Verify connection.
+	 * 
+	 * @return  array|WP_Error $response Response.
+	 */
+	public static function suretriggers_verify_wp_connection() {
+		$args     = [
+			'body'      => [
+				'saas-token'     => SaasApiToken::get(),
+				'base_url'       => str_replace( '/wp-json/', '', get_rest_url() ),
+				'plugin_version' => SURE_TRIGGERS_VER,
+			],
+			'sslverify' => false,
+		];
+		$response = wp_remote_post( SURE_TRIGGERS_API_SERVER_URL . '/connection/wordpress/ping', $args );
 		return $response;
 	}
 

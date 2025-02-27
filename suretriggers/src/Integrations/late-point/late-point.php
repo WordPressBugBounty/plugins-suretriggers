@@ -113,6 +113,7 @@ class LatePoint extends Integrations {
 			'agent_id'         => isset( $selected_options['agent_id'] ) ? $selected_options['agent_id'] : null,
 			'location_id'      => isset( $selected_options['agent_id'] ) ? $selected_options['agent_id'] : null,
 			'status'           => isset( $selected_options['status'] ) ? $selected_options['status'] : '',
+			'total_attendees'  => isset( $selected_options['total_attendees'] ) ? $selected_options['total_attendees'] : 1,
 			'service_id'       => isset( $selected_options['service_id'] ) ? $selected_options['service_id'] : null,
 			'start_date'       => $start_date,
 			'start_time'       => $start_time,
@@ -136,9 +137,8 @@ class LatePoint extends Integrations {
 			}
 		}
 
-		$total_attendies                   = isset( $booking_custom_fields['total_attendies'] ) ? $booking_custom_fields['total_attendies'] : 1;
-		$booking_params['total_attendies'] = $total_attendies;
-		$booking_params['custom_fields']   = $booking_custom_fields;
+		
+		$booking_params['custom_fields'] = $booking_custom_fields;
 
 		$booking->set_data( $booking_params );
 
@@ -254,7 +254,7 @@ class LatePoint extends Integrations {
 		}
 		$return_data                    = $booking->get_data_vars();
 		$return_data['order']           = $order->get_data_vars();
-		$return_data['total_attendies'] = $total_attendies;
+		$return_data['total_attendees'] = $selected_options['total_attendees'];
 		return $return_data;
 	}
 

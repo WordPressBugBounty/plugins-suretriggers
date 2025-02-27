@@ -66,6 +66,8 @@ class Loader {
 
 		add_action( 'admin_notices', [ $this, 'display_notice' ] );
 
+		add_action( 'all_admin_notices', [ $this, 'suretriggers_show_api_connection_error' ] );
+
 		add_action( 'wp_dashboard_setup', [ $this, 'add_dashboard_widgets' ] );
 
 		// Remove Webhook Requests retry cron and requests table.
@@ -140,6 +142,53 @@ class Loader {
 	}
 
 	/**
+	 * Show Connection Error Admin Notice.
+	 * 
+	 * @return void
+	 */
+	public function suretriggers_show_api_connection_error() {
+		global $pagenow;
+		if ( 'index.php' != $pagenow ) {
+			return;
+		}
+		$notice = get_option( 'suretriggers_verify_connection' );
+		// If empty option value for connection status, then verify the connection.
+		if ( empty( $notice ) ) {
+			$connection_status      = RestController::suretriggers_verify_wp_connection();
+			$connection_status_code = wp_remote_retrieve_response_code( $connection_status );
+			if ( is_wp_error( $connection_status ) ) {
+				update_option( 'suretriggers_verify_connection', 'suretriggers_connection_wp_error' );
+			} else {
+				if ( 200 !== $connection_status_code ) {
+					update_option( 'suretriggers_verify_connection', 'suretriggers_connection_error' );
+				} else {
+					update_option( 'suretriggers_verify_connection', 'suretriggers_connection_successful' );
+				}
+			}
+		}
+		$notice = get_option( 'suretriggers_verify_connection' );
+		if ( 'suretriggers_connection_successful' != $notice ) {
+			// If connection status is not successful, then show the notice.
+			?>
+			<div class="notice notice-error is-dismissible">
+				<p>
+					<strong>
+						<?php esc_html_e( 'SureTriggers Connection Issue', 'suretriggers' ); ?>
+						<span style="transform: rotate(-180deg); font-size: 20px;" class="dashicons dashicons-warning"></span>
+					</strong>
+				</p>
+				<p>
+					<?php esc_html_e( 'There is an issue with the established connection between WordPress and SureTriggers. Please visit the SureTriggers dashboard to verify and re-establish the connection if necessary.', 'suretriggers' ); ?>
+				</p>
+				<p>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-secondary"> <?php esc_html_e( 'Go To SureTriggers', 'suretriggers' ); ?> </a>
+				</p>
+			</div>
+			<?php
+		}
+	}
+
+	/**
 	 * Redirect user after plugin activation.
 	 *
 	 * @return void
@@ -186,8 +235,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.73' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.73' );
+		define( 'SURE_TRIGGERS_VER', '1.0.74' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.0.74' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -609,10 +658,22 @@ class Loader {
 			$st_bsf_analytics->set_entity(
 				[
 					'suretriggers' => [
-						'product_name'    => 'SureTriggers',
-						'path'            => SURE_TRIGGERS_DIR . 'inc/lib/bsf-analytics',
-						'author'          => 'SureTriggers',
-						'time_to_display' => '+24 hours',
+						'product_name'        => 'SureTriggers',
+						'path'                => SURE_TRIGGERS_DIR . 'inc/lib/bsf-analytics',
+						'author'              => 'SureTriggers',
+						'time_to_display'     => '+24 hours',
+						'deactivation_survey' => [
+							[
+								'id'                => 'deactivation-survey-suretriggers',
+								'popup_logo'        => SURE_TRIGGERS_URL . 'assets/images/STLogo.svg',
+								'plugin_slug'       => 'suretriggers',
+								'plugin_version'    => SURE_TRIGGERS_VER,
+								'popup_title'       => __( 'Quick Feedback', 'suretriggers' ),
+								'support_url'       => 'https://suretriggers.com/support/',
+								'popup_description' => __( 'If you have a moment, please share why you are deactivating SureTriggers:', 'suretriggers' ),
+								'show_on_screens'   => [ 'plugins' ],
+							],
+						],
 					],
 				]
 			);

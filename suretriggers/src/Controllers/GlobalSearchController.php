@@ -10876,6 +10876,7 @@ class GlobalSearchController {
 				];
 
 				$topic = [
+					'topic'             => $topic_id,
 					'topic_title'       => $topic,
 					'topic_link'        => $topic_link,
 					'topic_description' => $topic_description,
@@ -10934,6 +10935,7 @@ class GlobalSearchController {
 				];
 
 				$topic = [
+					'topic'             => $topic_id,
 					'topic_title'       => $topic,
 					'topic_link'        => $topic_link,
 					'topic_description' => $topic_description,

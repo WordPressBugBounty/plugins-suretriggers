@@ -73,7 +73,7 @@ if ( ! class_exists( 'ReplyToTopic' ) ) :
 				'common_action' => 'bbp_new_reply',
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
-				'accepted_args' => 3,
+				'accepted_args' => 5,
 			];
 
 			return $triggers;
@@ -82,13 +82,15 @@ if ( ! class_exists( 'ReplyToTopic' ) ) :
 		/**
 		 *  Trigger listener
 		 *
-		 * @param int $reply_id reply id.
-		 * @param int $topic_id topic id.
-		 * @param int $forum_id forum id.
+		 * @param int   $reply_id reply id.
+		 * @param int   $topic_id topic id.
+		 * @param int   $forum_id forum id.
+		 * @param array $anonymous_data $anonymous_data.
+		 * @param int   $user_id $user_id.
 		 *
 		 * @return void
 		 */
-		public function trigger_listener( $reply_id, $topic_id, $forum_id ) {
+		public function trigger_listener( $reply_id, $topic_id, $forum_id, $anonymous_data, $user_id ) {
 			$topic             = get_the_title( $topic_id );
 			$topic_link        = get_the_permalink( $topic_id );
 			$topic_description = get_the_content( null, false, $topic_id );
@@ -126,26 +128,45 @@ if ( ! class_exists( 'ReplyToTopic' ) ) :
 				'reply_status'      => $reply_status,
 			];
 
-			$user_id = ap_get_current_user_id();
-			if ( is_int( $user_id ) ) {
-				$context = array_merge(
-					WordPress::get_user_context( $user_id ),
-					$forum,
-					$topic,
-					$reply
-				);
+			
+			if ( is_int( $user_id ) ) { 
+				$user_context = WordPress::get_user_context( $user_id );
+				$context      = [];
+			
+				if ( is_array( $user_context ) ) {
+					$context = array_merge( $context, $user_context );
+				}
+				if ( is_array( $forum ) ) {
+					$context = array_merge( $context, $forum );
+				}
+				if ( is_array( $topic ) ) {
+					$context = array_merge( $context, $topic );
+				}
+				if ( is_array( $reply ) ) {
+					$context = array_merge( $context, $reply );
+				}
+				if ( is_array( $anonymous_data ) ) {
+					$context = array_merge( $context, $anonymous_data );
+				}
 			} else {
 				$anonymous_data = [
 					'bbp_anonymous_name'    => get_post_meta( $reply_id, '_bbp_anonymous_name', true ),
 					'bbp_anonymous_email'   => get_post_meta( $reply_id, '_bbp_anonymous_email', true ),
 					'bbp_anonymous_website' => get_post_meta( $reply_id, '_bbp_anonymous_website', true ),
 				];
-				$context        = array_merge(
-					$anonymous_data,
-					$forum,
-					$topic,
-					$reply
-				);
+				$context        = [];
+				if ( is_array( $forum ) ) {
+					$context = array_merge( $context, $forum );
+				}
+				if ( is_array( $topic ) ) {
+					$context = array_merge( $context, $topic );
+				}
+				if ( is_array( $reply ) ) {
+					$context = array_merge( $context, $reply );
+				}
+				if ( is_array( $anonymous_data ) ) {
+					$context = array_merge( $context, $anonymous_data );
+				}
 			}
 		
 			AutomationController::sure_trigger_handle_trigger(

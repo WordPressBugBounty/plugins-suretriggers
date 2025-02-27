@@ -252,7 +252,10 @@ $list_table = new SureTriggersWebhookRequestsTable( $table_name );
 		}
 	}   
 	$list_table->prepare_items(); 
-	$list_table->display(); 
+	$list_table->display();
+	echo '<div style="margin-top: 10px;">
+        <p style="font-style: italic;color: #666;margin-left: 55%;">Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be automatically deleted after 60 days.</p>
+    </div>';
 	?>
 </form>
 <script type="text/javascript">
