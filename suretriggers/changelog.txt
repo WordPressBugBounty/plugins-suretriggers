@@ -1,3 +1,10 @@
+Version 1.0.75 - Tuesday, 11th March 2025
+- New: Added "FluentCommunity" Integration
+- Improvement: "SureMail" - Added new "Mail Blocked" Trigger
+- Improvement: "WordPress" - Added new "Find Posts" and "Add Taxonomy to Post" Actions
+- Improvement: "WordPress" - Added improvement of featured image in "Post Created / Updated" Trigger
+- Improvement: Added new endpoint for connection creation with SureTriggers
+
 Version 1.0.74 - Thursday, 27th February 2025
 - Improvement: "LatePoint" - Added Coupon Actions & Group Booking Support in Booking Actions
 - Improvement: Enhanced WordPress connection reliability by pinging our server twice and sending a notification if no ping is received

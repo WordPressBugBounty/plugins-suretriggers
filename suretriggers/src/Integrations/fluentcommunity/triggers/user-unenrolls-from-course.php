@@ -15,6 +15,7 @@ namespace SureTriggers\Integrations\FluentCommunity\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Traits\SingletonLoader;
+use SureTriggers\Integrations\WordPress\WordPress;
 
 if ( ! class_exists( 'UserUnenrollsFromCourse' ) ) :
 
@@ -85,6 +86,7 @@ if ( ! class_exists( 'UserUnenrollsFromCourse' ) ) :
 			$context = [
 				'course' => $course,
 				'userId' => $user_id,
+				'user'   => WordPress::get_user_context( $user_id ),
 			];
 
 			AutomationController::sure_trigger_handle_trigger(

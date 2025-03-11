@@ -67,8 +67,7 @@ if ( ! class_exists( 'CourseUpdated' ) ) :
 
 			// Prepare context with the course object.
 			$context = [
-				'course'     => $course,
-				'updatedata' => $update_data,
+				'course' => $course,
 			];
 
 			AutomationController::sure_trigger_handle_trigger(

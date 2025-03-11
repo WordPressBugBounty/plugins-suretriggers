@@ -15,6 +15,7 @@ namespace SureTriggers\Integrations\FluentCommunity\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Traits\SingletonLoader;
+use SureTriggers\Integrations\WordPress\WordPress;
 
 if ( ! class_exists( 'UserLeavesSpace' ) ) :
 
@@ -87,6 +88,7 @@ if ( ! class_exists( 'UserLeavesSpace' ) ) :
 				'space'  => $space,
 				'userId' => $user_id,
 				'by'     => $by,
+				'user'   => WordPress::get_user_context( $user_id ),
 			];
 
 			AutomationController::sure_trigger_handle_trigger(

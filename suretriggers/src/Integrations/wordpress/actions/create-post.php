@@ -172,14 +172,13 @@ class CreatePost extends AutomateAction {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 			require_once ABSPATH . 'wp-admin/includes/image.php';
 
-			// Prevents double image downloading.
 			$existing_media_id = absint( attachment_url_to_postid( $image_url ) ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.attachment_url_to_postid_attachment_url_to_postid
 
 			if ( 0 !== $existing_media_id ) {
-				$image_url = $existing_media_id;
+				$attachment_id = $existing_media_id;
+			} else {
+				$attachment_id = media_sideload_image( $image_url, $post_id, null, 'id' );
 			}
-
-			$attachment_id = media_sideload_image( $image_url, $post_id, null, 'id' );
 			if ( isset( $selected_options['featured_image'] ) && ! $attachment_id || is_wp_error( $attachment_id ) ) {
 
 				return (object) [
@@ -189,8 +188,7 @@ class CreatePost extends AutomateAction {
 					
 				];
 			}
-
-			// Assign the downloaded attachment ID to the post.
+			
 			set_post_thumbnail( $post_id, $attachment_id );
 		}
 		$featured_image_url = get_the_post_thumbnail_url( $post_id, 'full' );

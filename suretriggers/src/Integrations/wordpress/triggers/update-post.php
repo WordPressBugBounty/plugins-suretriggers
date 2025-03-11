@@ -112,6 +112,8 @@ if ( ! class_exists( 'UpdatePost' ) ) :
 				$featured_image = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post_ID ), 'full' )[0]; // @phpstan-ignore-line
 				if ( ! empty( $featured_image ) && is_array( $featured_image ) ) {
 					$context['featured_image'] = $featured_image[0];
+				} else {
+					$context['featured_image'] = $featured_image;
 				}
 				if ( $post instanceof WP_Post ) {
 					$taxonomies = get_object_taxonomies( $post, 'objects' );

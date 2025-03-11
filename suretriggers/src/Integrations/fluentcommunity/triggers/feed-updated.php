@@ -67,7 +67,7 @@ if ( ! class_exists( 'FeedUpdated' ) ) :
 				'common_action' => 'fluent_community/feed/updated',
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
-				'accepted_args' => 1,
+				'accepted_args' => 2,
 			];
 
 			return $triggers;
@@ -89,8 +89,7 @@ if ( ! class_exists( 'FeedUpdated' ) ) :
 
 			// Prepare the context data for automation handling.
 			$context = [
-				'feed'       => $feed,
-				'updatedata' => $update_data,
+				'feed' => $feed,
 			];
 
 			AutomationController::sure_trigger_handle_trigger(
