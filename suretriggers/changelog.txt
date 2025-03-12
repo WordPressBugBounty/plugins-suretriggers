@@ -1,3 +1,6 @@
+Version 1.0.76 - Wednesday, 12th March 2025
+- Fixed: Added improvement to REST API route registration
+
 Version 1.0.75 - Tuesday, 11th March 2025
 - New: Added "FluentCommunity" Integration
 - Improvement: "SureMail" - Added new "Mail Blocked" Trigger

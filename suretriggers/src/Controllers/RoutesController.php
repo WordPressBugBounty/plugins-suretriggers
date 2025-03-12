@@ -77,8 +77,9 @@ class RoutesController {
 			SURE_TRIGGERS_REST_NAMESPACE,
 			'connection/create-wp-connection',
 			[
-				'methods'  => WP_REST_Server::CREATABLE,
-				'callback' => [ $rest_controller_obj, 'create_wp_connection' ],
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $rest_controller_obj, 'create_wp_connection' ],
+				'permission_callback' => '__return_true',
 			]
 		);
 

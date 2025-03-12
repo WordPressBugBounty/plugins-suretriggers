@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.75
+Stable tag: 1.0.76
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,9 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 6. Create new connections to create your automations.
 
 == Changelog ==
+= Version 1.0.76 - Wednesday, 12th March 2025 =
+* Fixed: Added improvement to REST API route registration
+
 = Version 1.0.75 - Tuesday, 11th March 2025 =
 * New: Added "FluentCommunity" Integration
 * Improvement: "SureMail" - Added new "Mail Blocked" Trigger
