@@ -1,3 +1,9 @@
+Version 1.0.77 - Tuesday, 18th March 2025 
+- Improvement: "LearnDash" - Added new "Find User Groups" Action
+- Improvement: "LearnPress" - Added improvements in "Enroll User to Course" and "Remove User from course" Actions
+- Improvement: "WordPress" - Added empty response improvements in "Assign Role To User" and "Remove Role from User" Actions
+- Improvement: "LatePoint" - Added new "Create Bundle Order" Action
+
 Version 1.0.76 - Wednesday, 12th March 2025
 - Fixed: Added improvement to REST API route registration
 

@@ -70,7 +70,7 @@ class RemoveRole extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
 	 * @throws Exception Exception.
-	 * @return bool
+	 * @return bool|array
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		$field = reset( $fields );
@@ -80,7 +80,7 @@ class RemoveRole extends AutomateAction {
 		}
 
 		$user->remove_role( $selected_options[ $field['name'] ] );
-		return true;
+		return (array) $user;
 	}
 
 }

@@ -75,7 +75,10 @@ class LpRemoveUserCourse extends AutomateAction {
 		$course_id = $selected_options['course'];
 		$user_id   = $selected_options['wp_user_email'];
 		if ( ! function_exists( 'learn_press_delete_user_data' ) ) {
-			return;
+			return [
+				'success' => false,
+				'message' => 'LearnPress plugin function does not exist.',
+			];
 		}
 
 		if ( is_email( $user_id ) ) {

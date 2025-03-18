@@ -16655,6 +16655,34 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * Prepare LatePoint Bundles List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_lp_bundles_list( $data ) {
+		global $wpdb;
+	
+		$bundles = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}latepoint_bundles", ARRAY_A );
+	
+		$options = [];
+	
+		if ( ! empty( $bundles ) ) {
+			foreach ( $bundles as $bundle ) {
+				$options[] = [
+					'label' => $bundle['name'],
+					'value' => $bundle['id'],
+				];
+			}
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}   
+
+	/**
 	 * Prepare LatePoint Agents List.
 	 *
 	 * @param array $data Search Params.

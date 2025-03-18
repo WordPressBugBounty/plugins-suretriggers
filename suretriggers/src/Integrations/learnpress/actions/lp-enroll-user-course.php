@@ -74,11 +74,14 @@ class LpEnrollUserCourse extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		$course_id = $selected_options['course'];
 		$user_id   = $selected_options['wp_user_email'];
-		if ( ! function_exists( 'learn_press_get_user' ) || ! function_exists( 'learn_press_default_order_status' ) || 
+		if ( ! function_exists( 'learn_press_get_user' ) || 
 		! function_exists( 'learn_press_get_course' ) || ! function_exists( 'learn_press_get_ip' ) ||
 		! function_exists( 'learn_press_get_user_agent' ) || ! class_exists( '\LP_User_Item_Course' ) || 
 		! class_exists( 'LP_Order' ) ) {
-			return;
+			return [
+				'success' => false,
+				'message' => 'LearnPress plugin class and functions does not exist.',
+			];
 		}
 
 		if ( is_email( $user_id ) ) {
@@ -94,7 +97,7 @@ class LpEnrollUserCourse extends AutomateAction {
 				if ( $course && $course->exists() ) {
 					$order = new LP_Order();
 					$order->set_customer_note( __( 'Order created by SureTriggers', 'suretriggers' ) );
-					$order->set_status( learn_press_default_order_status( 'lp-' ) );
+					$order->set_status( 'pending' );
 					$order->set_total( 0 );
 					$order->set_subtotal( 0 );
 					$order->set_user_ip_address( learn_press_get_ip() );

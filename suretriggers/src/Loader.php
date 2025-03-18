@@ -148,12 +148,12 @@ class Loader {
 	 */
 	public function suretriggers_show_api_connection_error() {
 		global $pagenow;
-		if ( 'index.php' != $pagenow ) {
+		if ( 'index.php' != $pagenow || ! isset( OptionController::$options['secret_key'] ) ) {
 			return;
 		}
 		$notice = get_option( 'suretriggers_verify_connection' );
 		// If empty option value for connection status, then verify the connection.
-		if ( empty( $notice ) ) {
+		if ( empty( $notice ) || 'suretriggers_connection_successful' != $notice ) {
 			$connection_status      = RestController::suretriggers_verify_wp_connection();
 			$connection_status_code = wp_remote_retrieve_response_code( $connection_status );
 			if ( is_wp_error( $connection_status ) ) {
@@ -235,8 +235,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.76' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.76' );
+		define( 'SURE_TRIGGERS_VER', '1.0.77' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.0.77' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
