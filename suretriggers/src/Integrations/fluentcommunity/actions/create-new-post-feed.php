@@ -63,9 +63,9 @@ class CreateNewPostFeed extends AutomateAction {
 	/**
 	 * Action listener.
 	 *
-	 * @param int   $user_id         User ID.
-	 * @param int   $automation_id   Automation ID.
-	 * @param array $fields          Fields.
+	 * @param int   $user_id        User ID.
+	 * @param int   $automation_id  Automation ID.
+	 * @param array $fields         Fields.
 	 * @param array $selected_options Selected options.
 	 *
 	 * @return array|void
@@ -74,18 +74,19 @@ class CreateNewPostFeed extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		// Sanitize inputs.
-		$space_id = isset( $selected_options['space_id'] ) ? (int) sanitize_text_field( $selected_options['space_id'] ) : 0;
-		$user_id  = isset( $selected_options['user_id'] ) ? (int) $selected_options['user_id'] : 0;
-
-		$title     = isset( $selected_options['title'] ) ? sanitize_text_field( $selected_options['title'] ) : '';
-		$message   = isset( $selected_options['message'] ) ? sanitize_textarea_field( $selected_options['message'] ) : '';
-		$media_url = isset( $selected_options['media_url'] ) ? $selected_options['media_url'] : '';
-
+		$space_id   = isset( $selected_options['space_id'] ) ? (int) sanitize_text_field( $selected_options['space_id'] ) : 0;
+		$user_email = isset( $selected_options['user_email'] ) ? sanitize_email( $selected_options['user_email'] ) : '';
+		$title      = isset( $selected_options['title'] ) ? sanitize_text_field( $selected_options['title'] ) : '';
+		$message    = isset( $selected_options['message'] ) ? sanitize_textarea_field( $selected_options['message'] ) : '';
+		$media_url  = isset( $selected_options['media_url'] ) ? $selected_options['media_url'] : '';
+	
 		// Validate user ID.
-		if ( ! $this->is_valid_user( $user_id ) ) {
+		$user = get_user_by( 'email', $user_email );
+   
+		if ( ! $user ) {
 			return [
 				'status'  => 'error',
-				'message' => 'Invalid User ID.',
+				'message' => 'User not found with the provided email.',
 			];
 		}
 
@@ -101,7 +102,7 @@ class CreateNewPostFeed extends AutomateAction {
 			'message'  => $message,
 			'title'    => $title,
 			'space_id' => (int) $space_id,
-			'user_id'  => $user_id,
+			'user_id'  => $user->ID,
 		];
 
 		if ( ! empty( $media_url ) ) {
@@ -127,30 +128,33 @@ class CreateNewPostFeed extends AutomateAction {
 				'message' => $feed->get_error_message(),
 			];
 		}
+	
+		$topic_id   = [];
+		$topic_name = [];
+		// Attach topics to the feed.
+		if ( isset( $selected_options['topic_ids'] ) && is_array( $selected_options['topic_ids'] ) && ! empty( $selected_options['topic_ids'] ) && is_object( $feed ) && method_exists( $feed, 'attachTopics' ) ) {
+			foreach ( $selected_options['topic_ids'] as $topic ) {
+				$topic_id[]   = $topic['value'];
+				$topic_name[] = esc_html( $topic['label'] );
+			}
+
+			$feed->attachTopics( $topic_id );
+		}
+
 
 		return [
 			'status'   => 'success',
 			'response' => 'Post created in feed successfully',
 			'space_id' => $space_id,
-			'user_id'  => $user_id,
+			'user_id'  => $user->ID,
 			'feed_id'  => $feed->id,
 			'title'    => $title,
 			'message'  => $message,
 			'feed_url' => $feed->getPermalink(),
+			'topics'   => $topic_id,
 		];
 	}
 
-	/**
-	 * Check if user ID is valid.
-	 *
-	 * @param mixed $user_id User ID.
-	 *
-	 * @return bool
-	 */
-	private function is_valid_user( $user_id ) {
-		// Check if user_id is a valid integer and exists in the system.
-		return ( is_int( $user_id ) && (bool) get_user_by( 'id', $user_id ) );
-	}
 
 	/**
 	 * Check if space ID is valid.
@@ -164,6 +168,7 @@ class CreateNewPostFeed extends AutomateAction {
 		$space = $wpdb->get_row( $wpdb->prepare( "SELECT ID FROM {$wpdb->prefix}fcom_spaces WHERE ID = %d", $space_id ) );
 		return (bool) $space;
 	}
+
 }
 
 CreateNewPostFeed::get_instance();

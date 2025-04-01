@@ -103,6 +103,8 @@ if ( ! class_exists( 'UserSubmitsSpecificFieldGravityForm' ) ) :
 			$context['user_ip']               = $entry['ip'];
 			$context['entry_source_url']      = $entry['source_url'];
 			$context['entry_submission_date'] = $entry['date_created'];
+			
+			$field_values = [];
 			foreach ( $form['fields'] as $field ) {
 				$inputs = $field->get_entry_inputs();
 				if ( is_array( $inputs ) ) {
@@ -117,7 +119,14 @@ if ( ! class_exists( 'UserSubmitsSpecificFieldGravityForm' ) ) :
 									$context[ 'form_field_' . $label_key ] = $comma_separated;
 								}
 							}
-							$context[ $label_key ] = rgar( $entry, (string) $input['id'] );
+							if ( isset( $field_values[ $label_key ] ) ) {
+								if ( ! is_array( $field_values[ $label_key ] ) ) {
+									$field_values[ $label_key ] = [ $field_values[ $label_key ] ];
+								}
+								$field_values[ $label_key ][] = rgar( $entry, (string) $input['id'] );
+							} else {
+								$field_values[ $label_key ] = rgar( $entry, (string) $input['id'] );
+							}
 						}
 					}
 				} else {
@@ -130,9 +139,18 @@ if ( ! class_exists( 'UserSubmitsSpecificFieldGravityForm' ) ) :
 							$context[ 'form_field_' . $label_key ] = $comma_separated;
 						}
 					}
-					$context[ $label_key ] = rgar( $entry, (string) $field->id );
+					if ( isset( $field_values[ $label_key ] ) ) {
+						if ( ! is_array( $field_values[ $label_key ] ) ) {
+							$field_values[ $label_key ] = [ $field_values[ $label_key ] ];
+						}
+						$field_values[ $label_key ][] = rgar( $entry, (string) $field->id );
+					} else {
+						$field_values[ $label_key ] = rgar( $entry, (string) $field->id );
+					}
 				}
 			}
+			$context = array_merge( $context, $field_values );
+			
 			foreach ( $form['fields'] as $field ) {
 				$inputs = $field->get_entry_inputs();
 				if ( is_array( $inputs ) ) {
@@ -160,6 +178,7 @@ if ( ! class_exists( 'UserSubmitsSpecificFieldGravityForm' ) ) :
 				}
 			}
 		}
+
 	}
 
 	/**

@@ -149,6 +149,7 @@ class RestController {
 				'base_url'   => str_replace( '/wp-json/', '', get_rest_url() ),
 			],
 			'sslverify' => false,
+			'timeout'   => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		$response = wp_remote_post( SURE_TRIGGERS_API_SERVER_URL . '/token/verify', $args );
 
@@ -168,6 +169,7 @@ class RestController {
 				'plugin_version' => SURE_TRIGGERS_VER,
 			],
 			'sslverify' => false,
+			'timeout'   => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		$response = wp_remote_post( SURE_TRIGGERS_API_SERVER_URL . '/connection/wordpress/ping', $args );
 		return $response;
@@ -401,6 +403,7 @@ class RestController {
 			],
 			'body'      => json_decode( wp_json_encode( $trigger_data ), 1 ),
 			'sslverify' => false,
+			'timeout'   => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		
 		/**

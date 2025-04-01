@@ -77,10 +77,10 @@ class AddUserToSpace extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		// Sanitize inputs.
-		$space_id = isset( $selected_options['space_id'] ) ? (int) sanitize_text_field( $selected_options['space_id'] ) : 0;
-		$user_id  = isset( $selected_options['user_id'] ) ? (int) sanitize_text_field( $selected_options['user_id'] ) : 0;
-		$role     = isset( $selected_options['role'] ) ? sanitize_text_field( $selected_options['role'] ) : '';
-		$by       = 'by_automation';
+		$space_id   = isset( $selected_options['space_id'] ) ? (int) sanitize_text_field( $selected_options['space_id'] ) : 0;
+		$user_email = isset( $selected_options['user_email'] ) ? sanitize_email( $selected_options['user_email'] ) : '';
+		$role       = isset( $selected_options['role'] ) ? sanitize_text_field( $selected_options['role'] ) : '';
+		$by         = 'by_automation';
 
 		// Check if class exists.
 		if ( ! class_exists( 'FluentCommunity\App\Services\Helper' ) ) {
@@ -90,11 +90,12 @@ class AddUserToSpace extends AutomateAction {
 			];
 		}
 
-		// Validate user ID.
-		if ( ! $this->is_valid_user( $user_id ) ) {
+		$user = get_user_by( 'email', $user_email );
+
+		if ( ! $user ) {
 			return [
 				'status'  => 'error',
-				'message' => 'Invalid User ID.',
+				'message' => 'User not found with the provided email.',
 			];
 		}
 
@@ -108,7 +109,7 @@ class AddUserToSpace extends AutomateAction {
 
 		// Add user to space.
 		try {
-			Helper::addToSpace( $space_id, $user_id, $role, $by );
+			Helper::addToSpace( $space_id, $user->ID, $role, $by );
 		} catch ( Exception $e ) {
 			return [
 				'status'  => 'error',
@@ -120,21 +121,11 @@ class AddUserToSpace extends AutomateAction {
 			'status'   => 'success',
 			'message'  => 'User added to space successfully',
 			'space_id' => $space_id,
-			'user_id'  => $user_id,
+			'user_id'  => $user->ID,
 			'role'     => $role,
 		];
 	}
 
-	/**
-	 * Helper function to check if user ID is valid.
-	 *
-	 * @param int $user_id User ID.
-	 * @return bool True if valid, false otherwise.
-	 */
-	private function is_valid_user( $user_id ) {
-		$user = get_userdata( $user_id );
-		return ( $user ) ? true : false;
-	}
 
 	/**
 	 * Helper function to check if space ID is valid.

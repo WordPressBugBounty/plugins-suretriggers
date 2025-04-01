@@ -112,7 +112,15 @@ if ( ! class_exists( 'UserSubmitsGravityForm' ) ) :
 									$context[ 'form_field_' . $label_key ] = $comma_separated;
 								}
 							}
-							$context[ $label_key ] = rgar( $entry, (string) $input['id'] );
+							$value = rgar( $entry, (string) $input['id'] );
+							if ( isset( $context[ $label_key ] ) ) {
+								if ( ! is_array( $context[ $label_key ] ) ) {
+									$context[ $label_key ] = [ $context[ $label_key ] ];
+								}
+								$context[ $label_key ][] = $value;
+							} else {
+								$context[ $label_key ] = $value;
+							}
 						}
 					}
 				} else {
@@ -125,7 +133,15 @@ if ( ! class_exists( 'UserSubmitsGravityForm' ) ) :
 							$context[ 'form_field_' . $label_key ] = $comma_separated;
 						}
 					}
-					$context[ $label_key ] = rgar( $entry, (string) $field->id );
+					$value = rgar( $entry, (string) $field->id );
+					if ( isset( $context[ $label_key ] ) ) {
+						if ( ! is_array( $context[ $label_key ] ) ) {
+							$context[ $label_key ] = [ $context[ $label_key ] ];
+						}
+						$context[ $label_key ][] = $value;
+					} else {
+						$context[ $label_key ] = $value;
+					}
 				}
 			}
 
@@ -144,6 +160,7 @@ if ( ! class_exists( 'UserSubmitsGravityForm' ) ) :
 				]
 			);
 		}
+
 	}
 
 	/**

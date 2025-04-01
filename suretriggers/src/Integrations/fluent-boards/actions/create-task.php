@@ -16,6 +16,7 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
+
 /**
  * CreateTask
  *
@@ -102,7 +103,7 @@ class CreateTask extends AutomateAction {
 			if ( ! function_exists( 'FluentBoardsApi' ) ) {
 				return;
 			}
-
+			
 			$task = FluentBoardsApi( 'tasks' )->create( $task_data );
 			if ( empty( $task ) ) {
 				throw new Exception( 'There is error while creating a Task.' );

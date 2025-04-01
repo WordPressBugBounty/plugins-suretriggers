@@ -1,9 +1,9 @@
 <?php
 /**
- * AddUserToBoard.
+ * ListTasks.
  * php version 5.6
  *
- * @category AddUserToBoard
+ * @category ListTasks
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -16,19 +16,18 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
-use FluentBoards\App\Services\BoardService;
-use FluentBoards\App\Models\Board;
+
 /**
- * AddUserToBoard
+ * ListTasks
  *
- * @category AddUserToBoard
+ * @category ListTasks
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @link     https://www.brainstormforce.com/
  * @since    1.0.0
  */
-class AddUserToBoard extends AutomateAction {
+class ListTasks extends AutomateAction {
 
 
 	/**
@@ -43,7 +42,7 @@ class AddUserToBoard extends AutomateAction {
 	 *
 	 * @var string
 	 */
-	public $action = 'fbs_add_user_to_board';
+	public $action = 'fbs_list_tasks';
 
 	use SingletonLoader;
 
@@ -56,7 +55,7 @@ class AddUserToBoard extends AutomateAction {
 	public function register( $actions ) {
 
 		$actions[ $this->integration ][ $this->action ] = [
-			'label'    => __( 'Add User to Board', 'suretriggers' ),
+			'label'    => __( 'List Tasks', 'suretriggers' ),
 			'action'   => $this->action,
 			'function' => [ $this, 'action_listener' ],
 		];
@@ -78,31 +77,16 @@ class AddUserToBoard extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$board_id = $selected_options['board_id'] ? sanitize_text_field( $selected_options['board_id'] ) : '';
-		$assignee = $selected_options['assignee'] ? sanitize_text_field( $selected_options['assignee'] ) : '';
-		if ( ! class_exists( 'FluentBoards\App\Services\BoardService' ) ) {
-			return;
-		}
-		if ( ! class_exists( 'FluentBoards\App\Models\Board' ) ) {
-			return;
-		}
-		
-		$board = \FluentBoards\App\Models\Board::find( $board_id );
+		global $wpdb;
+	
+		$tasks = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}fbs_tasks", ARRAY_A );
 
-		if ( ! $board ) {
-			throw new Exception( __( 'Board not found.', 'suretriggers' ) );
+		if ( empty( $tasks ) ) {
+			return [ 'message' => 'No tasks found in the database.' ];
 		}
-		$board_service = new BoardService();
-		$member        = $board_service->addMembersInBoard(
-			$board_id,
-			$assignee
-		);
 
-		return [
-			'board'  => $board,
-			'member' => $member,
-		];
+		return $tasks;
 	}
 }
 
-AddUserToBoard::get_instance();
+ListTasks::get_instance();

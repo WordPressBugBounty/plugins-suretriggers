@@ -196,6 +196,7 @@ class AuthController {
 			trailingslashit( SURE_TRIGGERS_API_SERVER_URL ) . 'connection/create-sc',
 			[
 				'sslverify' => false,
+				'timeout'   => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 				'headers'   => [
 					'Authorization' => 'Bearer ' . $secret_key,
 					'scapikey'      => $sc_api_key,

@@ -96,11 +96,11 @@ if ( ! class_exists( 'UserRegistersIn' ) ) :
 					$um_args['submitted']['confirm_user_password']
 				);
 			}
-			$data    = [
-				'form_id' => absint( $um_args['form_id'] ),
-				WordPress::get_user_context( $user_id ),
-				'data'    => $um_args['submitted'],
-			];
+
+			$data            = WordPress::get_user_context( $user_id );
+			$data['data']    = $um_args['submitted'];
+			$data['form_id'] = absint( $um_args['form_id'] );
+
 			$context = $data;
 			
 			AutomationController::sure_trigger_handle_trigger(

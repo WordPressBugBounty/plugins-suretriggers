@@ -71,8 +71,9 @@ if ( ! class_exists( 'UpdatePost' ) ) :
 			$triggers[ $this->integration ][ $this->trigger ] = [
 				'label'         => __( 'User updates a post', 'suretriggers' ),
 				'action'        => $this->trigger,
+				'common_action' => 'wp_after_insert_post',
 				'function'      => [ $this, 'trigger_listener' ],
-				'priority'      => 10,
+				'priority'      => 20,
 				'accepted_args' => 3,
 			];
 

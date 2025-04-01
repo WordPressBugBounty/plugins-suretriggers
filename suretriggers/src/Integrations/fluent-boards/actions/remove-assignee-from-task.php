@@ -16,6 +16,9 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
+use FluentBoards\App\Services\TaskService;
+use FluentBoards\App\Models\Task;
+
 /**
  * RemoveAssigneeFromTask
  *
@@ -27,7 +30,6 @@ use SureTriggers\Traits\SingletonLoader;
  * @since    1.0.0
  */
 class RemoveAssigneeFromTask extends AutomateAction {
-
 
 	/**
 	 * Integration type.
@@ -52,15 +54,12 @@ class RemoveAssigneeFromTask extends AutomateAction {
 	 * @return array
 	 */
 	public function register( $actions ) {
-
 		$actions[ $this->integration ][ $this->action ] = [
-			'label'    => __( 'Remove Assign from Task', 'suretriggers' ),
+			'label'    => __( 'Remove Assignee from Task', 'suretriggers' ),
 			'action'   => $this->action,
 			'function' => [ $this, 'action_listener' ],
 		];
-
 		return $actions;
-
 	}
 
 	/**
@@ -76,17 +75,43 @@ class RemoveAssigneeFromTask extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$task_id      = sanitize_text_field( $selected_options['task_id'] );
-		$assignees    = sanitize_text_field( $selected_options['assignees'] );
-		$assignee_ids = explode( ',', $assignees );
-
-		if ( ! function_exists( 'FluentBoardsApi' ) ) {
-			return;
+		if ( ! class_exists( 'FluentBoards\App\Services\TaskService' ) ) {
+			throw new Exception( __( 'FluentBoards TaskService not found.', 'suretriggers' ) );
 		}
 
-		FluentBoardsApi( 'tasks' )->removeAssignees( $task_id, $assignee_ids );
-		return FluentBoardsApi( 'tasks' )->getTask( $task_id );
+		if ( ! class_exists( '\FluentBoards\App\Models\Task' ) ) {
+			throw new Exception( __( 'FluentBoards Task model not found.', 'suretriggers' ) );
+		}
+	
+		$task_id   = ! empty( $selected_options['task_id'] ) ? sanitize_text_field( $selected_options['task_id'] ) : null;
+		$assignees = ! empty( $selected_options['assignees'] ) ? sanitize_text_field( $selected_options['assignees'] ) : null;
+	
+		if ( ! $task_id || ! $assignees ) {
+			throw new Exception( __( 'Task ID and assignees are required.', 'suretriggers' ) );
+		}
+	
+		$assignee_ids = array_map( 'intval', explode( ',', $assignees ) );
+	
+		$task_service = new TaskService();
+		$task         = \FluentBoards\App\Models\Task::find( $task_id );
+	
+		if ( ! $task ) {
+			throw new Exception( __( 'Task not found.', 'suretriggers' ) );
+		}
+	
+		foreach ( $assignee_ids as $assignee_id ) {
+			if ( method_exists( $task_service, 'removeAssignee' ) ) {
+				$task_service->removeAssignee( $assignee_id, $task );
+			} else {
+				$task->assignees()->detach( $assignee_id ); 
+			}
+		}
+	
+		$task->load( 'assignees' );
+	
+		return $task;
 	}
+	
 }
 
 RemoveAssigneeFromTask::get_instance();

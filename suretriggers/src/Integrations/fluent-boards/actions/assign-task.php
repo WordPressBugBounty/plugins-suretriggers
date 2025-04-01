@@ -16,6 +16,9 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
+use FluentBoards\App\Services\TaskService;
+use FluentBoards\App\Models\Task;
+
 /**
  * AssignTask
  *
@@ -27,7 +30,6 @@ use SureTriggers\Traits\SingletonLoader;
  * @since    1.0.0
  */
 class AssignTask extends AutomateAction {
-
 
 	/**
 	 * Integration type.
@@ -46,13 +48,12 @@ class AssignTask extends AutomateAction {
 	use SingletonLoader;
 
 	/**
-	 * Register a action.
+	 * Register an action.
 	 *
-	 * @param array $actions actions.
+	 * @param array $actions Actions array.
 	 * @return array
 	 */
 	public function register( $actions ) {
-
 		$actions[ $this->integration ][ $this->action ] = [
 			'label'    => __( 'Assign Task', 'suretriggers' ),
 			'action'   => $this->action,
@@ -60,30 +61,56 @@ class AssignTask extends AutomateAction {
 		];
 
 		return $actions;
-
 	}
 
 	/**
 	 * Action listener.
 	 *
-	 * @param int   $user_id user_id.
-	 * @param int   $automation_id automation_id.
-	 * @param array $fields fields.
-	 * @param array $selected_options selected_options.
+	 * @param int   $user_id          User ID.
+	 * @param int   $automation_id    Automation ID.
+	 * @param array $fields           Fields data.
+	 * @param array $selected_options Selected options.
 	 *
 	 * @return array|void
 	 *
-	 * @throws Exception Exception.
+	 * @throws Exception Exception if required data is missing.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$task_id      = sanitize_text_field( $selected_options['task_id'] );
-		$assignees    = sanitize_text_field( $selected_options['assignees'] );
-		$assignee_ids = explode( ',', $assignees );
-		if ( ! function_exists( 'FluentBoardsApi' ) ) {
-			return;
+
+		if ( ! class_exists( 'FluentBoards\App\Services\TaskService' ) ) {
+			throw new Exception( __( 'FluentBoards TaskService not found.', 'suretriggers' ) );
 		}
-		FluentBoardsApi( 'tasks' )->addAssignees( $task_id, $assignee_ids );
-		return FluentBoardsApi( 'tasks' )->getTask( $task_id );
+
+		if ( ! class_exists( '\FluentBoards\App\Models\Task' ) ) {
+			throw new Exception( __( 'FluentBoards Task model not found.', 'suretriggers' ) );
+		}
+
+		// Validate input fields.
+		$task_id   = ! empty( $selected_options['task_id'] ) ? sanitize_text_field( $selected_options['task_id'] ) : null;
+		$assignees = ! empty( $selected_options['assignees'] ) ? sanitize_text_field( $selected_options['assignees'] ) : null;
+
+		if ( ! $task_id || ! $assignees ) {
+			throw new Exception( __( 'Task ID and assignees are required.', 'suretriggers' ) );
+		}
+
+		$assignee_ids = array_map( 'intval', explode( ',', $assignees ) );
+
+		$task_service = new TaskService();
+		
+
+		$task = \FluentBoards\App\Models\Task::find( $task_id );
+
+		if ( ! $task ) {
+			throw new Exception( __( 'Task not found.', 'suretriggers' ) );
+		}
+
+		foreach ( $assignee_ids as $assignee_id ) {
+			$task_service->updateAssignee( $assignee_id, $task );
+		}
+
+		$task->load( 'assignees' );
+
+		return $task;
 	}
 }
 

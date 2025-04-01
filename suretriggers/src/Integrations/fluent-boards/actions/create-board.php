@@ -77,16 +77,14 @@ class CreateBoard extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$title          = $selected_options['title'] ? sanitize_text_field( $selected_options['title'] ) : '';
-		$description    = $selected_options['description'] ? sanitize_text_field( $selected_options['description'] ) : '';
-		$crm_contact_id = $selected_options['crm_contact_id'] ? sanitize_text_field( $selected_options['crm_contact_id'] ) : '';
-		$created_by     = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
-		$board_data     = array_filter(
+		$title       = $selected_options['title'] ? sanitize_text_field( $selected_options['title'] ) : '';
+		$description = $selected_options['description'] ? sanitize_text_field( $selected_options['description'] ) : '';
+		$created_by  = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
+		$board_data  = array_filter(
 			[
-				'title'          => $title,
-				'description'    => $description,
-				'crm_contact_id' => $crm_contact_id,
-				'created_by'     => $created_by,
+				'title'       => $title,
+				'description' => $description,
+				'created_by'  => $created_by,
 			],
 			fn( $value) => '' !== $value
 		);

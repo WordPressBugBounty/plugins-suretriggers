@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.77
+Stable tag: 1.0.78
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,16 @@ Yes, if you have apps that are not yet integrated with SureTriggers, please subm
 6. Create new connections to create your automations.
 
 == Changelog ==
+= Version 1.0.78 - Tuesday, 1st April 2025 =
+* New: Added "FluentBoards" Integration
+* Improvement: "WordPress" - Added fix for the featured image response and updated the action hook in "Post Created / Updated" Trigger
+* Improvement: "WordPress" - Added fix for the taxonomy adding in "Create / Update Post" Action
+* Improvement: "UltimateMember" - Added fix for response data difference in "User logs in with a form" and "User registers with a form" Triggers
+* Improvement: "FluentCommunity" - Added improvements in actions for better flexibility
+* Improvement: "FluentCRM" - Added new "Add Note" Action
+* Improvement: "SureMail" - Added improvements in sample response for Triggers
+* Improvement: "Gravity Forms" - Added improvements in response data for form submission Triggers
+
 = Version 1.0.77 - Tuesday, 18th March 2025 =
 * Improvement: "LearnDash" - Added new "Find User Groups" Action
 * Improvement: "LearnPress" - Added improvements in "Enroll User to Course" and "Remove User from course" Actions

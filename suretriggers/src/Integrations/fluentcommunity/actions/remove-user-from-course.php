@@ -75,8 +75,8 @@ class RemoveUserFromCourse extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$course_id = isset( $selected_options['course_id'] ) ? (int) sanitize_text_field( $selected_options['course_id'] ) : 0;
-		$user_id   = isset( $selected_options['user_id'] ) ? (int) sanitize_text_field( $selected_options['user_id'] ) : 0;
+		$course_id  = isset( $selected_options['course_id'] ) ? (int) sanitize_text_field( $selected_options['course_id'] ) : 0;
+		$user_email = isset( $selected_options['user_email'] ) ? sanitize_email( $selected_options['user_email'] ) : '';
 
 		if ( empty( $course_id ) || ! $this->is_valid_course_id( $course_id ) ) {
 			return [
@@ -85,10 +85,12 @@ class RemoveUserFromCourse extends AutomateAction {
 			];
 		}
 
-		if ( empty( $user_id ) || ! $this->is_valid_user_id( $user_id ) ) {
+		$user = get_user_by( 'email', $user_email );
+
+		if ( ! $user ) {
 			return [
 				'status'  => 'error',
-				'message' => 'Invalid user ID.',
+				'message' => 'User not found with the provided email.',
 			];
 		}
 
@@ -100,13 +102,13 @@ class RemoveUserFromCourse extends AutomateAction {
 		}
 
 		try {
-			CourseHelper::leaveCourse( $course_id, $user_id );
+			CourseHelper::leaveCourse( $course_id, $user->ID );
 
 			return [
 				'status'    => 'success',
 				'message'   => 'User removed from course successfully',
 				'course_id' => $course_id,
-				'user_id'   => $user_id,
+				'user_id'   => $user->ID,
 			];
 		} catch ( Exception $e ) {
 			return [
@@ -129,18 +131,6 @@ class RemoveUserFromCourse extends AutomateAction {
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}fcom_spaces WHERE id = %d AND type = 'course'", $course_id ) ) > 0;
 	}
 
-	/**
-	 * Validate user ID.
-	 *
-	 * @param int $user_id User ID.
-	 *
-	 * @return bool Whether user ID is valid.
-	 */
-	private function is_valid_user_id( $user_id ) {
-		global $wpdb;
-		// Directly prepare the query and pass to get_var.
-		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}users WHERE ID = %d", $user_id ) ) > 0;
-	}
 }
 
 RemoveUserFromCourse::get_instance();

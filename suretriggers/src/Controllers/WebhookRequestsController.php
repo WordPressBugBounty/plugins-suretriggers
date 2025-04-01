@@ -67,9 +67,13 @@ class WebhookRequestsController {
 	 * @return array Filtered array of non-default cron schedules.
 	 */
 	public static function suretriggers_custom_cron_schedule( $schedules ) {
-		$schedules['suretriggers_retry_cron_schedule'] = [
+		$schedules['suretriggers_retry_cron_schedule']             = [
 			'interval' => 30 * MINUTE_IN_SECONDS,
 			'display'  => __( 'Every 30 minutes', 'suretriggers' ),
+		];
+		$schedules['suretriggers_verify_connection_cron_schedule'] = [
+			'interval' => 6 * HOUR_IN_SECONDS,
+			'display'  => __( 'Every 6 hours', 'suretriggers' ),
 		];
 		return $schedules;
 	}
@@ -119,9 +123,18 @@ class WebhookRequestsController {
 			wp_schedule_event( time(), 'daily', 'suretriggers_webhook_requests_cleanup_logs' );
 		}
 		
-		// Verify the API connection every 12 hours to keep the connection alive.
+		// Verify the API connection every 6 hours to keep the connection alive.
 		if ( ! wp_next_scheduled( 'suretriggers_verify_api_connection' ) ) {
-			wp_schedule_event( time(), 'twicedaily', 'suretriggers_verify_api_connection' );
+			wp_schedule_event( time(), 'suretriggers_verify_connection_cron_schedule', 'suretriggers_verify_api_connection' );
+		} else {
+			// Reschedule the event that was twice daily before to every 6 hours.
+			$get_scheduled_event = wp_get_scheduled_event( 'suretriggers_verify_api_connection' );
+			if ( $get_scheduled_event ) {
+				if ( 21600 !== $get_scheduled_event->interval ) {
+					wp_clear_scheduled_hook( 'suretriggers_verify_api_connection' );
+					wp_reschedule_event( time(), 'suretriggers_verify_connection_cron_schedule', 'suretriggers_verify_api_connection' );
+				}
+			}
 		}
 	}
 
@@ -322,9 +335,7 @@ class WebhookRequestsController {
 		// Drop the custom table.
 		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) );
 		if ( $table_exists ) {
-			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-			$sql = "DROP TABLE IF EXISTS $table_name";
-			dbDelta( $sql );
+			$wpdb->query( "DROP TABLE IF EXISTS $table_name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange
 		}
 	}
 

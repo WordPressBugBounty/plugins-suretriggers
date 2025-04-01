@@ -83,6 +83,8 @@ use PeepSoField;
 use Mint\MRM\DataBase\Models\ContactModel;
 use Mint\MRM\DataBase\Models\ContactGroupModel;
 use SureTriggers\Integrations\Voxel\Voxel;
+use FluentBoards\App\Models\Stage;
+use FluentCommunity\App\Functions\Utility;
 use Surelywp_Support_Portal;
 use SureTriggers\Integrations\ProfileGrid\ProfileGrid;
 
@@ -417,16 +419,70 @@ class GlobalSearchController {
 	 * @return array
 	 */
 	public function search_pluggables_sureemails_mail( $data ) {
-		$context['pluggable_data']    = [
-			'to'          => [ 'johnDoe@xyz.com' ],
-			'subject'     => 'Test Email',
-			'message'     => 'This is a test email',
-			'headers'     => [ 'X-Mailer' => 'PHP/8.1.29' ],
-			'attachments' => [ 'Sample Attachment' ],
-		];
-			$context['response_type'] = 'sample';
+		$term    = isset( $data['search_term'] ) ? $data['search_term'] : '';
+		$context = [];
+
+		if ( 'mail_sent' === $term ) {
+			$context['pluggable_data'] = [
+				'to'          => [ 'johnDoe@xyz.com' ],
+				'subject'     => 'Test Email',
+				'message'     => 'This is a test email',
+				'headers'     => 'From: johnDoe@xyz.com,X-Mailer: PHP/8.1.22,Content-Type: text/html; charset=utf-8,Reply-To: johnDoe@xyz.com,Cc:johnDoe@xyz.com,Bcc:johnDoe@xyz.com',
+				'attachments' => [ 'Sample Attachment' ],
+			];
+			$context['response_type']  = 'sample';
+		} elseif ( 'mail_failed' === $term ) {
+			$context['pluggable_data'] = [
+				'errors'     => [
+					'wp_mail_failed' => [
+						'We were unable to send the email. Please ensure the recipient email address and sender configuration are correct. If the issue persists, contact support.',
+					],
+				],
+				'error_data' => [
+					'wp_mail_failed' => [
+						'to'          => 'johnDoe@xyz.com',
+						'subject'     => 'Test Email',
+						'message'     => 'This is a test email.',
+						'headers'     => 'From: johnDoe@xyz.com,X-Mailer: PHP/8.1.22,Content-Type: text/html; charset=utf-8,Reply-To: johnDoe@xyz.com,Cc:johnDoe@xyz.com,Bcc:johnDoe@xyz.com',
+						'attachments' => [ 'Sample Attachment' ],
+					],
+				],
+			];
+			$context['response_type']  = 'sample';
+		} elseif ( 'mail_blocked' === $term ) {
+			$context['pluggable_data'] = [
+				'to'          => 'johnDoe@xyz.com',
+				'subject'     => 'Test Email',
+				'message'     => 'This is a test email.',
+				'headers'     => 'From: johnDoe@xyz.com
+X-Mailer: PHP/8.1.22
+Content-Type: text/html; charset=utf-8
+Reply-To: johnDoe@xyz.com
+Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
+				'attachments' => [ 'Sample Attachment' ],
+				'categories'  => [
+					'harassment'             => 1,
+					'harassment/threatening' => 1,
+					'sexual'                 => 0,
+					'hate'                   => 0,
+					'hate/threatening'       => 0,
+					'illicit'                => 0,
+					'illicit/violent'        => 0,
+					'self-harm/intent'       => 0,
+					'self-harm/instructions' => 0,
+					'self-harm'              => 0,
+					'sexual/minors'          => 0,
+					'violence'               => 1,
+					'violence/graphic'       => 0,
+				],
+			];
+			$context['response_type']  = 'sample';
+		}
+
 		return $context;
 	}
+
+
 
 	/**
 	 * List Taxonomy Terms.
@@ -19671,53 +19727,157 @@ class GlobalSearchController {
 		return (array) $context;
 	}
 
-	/**
-	 * Get Fluent Boards Last Data
-	 *
-	 * @param array $data data.
-	 *
-	 * @return array
-	 */
+		/**
+		 * Get Fluent Boards Last Data
+		 *
+		 * @param array $data data.
+		 *
+		 * @return array
+		 */
 	public function search_fbs_triggers_last_data( $data ) {
-		$context = [];
+		if ( ! class_exists( '\FluentBoards\App\Models\Stage' ) ) {
+			return [];
+		}
 		global $wpdb;
-		$term = $data['search_term'] ? $data['search_term'] : '';
+		
+		$term = isset( $data['search_term'] ) ? $data['search_term'] : '';
 		if ( ! class_exists( 'FluentBoards\App\Models\Board' ) || ! class_exists( 'FluentBoards\App\Models\User' ) ) {
 			return [];
 		}
-		$data = [];
 		
-		if ( 'board_created' === $term ) {
-			$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_boards ORDER BY id DESC Limit 1", ARRAY_A );
-		} elseif ( 'board_member_added' === $term ) {
-			$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_relations WHERE object_type = 'board_user' ORDER BY id DESC Limit 1", ARRAY_A );
-		} elseif ( 'task_created' === $term ) {
-			$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_tasks ORDER BY id DESC Limit 1", ARRAY_A );
+		$context = [];
+		$result  = null;
+		
+		switch ( $term ) {
+			case 'board_created':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_boards ORDER BY id DESC LIMIT 1", ARRAY_A );
+				break;
+			case 'board_member_added':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_relations WHERE object_type = 'board_user' ORDER BY id DESC LIMIT 1", ARRAY_A );
+				break;
+			case 'task_created':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_tasks ORDER BY id DESC LIMIT 1", ARRAY_A );
+				break;
 		}
+		
 		if ( ! empty( $result ) ) {
-			if ( 'board_created' === $term ) {
-				$board_id                  = $result['id'];
-				$context['pluggable_data'] = \FluentBoards\App\Models\Board::findOrFail( $board_id );
-				$context['response_type']  = 'live';
-			} elseif ( 'board_member_added' === $term ) {
-				$context['pluggable_data']['board_id']     = $result['object_id'];
-				$context['pluggable_data']['board_member'] = \FluentBoards\App\Models\User::find( $result['foreign_id'] );
-				$context['response_type']                  = 'live';
-			} elseif ( 'task_created' === $term ) {
-				$context['pluggable_data'] = $result;
-				$context['response_type']  = 'live';
+			switch ( $term ) {
+				case 'board_created':
+					$context['pluggable_data'] = \FluentBoards\App\Models\Board::findOrFail( $result['id'] );
+					$context['response_type']  = 'live';
+					break;
+				case 'board_member_added':
+					$context['pluggable_data']['board_id']     = $result['object_id'];
+					$context['pluggable_data']['board_member'] = \FluentBoards\App\Models\User::find( $result['foreign_id'] );
+					$context['response_type']                  = 'live';
+					break;
+				case 'task_created':
+					$stage_data = Stage::where( 'board_id', $result['board_id'] )->whereNull( 'archived_at' )->first();
+					
+					$context['pluggable_data'] = [
+						'id'          => $result['id'],
+						'slug'        => $result['slug'],
+						'title'       => $result['title'],
+						'description' => $result['description'],
+						'type'        => $result['type'],
+						'board_id'    => $result['board_id'],
+						'stage_id'    => $result['stage_id'],
+						'position'    => $result['position'],
+						'priority'    => $result['priority'],
+						'created_at'  => $result['created_at'],
+						'created_by'  => $result['created_by'],
+						'updated_at'  => $result['updated_at'],
+						'settings'    => unserialize( $result['settings'] ),
+						'stage'       => $stage_data ? [
+							'id'         => $stage_data->id,
+							'slug'       => $stage_data->slug,
+							'title'      => $stage_data->title,
+							'type'       => $stage_data->type,
+							'board_id'   => $stage_data->board_id,
+							'position'   => $stage_data->position,
+							'settings'   => $stage_data->settings,
+							'created_at' => '',
+							'updated_at' => '',
+						] : null,
+					];
+					$context['response_type']  = 'live';
+					break;
 			}
 		} else {
-			if ( 'board_created' === $term ) {
-				$context = json_decode( '{"pluggable_data":{"id":2,"parent_id":null,"title":"testing","description":"testing","type":"to-do","currency":"USD","background":{"id":"solid_1","is_image":false,"image_url":null,"color":"#d1d8e0"},"settings":null,"created_by":"1","archived_at":null,"meta":[]},"response_type":"sample"}', true );
-			} elseif ( 'board_member_added' === $term ) {
-				$context = json_decode( '{"pluggable_data":{"board_id":"2","board_member":{"ID":1,"user_login":"johnd","user_nicename":"johnd","user_email":"johnd@example.com","user_url":"https://example.com","user_registered":"2023-01-16 09:23:31","user_status":"0","display_name":"johnd","photo":"https://www.gravatar.com/avatar/c2b06ae950033b392998ada50767b50e?s=128&d=https%3A%2F%2Fui-avatars.com%2Fapi%2Fodeploll/128"}},"response_type":"sample"}', true );
-			} elseif ( 'task_created' === $term ) {
-				$context = json_decode( '{"pluggable_data":{"id":"1","parent_id":null,"board_id":"1","crm_contact_id":null,"title":"Task1","slug":"task1","type":"task","status":"open","stage_id":"6","source":"web","source_id":null,"priority":"low","description":null,"lead_value":"0.00","created_by":"1","position":"1.00","comments_count":"0","issue_number":null,"reminder_type":"none","settings":"a:4:{s:5:\"cover\";a:1:{s:15:\"backgroundColor\";s:0:\"\";}s:13:\"subtask_count\";i:0;s:16:\"attachment_count\";i:0;s:23:\"subtask_completed_count\";i:0;}","remind_at":null,"started_at":null,"due_at":null,"last_completed_at":null,"archived_at":null,"created_at":"2024-10-14 17:11:20","updated_at":"2024-10-14 17:11:20"},"response_type":"sample"}', true );
+			switch ( $term ) {
+				case 'board_created':
+					$context = json_decode( '{"pluggable_data":{"id":2,"title":"testing","description":"This is a sample board.","type":"to-do","currency":"USD","background":{"color":"#d1d8e0","id":"solid_10"},"created_by":"1","isUserOnlyViewer":0},"response_type":"sample"}', true );
+					break;              
+				case 'board_member_added':
+					$context = json_decode( '{"pluggable_data":{"board_id":"2","board_member":{"ID":1,"user_login":"johnd","display_name":"johnd"}},"response_type":"sample"}', true );
+					break;
+				case 'task_created':
+					$context = json_decode( '{"pluggable_data":{"id":"1001","slug":"sample-task","title":"Sample Task","description":"This is a sample task.","type":"task","board_id":"10","stage_id":"3","position":"1","priority":"medium","created_at":"2024-03-20 12:00:00","created_by":"1","updated_at":"2024-03-20 12:30:00","settings":[],"stage":{"id":"3","slug":"sample-stage","title":"Sample Stage","type":"default","board_id":"10","position":"1","settings":[],"created_at":"2024-03-19 10:00:00","updated_at":"2024-03-20 11:00:00"}},"response_type":"sample"}', true ); 
+					break;
+					
 			}
 		}
+		
 		return (array) $context;
 	}
+
+
+	/**
+	 * Prepare FluentBoards Boards List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_fbs_boards_list( $data ) {
+		global $wpdb;
+	
+		$boards = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}fbs_boards", ARRAY_A );
+	
+		$options = [];
+	
+		if ( ! empty( $boards ) ) {
+			foreach ( $boards as $board ) {
+				$options[] = [
+					'label' => $board['title'],
+					'value' => $board['id'],
+				];
+			}
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}   
+
+	/**
+	 * Prepare FluentBoards Stages List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_fbs_stages_list( $data ) {
+		if ( ! class_exists( '\FluentBoards\App\Models\Stage' ) ) {
+			return [];
+		}
+		$query   = Stage::where( 'board_id', $data['dynamic'] )->whereNull( 'archived_at' );
+		$stages  = $query->get();
+		$options = [];
+	
+		if ( ! empty( $stages ) ) {
+			foreach ( $stages as $stage ) {
+				$options[] = [
+					'label' => $stage['title'],
+					'value' => $stage['id'],
+				];
+			}
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}   
 
 	/**
 	 * Get Profile Grid Last Data
@@ -20264,6 +20424,93 @@ class GlobalSearchController {
 		}
 		return (array) $context;
 	}
+
+	/**
+	 * Prepare FluentCommunity Courses List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_fc_courses_list( $data ) {
+		global $wpdb;
+	
+		$courses = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}fcom_spaces WHERE type = 'course' ", ARRAY_A );
+	
+		$options = [];
+	
+		if ( ! empty( $courses ) ) {
+			foreach ( $courses as $course ) {
+				$options[] = [
+					'label' => $course['title'],
+					'value' => $course['id'],
+				];
+			}
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	} 
+	
+	/**
+	 * Prepare FluentCommunity Spaces List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_fc_spaces_list( $data ) {
+		global $wpdb;
+	
+		$spaces = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}fcom_spaces WHERE type NOT IN ('course', 'space_group')", ARRAY_A );
+
+		$options = [];
+	
+		if ( ! empty( $spaces ) ) {
+			foreach ( $spaces as $space ) {
+				$options[] = [
+					'label' => $space['title'],
+					'value' => $space['id'],
+				];
+			}
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}  
+
+	/**
+	 * Prepare FluentCommunity Topics List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_fc_topics_list( $data ) {
+		if ( ! class_exists( '\FluentCommunity\App\Functions\Utility' ) ) {
+			return [];
+		}
+
+		$space_topics = Utility::getTopicsBySpaceId( $data['dynamic'] );
+		
+		$options = [];
+	
+		if ( ! empty( $space_topics ) ) {
+			foreach ( $space_topics as $topic ) {
+				$options[] = [
+					'label' => $topic['title'],
+					'value' => $topic['id'],
+				];
+			}
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}  
+
 }
 
 

@@ -70,8 +70,8 @@ class AddUserToCourse extends AutomateAction {
 	 * @return array|void
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$course_id = isset( $selected_options['course_id'] ) ? (int) sanitize_text_field( $selected_options['course_id'] ) : 0;
-		$user_id   = isset( $selected_options['user_id'] ) ? (int) sanitize_text_field( $selected_options['user_id'] ) : 0;
+		$course_id  = isset( $selected_options['course_id'] ) ? (int) sanitize_text_field( $selected_options['course_id'] ) : 0;
+		$user_email = isset( $selected_options['user_email'] ) ? sanitize_email( $selected_options['user_email'] ) : '';
 
 		if ( ! class_exists( 'FluentCommunity\Modules\Course\Services\CourseHelper' ) ) {
 			return [
@@ -79,11 +79,13 @@ class AddUserToCourse extends AutomateAction {
 				'message' => 'CourseHelper class not found.',
 			];
 		}
+	   
+		$user = get_user_by( 'email', $user_email );
 
-		if ( ! $this->is_valid_user( $user_id ) ) {
+		if ( ! $user ) {
 			return [
 				'status'  => 'error',
-				'message' => 'Invalid User ID.',
+				'message' => 'User not found with the provided email.',
 			];
 		}
 
@@ -95,7 +97,7 @@ class AddUserToCourse extends AutomateAction {
 		}
 
 		try {
-			CourseHelper::enrollCourse( $course_id, $user_id );
+			CourseHelper::enrollCourse( $course_id, $user->ID );
 		} catch ( Exception $e ) {
 			return [
 				'status'  => 'error',
@@ -107,19 +109,8 @@ class AddUserToCourse extends AutomateAction {
 			'status'    => 'success',
 			'message'   => 'User added to course successfully',
 			'course_id' => $course_id,
-			'user_id'   => $user_id,
+			'user_id'   => $user->ID,
 		];
-	}
-
-	/**
-	 * Check if the user ID is valid.
-	 *
-	 * @param int $user_id User ID.
-	 * @return bool
-	 */
-	private function is_valid_user( $user_id ) {
-		$user = get_user_by( 'id', $user_id );
-		return (bool) $user;
 	}
 
 	/**

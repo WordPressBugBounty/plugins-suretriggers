@@ -1,9 +1,9 @@
 <?php
 /**
- * AddUserToBoard.
+ * CreateStage.
  * php version 5.6
  *
- * @category AddUserToBoard
+ * @category CreateStage
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -16,19 +16,19 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
-use FluentBoards\App\Services\BoardService;
-use FluentBoards\App\Models\Board;
+use FluentBoards\App\Services\StageService;
+
 /**
- * AddUserToBoard
+ * CreateStage
  *
- * @category AddUserToBoard
+ * @category CreateStage
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @link     https://www.brainstormforce.com/
  * @since    1.0.0
  */
-class AddUserToBoard extends AutomateAction {
+class CreateStage extends AutomateAction {
 
 
 	/**
@@ -43,7 +43,7 @@ class AddUserToBoard extends AutomateAction {
 	 *
 	 * @var string
 	 */
-	public $action = 'fbs_add_user_to_board';
+	public $action = 'fbs_create_stage';
 
 	use SingletonLoader;
 
@@ -56,7 +56,7 @@ class AddUserToBoard extends AutomateAction {
 	public function register( $actions ) {
 
 		$actions[ $this->integration ][ $this->action ] = [
-			'label'    => __( 'Add User to Board', 'suretriggers' ),
+			'label'    => __( 'Create Stage', 'suretriggers' ),
 			'action'   => $this->action,
 			'function' => [ $this, 'action_listener' ],
 		];
@@ -78,31 +78,30 @@ class AddUserToBoard extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
+		$title    = $selected_options['title'] ? sanitize_text_field( $selected_options['title'] ) : '';
 		$board_id = $selected_options['board_id'] ? sanitize_text_field( $selected_options['board_id'] ) : '';
-		$assignee = $selected_options['assignee'] ? sanitize_text_field( $selected_options['assignee'] ) : '';
-		if ( ! class_exists( 'FluentBoards\App\Services\BoardService' ) ) {
-			return;
-		}
-		if ( ! class_exists( 'FluentBoards\App\Models\Board' ) ) {
-			return;
-		}
+		$status   = $selected_options['status'] ? sanitize_text_field( $selected_options['status'] ) : '';
 		
-		$board = \FluentBoards\App\Models\Board::find( $board_id );
-
-		if ( ! $board ) {
-			throw new Exception( __( 'Board not found.', 'suretriggers' ) );
+		if ( ! class_exists( 'FluentBoards\App\Services\StageService' ) ) {
+			return;
 		}
-		$board_service = new BoardService();
-		$member        = $board_service->addMembersInBoard(
-			$board_id,
-			$assignee
-		);
 
-		return [
-			'board'  => $board,
-			'member' => $member,
-		];
+		$stage_data        = array_filter(
+			[
+				'title'    => $title,
+				'board_id' => $board_id,
+				'status'   => $status,    
+			],
+			fn( $value) => '' !== $value
+		);
+			$stage_service = new StageService();
+			$stage         = $stage_service->createStage( $stage_data, $board_id );
+			
+			if ( empty( $stage ) ) {
+				throw new Exception( 'There is error while creating a Stage.' );
+			}
+			return $stage;
 	}
 }
 
-AddUserToBoard::get_instance();
+CreateStage::get_instance();

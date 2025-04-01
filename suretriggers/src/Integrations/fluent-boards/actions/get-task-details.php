@@ -16,6 +16,7 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
+use FluentBoards\App\Models\Task;
 /**
  * GetTaskDetails
  *
@@ -79,10 +80,10 @@ class GetTaskDetails extends AutomateAction {
 		$task_id = $selected_options['task_id'] ? sanitize_text_field( $selected_options['task_id'] ) : '';
 
 		// Check if FluentBoardsApi function exists, if not, return early.
-		if ( ! function_exists( 'FluentBoardsApi' ) ) {
+		if ( ! class_exists( 'FluentBoards\App\Models\Task' ) ) {
 			return;
 		}
-		$task = FluentBoardsApi( 'tasks' )->getTask( $task_id );
+		$task = \FluentBoards\App\Models\Task::find( $task_id );
 		if ( empty( $task ) ) {
 			throw new Exception( 'There is error while getting task details.' );
 		}

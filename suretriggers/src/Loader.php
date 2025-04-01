@@ -235,8 +235,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.77' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.77' );
+		define( 'SURE_TRIGGERS_VER', '1.0.78' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.0.78' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -416,7 +416,7 @@ class Loader {
 								SureTriggers is connected.
 							</h2>
 							<p class="suretriggers-info-content">
-								Your WordPress site is successfully connected SureTriggers SaaS Platform. However, iframe display is currently disabled. Click below to enable it.
+								Your WordPress site is successfully connected to the SureTriggers SaaS platform. However, the SureTriggers interface display is currently disabled. Click below to enable it.
 							</p>
 							<a class="suretriggers-info-link" href="<?php echo esc_url( SURE_TRIGGERS_SITE_URL . '/apps/WordPress' ); ?>" target="_blank">
 								Access Connection Page

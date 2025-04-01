@@ -73,7 +73,8 @@ class CreatePost extends AutomateAction {
 	 * @throws Exception Error.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$result_arr = [];
+		$result_arr     = [];
+		$is_post_update = false;
 		foreach ( $fields as $field ) {
 			if ( isset( $field['name'] ) && isset( $selected_options[ $field['name'] ] ) && ( trim( wp_strip_all_tags( $selected_options[ $field['name'] ] ) ) !== '' ) ) {
 				if ( 'post_content' === $field['name'] ) {
@@ -111,8 +112,9 @@ class CreatePost extends AutomateAction {
 			if ( $post_exists ) {
 				$result_arr['ID'] = $post_exists->ID;
 				wp_update_post( $result_arr );
-				$last_response = get_post( $post_exists->ID );
-				$post_id       = $post_exists->ID;
+				$last_response  = get_post( $post_exists->ID );
+				$post_id        = $post_exists->ID;
+				$is_post_update = true;
 			} else {
 				throw new Exception( 'The URL entered is incorrect. Please provide the correct URL for the post' );
 			}       
@@ -135,14 +137,6 @@ class CreatePost extends AutomateAction {
 		$response_taxonomy = '';
 		$taxonomy_terms    = [];
 
-		if ( ! empty( $selected_options['taxonomy'] ) ) {
-			$uncategorized_term = get_term_by( 'slug', 'uncategorized', 'category' );
-
-			if ( $uncategorized_term && isset( $uncategorized_term->term_id ) ) {
-				wp_remove_object_terms( $post_id, $uncategorized_term->term_id, 'category' );
-			}
-		}
-
 		// Set taxonomy terms for new post.
 		if ( isset( $selected_options['taxonomy'] ) && isset( $selected_options['taxonomy_term'] ) ) {
 
@@ -152,7 +146,13 @@ class CreatePost extends AutomateAction {
 			foreach ( $selected_options['taxonomy_term'] as $term ) {
 				$terms[] = (int) $term['value']; 
 			}
-			wp_set_object_terms( $post_id, $terms, $taxonomy, true );
+			if ( $is_post_update ) {
+				// If is post update then append the terms to the existing terms.
+				wp_set_object_terms( $post_id, $terms, $taxonomy, true );
+			} else {
+				// If is post create then set the terms.
+				wp_set_object_terms( $post_id, $terms, $taxonomy, false );
+			}
 			$response_taxonomy = get_object_taxonomies( get_post_type( $post_id ) );
 			foreach ( $response_taxonomy as $taxonomy_name ) {
 				$terms = wp_get_post_terms( $post_id, $taxonomy_name );

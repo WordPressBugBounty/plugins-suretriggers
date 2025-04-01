@@ -72,9 +72,9 @@ class RemoveUserFromSpace extends AutomateAction {
 	 * @throws Exception If removal fails.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$space_id = isset( $selected_options['space_id'] ) ? (int) sanitize_text_field( $selected_options['space_id'] ) : 0;
-		$user_id  = isset( $selected_options['user_id'] ) ? (int) sanitize_text_field( $selected_options['user_id'] ) : 0;
-		$by       = 'by_automation';
+		$space_id   = isset( $selected_options['space_id'] ) ? (int) sanitize_text_field( $selected_options['space_id'] ) : 0;
+		$user_email = isset( $selected_options['user_email'] ) ? sanitize_email( $selected_options['user_email'] ) : '';
+		$by         = 'by_automation';
 
 		if ( empty( $space_id ) || ! $this->is_valid_space_id( $space_id ) ) {
 			return [
@@ -83,10 +83,12 @@ class RemoveUserFromSpace extends AutomateAction {
 			];
 		}
 
-		if ( empty( $user_id ) || ! $this->is_valid_user_id( $user_id ) ) {
+		$user = get_user_by( 'email', $user_email );
+
+		if ( ! $user ) {
 			return [
 				'status'  => 'error',
-				'message' => 'Invalid user ID.',
+				'message' => 'User not found with the provided email.',
 			];
 		}
 
@@ -98,12 +100,12 @@ class RemoveUserFromSpace extends AutomateAction {
 		}
 
 		try {
-			Helper::removeFromSpace( $space_id, $user_id, $by );
+			Helper::removeFromSpace( $space_id, $user->ID, $by );
 			return [
 				'status'   => 'success',
 				'message'  => 'User removed from space successfully',
 				'space_id' => $space_id,
-				'user_id'  => $user_id,
+				'user_id'  => $user->ID,
 			];
 		} catch ( Exception $e ) {
 			return [
@@ -126,18 +128,6 @@ class RemoveUserFromSpace extends AutomateAction {
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}fcom_spaces WHERE ID = %d", $space_id ) ) > 0;
 	}
 
-	/**
-	 * Validate user ID.
-	 *
-	 * @param int $user_id User ID.
-	 *
-	 * @return bool Whether user ID is valid.
-	 */
-	private function is_valid_user_id( $user_id ) {
-		global $wpdb;
-		// Directly prepare the query and pass to get_var.
-		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}users WHERE ID = %d", $user_id ) ) > 0;
-	}
 
 }
 
