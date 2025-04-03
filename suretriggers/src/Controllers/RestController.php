@@ -57,14 +57,23 @@ class RestController {
 	 * @param WP_REST_Request $request Request.
 	 */
 	public function autheticate_user( $request ) {
-		$secret_key       = $request->get_header( 'st_authorization' );
+		$secret_key = $request->get_header( 'st_authorization' );
+
+		if ( ! is_string( $secret_key ) || empty( $secret_key ) || empty( $this->secret_key ) ) { 
+			return false;
+		}
+
 		list($secret_key) = sscanf( $secret_key, 'Bearer %s' );
+
+		if ( empty( $secret_key ) ) { 
+			return false;
+		}
 
 		if ( $this->secret_key !== $secret_key ) {
 			return false;
 		}
 
-		return true;
+		return hash_equals( $this->secret_key, $secret_key );
 	}
 
 	/**

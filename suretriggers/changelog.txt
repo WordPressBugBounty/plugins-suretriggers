@@ -1,3 +1,6 @@
+Version 1.0.79 - Thursday, 3rd April 2025
+- Fix: This update addressed a security bug. Props to mikemyers for privately reporting it to our team. Please make sure you are using the latest version on your website.
+
 Version 1.0.78 - Tuesday, 1st April 2025
 - New: Added "FluentBoards" Integration
 - Improvement: "WordPress" - Added fix for the featured image response and updated the action hook in "Post Created / Updated" Trigger
