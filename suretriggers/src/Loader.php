@@ -89,7 +89,7 @@ class Loader {
 
 		wp_add_dashboard_widget(
 			'suretriggers_dashboard_widget',
-			'Please Connect SureTriggers',
+			'Please Connect OttoKit (Formerly SureTriggers)',
 			[ $this, 'dashboard_widget_display' ],
 			'',
 			'',
@@ -105,7 +105,7 @@ class Loader {
 	 */
 	public function dashboard_widget_display() {            ?>
 		<div>
-			<p> <?php esc_html_e( 'Please connect to or create your SureTriggers account.', 'suretriggers' ); ?></p>
+			<p> <?php esc_html_e( 'Please connect to or create your OttoKit (Formerly SureTriggers) account.', 'suretriggers' ); ?></p>
 			<p> <?php esc_html_e( 'This will enable you to connect your various plugins, and apps together and automate repetitive tasks.', 'suretriggers' ); ?> </p>
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Get Started', 'suretriggers' ); ?> </a>
 		</div>
@@ -118,10 +118,32 @@ class Loader {
 	 * @return void
 	 */
 	public function display_notice() {
+		global $pagenow;
+		if ( 'index.php' === $pagenow ) {
+			?>
+			<div class="notice notice-info is-dismissible ottokit-admin-notice">
+				<div class="ottokit-notice-aside">
+					<div class="ottokit-notice-icon-wrapper">
+						<img 
+							src="<?php echo esc_url( plugin_dir_url( SURE_TRIGGERS_FILE ) . 'assets/images/OttoKitIcon.svg' ); ?>" 
+							width="30" height="30" alt="OttoKit Logo">
+					</div>
+				</div>
+				<div class="ottokit-notice-content">
+					<h3><?php esc_html_e( 'Introducing OttoKit — the new identity of SureTriggers', 'suretriggers' ); ?></h3>
+					<p>
+						<?php esc_html_e( 'Experience the same powerful automations with a fresh new look and name.', 'suretriggers' ); ?>
+						<a href="https://ottokit.com" class="ottokit-info-link" target="_blank" rel="noopener noreferrer">
+							<?php esc_html_e( 'Learn More', 'suretriggers' ); ?>
+						</a>
+					</p>
+				</div>
+			</div>
+			<?php
+		}
 		if ( isset( OptionController::$options['secret_key'] ) ) {
 			return;
 		}
-		global $pagenow;
 		if ( 'index.php' != $pagenow ) {
 			return;
 		}
@@ -129,14 +151,14 @@ class Loader {
 		<div class="notice notice-success" style="padding-bottom: 15px;">
 			<p>
 				<strong>
-					<?php esc_html_e( 'Connect your plugins and apps together with SureTriggers', 'suretriggers' ); ?>
+					<?php esc_html_e( 'Connect your plugins and apps together with OttoKit (Formerly SureTriggers)', 'suretriggers' ); ?>
 					<span style="transform: rotate(-90deg); font-size: 15px;" class="dashicons dashicons-admin-plugins"></span>
 				</strong>
 			</p>
-			<p> <?php esc_html_e( 'Please connect to or create your SureTriggers account. This will enable you to connect your various plugins and apps together and automate repetitive tasks.', 'suretriggers' ); ?> </p>
+			<p> <?php esc_html_e( 'Please connect to or create your OttoKit (Formerly SureTriggers) account. This will enable you to connect your various plugins and apps together and automate repetitive tasks.', 'suretriggers' ); ?> </p>
 
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Get Started With SureTriggers', 'suretriggers' ); ?> </a>
-			<a href="https://suretriggers.com/" class="button button-secondary"> <?php esc_html_e( 'Learn More', 'suretriggers' ); ?> </a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Get Started With OttoKit (Formerly SureTriggers)', 'suretriggers' ); ?> </a>
+			<a href="https://ottokit.com/" class="button button-secondary"> <?php esc_html_e( 'Learn More', 'suretriggers' ); ?> </a>
 		</div>
 		<?php
 	}
@@ -173,15 +195,15 @@ class Loader {
 			<div class="notice notice-error is-dismissible">
 				<p>
 					<strong>
-						<?php esc_html_e( 'SureTriggers Connection Issue', 'suretriggers' ); ?>
+						<?php esc_html_e( 'OttoKit Connection Issue', 'suretriggers' ); ?>
 						<span style="transform: rotate(-180deg); font-size: 20px;" class="dashicons dashicons-warning"></span>
 					</strong>
 				</p>
 				<p>
-					<?php esc_html_e( 'There is an issue with the established connection between WordPress and SureTriggers. Please visit the SureTriggers dashboard to verify and re-establish the connection if necessary.', 'suretriggers' ); ?>
+					<?php esc_html_e( 'There is an issue with the established connection between WordPress and OttoKit. Please visit the OttoKit dashboard to verify and re-establish the connection if necessary.', 'suretriggers' ); ?>
 				</p>
 				<p>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-secondary"> <?php esc_html_e( 'Go To SureTriggers', 'suretriggers' ); ?> </a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-secondary"> <?php esc_html_e( 'Go To OttoKit', 'suretriggers' ); ?> </a>
 				</p>
 			</div>
 			<?php
@@ -228,23 +250,23 @@ class Loader {
 	 * @since  1.0.0
 	 */
 	public function define_constants() {
-		$sass_url    = 'https://app.suretriggers.com';
-		$api_url     = 'https://api.suretriggers.com';
-		$webhook_url = 'https://webhook.suretriggers.com';
+		$sass_url    = 'https://app.ottokit.com';
+		$api_url     = 'https://api.ottokit.com';
+		$webhook_url = 'https://webhook.ottokit.com';
 		
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.79' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.79' );
+		define( 'SURE_TRIGGERS_VER', '1.0.80' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.0.80' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
 		define( 'SURE_TRIGGERS_API_SERVER_URL', $api_url );
 		define( 'SURE_TRIGGERS_WEBHOOK_SERVER_URL', $webhook_url );
 
-		define( 'SURE_TRIGGERS_PAGE', 'SureTriggers' );
-		define( 'SURE_TRIGGERS_AS_GROUP', 'SureTriggers' );
+		define( 'SURE_TRIGGERS_PAGE', 'OttoKit' );
+		define( 'SURE_TRIGGERS_AS_GROUP', 'OttoKit' );
 
 		define( 'SURE_TRIGGERS_ACTION_ERROR_MESSAGE', 'An unexpected error occurred. Something went wrong with the action.' );
 	}
@@ -268,8 +290,8 @@ class Loader {
 	 * @return void
 	 */
 	public function admin_menu() {
-		$page_title = apply_filters( 'st_menu_page_title', esc_html__( 'SureTriggers', 'suretriggers' ) );
-		$logo       = file_get_contents( plugin_dir_path( SURE_TRIGGERS_FILE ) . 'assets/images/STLogo.svg' );
+		$page_title = apply_filters( 'st_menu_page_title', esc_html__( 'OttoKit', 'suretriggers' ) );
+		$logo       = file_get_contents( plugin_dir_path( SURE_TRIGGERS_FILE ) . 'assets/images/OttoKitLogo.svg' );
 
 		add_menu_page(
 			$page_title,
@@ -300,7 +322,44 @@ class Loader {
 	 * @return void
 	 */
 	public function enqueue_scripts( $hook = '' ) {
-		if ( ! in_array( $hook, [ 'toplevel_page_suretriggers', 'suretriggers_page_suretriggers-status' ], true ) ) {
+		if ( 'index.php' === $hook ) {
+			wp_add_inline_style(
+				'wp-admin',
+				'
+				.ottokit-admin-notice {
+					display: flex;
+					border-left-color: #145485 !important;
+					padding: 0;
+				}
+				.ottokit-admin-notice .ottokit-notice-aside {
+					background-color: #F9F9FB;
+					width: 50px;
+					display: flex;
+					justify-content: center;
+					padding-top: 12px;
+				}
+				.ottokit-admin-notice .ottokit-notice-icon-wrapper img {
+					display: block;
+				}
+				.ottokit-admin-notice .ottokit-notice-content {
+					padding: 15px 10px 5px 5px;
+				}
+				.ottokit-admin-notice .ottokit-notice-content h3 {
+					margin: 0 0 4px;
+					font-size: 16px;
+				}
+				.ottokit-admin-notice .ottokit-notice-content p {
+					padding: 0;
+				}
+				.ottokit-admin-notice .ottokit-info-link {
+					text-decoration: none;
+					font-weight: bold;
+					color: #145485;
+				}
+			'
+			);
+		}
+		if ( ! in_array( $hook, [ 'toplevel_page_suretriggers', 'ottokit_page_suretriggers-status' ], true ) ) {
 			return;
 		}
 
@@ -413,10 +472,10 @@ class Loader {
 						<div>
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check inline-block h-8 w-8 text-green-400 mb-6" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
 							<h2 class="suretriggers-info-title">
-								SureTriggers is connected.
+								OttoKit is connected.
 							</h2>
 							<p class="suretriggers-info-content">
-								Your WordPress site is successfully connected to the SureTriggers SaaS platform. However, the SureTriggers interface display is currently disabled. Click below to enable it.
+								Your WordPress site is successfully connected to the OttoKit SaaS platform. However, the OttoKit interface display is currently disabled. Click below to enable it.
 							</p>
 							<a class="suretriggers-info-link" href="<?php echo esc_url( SURE_TRIGGERS_SITE_URL . '/apps/WordPress' ); ?>" target="_blank">
 								Access Connection Page
@@ -437,16 +496,16 @@ class Loader {
 					<div>
 						<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30" height="24" viewBox="0 0 122.88 122.879" enable-background="new 0 0 122.88 122.879" xml:space="preserve" class="lucide lucide-circle-check inline-block h-8 w-8 text-green-400 mb-6"><g><path fill="#FF4141" d="M61.44,0c16.96,0,32.328,6.882,43.453,17.986c11.104,11.125,17.986,26.494,17.986,43.453 c0,16.961-6.883,32.328-17.986,43.453C93.769,115.998,78.4,122.879,61.44,122.879c-16.96,0-32.329-6.881-43.454-17.986 C6.882,93.768,0,78.4,0,61.439C0,44.48,6.882,29.111,17.986,17.986C29.112,6.882,44.48,0,61.44,0L61.44,0z M73.452,39.152 c2.75-2.792,7.221-2.805,9.986-0.026c2.764,2.776,2.775,7.292,0.027,10.083L71.4,61.445l12.077,12.25 c2.728,2.77,2.689,7.256-0.081,10.021c-2.772,2.766-7.229,2.758-9.954-0.012L61.445,71.541L49.428,83.729 c-2.75,2.793-7.22,2.805-9.985,0.025c-2.763-2.775-2.776-7.291-0.026-10.082L51.48,61.435l-12.078-12.25 c-2.726-2.769-2.689-7.256,0.082-10.022c2.772-2.765,7.229-2.758,9.954,0.013L61.435,51.34L73.452,39.152L73.452,39.152z M96.899,25.98C87.826,16.907,75.29,11.296,61.44,11.296c-13.851,0-26.387,5.611-35.46,14.685 c-9.073,9.073-14.684,21.609-14.684,35.459s5.611,26.387,14.684,35.459c9.073,9.074,21.609,14.686,35.46,14.686 c13.85,0,26.386-5.611,35.459-14.686c9.073-9.072,14.684-21.609,14.684-35.459S105.973,35.054,96.899,25.98L96.899,25.98z"></path></g></svg>
 						<h2 class="suretriggers-info-title">
-							SureTriggers Not Connected.
+							OttoKit Not Connected.
 						</h2>
 						<p class="suretriggers-info-content">
-							It looks like your WordPress site’s connection with SureTriggers has been affected because the URL used for communication has changed. The current link for your site is different from the one SureTriggers was originally connected to.
+							It looks like your WordPress site’s connection with OttoKit has been affected because the URL used for communication has changed. The current link for your site is different from the one OttoKit was originally connected to.
 						</p>
 						<a class="suretriggers-info-link" href="<?php echo esc_url( SURE_TRIGGERS_SITE_URL ); ?>" target="_blank">
 							Access Dashboard
 						</a>
 						<a class="suretriggers-info-link" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?st-reset=true' ), 'st-reset-action' ) ); ?>">
-							Disconnect SureTriggers
+							Disconnect OttoKit
 						</a>
 					</div>
 				</div>
@@ -658,19 +717,19 @@ class Loader {
 			$st_bsf_analytics->set_entity(
 				[
 					'suretriggers' => [
-						'product_name'        => 'SureTriggers',
+						'product_name'        => 'OttoKit',
 						'path'                => SURE_TRIGGERS_DIR . 'inc/lib/bsf-analytics',
-						'author'              => 'SureTriggers',
+						'author'              => 'OttoKit',
 						'time_to_display'     => '+24 hours',
 						'deactivation_survey' => [
 							[
 								'id'                => 'deactivation-survey-suretriggers',
-								'popup_logo'        => SURE_TRIGGERS_URL . 'assets/images/STLogo.svg',
+								'popup_logo'        => SURE_TRIGGERS_URL . 'assets/images/OttoKitIcon.svg',
 								'plugin_slug'       => 'suretriggers',
 								'plugin_version'    => SURE_TRIGGERS_VER,
 								'popup_title'       => __( 'Quick Feedback', 'suretriggers' ),
-								'support_url'       => 'https://suretriggers.com/support/',
-								'popup_description' => __( 'If you have a moment, please share why you are deactivating SureTriggers:', 'suretriggers' ),
+								'support_url'       => 'https://ottokit.com/support/',
+								'popup_description' => __( 'If you have a moment, please share why you are deactivating OttoKit:', 'suretriggers' ),
 								'show_on_screens'   => [ 'plugins' ],
 							],
 						],

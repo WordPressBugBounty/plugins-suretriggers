@@ -5040,7 +5040,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 		$video_data['video'] = [
 			'id'            => '1',
-			'title'         => 'SureTriggers Is Here 🎉 The Easiest Automation Builder WordPress Websites & Apps',
+			'title'         => 'OttoKit Is Here 🎉 The Easiest Automation Builder WordPress Websites & Apps',
 			'type'          => 'youtube',
 			'external_id'   => '-cYbNYgylLs',
 			'attachment_id' => '0',
@@ -10090,7 +10090,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'created_at'                           => '2023-04-27 07:30:46',
 			'updated_at'                           => '2023-04-27 10:28:08',
 			'mailbox_id'                           => '1',
-			'mailbox_name'                         => 'SureTriggers',
+			'mailbox_name'                         => 'OttoKit',
 			'mailbox_slug'                         => 'suretriggers',
 			'mailbox_box_type'                     => 'web',
 			'mailbox email'                        => 'john_doe@sample.com',
@@ -10757,7 +10757,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$response['pluggable_data'] = $context;
 			$response['response_type']  = 'live';
 		} else {
-			$response = json_decode( '{"response_type":"sample","pluggable_data":{"post":{"ID":198,"post_author":"1","post_date":"2023-02-08 13:31:13","post_date_gmt":"2023-02-08 13:31:13","post_content":"New Category1 - content","post_title":"jennjennn - Post - jenn","post_excerpt":"","post_status":"publish","comment_status":"open","ping_status":"open","post_password":"","post_name":"jennjennn-post-jenn","to_ping":"","pinged":"","post_modified":"2023-04-10 06:23:40","post_modified_gmt":"2023-04-10 06:23:40","post_content_filtered":"","post_parent":0,"guid":"https:\/\/suretriggerswp.local\/jennjennn-post-jenn\/","menu_order":0,"post_type":"post","post_mime_type":"","comment_count":"0","filter":"raw"},"enter-post-extra-content-title":"dummy"}}', true );
+			$response = json_decode( '{"response_type":"sample","pluggable_data":{"post":{"ID":198,"post_author":"1","post_date":"2023-02-08 13:31:13","post_date_gmt":"2023-02-08 13:31:13","post_content":"New Category1 - content","post_title":"jennjennn - Post - jenn","post_excerpt":"","post_status":"publish","comment_status":"open","ping_status":"open","post_password":"","post_name":"jennjennn-post-jenn","to_ping":"","pinged":"","post_modified":"2023-04-10 06:23:40","post_modified_gmt":"2023-04-10 06:23:40","post_content_filtered":"","post_parent":0,"guid":"https:\/\/examplewp.local\/jennjennn-post-jenn\/","menu_order":0,"post_type":"post","post_mime_type":"","comment_count":"0","filter":"raw"},"enter-post-extra-content-title":"dummy"}}', true );
 		}
 
 		return $response;
@@ -11238,7 +11238,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$context['response_type']  = 'live';
 				$context['pluggable_data'] = array_merge( WordPress::get_user_context( $user_progress->user_id ), $course_data, $lesson_data );
 			} else {
-				$sample_data = '{"pluggable_data":{"wp_user_id":1,"user_login":"suretriggers","display_name":"suretriggers","user_firstname":"suretriggers","user_lastname":"suretriggers","user_email":"hello@suretriggers.io","user_role":["administrator","subscriber","tutor_instructor","bbp_keymaster"],"course_id":617,"course_title":"Course One","course_url":"https:\/\/connector.com\/courses\/course-one\/","course_featured_image_id":"","course_featured_image_url":false}
+				$sample_data = '{"pluggable_data":{"wp_user_id":1,"user_login":"johnd","display_name":"johnd","user_firstname":"johnd","user_lastname":"johnd","user_email":"hello@example.io","user_role":["administrator","subscriber","tutor_instructor","bbp_keymaster"],"course_id":617,"course_title":"Course One","course_url":"https:\/\/connector.com\/courses\/course-one\/","course_featured_image_id":"","course_featured_image_url":false}
 				,"response_type":"sample"}  ';
 				$context     = json_decode( $sample_data, true );
 			}
@@ -11279,7 +11279,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$context['response_type']  = 'live';
 				$context['pluggable_data'] = array_merge( WordPress::get_user_context( $user_progress->user_id ), $course_data, $lesson_data );
 			} else {
-				$sample_data = '{"pluggable_data":{"wp_user_id":1,"user_login":"suretriggers","display_name":"suretriggers","user_firstname":"suretriggers","user_lastname":"dev","user_email":"hello@suretriggers.com","user_role":["administrator","subscriber","tutor_instructor","bbp_keymaster"],"lesson_id":620,"lesson_title":"second section","lesson_url":"https:\/\/connector.com\/courses\/course-one\/lessons\/second-section\/","lesson_featured_image_id":"","lesson_featured_image_url":false,"course_id":617,"course_title":"Course One","course_url":"https:\/\/connector.com\/courses\/course-one\/","course_featured_image_id":"","course_featured_image_url":false},"response_type":"sample"}';
+				$sample_data = '{"pluggable_data":{"wp_user_id":1,"user_login":"johnd","display_name":"johnd","user_firstname":"john","user_lastname":"dev","user_email":"johnd@example.com","user_role":["administrator","subscriber","tutor_instructor","bbp_keymaster"],"lesson_id":620,"lesson_title":"second section","lesson_url":"https:\/\/connector.com\/courses\/course-one\/lessons\/second-section\/","lesson_featured_image_id":"","lesson_featured_image_url":false,"course_id":617,"course_title":"Course One","course_url":"https:\/\/connector.com\/courses\/course-one\/","course_featured_image_id":"","course_featured_image_url":false},"response_type":"sample"}';
 				$context     = json_decode( $sample_data, true );
 			}
 		}
@@ -13160,67 +13160,85 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$context                  = [];
 		$context['response_type'] = 'sample';
 
-		$event = [
-			'event_id'           => 1,
-			'title'              => 'Sample Event',
-			'description'        => 'Description of the sample event.',
-			'categories'         => 'New, Sample',
-			'start_date'         => 'September 13, 2023',
-			'start_time'         => '8:00 AM',
-			'end_date'           => 'September 13, 2023',
-			'end_time'           => '11:00 AM',
-			'location'           => 'City Hall',
-			'organizer'          => 'John Doe',
-			'cost'               => '5000',
-			'featured_image_id'  => 1,
-			'featured_image_url' => 'https://suretriggers.com/wp-content/uploads/2022/12/Screenshot_20221127_021332.png',
-			'tickets'            => [
-				[
-					'id'          => 1,
-					'name'        => 'Silver',
-					'description' => 'Standard seat with reasonable price.',
-					'price'       => '300',
-					'price_label' => 'USD',
-					'limit'       => '20',
-				],
-				[
-					'id'          => 2,
-					'name'        => 'Premium',
-					'description' => 'VIP seat with high price.',
-					'price'       => '500',
-					'price_label' => 'USD',
-					'limit'       => '10',
-				],
-			],
-			'attendees'          => [
-				[
-					'id'    => 1,
-					'email' => 'johndoe@test.com',
-					'name'  => 'John Doe',
-				],
-				[
-					'id'    => 2,
-					'email' => 'adamsmith@test.com',
-					'name'  => 'Adam Smith',
-				],
-			],
-			'booking'            => [
-				'title'               => 'johndoe@test.com - John Doe',
-				'transaction_id'      => 'RSH59404',
-				'amount_payable'      => '800',
-				'price'               => '800',
-				'time'                => '2023-09-07 06:40:32',
-				'payment_gateway'     => 'Manual Pay',
-				'confirmation_status' => 'Pending',
-				'verification_status' => 'Verified',
-				'attendees_count'     => 2,
-			],
-		];
-
 		$term = isset( $data['search_term'] ) ? $data['search_term'] : '';
 
-		$where = '';
+		if ( 'new_event' === $term ) {
+			$post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->prefix}mec_events ORDER BY id DESC LIMIT 1" );
 
+			$live_data = [
+				'post_id' => $post_id,
+				'event'   => get_post_meta( $post_id ),
+				'post'    => get_post( $post_id ),
+			];
+
+			if ( ! empty( $post_id ) ) {
+				$context['pluggable_data'] = $live_data;
+				$context['response_type']  = 'live';
+			} else {
+				$context['pluggable_data'] = [
+					'post_id' => 272,
+					'event'   => [
+						'mec_color'                   => [ 'e14d43' ],
+						'_thumbnail_id'               => [ 229 ],
+						'mec_location_id'             => [ 49 ],
+						'mec_dont_show_map'           => [ 0 ],
+						'mec_organizer_id'            => [ 53 ],
+						'mec_start_date'              => [ '2025-04-01' ],
+						'mec_start_time_hour'         => [ 8 ],
+						'mec_start_time_minutes'      => [ 0 ],
+						'mec_start_time_ampm'         => [ 'AM' ],
+						'mec_start_day_seconds'       => [ 32400 ],
+						'mec_start_datetime'          => [ '2025-04-01 08:00 AM' ],
+						'mec_end_date'                => [ '2025-04-01' ],
+						'mec_date'                    => [ 'a:3:{s:5:"start";a:4:{s:4:"date";s:10:"2025-03-29";s:4:"hour";s:1:"8";s:7:"minutes";s:1:"0";s:4:"ampm";s:2:"AM";}s:3:"end";a:4:{s:4:"date";s:10:"2025-03-29";s:4:"hour";s:1:"6";s:7:"minutes";s:1:"0";s:4:"ampm";s:2:"PM";}s:6:"allday";s:1:"1";}' ],
+						'mec_end_time_hour'           => [ 6 ],
+						'mec_end_time_minutes'        => [ 0 ],
+						'mec_end_time_ampm'           => [ 'PM' ],
+						'mec_end_day_seconds'         => [ 68400 ],
+						'mec_end_datetime'            => [ '2025-04-01 06:00 PM' ],
+						'mec_allday'                  => [ 1 ],
+						'mec_fees'                    => [ 'a:0:{}' ],
+						'mec_op'                      => [ 'a:0:{}' ],
+						'mec_repeat'                  => [ 'a:0:{}' ],
+						'mec_booking'                 => [ 'a:0:{}' ],
+						'mec_comment'                 => [ '' ],
+						'mec_in_days'                 => [ '' ],
+						'mec_tickets'                 => [ 'a:0:{}' ],
+						'mec_reg_fields'              => [ 'a:0:{}' ],
+						'mec_hourly_schedules'        => [ 'a:0:{}' ],
+						'mec_ticket_variations'       => [ 'a:0:{}' ],
+						'mec_hide_time'               => [ 0 ],
+						'mec_hide_end_time'           => [ 0 ],
+						'mec_repeat_status'           => [ 0 ],
+						'mec_fees_global_inheritance' => [ 1 ],
+						'mec_ticket_variations_global_inheritance' => [ 1 ],
+						'mec_reg_fields_global_inheritance' => [ 1 ],
+						'mec_event_date_submit'       => [ '20250331042811' ],
+						'mec_new_event_notif_sent'    => [ 1 ],
+					],
+					'post'    => [
+						'ID'             => 272,
+						'post_author'    => 1,
+						'post_date'      => '2025-03-31 04:28:09',
+						'post_date_gmt'  => '2025-03-31 04:28:09',
+						'post_content'   => '<p>Sample Event</p>',
+						'post_title'     => 'Sample Event',
+						'post_status'    => 'publish',
+						'comment_status' => 'open',
+						'ping_status'    => 'closed',
+						'post_name'      => 'sample-event',
+						'guid'           => 'http://example.local/events/sample-event/',
+						'post_type'      => 'mec-events',
+						'comment_count'  => 0,
+					],
+				];
+				$context['response_type']  = 'sample';
+			}
+
+			return $context;
+		}
+
+		$where = '';
 		if ( 'cancelled' === $term ) {
 			$where = 'WHERE verified = -1';
 		} elseif ( 'confirmed' === $term ) {
@@ -13244,10 +13262,66 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		if ( ! empty( $event_data ) ) {
 			$event                    = ModernEventsCalendar::get_event_context( (int) $event_data->booking_id );
 			$context['response_type'] = 'live';
+		} else {
+			$event = [
+				'event_id'           => 1,
+				'title'              => 'Sample Event',
+				'description'        => 'Description of the sample event.',
+				'categories'         => 'New, Sample',
+				'start_date'         => 'September 13, 2023',
+				'start_time'         => '8:00 AM',
+				'end_date'           => 'September 13, 2023',
+				'end_time'           => '11:00 AM',
+				'location'           => 'City Hall',
+				'organizer'          => 'John Doe',
+				'cost'               => '5000',
+				'featured_image_id'  => 1,
+				'featured_image_url' => 'https://example.com/wp-content/uploads/2022/12/Screenshot_20221127_021332.png',
+				'tickets'            => [
+					[
+						'id'          => 1,
+						'name'        => 'Silver',
+						'description' => 'Standard seat with reasonable price.',
+						'price'       => '300',
+						'price_label' => 'USD',
+						'limit'       => '20',
+					],
+					[
+						'id'          => 2,
+						'name'        => 'Premium',
+						'description' => 'VIP seat with high price.',
+						'price'       => '500',
+						'price_label' => 'USD',
+						'limit'       => '10',
+					],
+				],
+				'attendees'          => [
+					[
+						'id'    => 1,
+						'email' => 'johndoe@test.com',
+						'name'  => 'John Doe',
+					],
+					[
+						'id'    => 2,
+						'email' => 'adamsmith@test.com',
+						'name'  => 'Adam Smith',
+					],
+				],
+				'booking'            => [
+					'title'               => 'johndoe@test.com - John Doe',
+					'transaction_id'      => 'RSH59404',
+					'amount_payable'      => '800',
+					'price'               => '800',
+					'time'                => '2023-09-07 06:40:32',
+					'payment_gateway'     => 'Manual Pay',
+					'confirmation_status' => 'Pending',
+					'verification_status' => 'Verified',
+					'attendees_count'     => 2,
+				],
+			];
 		}
 
 		$context['pluggable_data'] = $event;
-
 		return $context;
 	}
 
@@ -17167,19 +17241,19 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		} elseif ( empty( $result ) ) {
 			switch ( $trigger ) {
 				case 'ac_lms_course_completed':
-					$sample_data = '{"pluggable_data":{"wp_user_id": 73, "user_login": "abc@yopmail.com","display_name": "data data1", "user_firstname": "data","user_lastname": "data1","user_email": "abc@yopmail.com","user_role": [],"course_data": {"ID": 6949,"post_author": "1","post_date": "2023-11-29 05:37:50","post_date_gmt": "2023-11-29 05:37:50","post_content": "<!-- wp:paragraph -->\n<p>this is a business course.<\/p>\n<!-- \/wp:paragraph -->","post_title": "Business Course","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "open","post_password": "","post_name": "business-course","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:27","post_modified_gmt": "2023-11-29 09:50:27","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/suretriggers-wpnew.local\/course\/business-course\/","menu_order": 0,"post_type": "academy_courses","post_mime_type": "","comment_count": "0","filter": "raw"},"course": 1},"response_type":"sample"}';
+					$sample_data = '{"pluggable_data":{"wp_user_id": 73, "user_login": "abc@yopmail.com","display_name": "data data1", "user_firstname": "data","user_lastname": "data1","user_email": "abc@yopmail.com","user_role": [],"course_data": {"ID": 6949,"post_author": "1","post_date": "2023-11-29 05:37:50","post_date_gmt": "2023-11-29 05:37:50","post_content": "<!-- wp:paragraph -->\n<p>this is a business course.<\/p>\n<!-- \/wp:paragraph -->","post_title": "Business Course","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "open","post_password": "","post_name": "business-course","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:27","post_modified_gmt": "2023-11-29 09:50:27","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/example-wpnew.local\/course\/business-course\/","menu_order": 0,"post_type": "academy_courses","post_mime_type": "","comment_count": "0","filter": "raw"},"course": 1},"response_type":"sample"}';
 					break;
 				case 'ac_lms_lesson_completed':
-					$sample_data = '{"pluggable_data":{"ID": "1","lesson_author": "1","lesson_date": "2023-11-29 07:01:03","lesson_date_gmt": "2023-11-29 07:01:03","lesson_title": "Lesson 1","lesson_name": "","lesson_content": "","lesson_excerpt": "","lesson_status": "publish","comment_status": "close","comment_count": "0","lesson_password": "","lesson_modified": "2023-11-29 07:01:03","lesson_modified_gmt": "2023-11-29 07:01:03","wp_user_id": 73,"user_login": "abc@yopmail.com","display_name": "data data1","user_firstname": "data","user_lastname": "data1","user_email": "abc@yopmail.com","user_role": [],"course_data": {"ID": 6949,"post_author": "1","post_date": "2023-11-29 05:37:50","post_date_gmt": "2023-11-29 05:37:50","post_content": "<!-- wp:paragraph -->\n<p>this is a business course.<\/p>\n<!-- \/wp:paragraph -->","post_title": "Business Course","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "open","post_password": "","post_name": "business-course","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:27","post_modified_gmt": "2023-11-29 09:50:27","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/suretriggers-wpnew.local\/course\/business-course\/","menu_order": 0,"post_type": "academy_courses","post_mime_type": "","comment_count": "0","filter": "raw"},"lesson": 1,"course":1},"response_type":"sample"}';
+					$sample_data = '{"pluggable_data":{"ID": "1","lesson_author": "1","lesson_date": "2023-11-29 07:01:03","lesson_date_gmt": "2023-11-29 07:01:03","lesson_title": "Lesson 1","lesson_name": "","lesson_content": "","lesson_excerpt": "","lesson_status": "publish","comment_status": "close","comment_count": "0","lesson_password": "","lesson_modified": "2023-11-29 07:01:03","lesson_modified_gmt": "2023-11-29 07:01:03","wp_user_id": 73,"user_login": "abc@yopmail.com","display_name": "data data1","user_firstname": "data","user_lastname": "data1","user_email": "abc@yopmail.com","user_role": [],"course_data": {"ID": 6949,"post_author": "1","post_date": "2023-11-29 05:37:50","post_date_gmt": "2023-11-29 05:37:50","post_content": "<!-- wp:paragraph -->\n<p>this is a business course.<\/p>\n<!-- \/wp:paragraph -->","post_title": "Business Course","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "open","post_password": "","post_name": "business-course","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:27","post_modified_gmt": "2023-11-29 09:50:27","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/example-wpnew.local\/course\/business-course\/","menu_order": 0,"post_type": "academy_courses","post_mime_type": "","comment_count": "0","filter": "raw"},"lesson": 1,"course":1},"response_type":"sample"}';
 					break;
 				case 'ac_lms_quiz_completed':
-					$sample_data = '{"pluggable_data":{"wp_user_id": 73,"user_login": "abc@yopmail.com","display_name": "data data1","user_firstname": "data","user_lastname": "data1","user_email": "abc@yopmail.com","user_role": [],"quiz_data": {"ID": 6960,"post_author": "1","post_date": "2023-11-29 09:49:42","post_date_gmt": "2023-11-29 09:49:42","post_content": "","post_title": "First Quiz","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "first-quiz","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:11","post_modified_gmt": "2023-11-29 09:50:11","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/suretriggers-wpnew.local\/?post_type=academy_quiz&#038;p=6960","menu_order": 0,"post_type": "academy_quiz","post_mime_type": "","comment_count": "0","filter": "raw"}, "quiz_attempt_details": [{"attempt_id": "2","course_id": "6949","quiz_id": "6960","user_id": "126","total_questions": "1","total_answered_questions": "1","total_marks": "20.00","earned_marks": "20.00","attempt_info": "{\"total_correct_answers\":1}","attempt_status": "passed","attempt_ip": "127.0.0.1","attempt_started_at": "2023-11-30 06:20:10","attempt_ended_at": "2023-11-30 06:20:10","is_manually_reviewed": null,"manually_reviewed_at": null}],"quiz":1},"response_type":"sample"}';
+					$sample_data = '{"pluggable_data":{"wp_user_id": 73,"user_login": "abc@yopmail.com","display_name": "data data1","user_firstname": "data","user_lastname": "data1","user_email": "abc@yopmail.com","user_role": [],"quiz_data": {"ID": 6960,"post_author": "1","post_date": "2023-11-29 09:49:42","post_date_gmt": "2023-11-29 09:49:42","post_content": "","post_title": "First Quiz","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "first-quiz","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:11","post_modified_gmt": "2023-11-29 09:50:11","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/example-wpnew.local\/?post_type=academy_quiz&#038;p=6960","menu_order": 0,"post_type": "academy_quiz","post_mime_type": "","comment_count": "0","filter": "raw"}, "quiz_attempt_details": [{"attempt_id": "2","course_id": "6949","quiz_id": "6960","user_id": "126","total_questions": "1","total_answered_questions": "1","total_marks": "20.00","earned_marks": "20.00","attempt_info": "{\"total_correct_answers\":1}","attempt_status": "passed","attempt_ip": "127.0.0.1","attempt_started_at": "2023-11-30 06:20:10","attempt_ended_at": "2023-11-30 06:20:10","is_manually_reviewed": null,"manually_reviewed_at": null}],"quiz":1},"response_type":"sample"}';
 					break;
 				case 'ac_lms_quiz_failed':
-					$sample_data = '{"pluggable_data":{"wp_user_id": 73,"user_login": "abc@yopmail.com","display_name": "data data1","user_firstname": "data","user_lastname": "data1","user_email": "abc@yopmail.com","user_role": [],"quiz_data": {"ID": 6960,"post_author": "1","post_date": "2023-11-29 09:49:42","post_date_gmt": "2023-11-29 09:49:42","post_content": "","post_title": "First Quiz","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "first-quiz","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:11","post_modified_gmt": "2023-11-29 09:50:11","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/suretriggers-wpnew.local\/?post_type=academy_quiz&#038;p=6960","menu_order": 0,"post_type": "academy_quiz","post_mime_type": "","comment_count": "0","filter": "raw"}, "quiz_attempt_details": [{"attempt_id": "2","course_id": "6949","quiz_id": "6960","user_id": "126","total_questions": "1","total_answered_questions": "1","total_marks": "20.00","earned_marks": "0.00","attempt_info": "{\"total_correct_answers\":0}","attempt_status": "failed","attempt_ip": "127.0.0.1","attempt_started_at": "2023-11-30 06:20:10","attempt_ended_at": "2023-11-30 06:20:10","is_manually_reviewed": null,"manually_reviewed_at": null}],"quiz":1},"response_type":"sample"}';
+					$sample_data = '{"pluggable_data":{"wp_user_id": 73,"user_login": "abc@yopmail.com","display_name": "data data1","user_firstname": "data","user_lastname": "data1","user_email": "abc@yopmail.com","user_role": [],"quiz_data": {"ID": 6960,"post_author": "1","post_date": "2023-11-29 09:49:42","post_date_gmt": "2023-11-29 09:49:42","post_content": "","post_title": "First Quiz","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "first-quiz","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:11","post_modified_gmt": "2023-11-29 09:50:11","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/example-wpnew.local\/?post_type=academy_quiz&#038;p=6960","menu_order": 0,"post_type": "academy_quiz","post_mime_type": "","comment_count": "0","filter": "raw"}, "quiz_attempt_details": [{"attempt_id": "2","course_id": "6949","quiz_id": "6960","user_id": "126","total_questions": "1","total_answered_questions": "1","total_marks": "20.00","earned_marks": "0.00","attempt_info": "{\"total_correct_answers\":0}","attempt_status": "failed","attempt_ip": "127.0.0.1","attempt_started_at": "2023-11-30 06:20:10","attempt_ended_at": "2023-11-30 06:20:10","is_manually_reviewed": null,"manually_reviewed_at": null}],"quiz":1},"response_type":"sample"}';
 					break;
 				case 'ac_lms_enrolled_course':
-					$sample_data = '{"pluggable_data":{"course_data": {"ID": 6949,"post_author": "1","post_date": "2023-11-29 05:37:50","post_date_gmt": "2023-11-29 05:37:50","post_content": "<!-- wp:paragraph -->\n<p>this is a business course.<\/p>\n<!-- \/wp:paragraph -->","post_title": "Business Course","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "open","post_password": "","post_name": "business-course","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:27","post_modified_gmt": "2023-11-29 09:50:27","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/suretriggers-wpnew.local\/course\/business-course\/","menu_order": 0,"post_type": "academy_courses","post_mime_type": "","comment_count": "0","filter": "raw"},"enrollment_data": {"ID": "6971","post_author": "126","post_date": "2023-11-30 05:52:54","post_date_gmt": "2023-11-30 05:52:54","post_content": "","post_title": "Course Enrolled November 30, 2023 @ 5:52 am","post_excerpt": "","post_status": "completed","comment_status": "closed","ping_status": "closed","post_password": "","post_name": "course-enrolled-november-30-2023-552-am","to_ping": "","pinged": "","post_modified": "2023-11-30 05:52:54","post_modified_gmt": "2023-11-30 05:52:54","post_content_filtered": "","post_parent": "6949","guid": "https:\/\/suretriggers-wpnew.local\/?p=6971","menu_order": "0","post_type": "academy_enrolled","post_mime_type": "","comment_count": "0"},"course":1, "wp_user_id": 2,"user_login": "test","display_name": "test test","user_firstname": "test","user_lastname": "test", "user_email": "test@yopmail.com","user_role": ["academy_student"]},"response_type":"sample"}';
+					$sample_data = '{"pluggable_data":{"course_data": {"ID": 6949,"post_author": "1","post_date": "2023-11-29 05:37:50","post_date_gmt": "2023-11-29 05:37:50","post_content": "<!-- wp:paragraph -->\n<p>this is a business course.<\/p>\n<!-- \/wp:paragraph -->","post_title": "Business Course","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "open","post_password": "","post_name": "business-course","to_ping": "","pinged": "","post_modified": "2023-11-29 09:50:27","post_modified_gmt": "2023-11-29 09:50:27","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/example-wpnew.local\/course\/business-course\/","menu_order": 0,"post_type": "academy_courses","post_mime_type": "","comment_count": "0","filter": "raw"},"enrollment_data": {"ID": "6971","post_author": "126","post_date": "2023-11-30 05:52:54","post_date_gmt": "2023-11-30 05:52:54","post_content": "","post_title": "Course Enrolled November 30, 2023 @ 5:52 am","post_excerpt": "","post_status": "completed","comment_status": "closed","ping_status": "closed","post_password": "","post_name": "course-enrolled-november-30-2023-552-am","to_ping": "","pinged": "","post_modified": "2023-11-30 05:52:54","post_modified_gmt": "2023-11-30 05:52:54","post_content_filtered": "","post_parent": "6949","guid": "https:\/\/example-wpnew.local\/?p=6971","menu_order": "0","post_type": "academy_enrolled","post_mime_type": "","comment_count": "0"},"course":1, "wp_user_id": 2,"user_login": "test","display_name": "test test","user_firstname": "test","user_lastname": "test", "user_email": "test@yopmail.com","user_role": ["academy_student"]},"response_type":"sample"}';
 					break;
 				default:
 					return;
@@ -17738,7 +17812,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$context['pluggable_data']['author'] = WordPress::get_user_context( $results[0]['author_id'] );
 			$context['response_type']            = 'live';
 		} else {
-			$context = json_decode( '{"pluggable_data":{"forum_id":"1","topic_id":"2","forum":{"id":"1","name":"First Forum","parent_id":"64","parent_forum":"0","description":"My first forum.","icon":"fas fa-comments","sort":"1","forum_status":"normal","slug":"first-forum"},"topic":{"id":"2","parent_id":"1","author_id":"1","views":"2","name":"other topic","sticky":"0","closed":"0","approved":"1","slug":"other-topic"},"user":{"wp_user_id":1,"user_login":"suredev","display_name":"SureDev","user_firstname":"Sure","user_lastname":"Dev","user_email":"dev-suretest@suretriggers.com","user_role":["administrator"]}},"response_type":"sample"}', true );// @phpcs:ignore
+			$context = json_decode( '{"pluggable_data":{"forum_id":"1","topic_id":"2","forum":{"id":"1","name":"First Forum","parent_id":"64","parent_forum":"0","description":"My first forum.","icon":"fas fa-comments","sort":"1","forum_status":"normal","slug":"first-forum"},"topic":{"id":"2","parent_id":"1","author_id":"1","views":"2","name":"other topic","sticky":"0","closed":"0","approved":"1","slug":"other-topic"},"user":{"wp_user_id":1,"user_login":"suredev","display_name":"SureDev","user_firstname":"Sure","user_lastname":"Dev","user_email":"dev-test@example.com","user_role":["administrator"]}},"response_type":"sample"}', true );// @phpcs:ignore
 		}
 		return $context;
 	}
@@ -17779,7 +17853,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$context['pluggable_data']['author'] = WordPress::get_user_context( $results[0]['author_id'] );
 			$context['response_type']            = 'live';
 		} else {
-			$context = json_decode( '{"pluggable_data":{"forum_id":"1","topic_id":"2","forum":{"id":"1","name":"First Forum","parent_id":"64","parent_forum":"0","description":"My first forum.","icon":"fas fa-comments","sort":"1","forum_status":"normal","slug":"first-forum"},"topic":{"id":"2","parent_id":"1","author_id":"1","views":"2","name":"other topic","sticky":"0","closed":"0","approved":"1","slug":"other-topic"},"user":{"wp_user_id":1,"user_login":"suredev","display_name":"SureDev","user_firstname":"Sure","user_lastname":"Dev","user_email":"dev-suretest@suretriggers.com","user_role":["administrator"]}},"response_type":"sample"}', true );// @phpcs:ignore
+			$context = json_decode( '{"pluggable_data":{"forum_id":"1","topic_id":"2","forum":{"id":"1","name":"First Forum","parent_id":"64","parent_forum":"0","description":"My first forum.","icon":"fas fa-comments","sort":"1","forum_status":"normal","slug":"first-forum"},"topic":{"id":"2","parent_id":"1","author_id":"1","views":"2","name":"other topic","sticky":"0","closed":"0","approved":"1","slug":"other-topic"},"user":{"wp_user_id":1,"user_login":"suredev","display_name":"SureDev","user_firstname":"Sure","user_lastname":"Dev","user_email":"dev-test@example.com","user_role":["administrator"]}},"response_type":"sample"}', true );// @phpcs:ignore
 		}
 		return $context;
 	}
@@ -18003,7 +18077,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$context['pluggable_data']['owner'] = WordPress::get_user_context( $results['owner_id'] );
 			$context['response_type']           = 'live';
 		} else {
-			$context = json_decode( '{"pluggable_data":{"id":"24","position":null,"table_id":"17484","owner_id":"29","attribute":"value","settings":null,"value":{"id":"3","name":"Suretriggers","class":"Dev","gender":"Female"},"created_at":"2024-03-21 13:11:25","updated_at":"2024-03-21 13:11:25","owner":{"wp_user_id":29,"user_login":"testingdsd","display_name":"suretest","user_firstname":"Suretrigger","user_lastname":"Dev","user_email":"johndoe@email.com","user_role":["editor"]}},"response_type":"sample"}', true );
+			$context = json_decode( '{"pluggable_data":{"id":"24","position":null,"table_id":"17484","owner_id":"29","attribute":"value","settings":null,"value":{"id":"3","name":"Table1","class":"Dev","gender":"Female"},"created_at":"2024-03-21 13:11:25","updated_at":"2024-03-21 13:11:25","owner":{"wp_user_id":29,"user_login":"testingdsd","display_name":"suretest","user_firstname":"John","user_lastname":"Dev","user_email":"johndoe@email.com","user_role":["editor"]}},"response_type":"sample"}', true );
 		}
 		return $context;
 	}
@@ -18708,7 +18782,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$context['pluggable_data']['review_by']         = WordPress::get_user_context( $results[0]['user_id'] );
 				$context['response_type']                       = 'live';
 			} else {
-				$context = json_decode( '{"pluggable_data":{"ID": 8291,"post_author": "1","post_date": "2024-03-18 09:01:54","post_date_gmt": "2024-03-18 09:01:54","post_content": "<p>PizzaCrust - Since 2009! Whether it\u2019s our iconic Sandwiches, wooden baked pizzas, signature sauce, original fresh dough or toppings, we invest in bringing the freshest and best ingredients to bring you the tastiest meal.<\/p>","post_title": "Pizza Crust","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "sach-pizza","to_ping": "","pinged": "","post_modified": "2024-03-18 09:01:54","post_modified_gmt": "2024-03-18 09:01:54","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/suretriggers-wpnew.local\/places\/sach-pizza\/","menu_order": 0,"post_type": "places","post_mime_type": "","comment_count": "0","filter": "raw","review_content": "Nice one","review_created_at": "2024-04-04 12:59:22","review_details": {"rating": {"score": -1,"custom-660": -1,"custom-978": -1,"custom-271": -1}},"review_by": {"wp_user_id": 188,"user_login": "dev4","display_name": "dev4","user_firstname": "","user_lastname": "","user_email": "dev4@yopmail.com","user_role": ["subscriber"]}},"response_type":"sample"}', true );// @phpcs:ignore
+				$context = json_decode( '{"pluggable_data":{"ID": 8291,"post_author": "1","post_date": "2024-03-18 09:01:54","post_date_gmt": "2024-03-18 09:01:54","post_content": "<p>PizzaCrust - Since 2009! Whether it\u2019s our iconic Sandwiches, wooden baked pizzas, signature sauce, original fresh dough or toppings, we invest in bringing the freshest and best ingredients to bring you the tastiest meal.<\/p>","post_title": "Pizza Crust","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "sach-pizza","to_ping": "","pinged": "","post_modified": "2024-03-18 09:01:54","post_modified_gmt": "2024-03-18 09:01:54","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/example-wpnew.local\/places\/sach-pizza\/","menu_order": 0,"post_type": "places","post_mime_type": "","comment_count": "0","filter": "raw","review_content": "Nice one","review_created_at": "2024-04-04 12:59:22","review_details": {"rating": {"score": -1,"custom-660": -1,"custom-978": -1,"custom-271": -1}},"review_by": {"wp_user_id": 188,"user_login": "dev4","display_name": "dev4","user_firstname": "","user_lastname": "","user_email": "dev4@yopmail.com","user_role": ["subscriber"]}},"response_type":"sample"}', true );// @phpcs:ignore
 			}
 		} elseif ( 'collection_post_submitted' === $term || 'collection_post_updated' === $term ) {
 			if ( ! empty( $results ) ) {
@@ -18771,7 +18845,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$context['pluggable_data']      = $follow_data;
 				$context['response_type']       = 'live';
 			} else {
-				$context = json_decode( '{"pluggable_data":{"field_step-general":null,"field_title":"How Data Fundamentally Changed Marketing","field__thumbnail_id":{"_thumbnail_id_0_url":"https://example.com/wp-content/uploads/2025/01/169cbc8.jpg"},"field_taxonomy":"General","ID": 8291,"post_author": "1","post_date": "2024-03-18 09:01:54","post_date_gmt": "2024-03-18 09:01:54","post_content": "<p>PizzaCrust - Since 2009! Whether it\u2019s our iconic Sandwiches, wooden baked pizzas, signature sauce, original fresh dough or toppings, we invest in bringing the freshest and best ingredients to bring you the tastiest meal.<\/p>","post_title": "Pizza Crust","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "sach-pizza","to_ping": "","pinged": "","post_modified": "2024-03-18 09:01:54","post_modified_gmt": "2024-03-18 09:01:54","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/suretriggers-wpnew.local\/places\/sach-pizza\/","menu_order": 0,"post_type": "places","post_mime_type": "","comment_count": "0","filter": "raw","total_followers":4,"post_id": 447,"user_id": 2,"status":1},"response_type":"sample"}', true );// @phpcs:ignore
+				$context = json_decode( '{"pluggable_data":{"field_step-general":null,"field_title":"How Data Fundamentally Changed Marketing","field__thumbnail_id":{"_thumbnail_id_0_url":"https://example.com/wp-content/uploads/2025/01/169cbc8.jpg"},"field_taxonomy":"General","ID": 8291,"post_author": "1","post_date": "2024-03-18 09:01:54","post_date_gmt": "2024-03-18 09:01:54","post_content": "<p>PizzaCrust - Since 2009! Whether it\u2019s our iconic Sandwiches, wooden baked pizzas, signature sauce, original fresh dough or toppings, we invest in bringing the freshest and best ingredients to bring you the tastiest meal.<\/p>","post_title": "Pizza Crust","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "closed","post_password": "","post_name": "sach-pizza","to_ping": "","pinged": "","post_modified": "2024-03-18 09:01:54","post_modified_gmt": "2024-03-18 09:01:54","post_content_filtered": "","post_parent": 0,"guid": "https:\/\/example-wpnew.local\/places\/sach-pizza\/","menu_order": 0,"post_type": "places","post_mime_type": "","comment_count": "0","filter": "raw","total_followers":4,"post_id": 447,"user_id": 2,"status":1},"response_type":"sample"}', true );// @phpcs:ignore
 			}
 		}
 		return $context;

@@ -121,7 +121,7 @@ if ( ! class_exists( 'SettingsController' ) ) :
 										'value'           => 'yes',
 										'label'           => __( 'Clear Cache', 'suretriggers' ),
 										'description'     => __(
-											'By clicking here, your current connection with the SureTriggers for this site will be set to default',
+											'By clicking here, your current connection with the OttoKit for this site will be set to default',
 											'suretriggers'
 										),
 										'confirmation'    => [

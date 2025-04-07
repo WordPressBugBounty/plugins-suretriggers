@@ -151,7 +151,7 @@ class RoutesController {
 			[
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => function () {
-					wp_die( 'SureTriggers Says: API Working perfectly!' );
+					wp_die( 'OttoKit Says: API Working perfectly!' );
 				},
 				'permission_callback' => '__return_true',
 			]

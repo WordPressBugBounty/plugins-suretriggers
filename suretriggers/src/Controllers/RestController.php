@@ -506,13 +506,13 @@ class RestController {
 	}
 
 	/**
-	 * SureTriggers Connection Info
+	 * OttoKit Connection Info
 	 *
 	 * @param array $debug_info Info data.
 	 * @return array
 	 */
 	public function sure_triggers_connection_info( $debug_info ) {
-		// Verify if SureTriggers is connected successfully.
+		// Verify if OttoKit is connected successfully.
 		$response   = self::verify_user_token();
 		$connection = ( wp_remote_retrieve_response_code( $response ) === 200 );
 		if ( $connection ) {
@@ -521,10 +521,10 @@ class RestController {
 			$connection_status = 'Error in Connection';
 		}
 		$debug_info['suretriggers'] = [
-			'label'  => __( 'SureTriggers', 'suretriggers' ),
+			'label'  => __( 'OttoKit', 'suretriggers' ),
 			'fields' => [
 				'suretriggers_status'  => [
-					'label'   => __( 'SureTriggers Status', 'suretriggers' ),
+					'label'   => __( 'OttoKit Status', 'suretriggers' ),
 					'value'   => $connection_status,
 					'private' => false,
 				],
@@ -534,7 +534,7 @@ class RestController {
 					'private' => false,
 				],
 				'suretriggers_version' => [
-					'label'   => __( 'SureTriggers Version', 'suretriggers' ),
+					'label'   => __( 'OttoKit Version', 'suretriggers' ),
 					'value'   => SURE_TRIGGERS_VER,
 					'private' => false,
 				],

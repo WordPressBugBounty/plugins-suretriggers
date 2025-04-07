@@ -1,3 +1,10 @@
+Version 1.0.80 - Monday, 7th April 2025
+- Improvement: Rebranded as OttoKit from SureTriggers: All-in-One Automation Platform
+- Improvement: "Modern Events Calendar" - Added new "Event Created" Trigger
+- Improvement: "WP Fusion" - Added Support for Tag Selection & Creation in "Add Tag to User" Action
+- Improvement: "WordPress" - Added new "Update Comment Status" Action
+- Improvement: "LearnDash" - Added new "Find Course Taxonomies" Action
+
 Version 1.0.79 - Thursday, 3rd April 2025
 - Fix: This update addressed a security bug. Props to mikemyers for privately reporting it to our team. Please make sure you are using the latest version on your website.
 

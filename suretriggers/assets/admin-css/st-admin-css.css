@@ -34,11 +34,11 @@
 }
 
 .suretriggers-info-link {
-    --primary: 224, 64%, 33%, 1;--primary-foreground: 210 40% 98%;color: hsl(var(--primary-foreground));background-color: hsl(var(--primary));display: inline-block; padding: 10px 20px; border-radius: 6px; font-size: 1rem; text-decoration: none; margin-bottom: 16px;
+    --primary: #145485;--primary-foreground: #f8fafc;color: var(--primary-foreground);background-color: var(--primary);display: inline-block; padding: 10px 20px; border-radius: 6px; font-size: 1rem; text-decoration: none; margin-bottom: 16px;
 }
 
 .suretriggers-info-link:active, .suretriggers-info-link:hover, .suretriggers-info-link:focus {
-    --primary: 224, 64%, 33%, 1;--primary-foreground: 210 40% 98%;color: hsl(var(--primary-foreground));background-color: hsl(var(--primary));
+    --primary: #145485;--primary-foreground: #f8fafc;color: var(--primary-foreground);background-color: var(--primary);
 }
 
 /* General Admin Page Styling */
