@@ -119,28 +119,6 @@ class Loader {
 	 */
 	public function display_notice() {
 		global $pagenow;
-		if ( 'index.php' === $pagenow ) {
-			?>
-			<div class="notice notice-info is-dismissible ottokit-admin-notice">
-				<div class="ottokit-notice-aside">
-					<div class="ottokit-notice-icon-wrapper">
-						<img 
-							src="<?php echo esc_url( plugin_dir_url( SURE_TRIGGERS_FILE ) . 'assets/images/OttoKitIcon.svg' ); ?>" 
-							width="30" height="30" alt="OttoKit Logo">
-					</div>
-				</div>
-				<div class="ottokit-notice-content">
-					<h3><?php esc_html_e( 'Introducing OttoKit — the new identity of SureTriggers', 'suretriggers' ); ?></h3>
-					<p>
-						<?php esc_html_e( 'Experience the same powerful automations with a fresh new look and name.', 'suretriggers' ); ?>
-						<a href="https://ottokit.com" class="ottokit-info-link" target="_blank" rel="noopener noreferrer">
-							<?php esc_html_e( 'Learn More', 'suretriggers' ); ?>
-						</a>
-					</p>
-				</div>
-			</div>
-			<?php
-		}
 		if ( isset( OptionController::$options['secret_key'] ) ) {
 			return;
 		}
@@ -250,15 +228,15 @@ class Loader {
 	 * @since  1.0.0
 	 */
 	public function define_constants() {
-		$sass_url    = 'https://app.ottokit.com';
-		$api_url     = 'https://api.ottokit.com';
-		$webhook_url = 'https://webhook.ottokit.com';
+		$sass_url    = 'https://app.suretriggers.com';
+		$api_url     = 'https://api.suretriggers.com';
+		$webhook_url = 'https://webhook.suretriggers.com';
 		
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.80' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.80' );
+		define( 'SURE_TRIGGERS_VER', '1.0.81' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.0.81' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -322,43 +300,6 @@ class Loader {
 	 * @return void
 	 */
 	public function enqueue_scripts( $hook = '' ) {
-		if ( 'index.php' === $hook ) {
-			wp_add_inline_style(
-				'wp-admin',
-				'
-				.ottokit-admin-notice {
-					display: flex;
-					border-left-color: #145485 !important;
-					padding: 0;
-				}
-				.ottokit-admin-notice .ottokit-notice-aside {
-					background-color: #F9F9FB;
-					width: 50px;
-					display: flex;
-					justify-content: center;
-					padding-top: 12px;
-				}
-				.ottokit-admin-notice .ottokit-notice-icon-wrapper img {
-					display: block;
-				}
-				.ottokit-admin-notice .ottokit-notice-content {
-					padding: 15px 10px 5px 5px;
-				}
-				.ottokit-admin-notice .ottokit-notice-content h3 {
-					margin: 0 0 4px;
-					font-size: 16px;
-				}
-				.ottokit-admin-notice .ottokit-notice-content p {
-					padding: 0;
-				}
-				.ottokit-admin-notice .ottokit-info-link {
-					text-decoration: none;
-					font-weight: bold;
-					color: #145485;
-				}
-			'
-			);
-		}
 		if ( ! in_array( $hook, [ 'toplevel_page_suretriggers', 'ottokit_page_suretriggers-status' ], true ) ) {
 			return;
 		}

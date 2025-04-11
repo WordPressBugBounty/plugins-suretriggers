@@ -85,7 +85,7 @@ class RestController {
 	public function create_wp_connection( $request ) {
 
 		$user_agent = $request->get_header( 'user-agent' );
-		if ( 'SureTriggers' !== $user_agent ) {
+		if ( 'OttoKit' !== $user_agent && 'SureTriggers' !== $user_agent ) {
 			return new WP_REST_Response(
 				[
 					'success' => false,

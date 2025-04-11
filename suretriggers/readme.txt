@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.7
-Stable tag: 1.0.80
+Stable tag: 1.0.81
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,9 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.0.81 - Friday, 11th April 2025 =
+* Improvement: "WS Form" - Added improvements for execution of "Form Submitted" Trigger
+
 = Version 1.0.80 - Monday, 7th April 2025 =
 * Improvement: Rebranded as OttoKit from SureTriggers: All-in-One Automation Platform
 * Improvement: "Modern Events Calendar" - Added new "Event Created" Trigger

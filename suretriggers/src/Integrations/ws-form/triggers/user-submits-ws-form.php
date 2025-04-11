@@ -85,7 +85,7 @@ if ( ! class_exists( 'UserSubmitsWSForm' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $form_submit ) {
-			if ( empty( $form_submit ) ) {
+			if ( empty( $form_submit ) || ! property_exists( $form_submit, 'form_id' ) ) {
 				return;
 			}
 
@@ -127,19 +127,15 @@ if ( ! class_exists( 'UserSubmitsWSForm' ) ) :
 				}
 			}
 
-			if ( function_exists( 'wsf_config_get_field_types' ) ) {
-				if ( property_exists( $form_submit, 'form_id' ) ) {
-					$form_id            = absint( $form_submit->form_id );
-					$context['form_id'] = $form_id;
+			$form_id            = absint( $form_submit->form_id );
+			$context['form_id'] = $form_id;
 
-					AutomationController::sure_trigger_handle_trigger(
-						[
-							'trigger' => $this->trigger,
-							'context' => $context,
-						]
-					);
-				}
-			}
+			AutomationController::sure_trigger_handle_trigger(
+				[
+					'trigger' => $this->trigger,
+					'context' => $context,
+				]
+			);
 		}
 	}
 
