@@ -1425,9 +1425,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_pluggables_wp_insert_comment( $data ) {
-		$context   = [];
-		$post_data = [];
-		$args      = [
+		$context = [];
+		$args    = [
 			'number'    => '1',
 			'status'    => 'approve',
 			'post_type' => $data['filter']['post_type']['value'],
@@ -1441,39 +1440,42 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		}
 
 		$comments = get_comments( $args );
+   
 		if ( empty( $comments ) ) {
 			unset( $args['post_id'] );
 			$comments = get_comments( $args );
 		}
+
 		$context['context_data'] = $data;
 		$context['context_args'] = $args;
+
 		if ( ! empty( $comments ) ) {
 			foreach ( $comments as $comment ) :
 				if ( is_object( $comment ) ) {
 					$comment = get_object_vars( $comment );
 				}
-				if ( is_array( $comment ) && isset( $comment['comment_post_ID'] ) && is_int( $comment['comment_post_ID'] ) ) {
-					$post = get_post( absint( $comment['comment_post_ID'] ) );
+
+				if ( is_array( $comment ) && isset( $comment['comment_post_ID'] ) && is_numeric( $comment['comment_post_ID'] ) ) {
+					$post_id = absint( $comment['comment_post_ID'] );
+					$post    = get_post( $post_id );
+
 					if ( is_object( $post ) ) {
-						if ( property_exists( $post, 'ID' ) || property_exists( $post, 'post_author' ) || property_exists( $post, 'post_title' ) ) {
-							$post_id    = $post->ID;
-							$postauthor = (int) $post->post_author;
-							if ( is_array( $comment ) ) {
-								$context['pluggable_data'] = [
-									'post'                 => $post_id,
-									'post_title'           => $post->post_title,
-									'post_author'          => get_the_author_meta( 'display_name', $postauthor ),
-									'post_link'            => get_the_permalink( $post_id ),
-									'comment_id'           => $comment['comment_ID'],
-									'comment'              => $comment['comment_content'],
-									'comment_author'       => $comment['comment_author'],
-									'comment_author_email' => $comment['comment_author_email'],
-									'comment_date'         => $comment['comment_date'],
-								];
-							}
-						}
+						$postauthor = (int) $post->post_author;
+
+						$context['pluggable_data'] = [
+							'post'                 => $post_id,
+							'post_title'           => $post->post_title,
+							'post_author'          => get_the_author_meta( 'display_name', $postauthor ),
+							'post_link'            => get_the_permalink( $post_id ),
+							'comment_id'           => $comment['comment_ID'],
+							'comment'              => $comment['comment_content'],
+							'comment_author'       => $comment['comment_author'],
+							'comment_author_email' => $comment['comment_author_email'],
+							'comment_date'         => $comment['comment_date'],
+						];
 					}
 				}
+
 				if ( is_array( $comment ) && isset( $comment['comment_author_email'] ) ) {
 					$user_email = $comment['comment_author_email'];
 					/**
@@ -1483,7 +1485,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					 * @phpstan-ignore-next-line
 					 */
 					$user = get_user_by( 'email', $user_email );
+
 					if ( $user ) {
+					
 						$context['pluggable_data']['wp_user_id']     = $user->ID;
 						$context['pluggable_data']['user_login']     = $user->user_login;
 						$context['pluggable_data']['display_name']   = $user->display_name;
@@ -1497,11 +1501,17 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$context['response_type'] = 'live';
 			endforeach;
 		} else {
+		
 			$sample_comment                   = [
-				'post'       => 100,
-				'post_title' => 'Sample Post',
-				'comment_id' => 101,
-				'comment'    => 'Sample Comment',
+				'post'                 => 100,
+				'post_title'           => 'Sample Post',
+				'comment_id'           => 101,
+				'comment'              => 'Sample Comment',
+				'post_author'          => 'Sample Author',
+				'post_link'            => 'https://example.com/sample-post',
+				'comment_author'       => 'Test User',
+				'comment_author_email' => 'testuser@example.com',
+				'comment_date'         => '2024-01-01 10:00:00',
 			];
 			$sample_comment['wp_user_id']     = 7;
 			$sample_comment['user_login']     = 'testuser@gmail.com';
@@ -1514,8 +1524,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$context['pluggable_data'] = $sample_comment;
 			$context['response_type']  = 'sample';
 		}
+
 		return $context;
 	}
+
 
 	/**
 	 * User reset password.

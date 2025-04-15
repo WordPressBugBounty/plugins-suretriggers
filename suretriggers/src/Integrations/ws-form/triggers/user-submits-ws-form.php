@@ -128,7 +128,7 @@ if ( ! class_exists( 'UserSubmitsWSForm' ) ) :
 			}
 
 			$form_id            = absint( $form_submit->form_id );
-			$context['form_id'] = $form_id;
+			$context['form_id'] = $form_id; 
 
 			AutomationController::sure_trigger_handle_trigger(
 				[

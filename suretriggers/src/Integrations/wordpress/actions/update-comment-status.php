@@ -92,10 +92,14 @@ class UpdateCommentStatus extends AutomateAction {
 		if ( ! $updated ) {
 			throw new Exception( 'Failed to update comment status.' );
 		}
+		if ( is_object( $comment ) ) {
+			$comment = get_object_vars( $comment );
+		}
 
 		return [
-			'comment_id' => $comment_id,
-			'new_status' => $status,
+			'comment_id'   => $comment_id,
+			'new_status'   => $status,
+			'comment_data' => $comment,
 		];
 	}
 }
