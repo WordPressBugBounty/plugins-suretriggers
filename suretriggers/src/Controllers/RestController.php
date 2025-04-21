@@ -84,8 +84,9 @@ class RestController {
 	 */
 	public function create_wp_connection( $request ) {
 
-		$user_agent = $request->get_header( 'user-agent' );
-		if ( 'OttoKit' !== $user_agent && 'SureTriggers' !== $user_agent ) {
+		$user_agent     = $request->get_header( 'user-agent' );
+		$allowed_agents = [ 'OttoKit', 'SureTriggers' ];
+		if ( ! in_array( $user_agent, $allowed_agents, true ) ) {
 			return new WP_REST_Response(
 				[
 					'success' => false,
@@ -94,46 +95,78 @@ class RestController {
 				403
 			);
 		}
-		$params = $request->get_json_params();
+		$params = wp_unslash( $request->get_json_params() );
 
-		$username = isset( $params['wp-username'] ) ? sanitize_text_field( $params['wp-username'] ) : '';
+		$username = isset( $params['wp-username'] ) ? sanitize_user( $params['wp-username'] ) : '';
 		$password = isset( $params['wp-password'] ) ? $params['wp-password'] : '';
 
 		if ( empty( $username ) || empty( $password ) ) {
 			return new WP_REST_Response(
 				[
 					'success' => false,
-					'data'    => 'Username and password are required.',
+					'data'    => 'Authentication failed.',
 				],
-				400
+				401
 			);
 		}
 
 		$user = wp_authenticate_application_password( null, $username, $password );
 
-		if ( is_wp_error( $user ) ) {
+		if ( ! ( $user instanceof \WP_User ) ) {
 			return new WP_REST_Response(
 				[
 					'success' => false,
-					'data'    => 'Invalid username or password.',
+					'data'    => 'Authentication failed.',
 				],
 				403
 			);
 		}
 
-		$connection_status = $request->get_param( 'connection-status' );
-		$access_key        = $request->get_param( 'sure-triggers-access-key' );
-		$connected_email   = $request->get_param( 'connected_email' );
-
-		if ( false === $connection_status ) {
-			$access_key = 'connection-denied';
+		if ( ! user_can( $user, 'administrator' ) ) {
+			return new WP_REST_Response(
+				[
+					'success' => false,
+					'data'    => 'Not allowed to perform this action.',
+				],
+				403
+			);
 		}
-		
-		$connected_email_id = isset( $connected_email ) ? sanitize_email( wp_unslash( $connected_email ) ) : '';
 
-		if ( isset( $access_key ) ) {
-			SaasApiToken::save( $access_key );
+		$connection_status  = isset( $params['connection-status'] ) ? sanitize_text_field( $params['connection-status'] ) : false;
+		$access_key         = isset( $params['sure-triggers-access-key'] ) ? sanitize_text_field( $params['sure-triggers-access-key'] ) : '';
+		$connected_email_id = isset( $params['connected_email'] ) ? sanitize_email( $params['connected_email'] ) : '';
+
+		if ( empty( $connection_status ) ) {
+			return new WP_REST_Response(
+				[
+					'success' => false,
+					'data'    => 'Connection denied.',
+				],
+				403
+			);
 		}
+
+		if ( empty( $access_key ) ) {
+			return new WP_REST_Response(
+				[
+					'success' => false,
+					'data'    => 'Invalid access key.',
+				],
+				403
+			);
+		}       
+
+		$response = self::verify_user_token( $access_key );
+		if ( empty( $response ) || is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			return new WP_REST_Response(
+				[
+					'success' => false,
+					'data'    => 'Verification failed.',
+				],
+				403
+			);
+		}
+		SaasApiToken::save( $access_key );
 		OptionController::set_option( 'connected_email_key', $connected_email_id );
 
 		return new WP_REST_Response(
@@ -148,17 +181,21 @@ class RestController {
 	/**
 	 * Verify user token.
 	 * 
+	 * @param string $token Token.
+	 * 
 	 * @return  array|WP_Error $response Response.
 	 */
-	public static function verify_user_token() {
+	public static function verify_user_token( $token = '' ) {
+		if ( empty( $token ) ) {
+			$token = SaasApiToken::get();
+		}
 		$args     = [
-			'body'      => [
-				'token'      => SaasApiToken::get(),
-				'saas-token' => SaasApiToken::get(),
+			'body'    => [
+				'token'      => $token,
+				'saas-token' => $token,
 				'base_url'   => str_replace( '/wp-json/', '', get_rest_url() ),
 			],
-			'sslverify' => false,
-			'timeout'   => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
+			'timeout' => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		$response = wp_remote_post( SURE_TRIGGERS_API_SERVER_URL . '/token/verify', $args );
 
@@ -172,13 +209,12 @@ class RestController {
 	 */
 	public static function suretriggers_verify_wp_connection() {
 		$args     = [
-			'body'      => [
+			'body'    => [
 				'saas-token'     => SaasApiToken::get(),
 				'base_url'       => str_replace( '/wp-json/', '', get_rest_url() ),
 				'plugin_version' => SURE_TRIGGERS_VER,
 			],
-			'sslverify' => false,
-			'timeout'   => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
+			'timeout' => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		$response = wp_remote_post( SURE_TRIGGERS_API_SERVER_URL . '/connection/wordpress/ping', $args );
 		return $response;
@@ -189,13 +225,17 @@ class RestController {
 	 *
 	 * @param array|object $user USer.
 	 *
-	 * @return int|null
+	 * @return int|null|WP_Error|array|object
 	 */
 	public function basic_auth_handler( $user ) {
 		// Don't authenticate twice.
 		if ( ! empty( $user ) ) {
 			return $user;
 		}
+
+		if ( ! is_ssl() ) {
+			return new WP_Error( 'insecure_connection', 'Use a secure HTTPS connection to access this resource.', [ 'status' => 403 ] );
+		}       
 
 		// Check that we're trying to authenticate.
 		if ( ! isset( $_SERVER['PHP_AUTH_USER'] ) || ! isset( $_SERVER['PHP_AUTH_PW'] ) ) { //phpcs:ignore
@@ -405,14 +445,13 @@ class RestController {
 		$encoded_site_url                       = urlencode( (string) $site_url );
 		$trigger_data['wordpress_webhook_uuid'] = $wordpress_webhook_uuid . '_' . $encoded_site_url;
 		$args                                   = [
-			'headers'   => [
+			'headers' => [
 				'Authorization'  => 'Bearer ' . $this->secret_key,
 				'Referer'        => str_replace( '/wp-json/', '', get_site_url() ),
 				'RefererRestUrl' => str_replace( '/wp-json/', '', get_rest_url() ),
 			],
-			'body'      => json_decode( wp_json_encode( $trigger_data ), 1 ),
-			'sslverify' => false,
-			'timeout'   => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
+			'body'    => json_decode( wp_json_encode( $trigger_data ), 1 ),
+			'timeout' => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		
 		/**
@@ -438,20 +477,6 @@ class RestController {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Update the connection from SAAS.
-	 *
-	 * @param WP_REST_Request $request Request data.
-	 *
-	 * @return void
-	 */
-	public function connection_update( $request ) {
-		$secret = $request->get_param( 'secret_key' );
-		if ( $secret && is_string( $secret ) ) {
-			SaasApiToken::save( $secret );
-		}
 	}
 
 	/**

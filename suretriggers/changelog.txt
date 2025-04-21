@@ -1,3 +1,6 @@
+Version 1.0.83 - Monday, 21st April 2025
+- Important fixes
+
 Version 1.0.82 - Tuesday, 15th April 2025
 - Improvement: Make WordPress 6.8 compatible
 - Improvement: "WordPress" - Enhanced response data for "New Comment on Post" Trigger

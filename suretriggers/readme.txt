@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.82
+Stable tag: 1.0.83
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,9 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.0.83 - Monday, 21st April 2025 =
+* Important fixes
+
 = Version 1.0.82 - Tuesday, 15th April 2025 =
 * Improvement: Make WordPress 6.8 compatible
 * Improvement: "WordPress" - Enhanced response data for "New Comment on Post" Trigger

@@ -116,16 +116,6 @@ class RoutesController {
 
 		register_rest_route(
 			SURE_TRIGGERS_REST_NAMESPACE,
-			'connection/update',
-			[
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $rest_controller_obj, 'connection_update' ],
-				'permission_callback' => [ $rest_controller_obj, 'autheticate_user' ],
-			]
-		);
-
-		register_rest_route(
-			SURE_TRIGGERS_REST_NAMESPACE,
 			'connection/disconnect',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
