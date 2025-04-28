@@ -1,3 +1,11 @@
+Version 1.0.84 - Monday, 28th April 2025
+- Improvement: "BuddyBoss" – Added fix for the "Subscribe User to Forum" Action and introduced a new "Get Forum Subscribers" Action
+- Improvement: "FluentCRM" - Added new "Add Event" Action
+- Improvement: "FluentBoards" - Added support for setting task date in "Create Task" Action
+- Improvement: "WordPress" - Added improvement for BCC field in "Send Email" Action
+- Improvement: Added custom notice on Status page when account not connected
+- Fix: Resolved early translation loading notice
+
 Version 1.0.83 - Monday, 21st April 2025
 - Important fixes
 

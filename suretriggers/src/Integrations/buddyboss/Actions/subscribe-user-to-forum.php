@@ -16,10 +16,11 @@ namespace SureTriggers\Integrations\BuddyBoss\Actions;
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
+use SureTriggers\Integrations\WordPress\WordPress;
 
 /**
  * SubscribeUserToForum
- *
+ * 
  * @category SubscribeUserToForum
  * @package  SureTriggers
  * @author   BSF <username@example.com>
@@ -46,9 +47,9 @@ class SubscribeUserToForum extends AutomateAction {
 	use SingletonLoader;
 
 	/**
-	 * Register.
+	 * Register the action.
 	 *
-	 * @param array $actions actions.
+	 * @param array $actions Registered actions.
 	 * @return array
 	 */
 	public function register( $actions ) {
@@ -62,42 +63,96 @@ class SubscribeUserToForum extends AutomateAction {
 	}
 
 	/**
-	 * Action listener.
+	 * Subscribe user to a forum.
 	 *
-	 * @param int   $user_id user_id.
-	 * @param int   $automation_id automation_id.
-	 * @param array $fields fields.
-	 * @param array $selected_options selected options.
-	 * @return mixed
-	 * @throws Exception Exception.
+	 * @param int   $user_id User ID.
+	 * @param int   $automation_id Automation ID.
+	 * @param array $fields Fields.
+	 * @param array $selected_options Selected options.
+	 * @return array
+	 * @throws Exception If required data is missing or subscription fails.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		if ( empty( $selected_options['user'] ) || ! is_email( $selected_options['user'] ) ) {
-			throw new Exception( 'Invalid email.' );
+
+		if ( ! function_exists( 'bbp_is_user_subscribed' ) || ! function_exists( 'bbp_add_user_subscription' ) || ! function_exists( 'bbp_get_forum' ) || ! function_exists( 'bbp_is_subscriptions_active' ) ) {
+			throw new Exception( 'Required BuddyBoss functions are not available.' );
 		}
 
-		$user_id = email_exists( $selected_options['user'] );
-
-		if ( false === $user_id ) {
-			throw new Exception( 'User with email ' . $selected_options['user'] . ' does not exists .' );
+		if ( empty( $selected_options['user'] ) ) {
+			return [
+				'success' => false,
+				'message' => 'User email is required.',
+			];
 		}
+
+		$user_email = sanitize_email( $selected_options['user'] );
+
+		if ( ! is_email( $user_email ) ) {
+			return [
+				'success' => false,
+				'message' => 'Invalid email address.',
+			];
+		}
+
+		$user = get_user_by( 'email', $user_email );
+
+		if ( ! $user ) {
+			return [
+				'success' => false,
+				'message' => 'User with email ' . $user_email . ' does not exist.',
+			];
+		}
+
+		$user_id = $user->ID;
 
 		if ( bbp_is_subscriptions_active() === false ) {
-			throw new Exception( 'Members are not allowed to subscribe to forums. Please contact site admin.' );
+			return [
+				'success' => false,
+				'message' => 'Forum subscriptions are currently disabled on this site.',
+			];
+		}
+
+		if ( empty( $selected_options['bb_forum'] ) ) {
+			return [
+				'success' => false,
+				'message' => 'Forum ID is required.',
+			];
 		}
 
 		$forum_id = $selected_options['bb_forum'];
 		$forum    = bbp_get_forum( $forum_id );
+
 		if ( empty( $forum ) ) {
-			throw new Exception( 'Invalid forum.' );
+			return [
+				'success' => false,
+				'message' => 'Invalid forum selected.',
+			];
 		}
 
-		bbp_add_user_subscription( $user_id, $forum_id );
-		$subscribed = bbp_add_user_forum_subscription( $user_id, $forum_id );
-		if ( $subscribed ) {
-			return $forum;
+		if ( bbp_is_user_subscribed( $user_id, $forum_id ) ) {
+			return [
+				'success'    => true,
+				'message'    => 'User is already subscribed to the forum.',
+				'user_email' => $user_email,
+				'forum'      => $forum,
+			];
 		}
-		throw new Exception( SURE_TRIGGERS_ACTION_ERROR_MESSAGE );
+
+		$subscribed = bbp_add_user_subscription( $user_id, $forum_id );
+
+		if ( ! $subscribed ) {
+			return [
+				'success' => false,
+				'message' => 'Failed to subscribe user to the forum. Please try again later.',
+			];
+		}
+
+		return [
+			'success'    => true,
+			'message'    => 'User subscribed to the forum successfully.',
+			'user_email' => $user_email,
+			'forum'      => $forum,
+		];
 	}
 }
 

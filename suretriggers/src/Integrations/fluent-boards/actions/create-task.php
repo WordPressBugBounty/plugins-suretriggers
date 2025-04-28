@@ -83,6 +83,7 @@ class CreateTask extends AutomateAction {
 		$stage_id       = $selected_options['stage_id'] ? sanitize_text_field( $selected_options['stage_id'] ) : '';
 		$priority       = $selected_options['priority'] ? sanitize_text_field( $selected_options['priority'] ) : '';
 		$status         = $selected_options['status'] ? sanitize_text_field( $selected_options['status'] ) : '';
+		$due_at         = $selected_options['due_date'] ? sanitize_text_field( $selected_options['due_date'] ) : '';
 		$labels         = $selected_options['labels'] ? explode( ',', sanitize_text_field( $selected_options['labels'] ) ) : '';
 		$crm_contact_id = $selected_options['crm_contact_id'] ? sanitize_text_field( $selected_options['crm_contact_id'] ) : '';
 		$created_by     = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
@@ -94,6 +95,7 @@ class CreateTask extends AutomateAction {
 				'stage_id'       => $stage_id,
 				'priority'       => $priority,
 				'status'         => $status,
+				'due_at'         => $due_at,
 				'labels'         => $labels,
 				'crm_contact_id' => $crm_contact_id,
 				'created_by'     => $created_by,

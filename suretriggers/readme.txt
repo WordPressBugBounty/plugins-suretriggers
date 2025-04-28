@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.83
+Stable tag: 1.0.84
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,14 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.0.84 - Monday, 28th April 2025 =
+* Improvement: "BuddyBoss" – Added fix for the "Subscribe User to Forum" Action and introduced a new "Get Forum Subscribers" Action
+* Improvement: "FluentCRM" - Added new "Add Event" Action
+* Improvement: "FluentBoards" - Added support for setting task date in "Create Task" Action
+* Improvement: "WordPress" - Added improvement for BCC field in "Send Email" Action
+* Improvement: Added custom notice on Status page when account not connected
+* Fix: Resolved early translation loading notice
+
 = Version 1.0.83 - Monday, 21st April 2025 =
 * Important fixes
 
