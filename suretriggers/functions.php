@@ -163,8 +163,8 @@ function suretrigger_trigger_button_action() {
 	// Trigger the custom hook before ajax response.
 	do_action( 'st_trigger_button_before_click_hook' );
 
-	if ( ! isset( $_POST['st_nonce'] ) && ! wp_verify_nonce( wp_strip_all_tags( $_POST['st_nonce'] ), 'suretrigger_form' ) ) {
-		wp_send_json_error();
+	if ( ! isset( $_POST['st_nonce'] ) || ! wp_verify_nonce( wp_strip_all_tags( $_POST['st_nonce'] ), 'suretrigger_form' ) ) {
+		wp_send_json_error( [ 'error' => 'Invalid nonce' ] );
 	}
 
 	if ( is_user_logged_in() ) {
@@ -174,25 +174,27 @@ function suretrigger_trigger_button_action() {
 
 			$st_trigger_id = sanitize_text_field( $_POST['st_trigger_id'] );
 
-			if ( isset( $_POST['st_cookie_duration'] ) || isset( $_POST['st_click'] ) ) {
-				if ( isset( $_POST['st_button_post_id'] ) || isset( $_POST['st_button_post_title'] ) ) {
-					$post_data = [
-						'parent_post_id'    => sanitize_text_field( $_POST['st_button_post_id'] ),
-						'parent_post_title' => sanitize_text_field( $_POST['st_button_post_title'] ),
-					];
-				} else {
-					$post_data = [];
-				}
-				do_action( 'st_trigger_button_action', $st_trigger_id, $user_id, sanitize_text_field( $_POST['st_cookie_duration'] ), $_POST['st_click'], $post_data );
+			$cookie_duration = isset( $_POST['st_cookie_duration'] ) ? sanitize_text_field( $_POST['st_cookie_duration'] ) : '';
+			$st_click        = isset( $_POST['st_click'] ) ? sanitize_text_field( $_POST['st_click'] ) : '';
+
+			$post_data = [];
+
+			if ( isset( $_POST['st_button_post_id'] ) ) {
+				$post_data['parent_post_id'] = sanitize_text_field( $_POST['st_button_post_id'] );
 			}
+
+			if ( isset( $_POST['st_button_post_title'] ) ) {
+				$post_data['parent_post_title'] = sanitize_text_field( $_POST['st_button_post_title'] );
+			}
+			do_action( 'st_trigger_button_action', $st_trigger_id, $user_id, sanitize_text_field( $cookie_duration ), $st_click, $post_data );
 			
 			if ( isset( $_POST['st_login_url'] ) && ! empty( $_POST['st_login_url'] ) ) {
-				wp_send_json_success( esc_url( $_POST['st_login_url'] ) );
+				wp_send_json_success( esc_url_raw( $_POST['st_login_url'] ) );
 			}
 		}
 	} else {
 		if ( isset( $_POST['st_non_login_url'] ) && ! empty( $_POST['st_non_login_url'] ) ) {
-			wp_send_json_success( esc_url( $_POST['st_non_login_url'] ) );
+			wp_send_json_success( esc_url_raw( $_POST['st_non_login_url'] ) );
 		} else {
 			wp_send_json_success( wp_login_url() );
 		}
@@ -233,6 +235,8 @@ function st_trigger_button_set_cookie( $st_trigger_id, $user_id, $cookie_duratio
 		define( 'COOKIE_DOMAIN', false );
 	}
 
-	setcookie( $cookie_name, $cookie_value, $expiration, COOKIEPATH, COOKIE_DOMAIN );
+	$secure = is_ssl();
+	setcookie( $cookie_name, $cookie_value, $expiration, COOKIEPATH, COOKIE_DOMAIN, $secure, true ); // phpcs:ignore
+
 }
 add_action( 'st_trigger_button_set_cookie', 'st_trigger_button_set_cookie', 10, 3 );

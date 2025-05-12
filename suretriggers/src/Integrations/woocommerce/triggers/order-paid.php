@@ -89,9 +89,11 @@ if ( ! class_exists( 'OrderPaid' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $order_id ) {
-			if ( ! $order_id ) {
+			static $processed_orders = [];
+			if ( ! $order_id || isset( $processed_orders[ $order_id ] ) ) {
 				return;
 			}
+			$processed_orders[ $order_id ] = true;
 	
 			$order = wc_get_order( $order_id );
 	

@@ -2171,6 +2171,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_spectra_forms( $data ) {
+		global $wpdb;
 		$form_posts = Utilities::get_uag_forms();
 
 		$options = [];
@@ -2186,6 +2187,35 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$i      = 1;
 			// Get form blocks.
 			$this->process_blocks( $blocks, $form_post, $options, $i );
+		}
+
+		// Below is for Spectra forms from widgets.
+		$search_string  = '%wp-block-uagb-forms%';
+		$option_results = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+			SELECT `option_name`, `option_value`
+			FROM {$wpdb->options}
+			WHERE (
+				option_name LIKE %s OR
+				option_name LIKE %s OR
+				option_name LIKE %s
+			)
+			AND option_value LIKE %s
+			",
+				'widget_%',
+				'theme_mods_%',
+				'customize_changeset_%',
+				$search_string
+			),
+			ARRAY_A 
+		);
+		if ( ! empty( $option_results ) ) {
+			foreach ( (array) $option_results as $form_post ) {
+				$blocks = parse_blocks( $form_post['option_value'] );
+				$i      = 1;
+				$this->process_blocks( $blocks, $form_post, $options, $i );
+			}
 		}
 	
 		return [
@@ -2207,8 +2237,30 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	public function process_blocks( $blocks, $form_post, &$options, &$i ) {
 		foreach ( $blocks as $block ) {
 			if ( 'uagb/forms' === $block['blockName'] ) {
+				$prefix = '';
+				if ( isset( $form_post['post_title'] ) && ! empty( $form_post['post_title'] ) ) {
+					$prefix = $form_post['post_title'] . ' - ';
+				} elseif (
+					isset( $form_post['option_value'] ) ) {
+					$option_value = maybe_unserialize( $form_post['option_value'] );
+					if ( is_array( $option_value ) ) {
+						foreach ( $option_value as $widget_block ) {
+							if (
+								isset( $widget_block['content'] )
+								&& is_string( $widget_block['content'] )
+								&& strpos( $widget_block['content'], 'uagb/forms' ) !== false
+							) {
+								if ( preg_match( '/"metadata"\s*:\s*{[^}]*"name"\s*:\s*"([^"]+)"/', $widget_block['content'], $matches ) ) {
+									$prefix = sanitize_text_field( $matches[1] ) . ' - ';
+									break;
+								}
+							}
+						}
+					}
+				}
+
 				$options[] = [
-					'label' => $form_post['post_title'] . ' (Form ' . ( $i++ ) . ')',
+					'label' => $prefix . $block['attrs']['block_id'] . ' (Form ' . ( $i++ ) . ')',
 					'value' => $block['attrs']['block_id'],
 				];
 			} elseif ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
@@ -2538,7 +2590,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					foreach ( $fetch_content as $content ) {
 						if ( 'form' === $content['name'] ) {
 							$options[] = [
-								'label' => $template->post_title . ' - ' . ( isset( $content['label'] ) ? $content['label'] : 'Form' ),
+								'label' => $template->post_title . ' - ' . ( isset( $content['label'] ) ? $content['label'] : 'Form' ) . ' ( ID: ' . $content['id'] . ')',
 								'value' => $content['id'],
 							];
 						}
@@ -10181,6 +10233,34 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'hasMore' => false,
 		];
 	}
+
+	/**
+	 * Prepare FluentSupport Agents List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_fluent_support_agents_list( $data ) {
+		global $wpdb;
+	
+		$agents = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}fs_persons WHERE person_type = 'agent' ", ARRAY_A );
+	
+		$options = [];
+	
+		if ( ! empty( $agents ) ) {
+			foreach ( $agents as $agent ) {
+				$options[] = [
+					'label' => $agent['email'],
+					'value' => $agent['id'],
+				];
+			}
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	} 
 
 	/**
 	 * Get last data for trigger.

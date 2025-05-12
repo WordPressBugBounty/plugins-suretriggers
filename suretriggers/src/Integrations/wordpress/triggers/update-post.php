@@ -103,7 +103,7 @@ if ( ! class_exists( 'UpdatePost' ) ) :
 				return;
 			}
 			if ( isset( $_POST['original_post_status'] ) ) {
-				if ( ! empty( $_POST ) || 'auto-draft' === $_POST['original_post_status'] ) {
+				if ( 'auto-draft' === $_POST['original_post_status'] ) {
 					return;
 				}
 			}

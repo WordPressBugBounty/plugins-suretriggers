@@ -52,6 +52,7 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 		 * @since  1.0.0
 		 */
 		public function __construct() {
+			add_filter( 'bricks/form/response', [ $this, 'register_form_submit_action' ], 10, 2 );
 			add_filter( 'sure_trigger_register_trigger', [ $this, 'register' ] );
 		}
 
@@ -72,6 +73,19 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 			];
 
 			return $triggers;
+		}
+
+		/**
+		 * Adds custom action hook for Bricks Builder form submit.
+		 *
+		 * @param array $response The response object.
+		 * @param array $obj The Bricks Builder object.
+		 *
+		 * @return array
+		 */
+		public function register_form_submit_action( $response, $obj ) {
+			do_action( 'bricksbuilder_after_form_submit', $response, $obj );
+			return $response;
 		}
 
 		/**

@@ -82,11 +82,14 @@ if ( ! class_exists( 'UserSendFriendshipRequest' ) ) :
 		/**
 		 *  Trigger listener
 		 *
-		 * @param $object $friendship_obj friendship obj.
+		 * @param object $friendship_obj friendship obj.
 		 *
 		 * @return void
 		 */
 		public function trigger_listener( $friendship_obj ) {
+			if ( ! property_exists( $friendship_obj, 'initiator_user_id' ) || ! property_exists( $friendship_obj, 'friend_user_id' ) ) {
+				return;
+			}
 			$initiator_id = $friendship_obj->initiator_user_id;
 			$friend_id    = $friendship_obj->friend_user_id;
 

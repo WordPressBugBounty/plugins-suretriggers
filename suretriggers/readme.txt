@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.85
+Stable tag: 1.0.86
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,15 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.0.86 - Monday, 12th May 2025 =
+* Improvement: "Fluent Support" - Added "Add Tag to Ticket", "Reply to Ticket as Agent", and "Get All Tickets" Actions
+* Improvement: "Spectra" - Added improvements for form listing in "Form Submitted" Trigger
+* Fix: "Bricks Builder" - Enhanced the label for the form select dropdown and resolved submission issue in "Form Submitted" Trigger
+* Fix: "BuddyBoss" - Resolved issue for notifications in "Send Notification to Group Members" Action
+* Fix: "BuddyPress" - Resolved issue for notifications in "Send Notification to All Group Members" and "Send User Notification" Actions
+* Fix: "WooCommerce" - Prevented duplicate trigger execution in "Order Paid" Trigger
+* Fix: "WordPress" - Ensured proper trigger execution for custom post types in "Post Created / Updated" Trigger
+
 = Version 1.0.85 - Wednesday, 30th April 2025 =
 * Improvement: "EDD" - Added new "Create Discount (Free)" and "Delete Discount" Actions, and a new "Order Status Changes" Trigger
 * Improvement: "WooCommerce" - Added new "Delete Coupon" Action
