@@ -73,9 +73,10 @@ class ReplyToTicketAsAgent extends AutomateAction {
 			throw new Exception( 'Error: FluentSupport plugin is not installed correctly. Required classes are missing.' );
 		}
 
-		$ticket_id     = isset( $selected_options['ticket_id'] ) ? (int) $selected_options['ticket_id'] : 0;
-		$reply_content = isset( $selected_options['reply_content'] ) ? wp_kses_post( $selected_options['reply_content'] ) : '';
-		$person_id     = isset( $selected_options['person_id'] ) ? (int) $selected_options['person_id'] : 0;
+		$ticket_id         = isset( $selected_options['ticket_id'] ) ? (int) $selected_options['ticket_id'] : 0;
+		$reply_content     = isset( $selected_options['reply_content'] ) ? wp_kses_post( $selected_options['reply_content'] ) : '';
+		$person_id         = isset( $selected_options['person_id'] ) ? (int) $selected_options['person_id'] : 0;
+		$conversation_type = isset( $selected_options['conversation_type'] ) ? $selected_options['conversation_type'] : 'response';
 
 		if ( ! $person_id ) {
 			return [
@@ -115,7 +116,7 @@ class ReplyToTicketAsAgent extends AutomateAction {
 					'content'           => $reply_content,
 					'person_id'         => $person_id,
 					'person_type'       => 'agent',
-					'conversation_type' => 'response',
+					'conversation_type' => $conversation_type,
 					'source'            => 'web',
 					'created_at'        => current_time( 'mysql' ),
 					'updated_at'        => current_time( 'mysql' ),

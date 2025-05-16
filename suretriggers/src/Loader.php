@@ -227,15 +227,15 @@ class Loader {
 	 * @since  1.0.0
 	 */
 	public function define_constants() {
-		$sass_url    = 'https://app.suretriggers.com';
-		$api_url     = 'https://api.suretriggers.com';
-		$webhook_url = 'https://webhook.suretriggers.com';
+		$sass_url    = 'https://app.ottokit.com';
+		$api_url     = 'https://api.ottokit.com';
+		$webhook_url = 'https://webhook.ottokit.com';
 		
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.86' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.86' );
+		define( 'SURE_TRIGGERS_VER', '1.0.87' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.0.87' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );

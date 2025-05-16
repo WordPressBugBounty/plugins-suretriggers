@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.86
+Stable tag: 1.0.87
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,9 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.0.87 - Friday, 16th May 2025 =
+* Improvement: "Paid Memberships Pro" - Added new "List Members" Action
+
 = Version 1.0.86 - Monday, 12th May 2025 =
 * Improvement: "Fluent Support" - Added "Add Tag to Ticket", "Reply to Ticket as Agent", and "Get All Tickets" Actions
 * Improvement: "Spectra" - Added improvements for form listing in "Form Submitted" Trigger

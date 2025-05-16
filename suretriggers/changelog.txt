@@ -1,3 +1,6 @@
+Version 1.0.87 - Friday, 16th May 2025
+- Improvement: "Paid Memberships Pro" - Added new "List Members" Action
+
 Version 1.0.86 - Monday, 12th May 2025
 - Improvement: "Fluent Support" - Added "Add Tag to Ticket", "Reply to Ticket as Agent", and "Get All Tickets" Actions
 - Improvement: "Spectra" - Added improvements for form listing in "Form Submitted" Trigger
