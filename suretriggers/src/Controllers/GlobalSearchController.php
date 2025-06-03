@@ -656,6 +656,31 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * List Taxonomy Product Tags.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	public function search_term_list_prod_tags( $data ) {
+		$result = [];
+		$terms  = Utilities::get_terms( '', $data['page'], [ 'product_tag' ] );
+		foreach ( $terms['result'] as $tax_term ) {
+			$result[] = [
+				'label' => $tax_term->name,
+				'value' => $tax_term->term_id,
+			];
+		}
+	
+		return [
+			'options' => $result,
+			'hasMore' => $terms['has_more'],
+		];
+	}
+
+	/**
 	 * List Role Capabilities.
 	 *
 	 * @param array $data Search Params.
@@ -1759,6 +1784,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$context['pluggable_data'] = get_object_vars( $context['pluggable_data'] );
 			}
 			$context['pluggable_data']['featured_image'] = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $posts[0]->ID ), 'full' )[0]; // @phpstan-ignore-line
+			$context['pluggable_data']['permalink']      = get_permalink( $posts[0]->ID );
 			if ( $posts[0] instanceof WP_Post ) {
 				$taxonomies = get_object_taxonomies( get_post( $posts[0] ), 'objects' );
 				if ( ! empty( $taxonomies ) ) {
@@ -1797,7 +1823,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				'post_modified_gmt'     => '2022-11-18 12:18:14',
 				'post_content_filtered' => '',
 				'post_parent'           => 0,
-				'guid'                  => 'https://abc.com/test-post/',
+				'guid'                  => 'https://abc.com/?p=1',
+				'permalink'             => 'https://abc.com/test-post/',
 				'menu_order'            => 0,
 				'post_type'             => 'post',
 				'post_mime_type'        => '',

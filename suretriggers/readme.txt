@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.87
+Stable tag: 1.0.88
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,12 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.0.88 - Tuesday, 3rd June 2025 =
+* Improvement: "WordPress" – Added improvements for "Create / Update Post" and "Create Comment on Post" Actions
+* Improvement: "Tutor LMS" – Added new "List Enrolled Users" Action
+* Improvement: "WooCommerce" - Added new Actions
+* Fix: "WooCommerce Subscriptions" - Improved execution logic for "User Subscription Expires" Trigger
+
 = Version 1.0.87 - Friday, 16th May 2025 =
 * Improvement: "Paid Memberships Pro" - Added new "List Members" Action
 

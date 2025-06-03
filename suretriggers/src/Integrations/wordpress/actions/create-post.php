@@ -103,12 +103,14 @@ class CreatePost extends AutomateAction {
 			$result_arr['meta_input'] = $meta_array;
 		}
 		
-		if ( isset( $selected_options['post_url'] ) && ! empty( $selected_options['post_url'] ) ) {
-			$url         = $selected_options['post_url'];
-			$parts       = explode( '/', $url );
-			$parts       = array_values( array_filter( $parts ) );
-			$slug        = $parts[ count( $parts ) - 1 ]; 
+		if ( ! empty( $selected_options['post_url'] ) ) {
+			$url   = $selected_options['post_url'];
+			$parts = explode( '/', $url );
+			$parts = array_values( array_filter( $parts ) );
+			$slug  = $parts[ count( $parts ) - 1 ]; 
+		
 			$post_exists = get_page_by_path( $slug, OBJECT, $selected_options['post_type'] );
+		
 			if ( $post_exists ) {
 				$result_arr['ID'] = $post_exists->ID;
 				wp_update_post( $result_arr );
@@ -116,12 +118,23 @@ class CreatePost extends AutomateAction {
 				$post_id        = $post_exists->ID;
 				$is_post_update = true;
 			} else {
-				throw new Exception( 'The URL entered is incorrect. Please provide the correct URL for the post' );
-			}       
-		} else {
+				throw new Exception( 'The URL entered is incorrect. Please provide the correct URL for the post.' );
+			}
+		} elseif ( ! empty( $selected_options['post_id'] ) ) {
+			$post_id     = absint( $selected_options['post_id'] );
+			$post_exists = get_post( $post_id );
 		
+			if ( $post_exists && $post_exists instanceof \WP_Post ) {
+				$result_arr['ID'] = $post_id;
+				wp_update_post( $result_arr );
+				$last_response  = get_post( $post_id );
+				$is_post_update = true;
+			} else {
+				throw new Exception( 'Invalid Post ID provided. No post found with that ID.' );
+			}
+		} else {
 			$post_id = wp_insert_post( $result_arr );
-
+		
 			if ( ! $post_id || is_wp_error( $post_id ) ) {
 				$this->set_error(
 					[
@@ -131,7 +144,7 @@ class CreatePost extends AutomateAction {
 				);
 				return false;
 			}
-		}
+		}       
 
 		$last_response     = get_post( $post_id );
 		$response_taxonomy = '';

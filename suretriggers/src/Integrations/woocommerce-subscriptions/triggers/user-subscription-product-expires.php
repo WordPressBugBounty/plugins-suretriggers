@@ -99,12 +99,6 @@ if ( ! class_exists( 'UserSubscriptionProductExpires' ) ) :
 				$subscription = $subscription;
 			}
 
-			$last_order_id = $subscription->get_last_order();
-	
-			if ( ! empty( $last_order_id ) && $last_order_id !== $subscription->get_parent_id() ) {
-				return;
-			}
-
 			$items       = $subscription->get_items();
 			$product_ids = [];
 			foreach ( $items as $item ) {

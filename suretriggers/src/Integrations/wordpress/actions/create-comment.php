@@ -76,15 +76,30 @@ class CreateComment extends AutomateAction {
 		foreach ( $fields as $field ) {
 			$result_arr[ $field['name'] ] = isset( $selected_options[ $field['name'] ] ) ? $selected_options[ $field['name'] ] : '';
 		}
-
+	
+		$user_id_from_email = 0;
+		if ( ! empty( $result_arr['comment_author_email'] ) ) {
+			$user = get_user_by( 'email', $result_arr['comment_author_email'] );
+			if ( $user ) {
+				$user_id_from_email = $user->ID;
+			}
+		}
+	
+		$result_arr['user_id'] = $user_id_from_email;
+	
 		$comment_id = wp_new_comment( $result_arr );
-
+	
 		if ( ! $comment_id || is_wp_error( $comment_id ) ) {
 			throw new Exception( 'Failed to insert comment' );
 		}
-
+		
+		if ( ! empty( $result_arr['comment_approved'] ) ) {
+			wp_set_comment_status( $comment_id, $result_arr['comment_approved'] );
+		}
+		
+	
 		return get_comment( $comment_id );
-	}
+	}   
 }
 
 CreateComment::get_instance();

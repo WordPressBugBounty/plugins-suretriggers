@@ -108,9 +108,10 @@ if ( ! class_exists( 'UpdatePost' ) ) :
 				}
 			}
 			if ( 'draft' !== $post->post_status && ! wp_is_post_revision( $post_ID ) && ! wp_is_post_autosave( $post_ID ) ) {
-				$user_id        = ap_get_current_user_id();
-				$context        = WordPress::get_post_context( $post_ID );
-				$featured_image = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post_ID ), 'full' );
+				$user_id              = ap_get_current_user_id();
+				$context              = WordPress::get_post_context( $post_ID );
+				$context['permalink'] = get_permalink( $post_ID );
+				$featured_image       = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post_ID ), 'full' );
 				if ( ! empty( $featured_image ) && is_array( $featured_image ) ) {
 					$context['featured_image'] = $featured_image[0];
 				} else {

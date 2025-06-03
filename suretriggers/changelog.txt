@@ -1,3 +1,9 @@
+Version 1.0.88 - Tuesday, 3rd June 2025 
+- Improvement: "WordPress" – Added improvements for "Create / Update Post" and "Create Comment on Post" Actions
+- Improvement: "Tutor LMS" – Added new "List Enrolled Users" Action
+- Improvement: "WooCommerce" - Added new Actions
+- Fix: "WooCommerce Subscriptions" - Improved execution logic for "User Subscription Expires" Trigger
+
 Version 1.0.87 - Friday, 16th May 2025
 - Improvement: "Paid Memberships Pro" - Added new "List Members" Action
 
