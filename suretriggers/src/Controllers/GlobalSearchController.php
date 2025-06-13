@@ -20070,6 +20070,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			case 'task_created':
 				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_tasks ORDER BY id DESC LIMIT 1", ARRAY_A );
 				break;
+			case 'stage_changed':
+					$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_tasks ORDER BY id DESC LIMIT 1", ARRAY_A );
+				break;
+				
 		}
 		
 		if ( ! empty( $result ) ) {
@@ -20114,7 +20118,61 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					];
 					$context['response_type']  = 'live';
 					break;
-			}
+				case 'stage_changed':
+					$stage_data  = Stage::where( 'board_id', $result['board_id'] )->whereNull( 'archived_at' )->first();
+					$user_result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}users ORDER BY id DESC LIMIT 1", ARRAY_A );
+					
+					$context['pluggable_data'] = [
+						'task'         => [
+							'id'          => $result['id'],
+							'slug'        => $result['slug'],
+							'title'       => $result['title'],
+							'description' => $result['description'],
+							'type'        => $result['type'],
+							'board_id'    => $result['board_id'],
+							'stage_id'    => $stage_data->id,
+							'position'    => $result['position'],
+							'priority'    => $result['priority'],
+							'created_at'  => $result['created_at'],
+							'created_by'  => $result['created_by'],
+							'updated_at'  => $result['updated_at'],
+							'settings'    => unserialize( $result['settings'] ),
+							'stage'       => [
+								'id'         => $stage_data->id,
+								'slug'       => $stage_data->slug,
+								'title'      => $stage_data->title,
+								'type'       => $stage_data->type,
+								'board_id'   => $stage_data->board_id,
+								'position'   => $stage_data->position,
+								'settings'   => $stage_data->settings,
+								'created_at' => '',
+								'updated_at' => '',
+							],
+							'watchers'    => [
+								[
+									'ID'              => $user_result['ID'],
+									'photo'           => '',
+									'user_url'        => $user_result['user_url'],
+									'user_email'      => $user_result['user_email'],
+									'user_login'      => $user_result['user_login'],
+									'user_status'     => $user_result['user_status'],
+									'display_name'    => $user_result['display_name'],
+									'user_nicename'   => $user_result['user_nicename'],
+									'user_registered' => $user_result['user_registered'],
+									'pivot'           => [
+										'object_id'  => $user_result['id'],
+										'created_at' => $user_result['created_at'],
+										'foreign_id' => $user_result['ID'],
+										'user_id'    => $user_result['ID'],
+									],
+								],
+							],
+						],
+						'old_stage_id' => $stage_data->id,
+					];
+					$context['response_type']  = 'live';
+					break;
+			}                   
 		} else {
 			switch ( $term ) {
 				case 'board_created':
@@ -20126,7 +20184,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				case 'task_created':
 					$context = json_decode( '{"pluggable_data":{"id":"1001","slug":"sample-task","title":"Sample Task","description":"This is a sample task.","type":"task","board_id":"10","stage_id":"3","position":"1","priority":"medium","created_at":"2024-03-20 12:00:00","created_by":"1","updated_at":"2024-03-20 12:30:00","settings":[],"stage":{"id":"3","slug":"sample-stage","title":"Sample Stage","type":"default","board_id":"10","position":"1","settings":[],"created_at":"2024-03-19 10:00:00","updated_at":"2024-03-20 11:00:00"}},"response_type":"sample"}', true ); 
 					break;
-					
+				case 'stage_changed':
+					$context = json_decode( '{"pluggable_data":{"id":"1002","slug":"changed-task","title":"Changed Task","description":"This task changed stages.","type":"task","board_id":"10","stage_id":"4","position":"2","priority":"high","created_at":"2024-04-01 10:00:00","created_by":"1","updated_at":"2024-04-01 12:00:00","settings":[],"stage":{"id":"4","slug":"new-stage","title":"New Stage","type":"default","board_id":"10","position":"2","settings":[],"created_at":"","updated_at":""},"old_stage_id":"3","watchers":[{"ID":71,"photo":"https://www.gravatar.com/avatar/e361de3380a6b977abf350619468ce4f?s=128&d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJohn+Doe/128","user_url":"","user_email":"john@gmail.com","user_login":"john","user_status":0,"display_name":"John Doe","user_nicename":"john","user_registered":"2025-05-28 12:07:48","pivot":{"object_id":1002,"created_at":"2025-06-05T10:11:31+00:00","foreign_id":71,"user_id":71}}]},"response_type":"sample"}', true );
+					break;
+						
 			}
 		}
 		

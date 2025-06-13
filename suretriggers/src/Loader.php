@@ -27,7 +27,6 @@ use SureTriggers\Traits\SingletonLoader;
 use SureTriggers\Models\SaasApiToken;
 use function add_menu_page;
 use function add_submenu_page;
-use \BSF_Analytics_Loader;
 
 /**
  * Loader
@@ -234,8 +233,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.88' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.88' );
+		define( 'SURE_TRIGGERS_VER', '1.0.89' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.0.89' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -570,8 +569,6 @@ class Loader {
 		WebhookRequestsController::suretriggers_setup_custom_cron();
 
 		$this->include_all_files( SURE_TRIGGERS_DIR . 'src/Integrations/' );
-		
-		$this->suretriggers_load_analytics_files();
 	}
 
 	/**
@@ -644,48 +641,5 @@ class Loader {
 			$logged_in = true;
 		}
 		return $logged_in;
-	}
-
-	/**
-	 * Load Analytics.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function suretriggers_load_analytics_files() {
-		if ( is_admin() ) {
-			require_once SURE_TRIGGERS_DIR . 'inc/lib/astra-notices/class-astra-notices.php';
-		}
-
-		if ( ! class_exists( 'BSF_Analytics_Loader' ) ) {
-			require_once SURE_TRIGGERS_DIR . 'inc/lib/bsf-analytics/class-bsf-analytics-loader.php';
-		}
-
-		if ( class_exists( 'BSF_Analytics_Loader' ) ) {
-			$st_bsf_analytics = BSF_Analytics_Loader::get_instance();
-			$st_bsf_analytics->set_entity(
-				[
-					'suretriggers' => [
-						'product_name'        => 'OttoKit',
-						'path'                => SURE_TRIGGERS_DIR . 'inc/lib/bsf-analytics',
-						'author'              => 'OttoKit',
-						'time_to_display'     => '+24 hours',
-						'deactivation_survey' => [
-							[
-								'id'                => 'deactivation-survey-suretriggers',
-								'popup_logo'        => SURE_TRIGGERS_URL . 'assets/images/OttoKitIcon.svg',
-								'plugin_slug'       => 'suretriggers',
-								'plugin_version'    => SURE_TRIGGERS_VER,
-								'popup_title'       => 'Quick Feedback',
-								'support_url'       => 'https://ottokit.com/support/',
-								'popup_description' => 'If you have a moment, please share why you are deactivating OttoKit:',
-								'show_on_screens'   => [ 'plugins' ],
-							],
-						],
-					],
-				]
-			);
-		}
 	}
 }

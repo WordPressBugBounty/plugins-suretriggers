@@ -1,3 +1,7 @@
+Version 1.0.89 - Friday, 13th June 2025 
+- Improvement: "FluentBoards" – Added new “Stage Changed” Trigger and added attachment field in "Create Task" Action
+- Improvement: "Meta Box" - Added improvements for "Set Meta Value" Action
+
 Version 1.0.88 - Tuesday, 3rd June 2025 
 - Improvement: "WordPress" – Added improvements for "Create / Update Post" and "Create Comment on Post" Actions
 - Improvement: "Tutor LMS" – Added new "List Enrolled Users" Action

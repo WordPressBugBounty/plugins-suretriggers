@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.88
+Stable tag: 1.0.89
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -328,6 +328,10 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.0.89 - Friday, 13th June 2025 =
+* Improvement: "FluentBoards" – Added new “Stage Changed” Trigger and added attachment field in "Create Task" Action
+* Improvement: "Meta Box" - Added improvements for "Set Meta Value" Action
+
 = Version 1.0.88 - Tuesday, 3rd June 2025 =
 * Improvement: "WordPress" – Added improvements for "Create / Update Post" and "Create Comment on Post" Actions
 * Improvement: "Tutor LMS" – Added new "List Enrolled Users" Action

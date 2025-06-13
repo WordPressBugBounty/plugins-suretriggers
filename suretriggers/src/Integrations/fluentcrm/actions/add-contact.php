@@ -254,6 +254,7 @@ class AddContact extends AutomateAction {
 		$custom_data = $contact->custom_fields();
 
 		$context                   = [];
+		$context['contact_id']     = $contact->id;
 		$context['full_name']      = $contact->full_name;
 		$context['first_name']     = $contact->first_name;
 		$context['last_name']      = $contact->last_name;
