@@ -1,3 +1,7 @@
+Version 1.0.90 - Monday, 23rd June 2025
+- Improvement: "WooCommerce" - Added improvements in response for metadata in order related Triggers
+- Fix: "Bricks Builder" - Resolved an issue with attachment fields containing name attributes in "Form Submitted" Trigger
+
 Version 1.0.89 - Friday, 13th June 2025 
 - Improvement: "FluentBoards" – Added new “Stage Changed” Trigger and added attachment field in "Create Task" Action
 - Improvement: "Meta Box" - Added improvements for "Set Meta Value" Action

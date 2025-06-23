@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.89
+Stable tag: 1.0.90
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -316,6 +316,12 @@ OttoKit is a cloud based automation platform that also offers a WordPress plugin
 
 Yes, if you have apps that are not yet integrated with OttoKit, please submit a request for integration. We offer a wide range of integrations with hundreds of popular apps, plugins and services, and we are always looking for adding more.
 
+= How can I report a security bug? =
+
+We take plugin security extremely seriously. If you discover a security vulnerability, please report it in a safe and responsible manner.
+
+You can report the issue through our [Bug Bounty Program](https://brainstormforce.com/bug-bounty-program/). We collaborate with Patchstack to provide opportunities for researchers to report vulnerabilities. The Patchstack team will help validate, triage, and handle any reported security issues.
+
 == Screenshots ==
 
 1. Dashboard of your task consumption.
@@ -328,6 +334,10 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.0.90 - Monday, 23rd June 2025 =
+* Improvement: "WooCommerce" - Added improvements in response for metadata in order related Triggers
+* Fix: "Bricks Builder" - Resolved an issue with attachment fields containing name attributes in "Form Submitted" Trigger
+
 = Version 1.0.89 - Friday, 13th June 2025 =
 * Improvement: "FluentBoards" – Added new “Stage Changed” Trigger and added attachment field in "Create Task" Action
 * Improvement: "Meta Box" - Added improvements for "Set Meta Value" Action

@@ -175,18 +175,25 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 
 					if ( ! empty( $form_fields ) ) {
 						foreach ( $form_fields as $field ) {
+							$field_name = '';
 							if ( is_array( $field ) && isset( $field['name'] ) ) {
 								$field_name = str_replace( ' ', '_', $field['name'] );
 							}
 							if ( isset( $fields[ $field['id'] ] ) ) {
 								$fd_label = ! empty( $field['label'] ) ? $field['label'] : $field['id'];
 								$context[ $this->modify_field_label( $fd_label ) ] = $fields[ $field['id'] ];
-							} elseif ( is_array( $field ) && isset( $field_name ) && isset( $fields[ (string) $field_name ] ) ) {
+							} elseif ( is_array( $field ) && isset( $fields[ (string) $field_name ] ) ) {
 								$fd_label = ! empty( $field['label'] ) ? $field['label'] : $field_name;
 								$context[ $this->modify_field_label( $fd_label ) ] = $fields[ (string) $field_name ];
 							} else {
 								$file_fields[]                     = $field['id'];
 								$file_field_labels[ $field['id'] ] = ! empty( $field['label'] ) ? $field['label'] : $field['id'];
+								/** 
+								 * Field.
+								 * 
+								 * @var array{id: string|int, name?: string, label?: string} $field 
+								 * */
+								$file_field_labels[ $field['id'] ] = isset( $field['name'] ) ? $field['name'] : ( ! empty( $field['label'] ) ? $field['label'] : $field['id'] );
 							}
 						}
 						if ( ! empty( $file_fields ) ) {
@@ -196,6 +203,10 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 								$urls  = [];
 								if ( isset( $files_data[ $key ] ) && is_array( $files_data[ $key ] ) ) {
 									foreach ( $files_data[ $key ] as $value ) {
+										$urls[] = $value['url'];
+									}
+								} elseif ( isset( $files_data[ $label ] ) && is_array( $files_data[ $label ] ) ) {
+									foreach ( $files_data[ $label ] as $value ) {
 										$urls[] = $value['url'];
 									}
 								}

@@ -282,6 +282,7 @@ class WooCommerce extends Integrations {
 			return array_merge(
 				[ 'product_id' => $product_ids[0] ],
 				$order->get_data(),
+				self::get_order_metadata_array( $order ),
 				[
 					'billing_state_fullname'    => $billing_state,
 					'billing_country_fullname'  => $billing_country,
@@ -299,6 +300,24 @@ class WooCommerce extends Integrations {
 		} else {
 			return [];
 		}
+	}
+
+	/**
+	 * Get order metadata as an associative array.
+	 *
+	 * @param object $order The order.
+	 * @return array Order metadata with metakey as array key and metavalue as array value.
+	 */
+	public static function get_order_metadata_array( $order ) {
+		$metadata = [];
+		if ( ! $order instanceof \WC_Order ) {
+			return $metadata;
+		}
+		$meta_data = $order->get_meta_data();
+		foreach ( $meta_data as $meta ) {
+			$metadata[ $meta->get_data()['key'] ] = $meta->get_data()['value'];
+		}
+		return $metadata;
 	}
 
 	/**
