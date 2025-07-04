@@ -23,6 +23,7 @@ use SureTriggers\Controllers\OptionController;
 use SureTriggers\Controllers\RestController;
 use SureTriggers\Controllers\RoutesController;
 use SureTriggers\Controllers\WebhookRequestsController;
+use SureTriggers\Controllers\SettingsController;
 use SureTriggers\Traits\SingletonLoader;
 use SureTriggers\Models\SaasApiToken;
 use function add_menu_page;
@@ -65,7 +66,7 @@ class Loader {
 		add_action( 'admin_notices', [ $this, 'display_notice' ] );
 
 		add_action( 'all_admin_notices', [ $this, 'suretriggers_show_api_connection_error' ] );
-
+		
 		add_action( 'wp_dashboard_setup', [ $this, 'add_dashboard_widgets' ] );
 
 		// Remove Webhook Requests retry cron and requests table.
@@ -89,8 +90,8 @@ class Loader {
 			'suretriggers_dashboard_widget',
 			'Please Connect OttoKit (Formerly SureTriggers)',
 			[ $this, 'dashboard_widget_display' ],
-			'',
-			'',
+			null,
+			null,
 			'side',
 			'high'
 		);
@@ -108,7 +109,7 @@ class Loader {
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Get Started', 'suretriggers' ); ?> </a>
 		</div>
 		<?php
-	}
+	} 
 
 	/**
 	 * Display notice.
@@ -146,7 +147,11 @@ class Loader {
 	 */
 	public function suretriggers_show_api_connection_error() {
 		global $pagenow;
-		if ( 'index.php' != $pagenow || ! isset( OptionController::$options['secret_key'] ) ) {
+		$is_authorized = true;
+		if ( ! current_user_can( 'manage_options' ) ) {
+			$is_authorized = self::suretriggers_user_permission_check();
+		}
+		if ( 'index.php' != $pagenow || ! isset( OptionController::$options['secret_key'] ) || ! $is_authorized ) {
 			return;
 		}
 		$notice = get_option( 'suretriggers_verify_connection' );
@@ -233,8 +238,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.0.90' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.0.90' );
+		define( 'SURE_TRIGGERS_VER', '1.1.0' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.1.0' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -259,6 +264,28 @@ class Loader {
 	}
 
 	/**
+	 * SureTriggers Access for Users and User Roles.
+	 *
+	 * @return bool
+	 */
+	private function suretriggers_user_permission_check() {
+		$current_user       = wp_get_current_user();
+		$current_user_id    = $current_user->ID;
+		$current_user_roles = $current_user->roles;
+
+		// Get enabled users and roles with proper default values.
+		$enabled_users      = get_option( 'suretriggers_enabled_users', [] );
+		$enabled_user_roles = get_option( 'suretriggers_enabled_user_roles', [] );
+
+		$enabled_users      = is_array( $enabled_users ) ? $enabled_users : [];
+		$enabled_user_roles = is_array( $enabled_user_roles ) ? $enabled_user_roles : [];
+
+		$is_authorized = in_array( $current_user_id, (array) $enabled_users ) || array_intersect( $current_user_roles, (array) $enabled_user_roles );
+
+		return $is_authorized;
+	}
+
+	/**
 	 * Add main menu
 	 *
 	 * @since x.x.x
@@ -269,24 +296,41 @@ class Loader {
 		$page_title = apply_filters( 'st_menu_page_title', esc_html__( 'OttoKit', 'suretriggers' ) );
 		$logo       = file_get_contents( plugin_dir_path( SURE_TRIGGERS_FILE ) . 'assets/images/OttoKitLogo.svg' );
 
-		add_menu_page(
-			$page_title,
-			$page_title,
-			'manage_options',
-			'suretriggers',
-			[ $this, 'menu_callback' ],
-			'data:image/svg+xml;base64,' . base64_encode( $logo ),
-			30.6002
-		);
+		$is_authorized = true;
+		if ( ! current_user_can( 'manage_options' ) ) {
+			$is_authorized = self::suretriggers_user_permission_check();
+		}
 
-		add_submenu_page(
-			'suretriggers', 
-			'suretriggers-status', 
-			'Status', 
-			'administrator', 
-			'suretriggers-status', 
-			[ $this, 'suretriggers_status_menu_callback' ]
-		);
+		if ( $is_authorized ) {
+			add_menu_page(
+				$page_title,
+				$page_title,
+				'read',
+				'suretriggers',
+				[ $this, 'menu_callback' ],
+				$logo ? 'data:image/svg+xml;base64,' . base64_encode( $logo ) : '',
+				30.6002
+			);
+
+			add_submenu_page(
+				'suretriggers', 
+				'OttoKit Status', 
+				'Status', 
+				'read', 
+				'suretriggers-status', 
+				[ $this, 'suretriggers_status_menu_callback' ]
+			);
+		}
+
+		if ( isset( OptionController::$options['secret_key'] ) ) {
+			add_options_page(
+				__( 'OttoKit Settings', 'suretriggers' ),
+				__( 'OttoKit Settings', 'suretriggers' ),
+				'manage_options',
+				'ottokit-settings',
+				[ $this, 'suretriggers_render_interface_callback' ]
+			);
+		}
 	}
 
 	/**
@@ -298,7 +342,7 @@ class Loader {
 	 * @return void
 	 */
 	public function enqueue_scripts( $hook = '' ) {
-		if ( ! in_array( $hook, [ 'toplevel_page_suretriggers', 'ottokit_page_suretriggers-status' ], true ) ) {
+		if ( ! in_array( $hook, [ 'toplevel_page_suretriggers', 'ottokit_page_suretriggers-status', 'settings_page_ottokit-settings' ], true ) ) {
 			return;
 		}
 
@@ -340,9 +384,22 @@ class Loader {
 	 * @return array
 	 */
 	private function get_localized_array() {
-		$current_user = wp_get_current_user();
+		$settings_nonce = wp_create_nonce( 'suretriggers_settings_nonce_action' );
+		$current_user   = wp_get_current_user();
+		global $wp_roles;
+		$is_authorized = true;
+		if ( ! current_user_can( 'manage_options' ) ) {
+			$is_authorized = self::suretriggers_user_permission_check();
+		}
 
 		$source_type = get_option( 'suretriggers_source' );
+
+		// Get enabled users and roles with proper default values.
+		$enabled_users      = get_option( 'suretriggers_enabled_users', [] );
+		$enabled_user_roles = get_option( 'suretriggers_enabled_user_roles', [] );
+
+		$enabled_users      = is_array( $enabled_users ) ? $enabled_users : [];
+		$enabled_user_roles = is_array( $enabled_user_roles ) ? $enabled_user_roles : [];
 
 		$data = [
 			'siteContent'         => [
@@ -362,25 +419,46 @@ class Loader {
 			'stPluginURL'         => plugin_dir_url( SURE_TRIGGERS_FILE ),
 			'integrations'        => IntegrationsController::get_activated_integrations(),
 			'enabledIntegrations' => OptionController::get_option( 'enabled_integrations' ),
-			'settingsPageURL'     => admin_url( 'themes.php?page=suretriggers' ),
 			'verification_status' => false,
 			'projects'            => [],
 			'apiSlug'             => SURE_TRIGGERS_REST_NAMESPACE,
-			'isElementorEditor'   => ( did_action( 'elementorpro/loaded' ) ) ? Elementor\Plugin::instance()->editor->is_edit_mode() : false,
 			'reConnectSorryMsg'   => (bool) OptionController::get_option( 'st_connect_notice_deprecated' ),
+			'usersRoles'          => array_diff_key( $wp_roles->get_names(), [ 'administrator' => '' ] ),
+			'usersList'           => get_users(
+				[
+					'fields'       => [
+						'ID',
+						'display_name',
+					],
+					'role__not_in' => [
+						'administrator',
+					],
+				]
+			),
+			'enabledUsers'        => $enabled_users,
+			'enabledUserRoles'    => $enabled_user_roles,
 		];
 
-		if ( current_user_can( 'manage_options' ) ) {
+		if ( $is_authorized ) {
 			$data['siteContent']['accessKey']       = SaasApiToken::get();
 			$data['siteContent']['connected_email'] = OptionController::get_option( 'connected_email_key' );
 		}
 
-		$settings = OptionController::get_option( 'st_settings' );
-		if ( empty( $settings ) ) {
-			$settings = (object) [];
-		}
-
+		$data['settingsNonce'] = esc_js( $settings_nonce );
+		$data['ajaxurl']       = esc_url( admin_url( 'admin-ajax.php' ) );
+		
 		return apply_filters( 'sure_trigger_control_localize_vars', $data );
+	}
+
+	/**
+	 * Render OttoKit Interface callback.
+	 *
+	 * @return void
+	 */
+	public function suretriggers_render_interface_callback() {
+		?>
+		<div id="ottokit-settings-page" class="ottokit-settings"></div>
+		<?php
 	}
 
 	/**
@@ -390,7 +468,36 @@ class Loader {
 	 *
 	 * @return void
 	 */
-	public function menu_callback() {       
+	public function menu_callback() {
+		// Check permalink structure first.
+		$permalink_structure = get_option( 'permalink_structure' );
+		$is_plain_permalink  = empty( $permalink_structure );
+		
+		// If permalink structure is "Plain" and we're trying to connect or already connected, show a prominent warning.
+		if ( $is_plain_permalink ) {
+			?>
+			<div class="st-permalink-warning-wrapper">
+				<div class="st-permalink-warning-card">
+					<div class="st-permalink-warning-icon">
+						<span class="st-permalink-warning-icon-text">!</span>
+					</div>
+					<div class="st-permalink-warning-content">
+						<p class="st-permalink-warning-title">
+							<?php esc_html_e( '“Plain” Permalink Structure Detected', 'suretriggers' ); ?>
+						</p>
+						<p class="st-permalink-warning-message">
+							<?php esc_html_e( 'Your site is currently using the “Plain” permalink structure, which is not supported by OttoKit. Please visit', 'suretriggers' ); ?>
+							<a href="<?php echo esc_url( admin_url( 'options-permalink.php' ) ); ?>" target="_blank" class="st-permalink-warning-link">
+								<?php esc_html_e( 'Permalinks Settings', 'suretriggers' ); ?>
+							</a>
+							<?php esc_html_e( 'on your WordPress Dashboard and choose any structure other than “Plain”.', 'suretriggers' ); ?>
+						</p>
+					</div>
+				</div>
+			</div>
+			<?php
+		} 
+			
 		// Verify Token.
 		$response      = RestController::verify_user_token();
 		$response_body = wp_remote_retrieve_body( $response );
@@ -558,6 +665,7 @@ class Loader {
 		AuthController::get_instance();
 		RoutesController::get_instance();
 		WebhookRequestsController::get_instance();
+		SettingsController::get_instance();
 
 		// SureTriggers Custom Filter data.
 		add_filter( 'suretriggers_get_iframe_url', [ $this, 'suretriggers_iframe_data' ] );

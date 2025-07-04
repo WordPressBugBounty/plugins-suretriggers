@@ -74,9 +74,13 @@ class RestrictContentAddUser extends AutomateAction {
 	 * @param int   $automation_id automation_id.
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
+	 * 
+	 * @return array|bool
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-
+		if ( ! function_exists( 'rcp_add_membership' ) || ! function_exists( 'rcp_get_customer' ) || ! function_exists( 'rcp_get_membership' ) || ! function_exists( 'rcp_add_customer' ) || ! function_exists( 'rcp_generate_subscription_key' ) ) {
+			return false;
+		}
 		$rcp_level_id    = $selected_options['rcp_levels']['value'];
 		$rcp_user_email  = $selected_options['rcp_user_email'];
 		$rcp_expiry_date = $selected_options['rcp_expiry_date'];
@@ -90,7 +94,7 @@ class RestrictContentAddUser extends AutomateAction {
 		}
 
 		$newest_time  = strtotime( current_time( 'mysql' ) );
-		$created_date = gmdate( 'Y-m-d H:i:s', $newest_time );
+		$created_date = gmdate( 'Y-m-d H:i:s', (int) $newest_time );
 
 		$wp_user = get_user_by( 'email', $rcp_user_email );
 
@@ -100,7 +104,9 @@ class RestrictContentAddUser extends AutomateAction {
 		];
 
 		if ( ! empty( $wp_user ) ) {
-			$customer = rcp_get_customer_by_user_id( $wp_user->ID );
+			if ( function_exists( 'rcp_get_customer_by_user_id' ) ) {
+				$customer = rcp_get_customer_by_user_id( $wp_user->ID );
+			}
 
 			if ( empty( $customer ) ) {
 				$customer_args['user_id'] = $wp_user->ID;

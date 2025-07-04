@@ -87,6 +87,66 @@ table.suretriggers-system-table-trigger tr.integration-row {
     border-top: 1px solid #e0dede;
 }
 
+.st-permalink-warning-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-top: 24px;
+}
+
+.st-permalink-warning-card {
+	background-color: #fffbeb;
+	border: 1px solid #f4aa28;
+	border-radius: 8px;
+	padding: 20px 24px;
+	width: 550px;
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	color: #a14800;
+}
+
+.st-permalink-warning-icon {
+	background-color: #fff9e8;
+	border: 1.5px solid #a14800;
+	border-radius: 50%;
+	width: 22px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	margin-top: 3px;
+}
+
+.st-permalink-warning-icon-text {
+	color: #a14800;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.st-permalink-warning-content {
+	color: #a14800;
+}
+
+.st-permalink-warning-title {
+	margin: 0 0 6px 0;
+	font-weight: 600;
+	font-size: 16px;
+}
+
+.st-permalink-warning-message {
+	margin: 0;
+	font-size: 14.5px;
+	line-height: 1.6;
+}
+
+.st-permalink-warning-link {
+	color: #a14800;
+	text-decoration: underline;
+	font-weight: 500;
+}
+
+
 @media screen and (max-width: 782px) {
     .suretriggers-nobase > div {
         display: flex;  

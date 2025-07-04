@@ -91,6 +91,9 @@ if ( ! class_exists( 'UserJoinsPrivateGroup' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $user_id, $group_id ) {
+			if ( ! function_exists( 'groups_get_group' ) ) {
+				return;
+			}
 			$context = WordPress::get_user_context( $user_id );
 			$avatar  = get_avatar_url( $user_id );
 			$group   = groups_get_group( $group_id );

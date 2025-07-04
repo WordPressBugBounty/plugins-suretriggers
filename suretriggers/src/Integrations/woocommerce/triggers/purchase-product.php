@@ -95,7 +95,7 @@ if ( ! class_exists( 'PurchaseProduct' ) ) :
 			}
 			$order = wc_get_order( $order_id );
 			
-			if ( ! $order ) {
+			if ( ! $order || ! $order instanceof \WC_Order ) {
 				return;
 			}
 
@@ -189,9 +189,9 @@ if ( ! class_exists( 'PurchaseProduct' ) ) :
 					}
 				}                       
 			}
-
-			$context = array_merge(
-				WooCommerce::get_order_context( $order_id ),
+			$order_context = WooCommerce::get_order_context( $order_id );
+			$context       = array_merge(
+				isset( $order_context ) ? $order_context : [],
 				$product_data,
 				WordPress::get_user_context( $user_id )
 			);

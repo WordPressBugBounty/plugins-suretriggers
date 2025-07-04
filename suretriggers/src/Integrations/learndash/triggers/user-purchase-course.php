@@ -98,7 +98,7 @@ if ( ! class_exists( 'PurchaseCourse' ) ) :
 
 			$order = wc_get_order( $order_id );
 
-			if ( ! $order ) {
+			if ( ! $order || ! $order instanceof \WC_Order ) {
 				return;
 			}
 
@@ -109,8 +109,10 @@ if ( ! class_exists( 'PurchaseCourse' ) ) :
 			}
 
 			foreach ( $items as $item ) {
-				if ( empty( get_post_meta( $item->get_product_id(), '_related_course', true ) ) ) {
-					return;
+				if ( ! $item instanceof \WC_Order_Item ) {
+					if ( empty( get_post_meta( $item->get_product_id(), '_related_course', true ) ) ) {
+						return;
+					}
 				}
 			}
 

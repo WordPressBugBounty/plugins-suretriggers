@@ -80,6 +80,7 @@ class CreateSubTask extends AutomateAction {
 			$stage_id    = isset( $selected_options['stage_id'] ) ? sanitize_text_field( $selected_options['stage_id'] ) : '';
 			$labels      = isset( $selected_options['labels'] ) ? array_map( 'sanitize_text_field', explode( ',', $selected_options['labels'] ) ) : [];
 			$created_by  = isset( $selected_options['created_by'] ) ? sanitize_text_field( $selected_options['created_by'] ) : '';
+			$group_id    = isset( $selected_options['group_id'] ) ? sanitize_text_field( $selected_options['group_id'] ) : '';
 
 		if ( empty( $task_id ) || empty( $title ) || empty( $board_id ) ) {
 			throw new Exception( 'Required fields are missing: task_id, title, or board_id.' );
@@ -106,6 +107,7 @@ class CreateSubTask extends AutomateAction {
 			
 			$task_data = [
 				'title'       => $title,
+				'group_id'    => $group_id,
 				'description' => $description,
 				'board_id'    => $board_id,
 				'stage_id'    => $stage_id,

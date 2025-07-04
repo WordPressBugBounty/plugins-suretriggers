@@ -88,6 +88,9 @@ if ( ! class_exists( 'UserLeavesGroup' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $group_id, $user_id ) {
+			if ( ! function_exists( 'groups_get_group' ) ) {
+				return;
+			}
 			$context = WordPress::get_user_context( $user_id );
 			$avatar  = get_avatar_url( $user_id );
 			$group   = groups_get_group( $group_id );

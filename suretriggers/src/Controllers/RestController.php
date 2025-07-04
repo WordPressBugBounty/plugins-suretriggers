@@ -20,6 +20,9 @@ use SureTriggers\Models\SaasApiToken;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
+use Throwable;
+use RuntimeException;
+use InvalidArgumentException;
 
 /**
  * RestController
@@ -43,7 +46,7 @@ class RestController {
 	use SingletonLoader;
 
 	/**
-	 * Initialise data.
+	 * Initialize data.
 	 */
 	public function __construct() {
 		$this->secret_key = SaasApiToken::get();
@@ -55,6 +58,8 @@ class RestController {
 	 * Permission callback for rest api after determination of current user.
 	 *
 	 * @param WP_REST_Request $request Request.
+	 * 
+	 * @return bool
 	 */
 	public function autheticate_user( $request ) {
 		$secret_key = $request->get_header( 'st_authorization' );
@@ -63,7 +68,10 @@ class RestController {
 			return false;
 		}
 
-		list($secret_key) = sscanf( $secret_key, 'Bearer %s' );
+		$parsed = sscanf( $secret_key, 'Bearer %s' );
+		if ( is_array( $parsed ) ) {
+			list( $secret_key ) = $parsed;
+		}
 
 		if ( empty( $secret_key ) ) { 
 			return false;
@@ -280,7 +288,7 @@ class RestController {
 	 * Execute action events.
 	 *
 	 * @param WP_REST_Request $request Request data.
-	 * @return WP_REST_Response
+	 * @return WP_REST_Response|object
 	 */
 	public function run_action( $request ) {
 		$request->get_param( 'wp_user_id' );
@@ -303,6 +311,10 @@ class RestController {
 
 		if ( isset( $selected_options['wp_user_email'] ) && ! ( 'EDD' === $integration && 'find_user_purchased_download' === $action_type ) ) {
 			$is_valid = WordPress::validate_email( $selected_options['wp_user_email'] );
+
+			if ( ! is_object( $is_valid ) || ! property_exists( $is_valid, 'valid' ) || ! property_exists( $is_valid, 'multiple' ) ) {
+				return self::error_message( 'Invalid email validation response.' );
+			}
 
 			if ( ! $is_valid->valid ) {
 				if ( $is_valid->multiple ) {
@@ -329,6 +341,8 @@ class RestController {
 		$registered_actions = EventController::get_instance()->actions;
 		$action_event       = $registered_actions[ $integration ][ $action_type ];
 
+		$fully_qualified_class_name = "\SureTriggers\Integrations\\$integration\\$integration";
+
 		$fun_params = [
 			$user_id,
 			$automation_id,
@@ -338,13 +352,40 @@ class RestController {
 		];
 
 		try {
-			$result = call_user_func_array(
-				$action_event['function'],
-				$fun_params
-			);
-			return self::success_message( $result );
+			// Check if integration class exists and plugin is active.
+			if ( class_exists( $fully_qualified_class_name ) ) {
+				$class_obj        = new $fully_qualified_class_name();
+				$is_plugin_active = false;
+				if ( method_exists( $class_obj, 'is_plugin_installed' ) ) {
+					$is_plugin_active = $class_obj->is_plugin_installed();
+				}
+				if ( ! $is_plugin_active ) {
+					return self::error_message( $integration . ' plugin is not installed or activated.', 400 );
+				}
+			} else {
+				return self::error_message( 'Integration class not found.', 400 );
+			}
+			
+			// Execute the action with error handling.
+			$result = null;
+			try {
+				$result = call_user_func_array(
+					$action_event['function'],
+					$fun_params
+				);
+				
+				return self::success_message( (array) $result );
+			} catch ( InvalidArgumentException $arg_error ) {
+				return self::error_message( 'Invalid argument: ' . $arg_error->getMessage(), 400 );
+			} catch ( RuntimeException $runtime_error ) {
+				return self::error_message( 'Runtime error: ' . $runtime_error->getMessage(), 500 );
+			} catch ( Exception $action_error ) {
+				return self::error_message( 'Action execution failed: ' . $action_error->getMessage(), 400 );
+			} catch ( Throwable $php_error ) {
+				return self::error_message( 'PHP error in action: ' . $php_error->getMessage(), 500 );
+			}
 		} catch ( Exception $e ) {
-			return self::error_message( $e->getMessage(), 400 );
+			return self::error_message( 'Error executing action: ' . $e->getMessage(), 400 );
 		}
 	}
 
@@ -352,7 +393,7 @@ class RestController {
 	 * Error message format.
 	 *
 	 * @param string $message Error message.
-	 * @param string $status Error message.
+	 * @param int    $status Error message.
 	 *
 	 * @return object
 	 */
@@ -397,7 +438,7 @@ class RestController {
 	 * When new/update/remove automation on Sass then execute this endpoint to update the automation.
 	 *
 	 * @param WP_REST_Request $request Request data.
-	 * @return WP_REST_Response
+	 * @return object
 	 */
 	public function manage_triggers( $request ) {
 		$events = $request->get_param( 'events' ) ? json_decode( stripslashes( $request->get_param( 'events' ) ), true ) : [];
@@ -418,10 +459,10 @@ class RestController {
 			}
 		}
 
-		OptionController::set_option( 'triggers', $events );
+		OptionController::set_option( 'triggers', (array) $events );
 		// Set the new option for the trigger data.
-		OptionController::set_option( 'trigger_data', $trigger_data );
-		$events = array_column( $events, 'trigger' );
+		OptionController::set_option( 'trigger_data', (array) $trigger_data );
+		$events = array_column( (array) $events, 'trigger' );
 		return self::success_message(
 			[
 				'events' => $events,
@@ -450,7 +491,7 @@ class RestController {
 				'Referer'        => str_replace( '/wp-json/', '', get_site_url() ),
 				'RefererRestUrl' => str_replace( '/wp-json/', '', get_rest_url() ),
 			],
-			'body'    => json_decode( wp_json_encode( $trigger_data ), 1 ),
+			'body'    => json_decode( (string) wp_json_encode( $trigger_data ), true ),
 			'timeout' => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		
@@ -483,7 +524,7 @@ class RestController {
 	 * Disconnect connection
 	 *
 	 * @param WP_REST_Request $request Request data.
-	 * @return WP_REST_Response
+	 * @return object
 	 */
 	public function connection_disconnect( $request ) {
 		SaasApiToken::save( null );
@@ -495,10 +536,10 @@ class RestController {
 	 * When test trigger is initiated on Sass then execute this endpoint to create a transient for identifying trigger event.
 	 *
 	 * @param WP_REST_Request $request Request data.
-	 * @return WP_REST_Response
+	 * @return void
 	 */
 	public function test_triggers( $request ) {
-		$test_triggers = (array) OptionController::get_option( 'test_triggers', [] );
+		$test_triggers = (array) OptionController::get_option( 'test_triggers' );
 		$event         = [
 			'trigger'     => $request->get_param( 'trigger' ),
 			'integration' => $request->get_param( 'integration' ),
@@ -545,26 +586,46 @@ class RestController {
 		} else {
 			$connection_status = 'Error in Connection';
 		}
-		$debug_info['suretriggers'] = [
-			'label'  => __( 'OttoKit', 'suretriggers' ),
-			'fields' => [
-				'suretriggers_status'  => [
-					'label'   => __( 'OttoKit Status', 'suretriggers' ),
-					'value'   => $connection_status,
-					'private' => false,
-				],
-				'rest_url'             => [
-					'label'   => __( 'Rest URL', 'suretriggers' ),
-					'value'   => esc_url( get_rest_url() ),
-					'private' => false,
-				],
-				'suretriggers_version' => [
-					'label'   => __( 'OttoKit Version', 'suretriggers' ),
-					'value'   => SURE_TRIGGERS_VER,
-					'private' => false,
-				],
+		
+		$fields = [
+			'suretriggers_status'  => [
+				'label'   => __( 'OttoKit Status', 'suretriggers' ),
+				'value'   => $connection_status,
+				'private' => false,
+			],
+			'rest_url'             => [
+				'label'   => __( 'Rest URL', 'suretriggers' ),
+				'value'   => esc_url( get_rest_url() ),
+				'private' => false,
+			],
+			'suretriggers_version' => [
+				'label'   => __( 'OttoKit Version', 'suretriggers' ),
+				'value'   => SURE_TRIGGERS_VER,
+				'private' => false,
 			],
 		];
+
+		if ( defined( 'SURETRIGGERS_ENCRYPTION_KEY' ) ) {
+			$fields['suretriggers_encryption_key'] = [
+				'label'   => __( 'Encryption Key', 'suretriggers' ),
+				'value'   => __( 'Defined', 'suretriggers' ),
+				'private' => false,
+			];
+		}
+		
+		if ( defined( 'SURETRIGGERS_ENCRYPTION_SALT' ) ) {
+			$fields['suretriggers_encryption_salt'] = [
+				'label'   => __( 'Encryption Salt', 'suretriggers' ),
+				'value'   => __( 'Defined', 'suretriggers' ),
+				'private' => false,
+			];
+		}
+		
+		$debug_info['suretriggers'] = [
+			'label'  => __( 'OttoKit', 'suretriggers' ),
+			'fields' => $fields,
+		];
+		
 		return $debug_info;
 	}
 

@@ -107,7 +107,10 @@ if ( ! class_exists( 'UserEnrolledLDCourse' ) ) :
 			$context['course_url']                = get_permalink( $course_id );
 			$context['course_featured_image_id']  = get_post_meta( $course_id, '_thumbnail_id', true );
 			$context['course_featured_image_url'] = get_the_post_thumbnail_url( $course_id );
-			$context['course_access_expiry_date'] = wp_date( get_option( 'date_format' ), ld_course_access_expires_on( $course_id, $user_id ) );
+			$date_format                          = get_option( 'date_format' );
+			if ( is_string( $date_format ) ) {
+				$context['course_access_expiry_date'] = wp_date( $date_format, ld_course_access_expires_on( $course_id, $user_id ) );
+			}
 
 			AutomationController::sure_trigger_handle_trigger(
 				[

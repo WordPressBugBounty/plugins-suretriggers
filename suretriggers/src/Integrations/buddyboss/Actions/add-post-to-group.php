@@ -80,8 +80,12 @@ class AddPostToActivityStreamOfGroup extends AutomateAction {
 		$user_id = email_exists( $selected_options['bb_author'] );
 
 		if ( ! function_exists( 'groups_get_group' ) || ! function_exists( 'bp_get_group_status' ) || 
-		! function_exists( 'bp_activity_get_specific' ) ) {
-			return [];
+		! function_exists( 'bp_activity_get_specific' ) || 
+		! function_exists( 'bp_activity_add' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'BuddyBoss Groups activity functions not found.', 'suretriggers' ),
+			];
 		}
 
 		if ( false === $user_id ) {

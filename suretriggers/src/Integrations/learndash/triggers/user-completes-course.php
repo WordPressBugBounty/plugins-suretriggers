@@ -99,8 +99,13 @@ if ( ! class_exists( 'UserCompletesLDCourse' ) ) :
 				LearnDash::get_course_context( $data['course'] )
 			);
 
-			$context['course_status']          = $data['course']->post_status;
-			$context['course_completion_date'] = wp_date( get_option( 'date_format' ), get_user_meta( $data['user']->ID, 'course_completed_' . $data['course']->ID, true ) );
+			$context['course_status'] = $data['course']->post_status;
+			$timestamp                = get_user_meta( $data['user']->ID, 'course_completed_' . $data['course']->ID, true );
+			$timestamp                = is_numeric( $timestamp ) ? (int) $timestamp : null;
+			$date_format              = get_option( 'date_format' );
+			if ( is_string( $date_format ) ) {
+				$context['course_completion_date'] = wp_date( $date_format, $timestamp );
+			}
 			if ( function_exists( 'learndash_get_course_certificate_link' ) ) {
 				$context['course_certificate'] = learndash_get_course_certificate_link( $data['course']->ID, $data['user']->ID );
 			}

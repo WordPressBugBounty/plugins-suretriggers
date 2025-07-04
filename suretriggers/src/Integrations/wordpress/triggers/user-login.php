@@ -88,7 +88,9 @@ class UserLogin {
 	 * @return void
 	 */
 	public function trigger_listener( $user_login, $user ) {
-
+		if ( ! property_exists( $user, 'ID' ) ) {
+			return;
+		}
 		AutomationController::sure_trigger_handle_trigger(
 			[
 				'trigger' => $this->trigger,

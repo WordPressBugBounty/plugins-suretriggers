@@ -92,7 +92,7 @@ if ( ! class_exists( 'PurchaseCourse' ) ) :
 			}
 
 			$order = wc_get_order( $order_id );
-			if ( ! $order ) {
+			if ( ! $order instanceof \WC_Order ) {
 				throw new Exception( 'Invalid Order.' );
 			}
 
@@ -107,22 +107,29 @@ if ( ! class_exists( 'PurchaseCourse' ) ) :
 			$course_name         = [];
 
 			foreach ( $items as $item ) {
-				$product_name[] = $item->get_name();
-				$product_id     = $item->get_product_id();
-				$product_ids[]  = $item->get_product_id();
-				$course_args    = [
-					'post_type'  => tutor()->course_post_type,
-					'meta_query' => [
-						[
-							'key'     => '_tutor_course_product_id',
-							'value'   => $product_id,
-							'compare' => '==',
+				if ( $item instanceof \WC_Order_Item_Product ) {
+					$product_name[] = $item->get_name();
+					$product_id     = $item->get_product_id();
+					$product_ids[]  = $item->get_product_id();
+					if ( function_exists( 'tutor' ) ) {
+						$post_type = tutor()->course_post_type;
+					} else {
+						$post_type = '';
+					}
+					$course_args   = [
+						'post_type'  => $post_type,
+						'meta_query' => [
+							[
+								'key'     => '_tutor_course_product_id',
+								'value'   => $product_id,
+								'compare' => '==',
+							],
 						],
-					],
-				];
-				$courses        = get_posts( $course_args );
-				$course_id[]    = $courses[0]->ID;
-				$course_name[]  = $courses[0]->post_title;
+					];
+					$courses       = get_posts( $course_args );
+					$course_id[]   = $courses[0]->ID;
+					$course_name[] = $courses[0]->post_title;
+				}
 			}
 
 			$context['course']       = implode( ',', $course_id );

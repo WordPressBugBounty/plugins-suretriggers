@@ -133,9 +133,13 @@ class CreatePost extends AutomateAction {
 				throw new Exception( 'Invalid Post ID provided. No post found with that ID.' );
 			}
 		} else {
+			/**
+			 * Post ID.
+			 *
+			 * @var int|\WP_Error $post_id
+			 */
 			$post_id = wp_insert_post( $result_arr );
-		
-			if ( ! $post_id || is_wp_error( $post_id ) ) {
+			if ( is_wp_error( $post_id ) || 0 === $post_id ) {
 				$this->set_error(
 					[
 						'post_data' => $result_arr,
@@ -166,7 +170,7 @@ class CreatePost extends AutomateAction {
 				// If is post create then set the terms.
 				wp_set_object_terms( $post_id, $terms, $taxonomy, false );
 			}
-			$response_taxonomy = get_object_taxonomies( get_post_type( $post_id ) );
+			$response_taxonomy = get_object_taxonomies( (string) get_post_type( $post_id ) );
 			foreach ( $response_taxonomy as $taxonomy_name ) {
 				$terms = wp_get_post_terms( $post_id, $taxonomy_name );
 				if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
@@ -202,7 +206,7 @@ class CreatePost extends AutomateAction {
 				];
 			}
 			
-			set_post_thumbnail( $post_id, $attachment_id );
+			set_post_thumbnail( $post_id, (int) $attachment_id );
 		}
 		$featured_image_url = get_the_post_thumbnail_url( $post_id, 'full' );
 

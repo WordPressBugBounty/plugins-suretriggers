@@ -47,7 +47,10 @@ class WPLMS extends Integrations {
 	 * @return array
 	 */
 	public static function get_wplms_course_context( $course_id ) {
-		$courses                       = get_post( $course_id );
+		$courses = get_post( $course_id );
+		if ( is_null( $courses ) ) {
+			return [];
+		}
 		$context['wplms_course']       = $courses->ID;
 		$context['wplms_course_name']  = $courses->post_name;
 		$context['wplms_course_title'] = $courses->post_title;

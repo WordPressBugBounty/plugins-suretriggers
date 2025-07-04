@@ -93,9 +93,11 @@ if ( ! class_exists( 'AppointmentCompleted' ) ) :
 			if ( 'completed' !== $booking['status'] ) {
 				return;
 			}
-			$booking_data                  = $booking;
-			$booking_data['custom_fields'] = $booking->getCustomFormData( false );
-			$booking_array                 = [
+			$booking_data = $booking;
+			if ( is_object( $booking ) && method_exists( $booking, 'getCustomFormData' ) ) {
+				$booking_data['custom_fields'] = $booking->getCustomFormData( false );
+			}
+			$booking_array = [
 				'event_id' => $calendar_event['id'],
 				'booking'  => $booking_data,
 				'event'    => $calendar_event,

@@ -213,7 +213,7 @@ abstract class Integrations {
 	/**
 	 * Get API key page URL
 	 *
-	 * @return bool
+	 * @return bool|null
 	 */
 	public function get_api_page_url() {
 		return $this->api_page_url;

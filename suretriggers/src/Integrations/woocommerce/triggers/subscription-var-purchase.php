@@ -79,11 +79,14 @@ class SubscriptionVarPurchase {
 	/**
 	 *  Trigger listener
 	 *
-	 * @param obj $subscription WC_Subscription object.
+	 * @param object $subscription WC_Subscription object.
 	 *
 	 * @return void
 	 */
 	public function trigger_listener( $subscription ) {
+		if ( ! class_exists( 'WC_Subscription' ) ) {
+			return;
+		}
 		if ( ! $subscription instanceof WC_Subscription ) {
 			return;
 		}
@@ -94,7 +97,11 @@ class SubscriptionVarPurchase {
 			return;
 		}
 
-		$user_id = wc_get_order( $last_order_id )->get_customer_id();
+		$last_order_data = wc_get_order( $last_order_id );
+		if ( ! $last_order_data instanceof \WC_Order ) {
+			return;
+		}
+		$user_id = $last_order_data->get_customer_id();
 		$id      = $subscription->get_id();
 
 		$items       = $subscription->get_items();

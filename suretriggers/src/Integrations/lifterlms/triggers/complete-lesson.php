@@ -94,13 +94,27 @@ class CompleteLesson {
 			return;
 		}
 
-		$context           = array_merge(
+		$context   = array_merge(
 			WordPress::get_user_context( $user_id ),
 			LifterLMS::get_lms_lesson_context( $lesson_id )
 		);
-		$context['course'] = get_the_title( get_post_meta( $lesson_id, '_llms_parent_course', true ) );
-		if ( '' !== ( get_post_meta( $lesson_id, '_llms_parent_section', true ) ) ) {
-			$context['parent_section'] = get_the_title( get_post_meta( $lesson_id, '_llms_parent_section', true ) );
+		$course_id = get_post_meta( $lesson_id, '_llms_parent_course', true );
+
+		/**
+		 * Course ID.
+		 *
+		 * @var string $course_id
+		 */
+		$context['course'] = get_the_title( intval( $course_id ) );
+
+		$parent_section_id = get_post_meta( $lesson_id, '_llms_parent_section', true );
+		if ( '' !== $parent_section_id ) {
+			/**
+			 * Parent Section ID.
+			 *
+			 * @var string $parent_section_id
+			 */
+			$context['parent_section'] = get_the_title( intval( $parent_section_id ) );
 		}
 
 		AutomationController::sure_trigger_handle_trigger(

@@ -51,7 +51,10 @@ class EDD extends Integrations {
 	 * @param  integer|null            $download_id download id.
 	 * @return array
 	 */
-	public static function get_product_purchase_context( EDD_Payment $payment, $term = null, $download_id = null ) {
+	public static function get_product_purchase_context( $payment, $term = null, $download_id = null ) {
+		if ( ! class_exists( 'EDD_Payment' ) || ! ( $payment instanceof EDD_Payment ) ) {
+			return [];
+		}
 		global $wpdb;
 	
 		$purchased_products     = implode(
@@ -135,7 +138,10 @@ class EDD extends Integrations {
 	 * @param EDD_Payment|object|null $order_detail order details.
 	 * @return array
 	 */
-	public static function get_purchase_refund_context( EDD_Payment $order_detail ) {
+	public static function get_purchase_refund_context( $order_detail ) {
+		if ( ! class_exists( 'EDD_Payment' ) || ! ( $order_detail instanceof EDD_Payment ) ) {
+			return [];
+		}
 		$total_discount      = 0;
 		$item_names          = [];
 		$download_product    = [];

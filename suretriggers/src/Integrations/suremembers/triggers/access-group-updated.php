@@ -98,7 +98,7 @@ if ( ! class_exists( 'GroupUpdated' ) ) :
 			}
 			$group = sanitize_post( $_POST );
 
-			$context['group']    = array_merge( WordPress::get_post_context( $group_id ), sanitize_post( isset( $group['suremembers_post'] ) ? $group['suremembers_post'] : [] ) );
+			$context['group']    = array_merge( WordPress::get_post_context( $group_id ), sanitize_post( isset( $group['suremembers_post'] ) && is_array( $group['suremembers_post'] ) ? $group['suremembers_post'] : [] ) );
 			$context['group_id'] = $group_id;
 			unset( $context['group']['ID'] ); //phpcs:ignore
 			AutomationController::sure_trigger_handle_trigger(

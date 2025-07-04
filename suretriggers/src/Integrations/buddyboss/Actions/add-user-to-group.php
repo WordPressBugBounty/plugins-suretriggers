@@ -74,6 +74,13 @@ class AddUserToGroup extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
+
+		if ( ! function_exists( 'groups_join_group' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'BuddyBoss Groups join function not found.', 'suretriggers' ),
+			];
+		}
 		$user_id = email_exists( $selected_options['wp_user_email'] );
 
 		if ( false === $user_id ) {

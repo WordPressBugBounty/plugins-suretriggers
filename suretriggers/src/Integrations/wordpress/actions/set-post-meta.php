@@ -68,7 +68,7 @@ class SetPostMeta extends AutomateAction {
 	 * @param int   $automation_id automation_id.
 	 * @param array $fields fields.
 	 * @param array $selected_options selected_options.
-	 * @return array
+	 * @return array|bool
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {

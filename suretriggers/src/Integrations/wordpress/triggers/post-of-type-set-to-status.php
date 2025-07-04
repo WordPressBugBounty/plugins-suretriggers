@@ -91,7 +91,7 @@ class PostSetToStatus {
 	 */
 	public function trigger_listener( $new_status, $old_status, $post ) {
 
-		if ( $old_status === $new_status ) {
+		if ( $old_status === $new_status || ! property_exists( $post, 'post_type' ) ) {
 			return;
 		}
 
@@ -107,19 +107,22 @@ class PostSetToStatus {
 	/**
 	 * REST request listener
 	 *
-	 * @param object|WP_Post         $post Inserted or updated post object.
-	 * @param string|WP_REST_Request $request Request object.
-	 * @param string|bool            $creating True when creating a post, false when updating.
+	 * @param object|WP_Post          $post Inserted or updated post object.
+	 * @param string|\WP_REST_Request $request Request object.
+	 * @param string|bool             $creating True when creating a post, false when updating.
 	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
 	public function trigger_handler( $post, $request, $creating ) {
 
+		if ( ! property_exists( $post, 'ID' ) || ! property_exists( $post, 'post_type' ) || ! property_exists( $post, 'post_status' ) ) {
+			return;
+		}
 		$context                = WordPress::get_post_context( $post->ID );
 		$context['post_type']   = $post->post_type;
 		$context['post_status'] = $post->post_status;
-		$featured_image         = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post->ID ), 'full' ); // @phpstan-ignore-line
+		$featured_image         = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post->ID ), 'full' );
 		if ( ! empty( $featured_image ) && is_array( $featured_image ) ) {
 			$context['featured_image'] = $featured_image[0];
 		}

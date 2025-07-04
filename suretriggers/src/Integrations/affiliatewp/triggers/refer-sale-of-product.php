@@ -88,6 +88,9 @@ if ( ! class_exists( 'ReferSaleOfProduct' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $referral_id, $new_status, $old_status ) {
+			if ( ! function_exists( 'affwp_get_referral' ) || ! function_exists( 'affwp_get_affiliate' ) || ! function_exists( 'affwp_get_affiliate_user_id' ) ) {
+				return;
+			}
 			$referral  = affwp_get_referral( $referral_id );
 			$affiliate = affwp_get_affiliate( $referral->affiliate_id );
 			$user_id   = affwp_get_affiliate_user_id( $referral->affiliate_id );

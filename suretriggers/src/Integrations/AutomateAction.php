@@ -14,6 +14,7 @@
 namespace SureTriggers\Integrations;
 
 use Exception;
+use Throwable;
 
 /**
  * AutomateAction
@@ -115,12 +116,17 @@ abstract class AutomateAction {
 			$method = '_' . $method;
 		try {
 			$status = $this->$method( ...$args );
+			if ( is_null( $status ) && ! is_null( $this->data ) ) {
+				// If status is null but we have error data, throw an exception with the error message.
+				$error_msg = is_array( $this->data ) && isset( $this->data['msg'] ) ? $this->data['msg'] : 'Action failed';
+				throw new Exception( $error_msg );
+			}
+			return $status;
 		} catch ( Exception $e ) {
 			throw new Exception( $e->getMessage() );
+		} catch ( \Throwable $php_error ) {
+			throw new Exception( 'PHP Error: ' . $php_error->getMessage() );
 		}
-		
-
-		return $status;
 	}
 
 	/**

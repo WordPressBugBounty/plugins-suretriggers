@@ -73,10 +73,12 @@ class AwardRankToUser extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
 	 *
-	 * @return array 
+	 * @return array|bool
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-
+		if ( ! function_exists( 'mycred_get_rank' ) || ! function_exists( 'mycred_save_users_rank' ) ) {
+			return false;
+		}
 		$rank_id = $selected_options['cred_rank'];
 
 		if ( empty( $rank_id ) || empty( $user_id ) ) {

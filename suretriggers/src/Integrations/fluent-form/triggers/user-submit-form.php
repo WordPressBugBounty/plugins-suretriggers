@@ -92,9 +92,13 @@ if ( ! class_exists( 'UserSubmitsFluentForm' ) ) :
 				return;
 			}
 
-			$context                     = (array) json_decode( $insert_data['response'], true );
-			$context['form_id']          = (int) $form->id;
-			$context['form_title']       = $form->title;
+			$context = (array) json_decode( $insert_data['response'], true );
+			if ( isset( $form->id ) ) {
+				$context['form_id'] = (int) $form->id;
+			}
+			if ( isset( $form->title ) ) {
+				$context['form_title'] = $form->title;
+			}
 			$context['entry_id']         = $insert_data['serial_number'];
 			$context['entry_source_url'] = $insert_data['source_url'];
 			$context['submission_date']  = $insert_data['created_at'];

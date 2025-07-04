@@ -72,13 +72,22 @@ class EnrollToCourse extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
+		if ( ! function_exists( 'tutor_utils' ) || ! function_exists( 'tutor' ) ) {
+			throw new Exception( 'Tutor LMS function not found.' );
+		}
 		$context = [];
 
 		$course_id  = isset( $selected_options['courses'] ) ? $selected_options['courses'] : '0';
 		$user_email = ( isset( $selected_options['wp_user_email'] ) ) ? $selected_options['wp_user_email'] : '';
 		$user_id    = email_exists( $user_email );
+		if ( ! $user_id ) {
+			throw new Exception( 'User not found.' );
+		}
 
-		$user                  = get_user_by( 'id', $user_id );
+		$user = get_user_by( 'id', $user_id );
+		if ( ! $user instanceof \WP_User ) {
+			throw new Exception( 'User not found.' );
+		}
 		$context['user_id']    = $user->ID;
 		$context['user_name']  = $user->display_name;
 		$context['user_email'] = $user->user_email;
@@ -107,7 +116,10 @@ class EnrollToCourse extends AutomateAction {
 		$enrolled_courses = [];
 
 		foreach ( $courses as $course_id ) {
-			$course_data                = get_post( $course_id );
+			$course_data = get_post( $course_id );
+			if ( ! $course_data instanceof \WP_Post ) {
+				throw new Exception( 'No Course is available.' );
+			}
 			$enrolled_courses['id'][]   = $course_data->ID;
 			$enrolled_courses['name'][] = $course_data->post_title;
 			// Filter purchaseability to always return false when enrolling through this action.

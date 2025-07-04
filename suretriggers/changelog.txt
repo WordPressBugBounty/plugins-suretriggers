@@ -1,3 +1,10 @@
+Version 1.1.0 - Friday, 4th July 2025
+- New: Settings page added for granular OttoKit access control
+- New: Added "WP Travel Engine" Integration
+- Improvement: "GeoDirectory" – Added new “New Place Listing Added” Trigger
+- Improvement: "FluentBoards" – Added new "Create Subtask Group" Action & added improvements for "Create Task" & "Create Subtask" Actions
+- Improvement: "FluentCRM" - Added new "Retrieve Contact By Segment" Action
+
 Version 1.0.90 - Monday, 23rd June 2025
 - Improvement: "WooCommerce" - Added improvements in response for metadata in order related Triggers
 - Fix: "Bricks Builder" - Resolved an issue with attachment fields containing name attributes in "Form Submitted" Trigger

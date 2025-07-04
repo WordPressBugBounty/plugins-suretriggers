@@ -116,7 +116,7 @@ class IntegrationsController {
 	 * Verify child integration
 	 *
 	 * @param WP_REST_Request $request Request data.
-	 * @return WP_REST_Response
+	 * @return object
 	 */
 	public function child_integration_verify( $request ) {
 		$plugin_url = admin_url( 'plugins.php' );
@@ -130,12 +130,14 @@ class IntegrationsController {
 			$fully_qualified_class_name = "\SureTriggers\Integrations\\$integration_class_name\\$integration_class_name";
 
 			if ( class_exists( $fully_qualified_class_name ) ) {
-				$class_obj        = new $fully_qualified_class_name();
-				$is_plugin_active = $class_obj->is_plugin_installed();
+				$class_obj = new $fully_qualified_class_name();
+				if ( method_exists( $class_obj, 'is_plugin_installed' ) ) {
+					$is_plugin_active = $class_obj->is_plugin_installed();
+				}
 			}
 
 			if ( $is_plugin_active ) {
-				return RestController::success_message( 'Integration is verified and has all necessary plugins installed.' );
+				return RestController::success_message( [ 'Integration is verified and has all necessary plugins installed.' ] );
 			} else {
 				return RestController::error_message( sprintf( 'To use %1s integration, you must have installed and activated %1$s on your <a class="text-app-primary" target="_blank" href="%2$s"> WordPress website</a>.', $plugin['name'], $plugin_url ), 200 );
 			}

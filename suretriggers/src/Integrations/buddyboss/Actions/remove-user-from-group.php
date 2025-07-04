@@ -74,6 +74,13 @@ class RemoveUserFromGroup extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
+		if ( ! function_exists( 'groups_get_groups' ) || ! function_exists( 'groups_is_user_member' ) || 
+		! function_exists( 'groups_leave_group' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'BuddyBoss Groups functions not found.', 'suretriggers' ),
+			];
+		}
 		if ( empty( $selected_options['remove_user'] ) || ! is_email( $selected_options['remove_user'] ) ) {
 			throw new Exception( 'Invalid email.' );
 		}

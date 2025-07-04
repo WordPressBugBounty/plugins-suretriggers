@@ -88,18 +88,20 @@ if ( ! class_exists( 'UserSubmitsElementorFormDeprecated' ) ) :
 				return;
 			}
 
-			foreach ( $record->get( 'fields' ) as $key => $value ) {
-				$context[ str_replace( ' ', '_', strtolower( isset( $value['title'] ) ? $value['title'] : $value['id'] ) ) ] = $value['value'];
+			if ( is_object( $record ) && method_exists( $record, 'get' ) ) {
+				foreach ( $record->get( 'fields' ) as $key => $value ) {
+					$context[ str_replace( ' ', '_', strtolower( isset( $value['title'] ) ? $value['title'] : $value['id'] ) ) ] = $value['value'];
+				}
+
+				$context['form_id'] = $record->get( 'form_settings' )['id'];
+
+				AutomationController::sure_trigger_handle_trigger(
+					[
+						'trigger' => $this->trigger,
+						'context' => $context,
+					]
+				);
 			}
-
-			$context['form_id'] = $record->get( 'form_settings' )['id'];
-
-			AutomationController::sure_trigger_handle_trigger(
-				[
-					'trigger' => $this->trigger,
-					'context' => $context,
-				]
-			);
 		}
 	}
 

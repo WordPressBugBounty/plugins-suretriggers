@@ -91,7 +91,8 @@ class CreateTask extends AutomateAction {
 		$created_by      = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
 		$attachment_url  = isset( $selected_options['attachment_url'] ) ? esc_url_raw( $selected_options['attachment_url'] ) : '';
 		$attachment_name = $selected_options['attachment_name'] ? sanitize_text_field( $selected_options['attachment_name'] ) : '';
-
+		$assignees       = isset( $selected_options['assignees'] ) ? sanitize_text_field( $selected_options['assignees'] ) : '';
+		
 		$task_data = array_filter(
 			[
 				'title'          => $title,
@@ -114,6 +115,21 @@ class CreateTask extends AutomateAction {
 			$task = FluentBoardsApi( 'tasks' )->create( $task_data );
 			if ( empty( $task ) ) {
 				throw new Exception( 'There is error while creating a Task.' );
+			}
+			
+			if ( ! empty( $assignees ) ) {
+				if ( ! class_exists( 'FluentBoards\\App\\Services\\TaskService' ) ) {
+					throw new Exception( __( 'FluentBoards TaskService not found.', 'suretriggers' ) );
+				}
+				
+				$assignee_ids = array_map( 'intval', explode( ',', $assignees ) );
+				$task_service = new \FluentBoards\App\Services\TaskService();
+				
+				foreach ( $assignee_ids as $assignee_id ) {
+					$task_service->updateAssignee( $assignee_id, $task );
+				}
+				
+				$task->load( 'assignees' );
 			}
 	
 			if ( ! empty( $attachment_url ) ) {

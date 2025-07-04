@@ -72,13 +72,22 @@ class RemoveFromCourse extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
+		if ( ! function_exists( 'tutor_utils' ) || ! function_exists( 'tutor' ) ) {
+			throw new Exception( 'Tutor LMS function not found.' );
+		}
 		$context = [];
 
 		$remove_from_all = ( isset( $selected_options['courses'] ) && 'all' === $selected_options['courses'] ) ? true : false;
 		$course_id       = ( isset( $selected_options['courses'] ) && 'all' !== $selected_options['courses'] ) ? $selected_options['courses'] : 0;
 		$course_data     = get_post( $course_id );
-		$user_email      = ( isset( $selected_options['wp_user_email'] ) ) ? $selected_options['wp_user_email'] : '';
-		$user_id         = email_exists( $user_email );
+		if ( ! $course_data instanceof \WP_Post ) {
+			throw new Exception( 'No Course is available.' );
+		}
+		$user_email = ( isset( $selected_options['wp_user_email'] ) ) ? $selected_options['wp_user_email'] : '';
+		$user_id    = email_exists( $user_email );
+		if ( ! $user_id ) {
+			throw new Exception( 'User not found.' );
+		}
 
 		$enrolled_courses    = tutor_utils()->get_enrolled_courses_by_user( $user_id );
 		$enrolled_courses_id = [];
@@ -94,7 +103,10 @@ class RemoveFromCourse extends AutomateAction {
 		if ( ! $remove_from_all && ! in_array( $course_id, $enrolled_courses_id, true ) ) {
 			throw new Exception( $user_email . ' is not enrolled in ' . $course_data->post_title . ' course.' );
 		}
-		$user                  = get_user_by( 'id', $user_id );
+		$user = get_user_by( 'id', $user_id );
+		if ( ! $user instanceof \WP_User ) {
+			throw new Exception( 'User not found.' );
+		}
 		$context['user_id']    = $user->ID;
 		$context['user_name']  = $user->display_name;
 		$context['user_email'] = $user->user_email;
@@ -123,14 +135,19 @@ class RemoveFromCourse extends AutomateAction {
 		$unenrolled_courses = [];
 		foreach ( $courses as $course_id ) {
 			if ( in_array( $course_id, $enrolled_courses_id, true ) ) {
-				$course_data                  = get_post( $course_id );
+				$course_data = get_post( $course_id );
+				if ( ! $course_data instanceof \WP_Post ) {
+					throw new Exception( 'No Course is available.' );
+				}
 				$unenrolled_courses['id'][]   = $course_data->ID;
 				$unenrolled_courses['name'][] = $course_data->post_title;
 				tutor_utils()->cancel_course_enrol( $course_id, $user_id );
 			}
 		}
-		$context['course_id']   = implode( ',', $unenrolled_courses['id'] );
-		$context['course_name'] = implode( ',', $unenrolled_courses['name'] );
+		if ( ! empty( $unenrolled_courses ) ) {
+			$context['course_id']   = implode( ',', $unenrolled_courses['id'] );
+			$context['course_name'] = implode( ',', $unenrolled_courses['name'] );
+		}
 		return $context;
 	}
 }

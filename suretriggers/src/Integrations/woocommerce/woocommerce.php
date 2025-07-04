@@ -191,9 +191,16 @@ class WooCommerce extends Integrations {
 	 * @return array
 	 */
 	public static function get_variable_subscription_product_context( $item, $order_id ) {
+		if ( ! $item instanceof \WC_Order_Item_Product ) {
+			return [];
+		}
 		$product       = $item->get_product();
-		$order_context = self::get_order_context( $order_id );
-		$product_data  = $product->get_data();
+		$order_data    = self::get_order_context( $order_id );
+		$order_context = isset( $order_data ) ? $order_data : [];
+		if ( ! $product instanceof \WC_Product ) {
+			return [];
+		}
+		$product_data = $product->get_data();
 		return array_merge( $order_context, $product_data );
 	}
 
@@ -206,6 +213,9 @@ class WooCommerce extends Integrations {
 	 */
 	public static function get_product_context( $product_id ) {
 		$product = wc_get_product( $product_id );
+		if ( ! $product instanceof \WC_Product ) {
+			return [];
+		}
 		return array_merge(
 			[
 				'product_id'  => $product_id,
@@ -247,10 +257,14 @@ class WooCommerce extends Integrations {
 			$quantities  = [];
 			$items       = $order->get_items();
 			foreach ( $items as $item ) {
-				$product_ids[]  = $item->get_product_id();
-				$product        = wc_get_product( $item->get_product_id() );
-				$product_skus[] = $product->get_sku();
-				$quantities[]   = $item->get_quantity();
+				if ( $item instanceof \WC_Order_Item_Product ) {
+					$product_ids[] = $item->get_product_id();
+					$product       = wc_get_product( $item->get_product_id() );
+					if ( $product instanceof \WC_Product ) {
+						$product_skus[] = $product->get_sku();
+					}
+					$quantities[] = $item->get_quantity();
+				}
 			}
 
 			$discounts           = $order->get_items( 'discount' );
@@ -323,13 +337,13 @@ class WooCommerce extends Integrations {
 	/**
 	 * Get order details context.
 	 *
-	 * @param str $order_id order_id.
+	 * @param string $order_id order_id.
 	 *
 	 * @return array|null
 	 */
 	public static function get_only_order_context( $order_id ) {
 		$order = wc_get_order( $order_id );
-		if ( ! $order ) {
+		if ( ! $order || ! $order instanceof \WC_Order ) {
 			return null;
 		}
 		return array_merge(
@@ -430,7 +444,7 @@ class WooCommerce extends Integrations {
 	 *
 	 * @param array $item item.
 	 *
-	 * @return array
+	 * @return array|void
 	 */
 	public static function loop_over_item( $item ) {
 		if ( is_array( $item ) || is_object( $item ) ) {

@@ -89,6 +89,9 @@ if ( ! class_exists( 'EDDPurchaseOneProduct' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $payment_id ) {
+			if ( ! class_exists( 'EDD_Payment' ) ) {
+				return;
+			}
 			
 			$payment = new EDD_Payment( $payment_id );
 

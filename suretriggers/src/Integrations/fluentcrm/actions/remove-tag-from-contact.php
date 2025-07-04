@@ -73,6 +73,9 @@ class RemoveTagFromContact extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
+		if ( ! function_exists( 'FluentCrmApi' ) ) {
+			throw new Exception( 'FluentCrmApi function not found.' );
+		}
 		$context     = [];
 		$contact_api = FluentCrmApi( 'contacts' );
 

@@ -102,9 +102,6 @@ if ( ! class_exists( 'GiveWPDonationViaForm' ) ) :
 			}
 
 			$payment = new Give_Payment( $payment_id );
-			if ( ! $payment ) {
-				return;
-			}
 			if ( 'publish' !== $status ) {
 				return;
 			}

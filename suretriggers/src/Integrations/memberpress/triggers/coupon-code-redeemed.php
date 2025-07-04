@@ -93,6 +93,9 @@ if ( ! class_exists( 'CouponCodeRedeemed' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $event ) {
+			if ( ! class_exists( 'MeprEvent' ) || ! $event instanceof \MeprEvent ) {
+				return;
+			}
 			$transaction = $event->get_data();
 			if ( empty( $transaction->coupon() ) ) {
 				return;

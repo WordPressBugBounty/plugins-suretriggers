@@ -8,7 +8,7 @@
 /**
  * Get or prepare user id.
  *
- * @return int|mixed|string|void
+ * @return int
  */
 function ap_get_current_user_id() {
 
@@ -26,7 +26,7 @@ function ap_get_current_user_id() {
 		return $_SESSION['ap_user_identifier']; //phpcs:ignore
 	}
 
-	$ap_user_id                     = wp_generate_password( 16, false );
+	$ap_user_id                     = wp_rand( 1000000000, 9999999999 );
 	$_SESSION['ap_user_identifier'] = $ap_user_id; //phpcs:ignore
 
 	return $_SESSION['ap_user_identifier']; //phpcs:ignore
@@ -38,7 +38,7 @@ function ap_get_current_user_id() {
  *
  * @param string $email user email.
  *
- * @return int|mixed|string|void
+ * @return int|bool
  */
 function ap_get_user_id_from_email( $email ) {
 
@@ -47,7 +47,10 @@ function ap_get_user_id_from_email( $email ) {
 	}
 
 	$get_user = get_user_by( 'email', $email );
-	return $get_user->ID;
+	if ( ! $get_user instanceof WP_User ) {
+		return false;
+	}
+	return intval( $get_user->ID );
 
 }
 
@@ -72,6 +75,9 @@ add_action( 'wp_login', 'suretrigger_capture_login_time', 10, 2 );
  * @return void
  */
 function suretrigger_capture_login_time( $user_login, $user ) {
+	if ( ! property_exists( $user, 'ID' ) ) {
+		return;
+	}
 	update_user_meta( $user->ID, 'st_last_login', time() );
 }
 

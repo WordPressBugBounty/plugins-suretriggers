@@ -67,6 +67,9 @@ class UnregisterUserFromEvent extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
 	 * @psalm-suppress UndefinedMethod
+	 * 
+	 * @return array|mixed
+	 * 
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {

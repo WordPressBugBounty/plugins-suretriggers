@@ -77,7 +77,7 @@ class RemoveSubscriberFromList extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
-		if ( ! class_exists( '\MailPoet\API\API' ) ) {
+		if ( ! class_exists( '\MailPoet\API\API' ) || ! class_exists( '\MailPoet\API\MP\v1\APIException' ) ) {
 			return;
 		}
 
@@ -119,7 +119,6 @@ class RemoveSubscriberFromList extends AutomateAction {
 
 			$context['response'] = 'Subscriber Removed from the list.';
 			return $context;
-
 		} catch ( \MailPoet\API\MP\v1\APIException $e ) {
 			throw new Exception( $e->getMessage() );
 		}

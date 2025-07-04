@@ -97,6 +97,7 @@ use SureTriggers\Integrations\ProfileGrid\ProfileGrid;
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
  * @link     https://www.brainstormforce.com/
  * @since    1.0.0
+ * @method static GlobalSearchController get_instance()
  *
  * @psalm-suppress UndefinedTrait
  */
@@ -235,6 +236,9 @@ class GlobalSearchController {
 		$offset = $limit * ( $page - 1 );
 
 		$post = get_post( $data['dynamic'] );
+		if ( ! $post instanceof WP_Post ) {
+			return [];
+		}
 		$slug = $post->post_name;
 
 		$achievements = get_posts(
@@ -270,11 +274,14 @@ class GlobalSearchController {
 	 * @since 1.0.0
 	 */
 	public function search_tutor_course( $data ) {
+		if ( ! function_exists( 'tutor' ) ) {
+			return [];
+		}
 		$courses = get_posts(
 			[
 				'post_type'   => tutor()->course_post_type,
 				'post_status' => 'publish',
-				'numberposts' => '-1',
+				'numberposts' => -1,
 			]
 		);
 		$options = [];
@@ -321,6 +328,7 @@ class GlobalSearchController {
 	 *
 	 * @param array $data Search Params.
 	 *
+	 * @return array
 	 * @since 1.0.0
 	 */
 	public function search_product_category( $data ) {
@@ -351,6 +359,7 @@ class GlobalSearchController {
 	 *
 	 * @param array $data Search Params.
 	 *
+	 * @return array
 	 * @since 1.0.0
 	 */
 	public function search_product_tags( $data ) {
@@ -383,7 +392,7 @@ class GlobalSearchController {
 	 *
 	 * @param WP_REST_Request $request Request data.
 	 *
-	 * @return WP_REST_Response
+	 * @return WP_REST_Response|object
 	 * @since 1.0.0
 	 */
 	public function global_search( $request ) {
@@ -754,7 +763,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$form_id       = absint( $data['dynamic'] );
 		$wpform_fields = Utilities::get_wpform_fields( $data['search_term'], $page, $form_id );
 
-		if ( is_array( $wpform_fields['results'] ) ) {
+		if ( $wpform_fields && is_array( $wpform_fields['results'] ) ) {
 			foreach ( $wpform_fields['results'] as $field ) {
 				$result[] = [
 					'label' => $field['label'],
@@ -765,7 +774,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 		return [
 			'options' => $result,
-			'hasMore' => $wpform_fields['has_more'],
+			'hasMore' => ( $wpform_fields && $wpform_fields['has_more'] ) ? $wpform_fields['has_more'] : false,
 		];
 	}
 
@@ -860,10 +869,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * Prepare WooCommerce Payment Methods.
 	 *
 	 * @param array $data Search Params.
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_woo_payment_methods( $data ) {
-		$payment_methods = WC()->payment_gateways->get_available_payment_gateways();
+		$payment_methods = WC()->payment_gateways()->get_available_payment_gateways();
 		$options         = [];
 
 		if ( ! empty( $payment_methods ) ) {
@@ -885,7 +894,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * Prepare WooCommerce Order Status List.
 	 *
 	 * @param array $data Search Params.
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_woo_order_status_list( $data ) {
 		$order_status = wc_get_order_statuses();
@@ -910,7 +919,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * Prepare WooCommerce Country List.
 	 *
 	 * @param array $data Search Params.
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_woo_country_list( $data ) {
 		$countries = WC()->countries->get_countries();
@@ -935,7 +944,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * Prepare WooCommerce Country States List.
 	 *
 	 * @param array $data Search Params.
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_woo_country_state_list( $data ) {
 		if ( ! empty( $data['dynamic']['shipping_country'] ) ) {
@@ -971,6 +980,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @since 1.0.0
 	 */
 	public function search_memberpress_gayways( $data ) {
+		if ( ! class_exists( 'MeprOptions' ) || ! class_exists( 'MeprBaseRealGateway' ) ) {
+			return [];
+		}
 		$mp_options = MeprOptions::fetch();
 
 		$pms      = array_keys( $mp_options->integrations );
@@ -1137,7 +1149,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 */
 	public function search_wp_forms( $data ) {
 		if ( ! class_exists( 'WPForms_Form_Handler' ) ) {
-			return;
+			return [];
 		}
 
 		$wpforms = new WPForms_Form_Handler();
@@ -1168,7 +1180,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 */
 	public function search_gravity_forms( $data ) {
 		if ( ! class_exists( 'GFFormsModel' ) ) {
-			return;
+			return [];
 		}
 
 		$forms   = GFFormsModel::get_forms();
@@ -1335,7 +1347,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$pluggable_data = [];
 		$list_id        = $data['filter'];
 
-		if ( ! class_exists( 'FluentCrm\App\Models\Lists' ) || ! class_exists( 'FluentCrm\App\Models\Subscriber' ) ) {
+		if ( ! class_exists( 'FluentCrm\App\Models\Lists' ) || ! class_exists( 'FluentCrm\App\Models\Subscriber' ) || ! function_exists( 'FluentCrmApi' ) ) {
 			return [];
 		}
 
@@ -1492,7 +1504,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	public function search_pluggables_wp_insert_comment( $data ) {
 		$context = [];
 		$args    = [
-			'number'    => '1',
+			'number'    => 1,
 			'status'    => 'approve',
 			'post_type' => $data['filter']['post_type']['value'],
 		];
@@ -1514,7 +1526,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$context['context_data'] = $data;
 		$context['context_args'] = $args;
 
-		if ( ! empty( $comments ) ) {
+		if ( ! empty( $comments ) && is_array( $comments ) ) {
 			foreach ( $comments as $comment ) :
 				if ( is_object( $comment ) ) {
 					$comment = get_object_vars( $comment );
@@ -1658,10 +1670,14 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			}
 			if ( isset( $args['profile_field'] ) ) {
 				$userdata = get_userdata( $user->ID );
-				$userdata = json_decode( wp_json_encode( $userdata->data ), true );
+				if ( $userdata instanceof \WP_User ) {
+					$userdata = json_decode( (string) wp_json_encode( $userdata->data ), true );
 
-				$pluggable_data['profile_field']       = $args['profile_field'];
-				$pluggable_data['profile_field_value'] = $userdata[ $args['profile_field'] ];
+					$pluggable_data['profile_field'] = $args['profile_field'];
+					if ( is_array( $userdata ) && is_string( $args['profile_field'] ) ) {
+						$pluggable_data['profile_field_value'] = $userdata[ $args['profile_field'] ];
+					}
+				}
 			}
 			$context['pluggable_data'] = $pluggable_data;
 			$context['response_type']  = 'live';
@@ -1720,7 +1736,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$context['pluggable_data'] = $pluggable_data;
 			$context['response_type']  = 'live';
 		} else {
-			$role                      = isset( $args['role'] ) ? $args['role'] : 'subscriber';
+			$role                      = 'subscriber';
 			$context['pluggable_data'] = [
 				'wp_user_id'     => 1,
 				'user_login'     => 'admin',
@@ -1798,7 +1814,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					}
 				}
 			}
-			$context['pluggable_data']                 = array_merge( $context['pluggable_data'], WordPress::get_user_context( $posts[0]->post_author ) );
+			$context['pluggable_data']                 = array_merge( $context['pluggable_data'], is_int( $posts[0]->post_author ) ? WordPress::get_user_context( $posts[0]->post_author ) : [] );
 			$context['pluggable_data']['post']         = $posts[0]->ID;
 			$context['pluggable_data']['custom_metas'] = $custom_metas;
 			$context['response_type']                  = 'live';
@@ -1812,7 +1828,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				'post_content'          => 'Test Post Content',
 				'post_title'            => 'Test Post',
 				'post_excerpt'          => '',
-				'post_status'           => $args['post_status'],
+				'post_status'           => 'published',
 				'comment_status'        => 'open',
 				'ping_status'           => 'open',
 				'post_password'         => '',
@@ -2133,12 +2149,15 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				}
 
 				foreach ( $contact_fields as $contact_field ) {
-					$contact_field_attrs = shortcode_parse_atts( $contact_field[3] );
-					$field_id            = strtolower( self::array_get( $contact_field_attrs, 'field_id' ) );
-					$fields[]            = [
-						'field_title' => self::array_get( $contact_field_attrs, 'field_title', __( 'No title', 'suretriggers' ) ),
-						'field_id'    => $field_id,
-					];
+					$contact_field_attrs     = shortcode_parse_atts( $contact_field[3] );
+					$contact_field_attrs_str = self::array_get( $contact_field_attrs, 'field_id' );
+					if ( is_string( $contact_field_attrs_str ) ) {
+						$field_id = strtolower( $contact_field_attrs_str );
+						$fields[] = [
+							'field_title' => self::array_get( $contact_field_attrs, 'field_title', __( 'No title', 'suretriggers' ) ),
+							'field_id'    => $field_id,
+						];
+					}
 				}
 			}
 		}
@@ -2304,7 +2323,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @param string $value search params.
 	 * @since 1.0.0
 	 *
-	 * @return array|void
+	 * @return array|void|int|string
 	 */
 	public static function get_column_by_value( $array, $value ) {
 
@@ -2354,18 +2373,20 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$rendered_block = render_block( $block );
 					$doc->loadHTML( $rendered_block );
 					$child_node_list = $doc->getElementsByTagName( 'div' );
+					$nodes           = [];
 					for ( $i = 0; $i < $child_node_list->length; $i++ ) {
 						$temp = $child_node_list->item( $i );
 						if ( $temp && stripos( $temp->getAttribute( 'class' ), 'uagb-forms-input-label' ) !== false ) {
 							$nodes[] = $temp;
 						}
 					}
-
-					foreach ( $nodes as $node ) {
-						$result[] = [
-                            'label' => $node->textContent, //phpcs:ignore
-                            'value' => $node->textContent, //phpcs:ignore
-						];
+					if ( ! empty( $nodes ) ) {
+						foreach ( $nodes as $node ) {
+							$result[] = [
+								'label' => $node->textContent, //phpcs:ignore
+								'value' => $node->textContent, //phpcs:ignore
+							];
+						}
 					}
 				}
 			}
@@ -2646,7 +2667,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$ids           = explode( '_', $form_id_str );
 		$post_id       = $ids[0];
 		$form_id       = $ids[1];
-		$fetch_content = get_post_meta( $post_id, BRICKS_DB_PAGE_CONTENT, true );
+		$fetch_content = get_post_meta( (int) $post_id, BRICKS_DB_PAGE_CONTENT, true );
 		if ( is_array( $fetch_content ) ) {
 			foreach ( $fetch_content as $content ) {
 				if ( 'form' === $content['name'] && $form_id === $content['id'] ) {
@@ -2733,10 +2754,11 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
+	 * @return array
 	 * @since 1.0.0
 	 */
 	public function search_gform_fields( $data ) {
-		if ( ! class_exists( 'RGFormsModel' ) ) {
+		if ( ! class_exists( 'RGFormsModel' ) || ! class_exists( 'GFCommon' ) ) {
 			return [
 				'options' => [],
 				'hasMore' => false,
@@ -2780,10 +2802,11 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
+	 * @return array
 	 * @since 1.0.0
 	 */
 	public function search_pluggable_gravity_form_fields( $data ) {
-		if ( ! class_exists( 'RGFormsModel' ) ) {
+		if ( ! class_exists( 'RGFormsModel' ) || ! class_exists( 'GFCommon' ) ) {
 			return [
 				'options' => [],
 				'hasMore' => false,
@@ -3006,10 +3029,12 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_fluentcrm_lists( $data ) {
-
+		if ( ! function_exists( 'FluentCrmApi' ) ) {
+			return [];
+		}
 		$list_api  = FluentCrmApi( 'lists' );
 		$all_lists = $list_api->all();
 		$options   = [];
@@ -3028,13 +3053,53 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'hasMore' => false,
 		];
 	}
+	
+	/**
+	 * Prepare fluentcrm segments.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_fluentcrm_segments( $data ) {
+		global $wpdb;
+		$options = [];
+	
+		$table = $wpdb->prefix . 'fc_meta';
+
+		$segments = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT id, value FROM ' . $wpdb->prefix . 'fc_meta WHERE object_type = %s',
+				'custom_segment'
+			)
+		);
+
+		if ( is_array( $segments ) && ! empty( $segments ) ) {
+			foreach ( $segments as $segment ) {
+				$raw_value    = is_string( $segment->value ) ? $segment->value : '';
+				$segment_data = maybe_unserialize( $raw_value );
+
+				if ( is_array( $segment_data ) && isset( $segment_data['title'] ) ) {
+					$options[] = [
+						'label' => sanitize_text_field( $segment_data['title'] ),
+						'value' => intval( $segment->id ),
+					];
+				}
+			}
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}   
 
 	/**
 	 * Prepare fluentcrm contact status.
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_fluentcrm_contact_status( $data ) {
 
@@ -3072,7 +3137,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_fluentcrm_fetch_custom_fields( $data ) {
 
@@ -3098,7 +3163,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_fluentcrm_tags( $data ) {
 
@@ -3330,10 +3395,12 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_wishlistmember_lists( $data ) {
-
+		if ( ! function_exists( 'wlmapi_get_levels' ) ) {
+			return [];
+		}
 		$wlm_levels = wlmapi_get_levels();
 		$options    = [];
 
@@ -3392,7 +3459,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_elementor_popups( $data ) {
 
@@ -3591,21 +3658,25 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_bb_group_users( $data ) {
 		$options = [];
-
+		if ( ! function_exists( 'groups_get_group_members' ) || ! function_exists( 'groups_get_group_admins' ) ) {
+			return [];
+		}
 		$group_id = $data['dynamic'];
 		$admins   = groups_get_group_admins( $group_id );
 
 		if ( ! empty( $admins ) ) {
 			foreach ( $admins as $admin ) {
 				$admin_user = get_user_by( 'id', $admin->user_id );
-				$options[]  = [
-					'label' => $admin_user->display_name,
-					'value' => $admin_user->ID,
-				];
+				if ( $admin_user instanceof \WP_User ) {
+					$options[] = [
+						'label' => $admin_user->display_name,
+						'value' => $admin_user->ID,
+					];
+				}
 			}
 		}
 
@@ -3630,7 +3701,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_buddyboss_groups( $data ) {
 		global $wpdb;
@@ -3656,11 +3727,14 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_buddyboss_public_groups( $data ) {
 		$options = [];
-		$groups  = groups_get_groups();
+		if ( ! function_exists( 'groups_get_groups' ) ) {
+			return [];
+		}
+		$groups = groups_get_groups();
 		if ( isset( $groups['groups'] ) && ! empty( $groups['groups'] ) ) {
 			foreach ( $groups['groups'] as $group ) {
 				if ( 'public' === $group->status ) {
@@ -3907,7 +3981,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_elementor_forms( $data ) {
 
@@ -4006,7 +4080,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_pluggable_elementor_form_fields( $data ) {
 		$result                = [];
@@ -4109,6 +4183,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 */
 	public function search_event_calendar_rsvp_event( $data ) {
 
+		if ( ! class_exists( 'Tribe__Tickets__Tickets_Handler' ) ) {
+			return [];
+		}
 		$page   = $data['page'];
 		$limit  = Utilities::get_search_page_limit();
 		$offset = $limit * ( $page - 1 );
@@ -4152,10 +4229,12 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_restrictcontent_membership_level( $data ) {
-
+		if ( ! function_exists( 'rcp_get_membership_levels' ) ) {
+			return [];
+		}
 		$rcp_memberships = rcp_get_membership_levels();
 		$options         = [];
 
@@ -4179,26 +4258,30 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_restrictcontent_customer( $data ) {
-
+		if ( ! function_exists( 'rcp_get_memberships' ) ) {
+			return [];
+		}
 		$rcp_users = rcp_get_memberships();
 		$options   = [];
 
 		if ( ! empty( $rcp_users ) ) {
 			foreach ( $rcp_users as $list ) {
-				$user       = get_user_by( 'ID', $list->get_user_id() );
-				$user_label = $user->user_email;
+				$user = get_user_by( 'ID', $list->get_user_id() );
+				if ( $user instanceof \WP_User ) {
+					$user_label = $user->user_email;
 
-				if ( $user->display_name !== $user->user_email ) {
-					$user_label .= ' (' . $user->display_name . ')';
+					if ( $user->display_name !== $user->user_email ) {
+						$user_label .= ' (' . $user->display_name . ')';
+					}
+
+					$options[] = [
+						'label' => $user_label,
+						'value' => $list->get_customer_id(),
+					];  
 				}
-
-				$options[] = [
-					'label' => $user_label,
-					'value' => $list->get_customer_id(),
-				];
 			}
 		}
 
@@ -4214,9 +4297,13 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_ap_presto_player_video_list( $data ) {
+
+		if ( ! class_exists( 'PrestoPlayer\Models\Video' ) ) {
+			return [];
+		}
 
 		$videos  = ( new Video() )->all();
 		$options = [];
@@ -4240,7 +4327,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 *
 	 * @param array $data Search Params.
 	 *
-	 * @return array[]
+	 * @return array
 	 */
 	public function search_prestoplayer_video_percent( $data ) {
 
@@ -4397,7 +4484,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_bb_forums() {
-		$options        = [];
+		$options = [];
+		if ( ! function_exists( 'bbp_get_forum_post_type' ) ) {
+			return [];
+		}
 		$allowed_atatus = [ 'publish', 'private' ];
 		$forum_args     = [
 			'post_type'      => bbp_get_forum_post_type(),
@@ -4706,9 +4796,11 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			if ( ! empty( $referral ) && function_exists( 'wc_get_order' ) ) {
 				$order_id = $referral->reference;
 				$order    = wc_get_order( $order_id );
-				$items    = $order->get_items();
-				foreach ( $items as $item ) {
-					$context['pluggable_data']['product'] = $item['product_id'];
+				if ( $order instanceof \WC_Order ) {
+					$items = $order->get_items();
+					foreach ( $items as $item ) {
+						$context['pluggable_data']['product'] = $item['product_id'];
+					}
 				}
 			} else {
 				$context['pluggable_data']['product'] = 1;
@@ -5076,6 +5168,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 */
 	public function search_edd_triggers_last_data( $data ) {
 		global $wpdb;
+		if ( ! function_exists( 'edd_get_payments' ) ) {
+			return [];
+		}
 		$context                   = [];
 		$context['response_type']  = 'sample';
 		$context['pluggable_data'] = [];
@@ -5238,7 +5333,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_presto_player_triggers_last_data( $data ) {
-		$context                  = [];
+		$context = [];
+		if ( ! class_exists( 'PrestoPlayer\Models\Video' ) ) {
+			return [];
+		}
 		$context['response_type'] = 'sample';
 
 		$user_data = WordPress::get_sample_user_context();
@@ -5758,7 +5856,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_restrict_content_pro_triggers_last_data( $data ) {
-		$context                  = [];
+		$context = [];
+		if ( ! function_exists( 'rcp_get_memberships' ) ) {
+			return [];
+		}
 		$context['response_type'] = 'sample';
 
 		$user_data = WordPress::get_sample_user_context();
@@ -5923,8 +6024,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 				$product_id = get_post_meta( $attendee_id, '_tribe_rsvp_product', true );
 				$order_id   = get_post_meta( $attendee_id, '_tribe_rsvp_order', true );
-
-				$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				if ( is_int( $product_id ) && is_int( $order_id ) ) {
+					$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				}
 
 				if ( ! empty( $event_context ) ) {
 					$event_data               = $event_context;
@@ -5946,12 +6048,14 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 						],
 					];
 				}
-				$attendees     = get_posts( $args );
-				$attendee      = $attendees[0];
-				$attendee_id   = $attendee->ID;
-				$product_id    = get_post_meta( $attendee_id, '_tec_tickets_commerce_ticket', true );
-				$order_id      = $attendee_id;
-				$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				$attendees   = get_posts( $args );
+				$attendee    = $attendees[0];
+				$attendee_id = $attendee->ID;
+				$product_id  = get_post_meta( $attendee_id, '_tec_tickets_commerce_ticket', true );
+				$order_id    = $attendee_id;
+				if ( is_int( $product_id ) ) {
+					$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				}
 				if ( ! empty( $event_context ) ) {
 					$event_data               = $event_context;
 					$context['response_type'] = 'live';
@@ -6007,9 +6111,11 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					}
 					$attendee = $detail;
 				}
-				$product_id    = get_post_meta( $attendee_id, '_tribe_rsvp_product', true );
-				$order_id      = get_post_meta( $attendee_id, '_tribe_rsvp_order', true );
-				$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				$product_id = get_post_meta( $attendee_id, '_tribe_rsvp_product', true );
+				$order_id   = get_post_meta( $attendee_id, '_tribe_rsvp_order', true );
+				if ( is_int( $product_id ) && is_int( $order_id ) ) {
+					$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				}
 				if ( ! empty( $event_context ) ) {
 					$event_data               = array_merge( $attendee, $event_context );
 					$context['response_type'] = 'live';
@@ -6101,9 +6207,11 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					}
 					$attendee = $detail;
 				}
-				$order_id      = get_post_meta( $attendee_id, '_tribe_wooticket_order', true );
-				$product_id    = get_post_meta( $attendee_id, '_tribe_wooticket_product', true );
-				$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				$order_id   = get_post_meta( $attendee_id, '_tribe_wooticket_order', true );
+				$product_id = get_post_meta( $attendee_id, '_tribe_wooticket_product', true );
+				if ( is_int( $product_id ) && is_int( $order_id ) ) {
+					$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				}
 				if ( ! empty( $event_context ) ) {
 					$event_data               = $event_context;
 					$context['response_type'] = 'live';
@@ -6222,8 +6330,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			}
 
 			if ( -1 !== $product_id ) {
-				$post                       = get_post( $product_id );
-				$user_data                  = WordPress::get_user_context( $post->post_author );
+				$post = get_post( $product_id );
+				if ( $post instanceof \WP_Post ) {
+					$user_data = WordPress::get_user_context( (int) $post->post_author );
+				}
 				$product_data['product_id'] = $product_id;
 				$product_data['product']    = WooCommerce::get_product_context( $product_id );
 				$terms                      = get_the_terms( $product_id, 'product_cat' );
@@ -6262,18 +6372,18 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 			$comments = get_comments( $comment_args );
 
-			if ( count( $comments ) > 0 ) {
-				$comment      = $comments[0];
-				$comment_data = [
-					'comment_id'           => $comment->comment_ID,
-					'comment'              => $comment->comment_content,
-					'comment_author'       => $comment->comment_author,
-					'comment_date'         => $comment->comment_date,
-					'comment_author_email' => $comment->comment_author_email,
-				];
-				$product_data = WooCommerce::get_product_context( $comment->comment_post_ID );
+			if ( is_array( $comments ) && count( $comments ) > 0 ) {
+				$comment = $comments[0];
 				if ( is_object( $comment ) ) {
-					$terms = get_the_terms( (int) $comment->comment_post_ID, 'product_cat' );
+					$comment_data = [
+						'comment_id'           => $comment->comment_ID,
+						'comment'              => $comment->comment_content,
+						'comment_author'       => $comment->comment_author,
+						'comment_date'         => $comment->comment_date,
+						'comment_author_email' => $comment->comment_author_email,
+					];
+					$product_data = WooCommerce::get_product_context( (int) $comment->comment_post_ID );
+					$terms        = get_the_terms( (int) $comment->comment_post_ID, 'product_cat' );
 					if ( ! empty( $terms ) && is_array( $terms ) && isset( $terms[0] ) ) {
 						$cat_name = [];
 						foreach ( $terms as $cat ) {
@@ -6290,7 +6400,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 						$product_data['product']['tag'] = implode( ', ', $tag_name );
 					}
 				}
-				$user_data                = WordPress::get_user_context( $comment->user_id );
+				if ( $comment instanceof \WP_Comment ) {
+					$user_data = WordPress::get_user_context( (int) $comment->user_id );
+				}
 				$context['response_type'] = 'live';
 			}
 
@@ -6306,7 +6418,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				}
 			} else {
 				$orders = wc_get_orders( [ 'numberposts' => 1 ] );
-				if ( count( $orders ) > 0 ) {
+				if ( is_array( $orders ) && count( $orders ) > 0 ) {
 					$order_id = $orders[0]->get_id();
 				}
 			}
@@ -6314,7 +6426,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			if ( 0 !== $order_id ) {
 				$order = wc_get_order( $order_id );
 
-				if ( $order ) {
+				if ( $order && $order instanceof \WC_Order ) {
 					$user_id = $order->get_customer_id();
 					$items   = $order->get_items();
 
@@ -6400,7 +6512,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			foreach ( $order_ids as $order_id ) {
 				$order = wc_get_order( $order_id );
 
-				if ( $order ) {
+				if ( $order && $order instanceof \WC_Order ) {
 					$user_id            = $order->get_customer_id();
 					$items              = $order->get_items();
 					$product_variations = [];
@@ -6436,7 +6548,11 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				}
 			}
 
-			$context['pluggable_data'] = array_merge( $order_data, $user_data, $variation_data );
+			$context['pluggable_data'] = array_merge( 
+				isset( $order_data ) ? $order_data : [], 
+				$user_data,
+				$variation_data 
+			);
 
 		} elseif ( 'variable_subscription_purchased' === $term ) {
 			$product_data['quantity']       = '1';
@@ -6453,7 +6569,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 			} else {
 				$orders = wc_get_orders( [] );
-				if ( count( $orders ) > 0 ) {
+				if ( is_array( $orders ) && count( $orders ) > 0 ) {
 					$order_ids[] = $orders[0]->get_id();
 				}
 			}
@@ -6471,29 +6587,38 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$subscription_orders = $query_result->get_posts();
 
 				if ( count( $subscription_orders ) > 0 ) {
-					$subscription_order_id = $subscription_orders[0]->ID;
+					if ( $subscription_orders[0] instanceof \WP_Post ) {
+						$subscription_order_id = $subscription_orders[0]->ID;
+					}
 					break;
 				}
 			}
 
 			if ( 0 !== $subscription_order_id ) {
-				$subscription = wcs_get_subscription( $subscription_order_id );
-				if ( $subscription instanceof WC_Subscription ) {
-					$last_order_id = $subscription->get_last_order();
-					if ( ! empty( $last_order_id ) && $last_order_id === $subscription->get_parent_id() ) {
-						$user_id = wc_get_order( $last_order_id )->get_customer_id();
-						$items   = $subscription->get_items();
+				if ( function_exists( 'wcs_get_subscription' ) ) {
+					$subscription = wcs_get_subscription( $subscription_order_id );
+					if ( class_exists( 'WC_Subscription' ) && $subscription instanceof WC_Subscription ) {
+						$last_order_id = $subscription->get_last_order();
+						if ( ! empty( $last_order_id ) && $last_order_id === $subscription->get_parent_id() ) {
+							$last_order_data = wc_get_order( $last_order_id );
+							if ( $last_order_data instanceof \WC_Order ) {
+								$user_id = $last_order_data->get_customer_id();
+							}
+							$items = $subscription->get_items();
 
-						foreach ( $items as $item ) {
-							$product = $item->get_product();
-							if ( class_exists( '\WC_Subscriptions_Product' ) && WC_Subscriptions_Product::is_subscription( $product ) ) {
-								if ( $product->is_type( [ 'subscription', 'subscription_variation', 'variable-subscription' ] ) ) {
+							foreach ( $items as $item ) {
+								$product = $item->get_product();
+								if ( class_exists( '\WC_Subscriptions_Product' ) && WC_Subscriptions_Product::is_subscription( $product ) ) {
+									if ( $product->is_type( [ 'subscription', 'subscription_variation', 'variable-subscription' ] ) ) {
 
-									$product_data = WooCommerce::get_variable_subscription_product_context( $item, $last_order_id );
-									$user_data    = WordPress::get_user_context( $user_id );
+										$product_data = WooCommerce::get_variable_subscription_product_context( $item, $last_order_id );
+										if ( isset( $user_id ) ) {
+											$user_data = WordPress::get_user_context( $user_id );
+										}
 
-									$context['response_type']  = 'live';
-									$context['pluggable_data'] = array_merge( $product_data, $user_data );
+										$context['response_type']  = 'live';
+										$context['pluggable_data'] = array_merge( $product_data, $user_data );
+									}
 								}
 							}
 						}
@@ -6503,15 +6628,18 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		} elseif ( 'order_created' === $term ) {
 			$orders   = wc_get_orders( [ 'numberposts' => 1 ] );
 			$order_id = '';
-			if ( count( $orders ) > 0 ) {
-				$order_id                 = $orders[0]->get_id();
-				$order                    = wc_get_order( $order_id );
-				$user_id                  = $order->get_customer_id();
-				$order_sample_data        = array_merge(
-					WooCommerce::get_order_context( $order_id ),
-					WordPress::get_user_context( $user_id )
-				);
-				$context['response_type'] = 'live';
+			if ( is_array( $orders ) && count( $orders ) > 0 ) {
+				$order_id = $orders[0]->get_id();
+				$order    = wc_get_order( $order_id );
+				if ( $order instanceof \WC_Order ) {
+					$user_id                  = $order->get_customer_id();
+					$order_context            = WooCommerce::get_order_context( $order_id );
+					$order_sample_data        = array_merge(
+						isset( $order_context ) ? $order_context : [],
+						WordPress::get_user_context( $user_id )
+					);
+					$context['response_type'] = 'live';
+				}
 			}
 			
 			$context['pluggable_data'] = $order_sample_data;
@@ -6533,61 +6661,64 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			}
 			$orders   = wc_get_orders( $args );
 			$order_id = '';
-			if ( count( $orders ) > 0 ) {
-				$order_id    = $orders[0]->get_id();
-				$order       = wc_get_order( $order_id );
-				$user_id     = $order->get_customer_id();
-				$items       = $order->get_items();
-				$product_ids = [];
-				foreach ( $items as $item ) {
-					$product_ids[] = $item['product_id'];
-				}
-				$product_data = [];
-				foreach ( $product_ids as $key => $product_id ) {
-					/**
-					 *
-					 * Ignore line
-					 *
-					 * @phpstan-ignore-next-line
-					 */
-					$product_data[ 'product' . $key ] = WooCommerce::get_product_context( $product_id );
-					/**
-					 *
-					 * Ignore line
-					 *
-					 * @phpstan-ignore-next-line
-					 */
-					$terms = get_the_terms( $product_id, 'product_cat' );
-					if ( ! empty( $terms ) && is_array( $terms ) && isset( $terms[0] ) ) {
-						$cat_name = [];
-						foreach ( $terms as $cat ) {
-							$cat_name[] = $cat->name;
-						}
-						$product_data[ 'product' . $key ]['category'] = implode( ', ', $cat_name );
+			if ( is_array( $orders ) && count( $orders ) > 0 ) {
+				$order_id = $orders[0]->get_id();
+				$order    = wc_get_order( $order_id );
+				if ( ! empty( $order ) && $order instanceof \WC_Order ) {
+					$user_id     = $order->get_customer_id();
+					$items       = $order->get_items();
+					$product_ids = [];
+					foreach ( $items as $item ) {
+						$product_ids[] = $item['product_id'];
 					}
-					/**
-					 *
-					 * Ignore line
-					 *
-					 * @phpstan-ignore-next-line
-					 */
-					$terms_tags = get_the_terms( $product_id, 'product_tag' );
-					if ( ! empty( $terms_tags ) && is_array( $terms_tags ) && isset( $terms_tags[0] ) ) {
-						$tag_name = [];
-						foreach ( $terms_tags as $tag ) {
-							$tag_name[] = $tag->name;
+					$product_data = [];
+					foreach ( $product_ids as $key => $product_id ) {
+						/**
+						 *
+						 * Ignore line
+						 *
+						 * @phpstan-ignore-next-line
+						 */
+						$product_data[ 'product' . $key ] = WooCommerce::get_product_context( $product_id );
+						/**
+						 *
+						 * Ignore line
+						 *
+						 * @phpstan-ignore-next-line
+						 */
+						$terms = get_the_terms( $product_id, 'product_cat' );
+						if ( ! empty( $terms ) && is_array( $terms ) && isset( $terms[0] ) ) {
+							$cat_name = [];
+							foreach ( $terms as $cat ) {
+								$cat_name[] = $cat->name;
+							}
+							$product_data[ 'product' . $key ]['category'] = implode( ', ', $cat_name );
 						}
-						$product_data[ 'product' . $key ]['tag'] = implode( ', ', $tag_name );
+						/**
+						 *
+						 * Ignore line
+						 *
+						 * @phpstan-ignore-next-line
+						 */
+						$terms_tags = get_the_terms( $product_id, 'product_tag' );
+						if ( ! empty( $terms_tags ) && is_array( $terms_tags ) && isset( $terms_tags[0] ) ) {
+							$tag_name = [];
+							foreach ( $terms_tags as $tag ) {
+								$tag_name[] = $tag->name;
+							}
+							$product_data[ 'product' . $key ]['tag'] = implode( ', ', $tag_name );
+						}
 					}
+					$order_context                    = WooCommerce::get_order_context( $order_id );
+					$order_sample_data                = array_merge(
+						isset( $order_context ) ? $order_context : [],
+						$product_data
+					);
+					$order_sample_data['user']        = WordPress::get_user_context( $user_id );
+					$order_sample_data['to_status']   = $order_status;
+					$order_sample_data['from_status'] = $from_order_status;
+					$context['response_type']         = 'live';
 				}
-				$order_sample_data                = array_merge(
-					WooCommerce::get_order_context( $order_id ),
-					$product_data
-				);
-				$order_sample_data['user']        = WordPress::get_user_context( $user_id );
-				$order_sample_data['to_status']   = $order_status;
-				$order_sample_data['from_status'] = $from_order_status;
-				$context['response_type']         = 'live';
 			}
 
 			$order_sample_data['to_status']   = $order_status;
@@ -6600,10 +6731,11 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			if ( ! empty( $result ) ) {
 				$order_id = $result[0]->comment_post_ID;
 				$order    = wc_get_order( $order_id );
-				if ( ! empty( $order ) ) {
+				if ( ! empty( $order ) && $order instanceof \WC_Order ) {
 					$user_id           = $order->get_customer_id();
+					$order_context     = WooCommerce::get_order_context( $order_id );
 					$order_sample_data = array_merge(
-						WooCommerce::get_order_context( $order_id ),
+						isset( $order_context ) ? $order_context : [],
 						WordPress::get_user_context( $user_id )
 					);
 					if ( -1 == $order_note_type ) {
@@ -6663,15 +6795,18 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			];
 			$orders   = wc_get_orders( $args );
 			$order_id = '';
-			if ( count( $orders ) > 0 ) {
-				$order_id                 = $orders[0]->get_id();
-				$order                    = wc_get_order( $order_id );
-				$user_id                  = $order->get_customer_id();
-				$order_sample_data        = array_merge(
-					WooCommerce::get_order_context( $order_id ),
-					WordPress::get_user_context( $user_id )
-				);
-				$context['response_type'] = 'live';
+			if ( is_array( $orders ) && count( $orders ) > 0 ) {
+				$order_id = $orders[0]->get_id();
+				$order    = wc_get_order( $order_id );
+				if ( $order instanceof \WC_Order ) {
+					$user_id                  = $order->get_customer_id();
+					$order_context            = WooCommerce::get_order_context( $order_id );
+					$order_sample_data        = array_merge(
+						isset( $order_context ) ? $order_context : [],
+						WordPress::get_user_context( $user_id )
+					);
+					$context['response_type'] = 'live';
+				}
 			}
 			$context['pluggable_data'] = $order_sample_data;
 		} elseif ( 'product_category_purchased' === $term ) {
@@ -6691,7 +6826,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					]
 				);
 				$filtered_orders          = [];
-				if ( ! empty( $orders ) ) {
+				if ( ! empty( $orders ) && is_array( $orders ) ) {
 					foreach ( $orders as $order ) {
 						$order_items = $order->get_items();
 						foreach ( $order_items as $item ) {
@@ -6818,7 +6953,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		if ( ! class_exists( 'LLMS_Section' ) ) {
 			return [];
 		}
-
+		$product_type = '';
 		if ( 'lifterlms_purchase_course' === $trigger ) {
 			$product_type = 'course';
 			$post_id      = $data['filter']['course_id']['value'];
@@ -6877,14 +7012,17 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 			switch ( $trigger ) {
 				case 'lifterlms_lesson_completed':
-					$context = array_merge(
+					$context       = array_merge(
 						WordPress::get_user_context( $result_user_id ),
 						LifterLMS::get_lms_lesson_context( $result_post_id )
 					);
-
-					$context['course'] = get_the_title( get_post_meta( $result_post_id, '_llms_parent_course', true ) );
-					if ( '' !== ( get_post_meta( $result_post_id, '_llms_parent_section', true ) ) ) {
-						$context['parent_section'] = get_the_title( get_post_meta( $result_post_id, '_llms_parent_section', true ) );
+					$parent_course = get_post_meta( $result_post_id, '_llms_parent_course', true );
+					if ( is_int( $parent_course ) ) {
+						$context['course'] = get_the_title( $parent_course );
+					}
+					$parent_section = get_post_meta( $result_post_id, '_llms_parent_section', true );
+					if ( '' !== ( $parent_section ) && is_int( $parent_section ) ) {
+						$context['parent_section'] = get_the_title( $parent_section );
 					}
 					break;
 				case 'lifterlms_course_enrolled':
@@ -6923,7 +7061,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$context['order_type']        = get_post_meta( $result_post_id, '_llms_order_type', true );
 					$context['trial_offer']       = get_post_meta( $result_post_id, '_llms_trial_offer', true );
 					$context['billing_frequency'] = get_post_meta( $result_post_id, '_llms_billing_frequency', true );
-					$context                      = array_merge( $context, WordPress::get_user_context( $user_id ) );
+					$context                      = array_merge( $context, is_int( $user_id ) ? WordPress::get_user_context( $user_id ) : [] );
 					break;
 				case 'lifterlms_purchase_membership':
 					$user_id                      = get_post_meta( $result_post_id, '_llms_user_id', true );
@@ -6935,7 +7073,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$context['order_type']        = get_post_meta( $result_post_id, '_llms_order_type', true );
 					$context['trial_offer']       = get_post_meta( $result_post_id, '_llms_trial_offer', true );
 					$context['billing_frequency'] = get_post_meta( $result_post_id, '_llms_billing_frequency', true );
-					$context                      = array_merge( $context, WordPress::get_user_context( $user_id ) );
+					$context                      = array_merge( $context, is_int( $user_id ) ? WordPress::get_user_context( $user_id ) : [] );
 					break;
 				case 'lifterlms_cancel_membership':
 					$context                    = array_merge( WordPress::get_post_context( $result_post_id ), WordPress::get_user_context( $result[0]->user_id ) );
@@ -6943,7 +7081,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$context['membership_name'] = get_the_title( $result_post_id );
 					break;
 				default:
-					return;
+					return [];
 
 			}
 			$response['pluggable_data'] = $context;
@@ -6989,7 +7127,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$suremembers_post['exclude']                = get_post_meta( $group_id, 'suremembers_plan_exclude', true ); //phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 					$suremembers_post['suremembers_user_roles'] = get_post_meta( $group_id, 'suremembers_user_roles', true );
 					$suremembers_post['title']                  = get_the_title( $group_id );
-					$suremembers_post['restrict']               = get_post_meta( $group_id, 'suremembers_plan_rules', true )['restrict'];
+					$plan_rules                                 = get_post_meta( $group_id, 'suremembers_plan_rules', true );
+					$suremembers_post['restrict']               = is_array( $plan_rules ) ? $plan_rules['restrict'] : '';
 					$context['group']                           = array_merge( WordPress::get_post_context( $group_id ), $suremembers_post );
 					$context['group_id']                        = $group_id;
 					unset( $context['group']['ID'] );
@@ -6999,7 +7138,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				case 'suremember_user_added_in_group':
 					foreach ( $result as $res ) {
 						$meta_value = unserialize( $res->meta_value );
-						if ( 'active' === $meta_value['status'] ) {
+						if ( is_array( $meta_value ) && 'active' === $meta_value['status'] ) {
 							$context             = WordPress::get_user_context( $res->user_id );
 							$context['group']    = WordPress::get_post_context( $post_id );
 							$context['group_id'] = $post_id;
@@ -7012,7 +7151,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				case 'suremember_user_removed_from_group':
 					foreach ( $result as $res ) {
 						$meta_value = unserialize( $res->meta_value );
-						if ( 'revoked' === $meta_value['status'] ) {
+						if ( is_array( $meta_value ) && 'revoked' === $meta_value['status'] ) {
 							$context             = WordPress::get_user_context( $res->user_id );
 							$context['group']    = WordPress::get_post_context( $post_id );
 							$context['group_id'] = $post_id;
@@ -7023,7 +7162,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					}
 					break;
 				default:
-					return;
+					return [];
 
 			}
 		}
@@ -7125,18 +7264,25 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$order_id        = get_post_meta( $order_upsell_id, '_cartflows_offer_parent_id', true );
 			$order           = wc_get_order( $order_id );
 			$upsell_order    = wc_get_order( $order_upsell_id );
-			$items           = $upsell_order->get_items();
-			if ( ! empty( $items ) && isset( $items[0] ) ) {
-				$variation_id = $items[0]['product_id'];
-				$input_qty    = $items[0]['quantity'];
+			if ( $upsell_order instanceof \WC_Order ) {
+				$items = $upsell_order->get_items();
+				if ( ! empty( $items ) && isset( $items[0] ) ) {
+					$variation_id = $items[0]['product_id'];
+					$input_qty    = $items[0]['quantity'];
+				} else {
+					$variation_id = null;
+					$input_qty    = null;
+				}
 			} else {
 				$variation_id = null;
 				$input_qty    = null;
 			}
-			$offer_product             = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
-			$user_id                   = get_post_meta( $order_upsell_id, '_customer_user', true );
-			$context                   = WordPress::get_user_context( $user_id );
-			$context['order']          = $order->get_data();
+			$offer_product = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
+			$user_id       = get_post_meta( $order_upsell_id, '_customer_user', true );
+			$context       = is_int( $user_id ) ? WordPress::get_user_context( $user_id ) : [];
+			if ( $order instanceof \WC_Order ) {
+				$context['order'] = $order->get_data();
+			}
 			$context['upsell']         = $offer_product;
 			$context['funnel_step_id'] = $step_id;
 			if ( is_scalar( $step_id ) ) {
@@ -7153,18 +7299,25 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$order_id          = get_post_meta( $order_downsell_id, '_cartflows_offer_parent_id', true );
 			$order             = wc_get_order( $order_id );
 			$downsell_order    = wc_get_order( $order_downsell_id );
-			$items             = $downsell_order->get_items();
-			if ( ! empty( $items ) && isset( $items[0] ) ) {
-				$variation_id = $items[0]['product_id'];
-				$input_qty    = $items[0]['quantity'];
+			if ( $downsell_order instanceof \WC_Order ) {
+				$items = $downsell_order->get_items();
+				if ( ! empty( $items ) && isset( $items[0] ) ) {
+					$variation_id = $items[0]['product_id'];
+					$input_qty    = $items[0]['quantity'];
+				} else {
+					$variation_id = null;
+					$input_qty    = null;
+				}
 			} else {
 				$variation_id = null;
 				$input_qty    = null;
 			}
-			$offer_product             = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
-			$user_id                   = get_post_meta( $order_downsell_id, '_customer_user', true );
-			$context                   = WordPress::get_user_context( $user_id );
-			$context['order']          = $order->get_data();
+			$offer_product = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
+			$user_id       = get_post_meta( $order_downsell_id, '_customer_user', true );
+			$context       = is_int( $user_id ) ? WordPress::get_user_context( $user_id ) : [];
+			if ( $order instanceof \WC_Order ) {
+				$context['order'] = $order->get_data();
+			}
 			$context['downsell']       = $offer_product;
 			$context['funnel_step_id'] = $step_id;
 			if ( is_scalar( $step_id ) ) {
@@ -7733,6 +7886,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 		if ( isset( $data['filter']['sfwd_course_id']['value'] ) ) {
 			$course_id = $data['filter']['sfwd_course_id']['value'];
+		} else {
+			$course_id = -1;
 		}
 		if ( -1 === $course_id ) {
 			$courses = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  {$wpdb->prefix}learndash_user_activity as activity JOIN {$wpdb->prefix}posts as post ON activity.post_id=post.ID WHERE activity.activity_type ='course' AND activity.activity_status= %d ORDER BY activity.activity_id DESC", 1 ) );
@@ -7788,6 +7943,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		if ( isset( $data['filter']['sfwd_lesson_id']['value'] ) ) {
 			$lesson_id = $data['filter']['sfwd_lesson_id']['value'];
 			$course_id = $data['filter']['sfwd_course_id']['value'];
+		} else {
+			$lesson_id = -1;
+			$course_id = -1;
 		}
 		if ( -1 === $course_id ) {
 			$courses    = get_posts(
@@ -7801,8 +7959,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$course_key = array_rand( $courses );
 			$course_id  = $courses[ $course_key ];
 		}
-		$course         = get_post( $course_id );
-		$pluggable_data = LearnDash::get_course_context( $course );
+		$course = get_post( $course_id );
+		if ( $course instanceof WP_Post ) {
+			$pluggable_data = LearnDash::get_course_context( $course );
+		} 
 
 		if ( -1 === $lesson_id ) {
 			$lessons = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  {$wpdb->prefix}learndash_user_activity as activity JOIN {$wpdb->prefix}posts as post ON activity.post_id=post.ID WHERE activity.activity_type ='lesson' AND activity.activity_status= %d AND activity.course_id= %d", 1, $course_id ) );
@@ -7847,6 +8007,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		if ( isset( $data['filter']['sfwd_topic_id']['value'] ) ) {
 			$topic_id  = $data['filter']['sfwd_topic_id']['value'];
 			$course_id = $data['filter']['sfwd_course_id']['value'];
+		} else {
+			$topic_id  = -1;
+			$course_id = -1;
 		}
 		if ( -1 === $course_id ) {
 			$courses    = get_posts(
@@ -7860,8 +8023,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$course_key = array_rand( $courses );
 			$course_id  = $courses[ $course_key ];
 		}
-		$course         = get_post( $course_id );
-		$pluggable_data = LearnDash::get_course_context( $course );
+		$course = get_post( $course_id );
+		if ( $course instanceof WP_Post ) {
+			$pluggable_data = LearnDash::get_course_context( $course );
+		}
 
 		if ( -1 === $topic_id ) {
 			$topics = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  {$wpdb->prefix}learndash_user_activity as activity JOIN {$wpdb->prefix}posts as post ON activity.post_id=post.ID WHERE activity.activity_type ='topic' AND activity.activity_status= %d AND activity.course_id= %d", 1, $course_id ) );
@@ -7919,12 +8084,12 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		if ( -1 !== $product_id ) {
 			$order_ids = ( new Utilities() )->get_orders_ids_by_product_id( $product_id );
 
-			if ( count( $order_ids ) > 0 ) {
+			if ( is_array( $order_ids ) && count( $order_ids ) > 0 ) {
 				$order_id = $order_ids[0];
 			}
 		} else {
 			$orders = wc_get_orders( [] );
-			if ( count( $orders ) > 0 ) {
+			if ( is_array( $orders ) && count( $orders ) > 0 ) {
 				foreach ( $orders as $order ) {
 					$items = $order->get_items();
 
@@ -7948,7 +8113,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		if ( 0 !== $order_id ) {
 			$order = wc_get_order( $order_id );
 
-			if ( $order ) {
+			if ( $order && $order instanceof \WC_Order ) {
 
 				$purchase_data = LearnDash::get_purchase_course_context( $order );
 
@@ -8129,7 +8294,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 		if ( 'quiz_essay_submitted' == $term || 'quiz_essay_graded' == $term ) {
 			if ( ! empty( $essay ) ) {
-				$context                     = WordPress::get_user_context( $essay[0]->post_author );
+				$context                     = is_int( $essay[0]->post_author ) ? WordPress::get_user_context( $essay[0]->post_author ) : [];
 				$course_id                   = get_post_meta( $essay[0]->ID, 'course_id', true );
 				$lesson_id                   = get_post_meta( $essay[0]->ID, 'lesson_id', true );
 				$context['quiz_name']        = get_the_title( $quiz_id );
@@ -8230,7 +8395,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			foreach ( $posts as $post ) {
 				$meta = get_post_meta( $post->ID, '_fl_builder_data', true );
 				foreach ( (array) $meta as $node_id => $node ) {
-					if ( isset( $node->type ) && 'module' === $node->type ) {
+					if ( is_object( $node ) && isset( $node->type ) && 'module' === $node->type && property_exists( $node, 'settings' ) ) {
 						$settings = $node->settings;
 						if ( in_array( $settings->type, $allowed_types, true ) ) {
 							$label = $post->post_title;
@@ -8270,7 +8435,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_fluentcrm_custom_fields( $data ) {
-		$context           = [];
+		$context = [];
+		if ( ! class_exists( 'FluentCrm\App\Models\CustomContactField' ) ) {
+			return [];
+		}
 		$custom_fields     = ( new CustomContactField() )->getGlobalFields()['fields'];
 		$context['fields'] = $custom_fields;
 		return $context;
@@ -8355,7 +8523,11 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$post         = $posts[0];
 		$post_content = WordPress::get_post_context( $post->ID );
 		$post_meta    = WordPress::get_post_meta( $post->ID );
-		$job_data     = array_merge( $post_content, $post_meta, WordPress::get_user_context( $post->post_author ) );
+		$job_data     = array_merge( 
+			$post_content, 
+			is_array( $post_meta ) ? $post_meta : [], 
+			is_int( $post->post_author ) ? WordPress::get_user_context( $post->post_author ) : [] 
+		);
 		foreach ( $job_data as $key => $job ) {
 			$newkey = str_replace( 'post', 'wpjob', $key );
 			unset( $job_data[ $key ] );
@@ -9404,7 +9576,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 */
 	public function search_mailpoet_forms( $data ) {
 		if ( ! class_exists( '\MailPoet\API\API' ) ) {
-			return;
+			return [];
 		}
 
 		global $wpdb;
@@ -9451,7 +9623,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 */
 	public function search_mailpoet_list( $data ) {
 		if ( ! class_exists( '\MailPoet\API\API' ) ) {
-			return;
+			return [];
 		}
 
 		$mailpoet = \MailPoet\API\API::MP( 'v1' );
@@ -9485,7 +9657,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 */
 	public function search_mailpoet_subscriber_status( $data ) {
 		if ( ! class_exists( '\MailPoet\API\API' ) ) {
-			return;
+			return [];
 		}
 
 		$subscriber_status = [
@@ -9519,7 +9691,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 */
 	public function search_mailpoet_subscribers( $data ) {
 		if ( ! class_exists( '\MailPoet\API\API' ) ) {
-			return;
+			return [];
 		}
 
 		global $wpdb;
@@ -9564,8 +9736,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_convertpro_form_list( $data ) {
-		if ( ! class_exists( '\Cp_V2_Loader' ) ) {
-			return;
+		if ( ! class_exists( '\Cp_V2_Loader' ) || ! class_exists( 'CP_V2_Popups' ) ) {
+			return [];
 		}
 
 		$cp_popups_inst = CP_V2_Popups::get_instance();
@@ -11947,12 +12119,17 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			if ( ! empty( $all_bookings ) ) {
 				$user_id                   = $all_bookings->person_id;
 				$location                  = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}em_locations as b WHERE b.location_id  = %s", $all_bookings->location_id ) );
+				$bookings                  = json_decode( (string) wp_json_encode( $all_bookings ), true );
 				$context['pluggable_data'] = array_merge(
 					WordPress::get_user_context( $user_id ), 
-					json_decode( wp_json_encode( $all_bookings ), true )
+					is_array( $bookings ) ? $bookings : []
 				);
 				if ( ! empty( $location ) ) {
-					$context['pluggable_data'] = array_merge( $context['pluggable_data'], json_decode( wp_json_encode( $location ), true ) );
+					$locations                 = json_decode( (string) wp_json_encode( $location ), true );
+					$context['pluggable_data'] = array_merge(
+						$context['pluggable_data'],
+						is_array( $locations ) ? $locations : []
+					);
 				}
  
 				$context['response_type'] = 'live';
@@ -11969,9 +12146,10 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			
 			if ( ! empty( $all_bookings ) ) {
 				$user_id                   = $all_bookings->person_id;
+				$bookings                  = json_decode( (string) wp_json_encode( $all_bookings ), true );
 				$context['pluggable_data'] = array_merge(
 					WordPress::get_user_context( $user_id ), 
-					json_decode( wp_json_encode( $all_bookings ), true )
+					is_array( $bookings ) ? $bookings : []
 				);
 				$context['response_type']  = 'live';
 			}       
@@ -11988,12 +12166,17 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			if ( ! empty( $all_bookings ) ) {
 				$user_id                   = $all_bookings->person_id;
 				$location                  = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}em_locations as b WHERE b.location_id  = %s", $all_bookings->location_id ) );
+				$bookings                  = json_decode( (string) wp_json_encode( $all_bookings ), true );
 				$context['pluggable_data'] = array_merge(
 					WordPress::get_user_context( $user_id ), 
-					json_decode( wp_json_encode( $all_bookings ), true )
+					is_array( $bookings ) ? $bookings : []
 				);
 				if ( ! empty( $location ) ) {
-					$context['pluggable_data'] = array_merge( $context['pluggable_data'], json_decode( wp_json_encode( $location ), true ) );
+					$locations                 = json_decode( (string) wp_json_encode( $location ), true );
+					$context['pluggable_data'] = array_merge(
+						$context['pluggable_data'], 
+						is_array( $locations ) ? $locations : []
+					);
 				}
 
 				$context['response_type'] = 'live';
@@ -14443,13 +14626,13 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					],
 				] 
 			);
-			if ( count( $orders ) > 0 ) {
+			if ( is_array( $orders ) && count( $orders ) > 0 ) {
 				$order_id    = $orders[0]->get_id();
 				$order       = wc_get_order( $order_id );
-				$user_id     = $order->get_customer_id();
 				$product_ids = [];
-				if ( $order ) {
-					$items = $order->get_items();
+				if ( $order && $order instanceof \WC_Order ) {
+					$user_id = $order->get_customer_id();
+					$items   = $order->get_items();
 					foreach ( $items as $item ) {
 						if ( method_exists( $item, 'get_product_id' ) ) {
 							$product_ids[] = $item->get_product_id();
@@ -14459,29 +14642,30 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					foreach ( $product_ids as $product_id ) {
 						$context['product_id'] = $product_id;
 					}
+					$order_context                       = WooCommerce::get_order_context( $order_id );
+					$context                             = array_merge(
+						isset( $order_context ) ? $order_context : [],
+						isset( $user_id ) ? WordPress::get_user_context( $user_id ) : []
+					);
+					$context['shipping_tracking_number'] = $order->get_meta( '_tracking_number', true );
+					$context['shipping_carrier']         = $order->get_meta( '_tracking_provider', true );
+					/**
+					 *
+					 * Ignore line
+					 *
+					 * @phpstan-ignore-next-line
+					 */
+					$timestamp = strtotime( $order->get_meta( '_date_shipped', true ) );
+					/**
+					 *
+					 * Ignore line
+					 *
+					 * @phpstan-ignore-next-line
+					 */
+					$date                     = date_i18n( get_option( 'date_format' ), $timestamp );
+					$context['ship_date']     = $date;
+					$context['response_type'] = 'live';
 				}
-				$context                             = array_merge(
-					WooCommerce::get_order_context( $order_id ),
-					WordPress::get_user_context( $user_id )
-				);
-				$context['shipping_tracking_number'] = $order->get_meta( '_tracking_number', true );
-				$context['shipping_carrier']         = $order->get_meta( '_tracking_provider', true );
-				/**
-				 *
-				 * Ignore line
-				 *
-				 * @phpstan-ignore-next-line
-				 */
-				$timestamp = strtotime( $order->get_meta( '_date_shipped', true ) );
-				/**
-				 *
-				 * Ignore line
-				 *
-				 * @phpstan-ignore-next-line
-				 */
-				$date                     = date_i18n( get_option( 'date_format' ), $timestamp );
-				$context['ship_date']     = $date;
-				$context['response_type'] = 'live';
 			}
 			
 			$context['pluggable_data'] = $context;
@@ -14523,44 +14707,46 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					] 
 				);
 			}
-			if ( count( $orders ) > 0 ) {
+			if ( is_array( $orders ) && count( $orders ) > 0 ) {
 				$order_id   = $orders[0]->get_id();
 				$order      = wc_get_order( $order_id );
-				$user_id    = $order->get_customer_id();
 				$productids = [];
-				$items      = $order->get_items();
-				foreach ( $items as $item ) {
-					if ( method_exists( $item, 'get_product_id' ) ) {
-						$productids[] = $item->get_product_id();
+				if ( $order instanceof \WC_Order ) {
+					$user_id = $order->get_customer_id();
+					$items   = $order->get_items();
+					foreach ( $items as $item ) {
+						if ( method_exists( $item, 'get_product_id' ) ) {
+							$productids[] = $item->get_product_id();
+						}
 					}
-				}
-				$context = array_merge(
-					WooCommerce::get_order_context( $order_id ),
-					WordPress::get_user_context( $user_id )
-				);
+					$order_context = WooCommerce::get_order_context( $order_id );
+					$context       = array_merge(
+						isset( $order_context ) ? $order_context : [],
+						WordPress::get_user_context( $user_id )
+					);
+					foreach ( $productids as $product_id ) {
+						$context['product_id'] = $product_id;
+					}
 
-				foreach ( $productids as $product_id ) {
-					$context['product_id'] = $product_id;
+					$context['shipping_tracking_number'] = $order->get_meta( '_tracking_number', true );
+					$context['shipping_carrier']         = $order->get_meta( '_tracking_provider', true );
+					/**
+					 *
+					 * Ignore line
+					 *
+					 * @phpstan-ignore-next-line
+					 */
+					$timestamp = strtotime( $order->get_meta( '_date_shipped', true ) );
+					/**
+					 *
+					 * Ignore line
+					 *
+					 * @phpstan-ignore-next-line
+					 */
+					$date                     = date_i18n( get_option( 'date_format' ), $timestamp );
+					$context['ship_date']     = $date;
+					$context['response_type'] = 'live';
 				}
-
-				$context['shipping_tracking_number'] = $order->get_meta( '_tracking_number', true );
-				$context['shipping_carrier']         = $order->get_meta( '_tracking_provider', true );
-				/**
-				 *
-				 * Ignore line
-				 *
-				 * @phpstan-ignore-next-line
-				 */
-				$timestamp = strtotime( $order->get_meta( '_date_shipped', true ) );
-				/**
-				 *
-				 * Ignore line
-				 *
-				 * @phpstan-ignore-next-line
-				 */
-				$date                     = date_i18n( get_option( 'date_format' ), $timestamp );
-				$context['ship_date']     = $date;
-				$context['response_type'] = 'live';
 			}
 			
 			$context['pluggable_data'] = $context;
@@ -14584,44 +14770,47 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					],
 				] 
 			);
-			if ( count( $orders ) > 0 ) {
+			if ( is_array( $orders ) && count( $orders ) > 0 ) {
 				$order_id    = $orders[0]->get_id();
 				$order       = wc_get_order( $order_id );
-				$user_id     = $order->get_customer_id();
 				$product_ids = [];
-				$items       = $order->get_items();
-				foreach ( $items as $item ) {
-					if ( method_exists( $item, 'get_product_id' ) ) {
-						$product_ids[] = $item->get_product_id();
+				if ( $order instanceof \WC_Order ) {
+					$user_id = $order->get_customer_id();
+					$items   = $order->get_items();
+					foreach ( $items as $item ) {
+						if ( method_exists( $item, 'get_product_id' ) ) {
+							$product_ids[] = $item->get_product_id();
+						}
 					}
-				}
-				$context = array_merge(
-					WooCommerce::get_order_context( $order_id ),
-					WordPress::get_user_context( $user_id )
-				);
+					$order_context = WooCommerce::get_order_context( $order_id );
+					$context       = array_merge(
+						isset( $order_context ) ? $order_context : [],
+						isset( $user_id ) ? WordPress::get_user_context( $user_id ) : []
+					);
 
-				foreach ( $product_ids as $product_id ) {
-					$context['product_id'] = $product_id;
-				}
+					foreach ( $product_ids as $product_id ) {
+						$context['product_id'] = $product_id;
+					}
 
-				$context['shipping_tracking_number'] = $order->get_meta( '_tracking_number', true );
-				$context['shipping_carrier']         = $order->get_meta( '_tracking_provider', true );
-				/**
-				 *
-				 * Ignore line
-				 *
-				 * @phpstan-ignore-next-line
-				 */
-				$timestamp = strtotime( $order->get_meta( '_date_shipped', true ) );
-				/**
-				 *
-				 * Ignore line
-				 *
-				 * @phpstan-ignore-next-line
-				 */
-				$date                     = date_i18n( get_option( 'date_format' ), $timestamp );
-				$context['ship_date']     = $date;
-				$context['response_type'] = 'live';
+					$context['shipping_tracking_number'] = $order->get_meta( '_tracking_number', true );
+					$context['shipping_carrier']         = $order->get_meta( '_tracking_provider', true );
+					/**
+					 *
+					 * Ignore line
+					 *
+					 * @phpstan-ignore-next-line
+					 */
+					$timestamp = strtotime( $order->get_meta( '_date_shipped', true ) );
+					/**
+					 *
+					 * Ignore line
+					 *
+					 * @phpstan-ignore-next-line
+					 */
+					$date                     = date_i18n( get_option( 'date_format' ), $timestamp );
+					$context['ship_date']     = $date;
+					$context['response_type'] = 'live';
+				}
 			}
 
 			$context['pluggable_data'] = $context;
@@ -15562,17 +15751,13 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	public function search_user_subscription_last_data( $data ) {
 		
 		$context = [];
-
-		if ( ! function_exists( 'wcs_get_subscription' ) ) {
-			return;
-		}
-		if ( ! function_exists( 'wcs_get_subscriptions_for_product' ) ) {
-			return;
-		}
-		if ( ! function_exists( 'wcs_order_contains_renewal' ) ) {
-			return;
-		}
-		if ( ! function_exists( 'wcs_get_subscriptions_for_order' ) ) {
+		if (
+			! class_exists( 'WC_Subscription' ) ||
+			! function_exists( 'wcs_get_subscription' ) ||
+			! function_exists( 'wcs_get_subscriptions_for_product' ) ||
+			! function_exists( 'wcs_order_contains_renewal' ) ||
+			! function_exists( 'wcs_get_subscriptions_for_order' )
+		) {
 			return;
 		}
 		
@@ -15641,21 +15826,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$ids               = [];          
 			$related           = [];
 			foreach ( $subscription_ids as $subscription ) {
-				$ids[] = $subscription;
-				/**
-				 *
-				 * Ignore line
-				 *
-				 * @phpstan-ignore-next-line
-				 */
+				$ids[]         = $subscription;
 				$subscriptions = new WC_Subscription( $subscription );
-				/**
-				 *
-				 * Ignore line
-				 *
-				 * @phpstan-ignore-next-line
-				 */
-				$related[] = $subscriptions->get_related_orders();
+				$related[]     = $subscriptions->get_related_orders();
 			}
 
 			$failed_payment_orders = [];
@@ -20222,6 +20395,40 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'hasMore' => false,
 		];
 	}   
+	
+	/**
+	 * Prepare FluentBoards Subtask Groups List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_fbs_subtask_groups_list( $data ) {
+		global $wpdb;
+	
+		$task_id = isset( $data['dynamic'] ) ? sanitize_text_field( $data['dynamic'] ) : '';
+		
+		$groups = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT id, value FROM {$wpdb->prefix}fbs_task_metas WHERE task_id = %d AND `key` = %s",
+				$task_id,
+				'group_name'
+			)
+		);
+		
+		$options = [];
+	
+		foreach ( $groups as $group ) {
+			$options[] = [
+				'label' => $group->value,
+				'value' => $group->id,
+			];
+		}
+	
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
 
 	/**
 	 * Prepare FluentBoards Stages List.
@@ -20882,7 +21089,232 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'options' => $options,
 			'hasMore' => false,
 		];
-	}  
+	} 
+	
+	/**
+	 * Get WP Travel Engine Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_wpte_triggers_last_data( $data ) {
+		global $wpdb;
+	
+		$term = isset( $data['search_term'] ) ? $data['search_term'] : '';
+	
+		$context = [];
+		$result  = null;
+	
+		switch ( $term ) {
+			case 'enquiry_submitted':
+				$result = $wpdb->get_row( 
+					"SELECT ID FROM {$wpdb->prefix}posts WHERE post_type = 'enquiry' ORDER BY ID DESC LIMIT 1", 
+					ARRAY_A 
+				);
+
+				if ( $result && isset( $result['ID'] ) ) {
+					$data = get_post( $result['ID'] );
+				}
+				break;
+		}
+
+		if ( ! empty( $result ) && isset( $result['ID'] ) ) {
+			$context['pluggable_data'] = [
+				'enquiry_post_id' => $result['ID'],
+				'post_data'       => $data,
+			];
+			$context['response_type']  = 'live';
+		} else {
+			$context['pluggable_data'] = [
+				'enquiry_post_id' => 123,
+				'post_data'       => [
+					'ID'             => 123,
+					'post_title'     => 'Sample Enquiry',
+					'post_name'      => 'sample-enquiry',
+					'post_date'      => '2025-01-01 10:00:00',
+					'post_status'    => 'publish',
+					'post_type'      => 'enquiry',
+					'post_author'    => 1,
+					'post_content'   => '',
+					'post_excerpt'   => '',
+					'comment_status' => 'closed',
+					'ping_status'    => 'closed',
+					'post_modified'  => '2025-01-01 10:00:00',
+					'guid'           => 'http://example.com/enquiry/sample-enquiry',
+				],
+			];
+			$context['response_type']  = 'sample';
+		}
+
+		return (array) $context;
+	}
+
+	/**
+	 * Prepare WP Travel Engine Trips List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_wte_trips_list( $data ) {
+		$page   = isset( $data['page'] ) ? max( 1, intval( $data['page'] ) ) : 1;
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+	
+		$query_args = [
+			'post_type'      => 'trip',
+			'post_status'    => 'publish',
+			'posts_per_page' => $limit,
+			'offset'         => $offset,
+		];
+	
+		$query  = new \WP_Query( $query_args );
+		$result = [];
+	
+		foreach ( $query->posts as $post ) {
+			if ( $post instanceof \WP_Post ) {
+				$result[] = [
+					'label' => $post->post_title,
+					'value' => $post->ID,
+				];
+			}
+		}
+	
+		$total_query = new \WP_Query(
+			[
+				'post_type'      => 'trip',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			] 
+		);
+		$posts_count = count( $total_query->posts );
+	
+		return [
+			'options' => $result,
+			'hasMore' => $posts_count > ( $offset + $limit ),
+		];
+	}   
+	/**
+	 * Get GeoDirectory trigger last data.
+	 *
+	 * @param array $data data.
+	 * @return array|mixed
+	 */
+	public function search_geodir_triggers_last_data( $data ) {
+		$context = [];
+
+		if ( function_exists( 'geodir_get_post_info' ) ) {
+			$args = [
+				'post_type'      => 'gd_place',
+				'posts_per_page' => 1,
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+			];
+
+			$posts = get_posts( $args );
+
+			if ( ! empty( $posts ) ) {
+				$post    = $posts[0];
+				$post_id = $post->ID;
+				$user    = WordPress::get_user_context( absint( $post->post_author ) );
+				$gd_post = function_exists( 'geodir_get_post_info' ) ? geodir_get_post_info( $post_id ) : null;
+				
+				$categories   = [];
+				$cat_taxonomy = $post->post_type . 'category';
+				if ( taxonomy_exists( $cat_taxonomy ) ) {
+					$terms = wp_get_post_terms( $post_id, $cat_taxonomy );
+					if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+						foreach ( $terms as $term ) {
+							$categories[] = $term->name;
+						}
+					}
+				}
+				
+				$tags         = [];
+				$tag_taxonomy = $post->post_type . '_tags';
+				if ( taxonomy_exists( $tag_taxonomy ) ) {
+					$terms = wp_get_post_terms( $post_id, $tag_taxonomy );
+					if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+						foreach ( $terms as $term ) {
+							$tags[] = $term->name;
+						}
+					}
+				}
+				
+				$attachments = [];
+				if ( function_exists( 'geodir_get_images' ) ) {
+					$images = geodir_get_images( $post_id );
+					if ( ! empty( $images ) ) {
+						foreach ( $images as $image ) {
+							if ( ! empty( $image->file ) ) {
+								$attachments[] = $image->file;
+							}
+						}
+					}
+				}
+				
+				$address     = '';
+				$country     = '';
+				$region      = '';
+				$city        = '';
+				$postal_code = '';
+				$latitude    = '';
+				$longitude   = '';
+				
+				if ( ! empty( $gd_post ) ) {
+					if ( isset( $gd_post->street ) ) {
+						$address = $gd_post->street;
+					}
+					if ( isset( $gd_post->country ) ) {
+						$country = $gd_post->country;
+					}
+					if ( isset( $gd_post->region ) ) {
+						$region = $gd_post->region;
+					}
+					if ( isset( $gd_post->city ) ) {
+						$city = $gd_post->city;
+					}
+					if ( isset( $gd_post->zip ) ) {
+						$postal_code = $gd_post->zip;
+					}
+					if ( isset( $gd_post->latitude ) ) {
+						$latitude = $gd_post->latitude;
+					}
+					if ( isset( $gd_post->longitude ) ) {
+						$longitude = $gd_post->longitude;
+					}
+				}
+
+				$context['pluggable_data'] = array_merge(
+					[
+						'listing_id'    => $post->ID,
+						'listing_title' => $post->post_title,
+						'listing_type'  => $post->post_type,
+						'listing_url'   => get_permalink( $post->ID ),
+						'description'   => $post->post_content,
+						'categories'    => $categories,
+						'tags'          => $tags,
+						'attachments'   => $attachments,
+						'address'       => $address,
+						'country'       => $country,
+						'region'        => $region,
+						'city'          => $city,
+						'postal_code'   => $postal_code,
+						'latitude'      => $latitude,
+						'longitude'     => $longitude,
+					],
+					$user
+				);
+
+				$context['response_type'] = 'live';
+				return $context;
+			}
+		}
+
+		$context = json_decode( '{"pluggable_data":{"listing_id":123,"listing_title":"Sample Business Listing","listing_type":"gd_place","listing_url":"' . site_url( '/places/sample-business-listing/' ) . '","description":"This is a sample business listing description.","categories":["Restaurant","Cafe"],"tags":["Food","Coffee","Breakfast"],"attachments":["' . site_url( '/wp-content/uploads/sample-image.jpg' ) . '"],"address":"123 Main St","country":"United States","region":"California","city":"San Francisco","postal_code":"94105","latitude":"37.7749","longitude":"-122.4194","wp_user_id":10,"user_login":"sampleuser","display_name":"Sample User","user_firstname":"Sample","user_lastname":"User","user_email":"sample@example.com","user_role":["subscriber"]},"response_type":"sample"}', true );
+		return $context;
+	}
 
 }
 

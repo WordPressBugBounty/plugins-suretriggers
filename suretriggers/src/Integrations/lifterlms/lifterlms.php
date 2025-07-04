@@ -49,7 +49,10 @@ class LifterLMS extends Integrations {
 	 */
 	public static function get_lms_course_context( $course_id ) {
 
-		$courses                 = get_post( $course_id );
+		$courses = get_post( $course_id );
+		if ( ! $courses instanceof \WP_Post ) {
+			return [];
+		}
 		$context['course']       = $courses->ID;
 		$context['course_name']  = $courses->post_name;
 		$context['course_title'] = $courses->post_title;
@@ -66,7 +69,10 @@ class LifterLMS extends Integrations {
 	 */
 	public static function get_lms_lesson_context( $lesson_id ) {
 
-		$lesson                  = get_post( $lesson_id );
+		$lesson = get_post( $lesson_id );
+		if ( ! $lesson instanceof \WP_Post ) {
+			return [];
+		}
 		$context['lesson']       = $lesson->ID;
 		$context['lesson_name']  = $lesson->post_name;
 		$context['lesson_title'] = $lesson->post_title;
@@ -83,7 +89,10 @@ class LifterLMS extends Integrations {
 	 */
 	public static function get_lms_membership_context( $membership_id ) {
 
-		$membership                  = get_post( $membership_id );
+		$membership = get_post( $membership_id );
+		if ( ! $membership instanceof \WP_Post ) {
+			return [];
+		}
 		$context['membership']       = $membership->ID;
 		$context['membership_name']  = $membership->post_name;
 		$context['membership_title'] = $membership->post_title;

@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.0.90
+Stable tag: 1.1.0
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,13 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.0 - Friday, 4th July 2025 =
+* New: Settings page added for granular OttoKit access control
+* New: Added "WP Travel Engine" Integration
+* Improvement: "GeoDirectory" – Added new “New Place Listing Added” Trigger
+* Improvement: "FluentBoards" – Added new "Create Subtask Group" Action & added improvements for "Create Task" & "Create Subtask" Actions
+* Improvement: "FluentCRM" - Added new "Retrieve Contact By Segment" Action
+
 = Version 1.0.90 - Monday, 23rd June 2025 =
 * Improvement: "WooCommerce" - Added improvements in response for metadata in order related Triggers
 * Fix: "Bricks Builder" - Resolved an issue with attachment fields containing name attributes in "Form Submitted" Trigger

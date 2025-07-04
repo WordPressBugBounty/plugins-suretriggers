@@ -16,6 +16,7 @@ namespace SureTriggers\Integrations\MailPoet\Triggers;
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
+use MailPoet\Entities\FormEntity;
 
 if ( ! class_exists( 'FormSubmitted' ) ) :
 
@@ -88,7 +89,7 @@ if ( ! class_exists( 'FormSubmitted' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $data, $segment_ids, $form ) {
-			if ( empty( $form ) ) {
+			if ( ! class_exists( 'MailPoet\Entities\FormEntity' ) || empty( $form ) || ! $form instanceof \MailPoet\Entities\FormEntity || ! class_exists( '\MailPoet\API\API' ) ) {
 				return;
 			}
 

@@ -99,7 +99,7 @@ class WordPress extends Integrations {
 	 * Validating the Email
 	 *
 	 * @param string $email email.
-	 * @return object
+	 * @return object{valid: bool, multiple: bool}
 	 */
 	public static function validate_email( $email ) {
 		$result = [

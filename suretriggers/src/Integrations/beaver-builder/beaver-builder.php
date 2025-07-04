@@ -80,11 +80,11 @@ class BeaverBuilder extends Integrations {
 			0
 		);
 
-		$template_fields['Message'] = $template_message[1];
-
-		if ( empty( $template_fields ) ) {
+		if ( empty( $template_message ) || ! isset( $template_message[1] ) ) {
 			return;
 		}
+		$template_fields['Message'] = $template_message[1];
+
 		$context['form_id']       = $node_id;
 		$context['contact_name']  = $template_fields['Name'];
 		$context['subject']       = $subject;

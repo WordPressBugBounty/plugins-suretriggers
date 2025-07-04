@@ -139,6 +139,12 @@ class SendNotificationToAllMembersOfGroup extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
+		if ( ! function_exists( 'bp_core_current_time' ) || ! function_exists( 'bp_notifications_update_meta' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'BuddyBoss core functions not found.', 'suretriggers' ),
+			];
+		}
 		if ( empty( $selected_options['sender_user'] ) || ! is_email( $selected_options['sender_user'] ) ) {
 			throw new Exception( 'Invalid email.' );
 		}

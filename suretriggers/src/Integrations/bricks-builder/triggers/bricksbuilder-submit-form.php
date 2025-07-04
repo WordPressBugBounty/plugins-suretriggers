@@ -126,8 +126,10 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 			}
 			$post_data = sanitize_post( $_POST );
 
-			$files_data = $obj->get_uploaded_files();
-			$context    = [];
+			if ( is_object( $obj ) ) {
+				$files_data = $obj->get_uploaded_files();
+			}
+			$context = [];
 			if ( ! empty( $post_data ) ) {
 				$form_id            = ( isset( $post_data['formId'] ) ) ? sanitize_text_field( $post_data['formId'] ) : 0;
 				$context['form_id'] = $form_id;
@@ -160,10 +162,10 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 
 				$templates = get_posts( $args );
 
-				if ( ! empty( $templates ) ) { // Check if submitted form has fields.
+				if ( ! empty( $templates ) && is_array( $templates ) ) { // Check if submitted form has fields.
 					foreach ( $templates as $template ) {
 						$bb_contents = get_post_meta( $template->ID, BRICKS_DB_PAGE_CONTENT, true ); // Fetch form contents.
-						if ( ! empty( $bb_contents ) ) {
+						if ( ! empty( $bb_contents ) && is_array( $bb_contents ) ) {
 							foreach ( $bb_contents as $content ) {
 								if ( $form_id === $content['id'] ) {
 									$context['template_name'] = html_entity_decode( get_the_title( $template->ID ), ENT_QUOTES, 'UTF-8' );
@@ -173,7 +175,7 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 						}
 					}
 
-					if ( ! empty( $form_fields ) ) {
+					if ( ! empty( $form_fields ) && is_array( $form_fields ) ) {
 						foreach ( $form_fields as $field ) {
 							$field_name = '';
 							if ( is_array( $field ) && isset( $field['name'] ) ) {
@@ -188,11 +190,6 @@ if ( ! class_exists( 'UserSubmitsBricksBuilderForm' ) ) :
 							} else {
 								$file_fields[]                     = $field['id'];
 								$file_field_labels[ $field['id'] ] = ! empty( $field['label'] ) ? $field['label'] : $field['id'];
-								/** 
-								 * Field.
-								 * 
-								 * @var array{id: string|int, name?: string, label?: string} $field 
-								 * */
 								$file_field_labels[ $field['id'] ] = isset( $field['name'] ) ? $field['name'] : ( ! empty( $field['label'] ) ? $field['label'] : $field['id'] );
 							}
 						}

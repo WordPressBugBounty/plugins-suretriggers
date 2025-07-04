@@ -73,10 +73,12 @@ class AwardBadgeToUser extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
 	 *
-	 * @return array
+	 * @return array|bool
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-
+		if ( ! function_exists( 'mycred_get_badge' ) || ! function_exists( 'mycred_assign_badge_to_user' ) ) {
+			return false;
+		}
 		$badge_id = $selected_options['cred_badge'];
 
 		if ( empty( $badge_id ) || empty( $user_id ) ) {

@@ -88,7 +88,7 @@ class PurchaseVariableProduct {
 
 		$order = wc_get_order( $order_id );
 
-		if ( ! $order ) {
+		if ( ! $order || ! $order instanceof \WC_Order ) {
 			return;
 		}
 
@@ -98,15 +98,17 @@ class PurchaseVariableProduct {
 		$product_variations = [];
 
 		foreach ( $items as $item ) {
-			$product_variations[] = $item->get_variation_id();
+			if ( $item instanceof \WC_Order_Item_Product ) {
+				$product_variations[] = $item->get_variation_id();
+			}
 		}
 		foreach ( $product_variations as $product_variation_id ) {
 			$product_id = wp_get_post_parent_id( $product_variation_id );
 			if ( $product_id ) {
-
+				$order_context                   = WooCommerce::get_order_context( $order_id );
 				$context                         = array_merge(
 					WooCommerce::get_product_context( $product_id ),
-					WooCommerce::get_order_context( $order_id ),
+					isset( $order_context ) ? $order_context : [],
 					WordPress::get_user_context( $user_id )
 				);
 				$context['product_variation_id'] = $product_variation_id;

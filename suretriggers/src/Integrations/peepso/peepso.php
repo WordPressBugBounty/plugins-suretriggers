@@ -50,7 +50,10 @@ class PeepSo extends Integrations {
 	 */
 	public static function get_pp_activity_context( $post_id, $activity_id ) {
 
-		$pp_post                 = get_post( $post_id );
+		$pp_post = get_post( $post_id );
+		if ( ! $pp_post instanceof \WP_Post ) {
+			return [];
+		}
 		$context['post_id']      = $pp_post->ID;
 		$context['activity_id']  = $activity_id;
 		$context['post_author']  = $pp_post->post_author;

@@ -89,6 +89,9 @@ if ( ! class_exists( 'AffiliateApproved' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $affiliate_id, $status, $old_status ) {
+			if ( ! function_exists( 'affwp_get_affiliate_user_id' ) || ! function_exists( 'affwp_get_affiliate' ) ) {
+				return;
+			}
 			$user_id = affwp_get_affiliate_user_id( $affiliate_id );
 
 			if ( 'active' !== $status ) {

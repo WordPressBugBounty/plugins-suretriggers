@@ -47,7 +47,10 @@ class MemberPress extends Integrations {
 	 * @return array
 	 */
 	public static function get_membership_context( $subscription ) {
-		$context                                  = [];
+		$context = [];
+		if ( ! class_exists( 'MeprTransaction' ) || ! $subscription instanceof \MeprTransaction ) {
+			return $context;
+		}
 		$context['membership_id']                 = $subscription->product_id;
 		$context['membership_title']              = get_the_title( $subscription->product_id );
 		$context['amount']                        = $subscription->amount;
@@ -71,7 +74,10 @@ class MemberPress extends Integrations {
 	 * @return array
 	 */
 	public static function get_subscription_context( $subscription ) {
-		$context                     = [];
+		$context = [];
+		if ( ! class_exists( 'MeprSubscription' ) || ! $subscription instanceof \MeprSubscription ) {
+			return $context;
+		}
 		$context['membership_id']    = $subscription->product_id;
 		$context['membership_title'] = get_the_title( $subscription->product_id );
 		$context['user_id']          = $subscription->user_id;

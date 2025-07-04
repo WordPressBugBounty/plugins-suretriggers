@@ -88,6 +88,9 @@ if ( ! class_exists( 'UserRegisterInEvent' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $em_booking_obj ) {
+			if ( ! property_exists( $em_booking_obj, 'event_id' ) || ! property_exists( $em_booking_obj, 'person_id' ) ) {
+				return;
+			}
 			$event_id = $em_booking_obj->event_id;
 			$user_id  = $em_booking_obj->person_id;
 			global $wpdb;
@@ -96,7 +99,7 @@ if ( ! class_exists( 'UserRegisterInEvent' ) ) :
 			$location = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}em_locations as b WHERE b.location_id  = %s", $all_bookings->location_id ) );
 			$context  = array_merge(
 				WordPress::get_user_context( $user_id ), 
-				json_decode( wp_json_encode( $all_bookings ), true )
+				(array) json_decode( (string) wp_json_encode( $all_bookings ), true )
 			);
 			if ( ! empty( $location ) ) {
 				$context = array_merge( $context, (array) $location );

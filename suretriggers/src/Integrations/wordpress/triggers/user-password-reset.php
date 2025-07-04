@@ -95,6 +95,9 @@ if ( ! class_exists( 'UserPasswordReset' ) ) :
 		 */
 		public function trigger_listener( $user, $new_password = null ) {
 
+			if ( ! property_exists( $user, 'ID' ) ) {
+				return;
+			}
 			$context                 = WordPress::get_user_context( $user->ID );
 			$context['new_password'] = $new_password;
 			AutomationController::sure_trigger_handle_trigger(

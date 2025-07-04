@@ -90,11 +90,15 @@ if ( ! class_exists( 'PostTrashed' ) ) :
 		 */
 		public function trigger_listener( $post_id ) {
 
-			$context                = (array) get_post( $post_id );
-			$user                   = get_userdata( (int) $context['post_author'] );
-			$context['post_author'] = ( property_exists( $user, 'user_nicename' ) ) ? $user->user_nicename : $user->user_email;
-			$context['post']        = $post_id;
-			$featured_image         = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post_id ), 'full' );
+			$context = (array) get_post( $post_id );
+			if ( isset( $context['post_author'] ) ) {
+				$user = get_userdata( (int) $context['post_author'] );
+				if ( $user instanceof \WP_User ) {
+					$context['post_author'] = ( property_exists( $user, 'user_nicename' ) ) ? $user->user_nicename : $user->user_email;
+				}
+			}
+			$context['post'] = $post_id;
+			$featured_image  = wp_get_attachment_image_src( (int) get_post_thumbnail_id( $post_id ), 'full' );
 			if ( ! empty( $featured_image ) && is_array( $featured_image ) ) {
 				$context['featured_image'] = $featured_image[0];
 			}

@@ -46,9 +46,12 @@ class FluentCRM extends Integrations {
 	 * Fetch tag data.
 	 *
 	 * @param int $tag_id tag id.
-	 * @return mixed
+	 * @return mixed|array
 	 */
 	public function get_tag_data( $tag_id ) {
+		if ( ! class_exists( 'FluentCrm\App\Models\Tag' ) ) {
+			return [];
+		}
 		$tag = Tag::where( 'id', $tag_id )->get();
 		return $tag;
 	}
@@ -60,6 +63,9 @@ class FluentCRM extends Integrations {
 	 * @return mixed
 	 */
 	public function get_list_data( $list_id ) {
+		if ( ! class_exists( 'FluentCrm\App\Models\Lists' ) ) {
+			return [];
+		}
 		$list = Lists::find( $list_id );
 		return $list;
 	}

@@ -71,7 +71,7 @@ class EventCalendarSendRsvp extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
-		if ( ! class_exists( 'Tribe__Tickets__Main' ) || ! class_exists( 'Tribe__Events__Main' ) ) {
+		if ( ! class_exists( 'Tribe__Tickets__Main' ) || ! class_exists( 'Tribe__Events__Main' ) || ! class_exists( 'Tribe__Tickets__Tickets_Handler' ) || ! class_exists( 'Tribe__Tickets__RSVP' ) ) {
 			throw new Exception( 'The Events Calendar or Event Tickets plugin not installed.' );
 		}
 

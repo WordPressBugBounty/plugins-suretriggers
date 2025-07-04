@@ -78,7 +78,9 @@ class AddMembership extends AutomateAction {
 	 * @return array
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-
+		if ( ! class_exists( 'MeprTransaction' ) || ! class_exists( 'MeprUser' ) || ! class_exists( 'MeprProduct' ) || ! class_exists( 'MeprEvent' ) ) {
+			throw new Exception( 'MemberPress class not found.' );
+		}
 		if ( ! $user_id ) {
 			throw new Exception( 'User not found with this email address.' );
 		}
@@ -114,7 +116,7 @@ class AddMembership extends AutomateAction {
 		}
 		$txn->created_at = MeprUtils::ts_to_mysql_date( time() );
 
-		if ( isset( $expiration_date ) && ( '' === $expiration_date || is_null( $expiration_date ) ) ) {
+		if ( '' === $expiration_date ) {
 			$obj           = new MeprProduct( sanitize_key( $product_id ) );
 			$expires_at_ts = $obj->get_expires_at();
 			if ( is_null( $expires_at_ts ) ) {

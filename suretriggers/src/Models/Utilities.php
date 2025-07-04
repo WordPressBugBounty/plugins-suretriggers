@@ -91,7 +91,7 @@ class Utilities extends Model {
 		$count_result = $model->db->get_results(
 			$model->db->prepare( $sql_query, "%%{$terms}%%" )
 		);
-		$count        = count( $count_result );
+		$count        = is_array( $count_result ) ? count( $count_result ) : 0;
 
 		return [
 			'results'  => $result,
@@ -103,6 +103,7 @@ class Utilities extends Model {
 	 * Get search page limit.
 	 *
 	 * @param string $type search type.
+	 * @return int
 	 * @since 1.0.0
 	 */
 	public static function get_search_page_limit( $type = 'options' ) {
@@ -205,7 +206,7 @@ class Utilities extends Model {
 	 * @param string $terms search string.
 	 * @param int    $page Page Number.
 	 * @param int    $form_id WPForm ID.
-	 * @return array
+	 * @return array|void
 	 * @since 1.0.0
 	 */
 	public static function get_wpform_fields( $terms, $page, $form_id ) {
@@ -219,7 +220,7 @@ class Utilities extends Model {
 		$offset  = $limit * ( $page - 1 );
 		$results = [];
 
-		if ( ! class_exists( 'WPForms_Form_Handler' ) ) {
+		if ( ! class_exists( 'WPForms_Form_Handler' ) || ! function_exists( 'wpforms_decode' ) ) {
 			return;
 		}
 		$wpforms = new WPForms_Form_Handler();
@@ -294,7 +295,7 @@ class Utilities extends Model {
 		$results = [];
 
 		if ( ! function_exists( 'wpFluent' ) ) {
-			[
+			return [
 				'results'  => [],
 				'has_more' => false,
 			];
@@ -302,48 +303,51 @@ class Utilities extends Model {
 
 		$form       = wpFluent()->table( 'fluentform_forms' )->find( $form_id );
 		$field_data = json_decode( $form->form_fields, true );
-		$count      = count( $field_data['fields'] );
+		$count      = ( is_array( $field_data ) && isset( $field_data['fields'] ) && is_array( $field_data['fields'] ) ) ? count( $field_data['fields'] ) : 0;
 
-		foreach ( $field_data['fields'] as $field ) {
-			// check if the field has multiple inputs ...
-			if ( isset( $field['fields'] ) ) {
-				foreach ( $field['fields'] as $field_key => $sub_field ) {
-					if (
-						isset( $sub_field['settings'] )
-						&& isset( $sub_field['settings']['label'] )
-						&& isset( $sub_field['settings']['visible'] )
-						&& true === $sub_field['settings']['visible']
-					) {
-						$results[] = [
-							'value' => $field_key,
-							'text'  => esc_html( $sub_field['settings']['label'] ),
-						];
-					}
-				}
-			} elseif ( isset( $field['element'] ) && 'container' === (string) $field['element'] && isset( $field['columns'] ) && is_array( $field['columns'] ) ) {
-				$container_fields = $field['columns'];
-				foreach ( $container_fields as $c_fields ) {
-					foreach ( $c_fields['fields'] as $field_key => $sub_field ) {
-						if ( isset( $sub_field['settings'] ) && isset( $sub_field['settings']['label'] ) ) {
+		if ( is_array( $field_data ) && isset( $field_data['fields'] ) ) {
+			foreach ( $field_data['fields'] as $field ) {
+				// check if the field has multiple inputs ...
+				if ( isset( $field['fields'] ) ) {
+					foreach ( $field['fields'] as $field_key => $sub_field ) {
+						if (
+							isset( $sub_field['settings'] )
+							&& is_array( $sub_field['settings'] )
+							&& isset( $sub_field['settings']['label'] )
+							&& isset( $sub_field['settings']['visible'] )
+							&& true === $sub_field['settings']['visible']
+						) {
 							$results[] = [
-								'value' => isset( $sub_field['attributes']['name'] ) ? $sub_field['attributes']['name'] : strtolower( $sub_field['settings']['label'] ),
+								'value' => $field_key,
 								'text'  => esc_html( $sub_field['settings']['label'] ),
 							];
-
 						}
 					}
-				}
-			} elseif ( isset( $field['attributes'] ) && isset( $field['attributes']['name'] ) ) {
-				if ( isset( $field['attributes']['placeholder'] ) && ! empty( $field['attributes']['placeholder'] ) ) {
-					$results[] = [
-						'value' => $field['attributes']['name'],
-						'text'  => esc_html( $field['attributes']['placeholder'] ),
-					];
-				} elseif ( isset( $field['settings'] ) && isset( $field['settings']['label'] ) && ! empty( $field['settings']['label'] ) ) {
-					$results[] = [
-						'value' => $field['attributes']['name'],
-						'text'  => esc_html( $field['settings']['label'] ),
-					];
+				} elseif ( isset( $field['element'] ) && 'container' === (string) $field['element'] && isset( $field['columns'] ) && is_array( $field['columns'] ) ) {
+					$container_fields = $field['columns'];
+					foreach ( $container_fields as $c_fields ) {
+						foreach ( $c_fields['fields'] as $field_key => $sub_field ) {
+							if ( isset( $sub_field['settings'] ) && isset( $sub_field['settings']['label'] ) ) {
+								$results[] = [
+									'value' => isset( $sub_field['attributes']['name'] ) ? $sub_field['attributes']['name'] : strtolower( $sub_field['settings']['label'] ),
+									'text'  => esc_html( $sub_field['settings']['label'] ),
+								];
+
+							}
+						}
+					}
+				} elseif ( is_array( $field ) && isset( $field['attributes'] ) && isset( $field['attributes']['name'] ) ) {
+					if ( isset( $field['attributes']['placeholder'] ) && ! empty( $field['attributes']['placeholder'] ) ) {
+						$results[] = [
+							'value' => $field['attributes']['name'],
+							'text'  => esc_html( $field['attributes']['placeholder'] ),
+						];
+					} elseif ( isset( $field['settings'] ) && isset( $field['settings']['label'] ) && ! empty( $field['settings']['label'] ) ) {
+						$results[] = [
+							'value' => $field['attributes']['name'],
+							'text'  => esc_html( $field['settings']['label'] ),
+						];
+					}
 				}
 			}
 		}
@@ -361,6 +365,7 @@ class Utilities extends Model {
 	 * @param string $terms search string.
 	 * @param int    $page Page Number.
 	 * @param array  $taxonomy Category type.
+	 * @return array
 	 * @since 1.0.0
 	 */
 	public static function get_terms( $terms, $page, $taxonomy ) {
@@ -403,6 +408,7 @@ class Utilities extends Model {
 	 *
 	 * @param string $terms Search term.
 	 * @param int    $page Page number.
+	 * @return array
 	 * @since 1.0.0
 	 */
 	public static function get_subscription_variation( $terms, $page ) {
@@ -440,6 +446,7 @@ class Utilities extends Model {
 	 *
 	 * @param string $terms Search term.
 	 * @param int    $page Page number.
+	 * @return array
 	 * @since 1.0.0
 	 */
 	public static function get_variable_products( $terms, $page ) {
@@ -481,9 +488,10 @@ class Utilities extends Model {
 	 * Get selected product variations.
 	 *
 	 * @param int $parent parent id.
+	 * @return array
 	 * @since 1.0.0
 	 */
-	public static function get_product_variations( $parent = '' ) {
+	public static function get_product_variations( $parent ) {
 
 		$params = [
 			'post_status'    => 'publish',
@@ -549,10 +557,12 @@ class Utilities extends Model {
 
 		if ( ! empty( $post_metas ) ) {
 			foreach ( $post_metas as $post_meta ) {
-				$inner_forms = self::search_elementor_forms( json_decode( $post_meta->meta_value ) );
+				$inner_forms = self::search_elementor_forms( (array) json_decode( $post_meta->meta_value ) );
 				if ( ! empty( $inner_forms ) ) {
 					foreach ( $inner_forms as $form ) {
-						$elementor_forms[ $form->id ] = $form->settings->form_name;
+						if ( is_object( $form ) ) {
+							$elementor_forms[ $form->id ] = $form->settings->form_name;
+						}
 					}
 				}
 			}
@@ -615,11 +625,13 @@ class Utilities extends Model {
 
 		if ( ! empty( $post_metas ) ) {
 			foreach ( $post_metas as $post_meta ) {
-				$inner_forms = self::search_elementor_forms( json_decode( $post_meta->meta_value ) );
+				$inner_forms = self::search_elementor_forms( (array) json_decode( $post_meta->meta_value ) );
 				if ( ! empty( $inner_forms ) ) {
 					foreach ( $inner_forms as $form ) {
-						foreach ( $form->settings->form_fields as $form_field ) {
-							$elementor_form_fields[ $form_field->custom_id ] = $form_field->field_label;
+						if ( is_object( $form ) ) {
+							foreach ( $form->settings->form_fields as $form_field ) {
+								$elementor_form_fields[ $form_field->custom_id ] = $form_field->field_label;
+							}
 						}
 					}
 				}

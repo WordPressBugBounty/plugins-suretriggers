@@ -83,9 +83,11 @@ class CompleteLesson {
 	public function trigger_listener( $lesson_id, $user_id ) {
 		$lesson = get_post( $lesson_id );
 
-		$context                 = WordPress::get_user_context( $user_id );
-		$context['lesson_id']    = $lesson_id;
-		$context['lesson_title'] = $lesson->post_title;
+		$context              = WordPress::get_user_context( $user_id );
+		$context['lesson_id'] = $lesson_id;
+		if ( $lesson instanceof \WP_Post ) {
+			$context['lesson_title'] = $lesson->post_title;
+		}
 
 		AutomationController::sure_trigger_handle_trigger(
 			[

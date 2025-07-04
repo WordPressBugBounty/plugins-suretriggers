@@ -90,7 +90,9 @@ if ( ! class_exists( 'PurchaseMembership' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $event ) {
-
+			if ( ! class_exists( 'MeprEvent' ) || ! $event instanceof \MeprEvent ) {
+				return;
+			}
 			$subscription = $event->get_data();
 			$context      = array_merge(
 				WordPress::get_user_context( $subscription->user_id ),

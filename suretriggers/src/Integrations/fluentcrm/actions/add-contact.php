@@ -77,7 +77,9 @@ class AddContact extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-
+		if ( ! function_exists( 'FluentCrmApi' ) || ! function_exists( 'fluentcrm_get_custom_contact_fields' ) ) {
+			throw new Exception( 'FluentCRM functions not found.' );
+		}
 		if ( empty( $selected_options['contact_email'] ) || ! is_email( $selected_options['contact_email'] ) ) {
 			throw new Exception( 'Email address is invalid.' );
 		}

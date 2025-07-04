@@ -84,12 +84,12 @@ if ( ! class_exists( 'UserBookingApproved' ) ) :
 		 * Trigger listener
 		 *
 		 * @param object $em_booking_obj Event data.
-		 * @param object $em_status Event booking status.
+		 * @param array  $em_status Event booking status.
 		 *  
 		 * @return void
 		 */
 		public function trigger_listener( $em_booking_obj, $em_status ) {
-			if ( 1 !== $em_status['status'] ) {
+			if ( 1 !== $em_status['status'] || ! property_exists( $em_booking_obj, 'event_id' ) || ! property_exists( $em_booking_obj, 'person_id' ) ) {
 				return;
 			}
 			$event_id = $em_booking_obj->event_id;
@@ -100,7 +100,7 @@ if ( ! class_exists( 'UserBookingApproved' ) ) :
 			$location     = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}em_locations as b WHERE b.location_id  = %s", $all_bookings->location_id ) );
 			$context      = array_merge(
 				WordPress::get_user_context( $user_id ), 
-				(array) json_decode( wp_json_encode( $all_bookings ), true )
+				(array) json_decode( (string) wp_json_encode( $all_bookings ), true )
 			);
 			if ( ! empty( $location ) ) {
 				$context = array_merge( $context, (array) $location );

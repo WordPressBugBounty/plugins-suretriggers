@@ -95,15 +95,19 @@ class FindOrdersByUserID extends AutomateAction {
 		 */
 		foreach ( $customer_orders as $customer_order ) {
 			$order = wc_get_order( $customer_order );
-			if ( $order ) {
+			if ( $order && $order instanceof \WC_Order ) {
 				if ( $order->has_status( [ 'completed' ] ) ) {
 					$ids[]    = $order->get_id();
 					$status[] = $order->get_status();
 					$items    = $order->get_items();
 					foreach ( $items as $item ) {
-						$product         = $item->get_product();
-						$product_ids[]   = $product->get_id();
-						$product_names[] = $product->get_name();
+						if ( $item instanceof \WC_Order_Item_Product ) {
+							$product = $item->get_product();
+							if ( $product instanceof \WC_Product ) {
+								$product_ids[]   = $product->get_id();
+								$product_names[] = $product->get_name();
+							}
+						}
 					}
 				}
 			}

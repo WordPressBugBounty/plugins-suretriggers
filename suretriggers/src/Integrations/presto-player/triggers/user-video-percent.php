@@ -89,6 +89,9 @@ if ( ! class_exists( 'UserVideoPercent' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $video_id, $percent, $visit_time ) {
+			if ( ! class_exists( 'PrestoPlayer\Models\Video' ) ) {
+				return;
+			}
 			$user_id                        = ap_get_current_user_id();
 			$context                        = WordPress::get_user_context( $user_id );
 			$context['pp_video']            = $video_id;

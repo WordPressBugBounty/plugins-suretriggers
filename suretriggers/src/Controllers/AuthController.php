@@ -16,6 +16,7 @@ namespace SureTriggers\Controllers;
 use SureCart\Models\ApiToken;
 use SureTriggers\Models\SaasApiToken;
 use SureTriggers\Traits\SingletonLoader;
+use WP_REST_Request;
 
 /**
  * AuthController- Connect and revoke user access_token.
@@ -31,22 +32,7 @@ use SureTriggers\Traits\SingletonLoader;
  */
 class AuthController {
 
-
 	use SingletonLoader;
-
-	/**
-	 * Access token for authentication.
-	 *
-	 * @var string $secret_key
-	 */
-	private $access_token;
-
-	/**
-	 * Connection id for authentication.
-	 *
-	 * @var string $secret_key
-	 */
-	private $connection_id;
 
 	/**
 	 * Secret Key for authentication.
@@ -56,58 +42,36 @@ class AuthController {
 	private $secret_key;
 
 	/**
-	 * List of conected integrations/plugins.
-	 *
-	 * @var array $connected_integrations
-	 */
-	private $connected_integrations;
-
-	/**
-	 * Initialise data.
+	 * Initialize data.
 	 */
 	public function __construct() {
-		$this->access_token           = OptionController::get_option( 'access_token' );
-		$this->connection_id          = OptionController::get_option( 'connection_id' );
-		$this->connected_integrations = OptionController::get_option( 'connected_integrations', [] );
-		$this->secret_key             = SaasApiToken::get();
+		$this->secret_key = SaasApiToken::get();
 		add_action( 'admin_init', [ $this, 'save_connection' ] );
 		add_action( 'updated_option', [ $this, 'updated_sc_api_key' ], 10, 3 );
 	}
 
 	/**
-	 * Remove the respective integration triggers after deleting the connection
+	 * Add or revoke access token from SaaS.
 	 *
-	 * @param string $integration Integration Name.
-	 */
-	public static function remove_integration_triggers( $integration ) {
-		$saved_triggers = OptionController::get_option( 'triggers', [] );
-
-		foreach ( $saved_triggers as $index => $trigger ) {
-			if ( ! empty( $trigger['integration'] ) && $integration === $trigger['integration'] ) {
-				unset( $saved_triggers[ $index ] );
-			}
-		}
-
-		$saved_triggers = OptionController::set_option( 'triggers', $saved_triggers );
-
-		// Remove the respective integration triggers field data after deleting the connection.
-		$saved_triggers_data = OptionController::get_option( 'trigger_data', [] );
-		foreach ( $saved_triggers_data as $index => $trigger ) {
-			if ( is_array( $saved_triggers_data ) && is_array( $trigger ) && ! empty( $trigger ) && $integration === $index ) {
-				unset( $saved_triggers_data[ $index ] );
-			}
-		}
-		$saved_triggers_data = OptionController::set_option( 'trigger_data', $saved_triggers_data );
-	}
-
-	/**
-	 * Add or revoke access token from Sass.
-	 *
-	 * @param object $request Request.
+	 * @param WP_REST_Request $request Request.
+	 * 
+	 * @return object|void
 	 */
 	public function revoke_connection( $request ) {
-		$secret_key       = $request->get_header( 'st_authorization' );
-		list($secret_key) = sscanf( $secret_key, 'Bearer %s' );
+		$secret_key = $request->get_header( 'st_authorization' );
+		
+		if ( ! is_string( $secret_key ) || empty( $secret_key ) || empty( $this->secret_key ) ) { 
+			return;
+		}
+
+		$parsed = sscanf( $secret_key, 'Bearer %s' );
+		if ( is_array( $parsed ) ) {
+			list( $secret_key ) = $parsed;
+		}
+
+		if ( empty( $secret_key ) ) { 
+			return;
+		}
 
 		if ( $this->secret_key !== $secret_key ) {
 			return RestController::error_message( 'Invalid secret key.' );
@@ -180,9 +144,12 @@ class AuthController {
 	/**
 	 * Send a request to the SAAS to create SureCart connection for authorized user
 	 *
-	 * @return string
+	 * @return void
 	 */
 	public function create_sc_connection() {
+		if ( ! class_exists( ApiToken::class ) ) {
+			return;
+		}
 		$sc_api_key = ApiToken::get();
 
 		if ( empty( $sc_api_key ) ) {

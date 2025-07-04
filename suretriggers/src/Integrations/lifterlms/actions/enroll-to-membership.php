@@ -77,12 +77,14 @@ class EnrollToMembership extends AutomateAction {
 	 * @return bool|array|object
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-
-		/**
-		 * Int member ship ID
-		 *
-		 * @var int|mixed|null $membership_id Membership ID.
-		 */
+		if ( ! function_exists( 'llms_enroll_student' ) ) {
+			$this->set_error(
+				[
+					'msg' => __( 'LifterLMS enrollment function not found.', 'suretriggers' ),
+				]
+			);
+			return false;
+		}
 		$membership_id = isset( $selected_options['llms_membership'] ) ? $selected_options['llms_membership'] : '0';
 		$membership    = get_post( (int) $membership_id );
 

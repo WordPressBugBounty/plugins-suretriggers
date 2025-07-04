@@ -73,6 +73,12 @@ class CreateNewOrder extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		$user_id = ap_get_user_id_from_email( $selected_options['billing_email'] );
 		$order   = wc_create_order();
+		if ( ! $order instanceof \WC_Order || ! is_int( $user_id ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Unable to create order.', 'suretriggers' ),
+			];
+		}
 
 		$order->set_customer_id( $user_id );
 
@@ -83,12 +89,14 @@ class CreateNewOrder extends AutomateAction {
 		if ( $product && $product->is_type( 'variation' ) ) {
 			if ( method_exists( $product, 'get_variation_attributes' ) ) {
 				$variation_data = $product->get_variation_attributes();
-				if ( method_exists( $order, 'add_product' ) ) {
+				if ( method_exists( $order, 'add_product' ) && $product instanceof \WC_Product ) {
 					$order->add_product( $product, $quantity, $variation_data );
 				}
 			}
 		} else {
-			$order->add_product( $product, $quantity );
+			if ( $product instanceof \WC_Product ) {
+				$order->add_product( $product, $quantity );
+			}
 		}
 
 		if ( ! empty( $selected_options['coupon_id'] ) ) {

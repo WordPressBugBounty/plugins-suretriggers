@@ -93,7 +93,13 @@ class PurchaseMembership {
 		$context['order_type']        = get_post_meta( $order_id, '_llms_order_type', true );
 		$context['trial_offer']       = get_post_meta( $order_id, '_llms_trial_offer', true );
 		$context['billing_frequency'] = get_post_meta( $order_id, '_llms_billing_frequency', true );
-		$context                      = array_merge( $context, WordPress::get_user_context( $user_id ) );
+		
+		/**
+		 * User ID.
+		 *
+		 * @var string $user_id
+		 */
+		$context = array_merge( $context, WordPress::get_user_context( intval( $user_id ) ) );
 
 		AutomationController::sure_trigger_handle_trigger(
 			[

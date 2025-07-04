@@ -84,13 +84,13 @@ if ( ! class_exists( 'TagRemovedFromContact' ) ) :
 		/**
 		 * Trigger listener
 		 *
-		 * @param array $tag_ids Tag IDs.
-		 * @param mixed $contact Contact.
+		 * @param array  $tag_ids Tag IDs.
+		 * @param object $contact Contact.
 		 * @return void
 		 */
 		public function trigger_listener( $tag_ids, $contact ) {
 
-			if ( empty( $tag_ids ) ) {
+			if ( empty( $tag_ids ) || ! method_exists( $contact, 'toArray' ) ) {
 				return;
 			}
 			$contact = $contact->toArray();

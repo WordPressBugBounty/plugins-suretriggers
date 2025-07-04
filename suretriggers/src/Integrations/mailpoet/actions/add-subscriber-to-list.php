@@ -75,7 +75,7 @@ class AddSubscriberToList extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		if ( ! class_exists( '\MailPoet\API\API' ) ) {
+		if ( ! class_exists( '\MailPoet\API\API' ) || ! class_exists( '\MailPoet\API\MP\v1\APIException' ) ) {
 			return;
 		}
 
@@ -132,6 +132,10 @@ class AddSubscriberToList extends AutomateAction {
 
 		// Get the MailPoet API.
 		$mailpoet = \MailPoet\API\API::MP( 'v1' );
+
+		if ( ! isset( $subscriber['email'] ) || ! isset( $subscriber['status'] ) ) {
+			return;
+		}
 
 		try {
 			// Try to get the subscriber.

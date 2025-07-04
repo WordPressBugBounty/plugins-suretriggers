@@ -84,12 +84,12 @@ if ( ! class_exists( 'UserUnregisterEvent' ) ) :
 		 * Trigger listener
 		 *
 		 * @param object $em_booking_obj Event data.
-		 * @param object $em_status Event booking status.
+		 * @param array  $em_status Event booking status.
 		 *  
 		 * @return void
 		 */
 		public function trigger_listener( $em_booking_obj, $em_status ) {
-			if ( 3 !== $em_status['status'] ) {
+			if ( 3 !== $em_status['status'] || ! property_exists( $em_booking_obj, 'event_id' ) || ! property_exists( $em_booking_obj, 'person_id' ) ) {
 				return;
 			}
 
@@ -100,7 +100,7 @@ if ( ! class_exists( 'UserUnregisterEvent' ) ) :
 			$all_bookings       = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}em_events as e where e.event_id = %d", $event_id ) );
 			$context            = array_merge(
 				WordPress::get_user_context( $user_id ), 
-				json_decode( wp_json_encode( $all_bookings ), true )
+				(array) json_decode( (string) wp_json_encode( $all_bookings ), true )
 			);
 			$context['post_id'] = $all_bookings->post_id;
 			AutomationController::sure_trigger_handle_trigger(

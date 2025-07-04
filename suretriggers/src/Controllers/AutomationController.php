@@ -33,50 +33,22 @@ class AutomationController {
 	 * Trigger handler.
 	 *
 	 * @param array $trigger_data trigger data.
+	 * 
+	 * @return bool
 	 */
 	public static function sure_trigger_handle_trigger( $trigger_data ) {
-		// Calll rest API.
+		// Call rest API.
 		return RestController::get_instance()->trigger_listener( $trigger_data );
-	}
-
-	/**
-	 * Find the next node of automation on the basis of current node id.
-	 *
-	 * @param array $automation automation.
-	 * @param int   $id node id.
-	 * @return mixed|null
-	 */
-	public static function find_next_node( $automation, $id ) {
-		if ( is_array( $automation ) && isset( $automation['rules'] ) ) {
-			$rules = $automation['rules'];
-			foreach ( $rules as $rule ) {
-
-				if ( isset( $rule['parentId'] ) && $id === $rule['parentId'] ) {
-					return $rule;
-				}
-
-				if ( isset( $rule['rules'] ) ) {
-					foreach ( $rule['rules'] as $inner_rules ) {
-
-						if ( isset( $inner_rules['parentId'] ) && $id === $inner_rules['parentId'] ) {
-							return $inner_rules;
-						}
-					}
-				}
-			}
-		}
-
-		return null;
 	}
 
 	/**
 	 * Register trigger listener.
 	 *
-	 * @return string
+	 * @return string|void
 	 */
 	public function register_trigger_listener() {
-		$events                 = OptionController::get_option( 'triggers', [] );
-		$test_trigger_transient = OptionController::get_option( 'test_triggers', [] );
+		$events                 = OptionController::get_option( 'triggers' );
+		$test_trigger_transient = OptionController::get_option( 'test_triggers' );
 
 		if ( empty( $events ) && empty( $test_trigger_transient ) ) {
 			return;
@@ -87,11 +59,11 @@ class AutomationController {
 		}
 
 		if ( ! empty( $events ) && ! empty( $test_trigger_transient ) ) {
-			$events = array_merge( $events, $test_trigger_transient );
+			$events = array_merge( (array) $events, (array) $test_trigger_transient );
 		}
 
-		foreach ( $events as $trigger ) {
-			self::register_trigger( $trigger );
+		foreach ( (array) $events as $trigger ) {
+			self::register_trigger( (array) $trigger );
 		}
 	}
 
@@ -99,7 +71,7 @@ class AutomationController {
 	 * Register a given trigger.
 	 *
 	 * @param array $trigger trigger.
-	 * @return bool
+	 * @return bool|void
 	 */
 	public static function register_trigger( $trigger ) {
 		if ( ! isset( $trigger['trigger'] ) || ! isset( $trigger['integration'] ) ) {

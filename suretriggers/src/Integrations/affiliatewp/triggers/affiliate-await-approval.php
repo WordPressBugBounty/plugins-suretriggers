@@ -86,6 +86,9 @@ if ( ! class_exists( 'AffiliateAwaitApproval' ) ) :
 		 * @return string|void
 		 */
 		public function trigger_listener( $affiliate_id, $status, $old_status ) {
+			if ( ! function_exists( 'affwp_get_affiliate_user_id' ) || ! function_exists( 'affwp_get_affiliate' ) ) {
+				return;
+			}
 			if ( 'pending' !== $status ) {
 				return $status;
 			}

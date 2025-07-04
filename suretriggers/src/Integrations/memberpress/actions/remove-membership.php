@@ -76,7 +76,9 @@ class RemoveMembership extends AutomateAction {
 	 * @return array|bool
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-
+		if ( ! class_exists( 'MeprSubscription' ) || ! class_exists( 'MeprHooks' ) || ! class_exists( 'MeprTransaction' ) ) {
+			throw new Exception( 'MemberPress classes not found.' );
+		}
 		if ( ! $user_id ) {
 			throw new Exception( 'User not found with this email address.' );
 		}
@@ -87,7 +89,10 @@ class RemoveMembership extends AutomateAction {
 			$membership_id = $selected_options['memberpressproduct'];
 		}
 		$user_obj = get_user_by( 'id', $user_id );
-		$table    = MeprSubscription::account_subscr_table(
+		if ( ! $user_obj instanceof \WP_User ) {
+			throw new Exception( 'User not found.' );
+		}
+		$table = MeprSubscription::account_subscr_table(
 			'created_at',
 			'DESC',
 			'',
@@ -117,14 +122,17 @@ class RemoveMembership extends AutomateAction {
 
 		foreach ( $table['results'] as $row ) {
 			if ( $row->product_id === $membership_id || '-1' === $membership_id ) {
+				$sub = null;
 				if ( 'subscription' === $row->sub_type ) {
 					$sub = new MeprSubscription( $row->id );
 				} elseif ( 'transaction' === $row->sub_type ) {
 					$sub = new MeprTransaction( $row->id );
 				}
-				$sub->destroy();
-				$member = $sub->user();
-				$member->update_member_data();
+				if ( $sub ) {
+					$sub->destroy();
+					$member = $sub->user();
+					$member->update_member_data();
+				}
 			}
 		}
 

@@ -86,7 +86,9 @@ class CompleteCourse {
 
 		$context                 = WordPress::get_user_context( $user_id );
 		$context['tutor_course'] = $course_id;
-		$context['course_title'] = $course->post_title;
+		if ( $course instanceof \WP_Post ) {
+			$context['course_title'] = $course->post_title;
+		}
 
 		$context['course_material_included'] = get_post_meta( $course_id, '_tutor_course_material_includes', true ) ? get_post_meta( $course_id, '_tutor_course_material_includes', true ) : '';
 		$context['course_reqs']              = get_post_meta( $course_id, '_tutor_course_requirements', true ) ? get_post_meta( $course_id, '_tutor_course_requirements', true ) : '';

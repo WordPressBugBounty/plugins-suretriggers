@@ -26,6 +26,7 @@ if ( ! class_exists( 'EventController' ) ) :
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
 	 * @link     https://www.brainstormforce.com/
 	 * @since    1.0.0
+	 * @method static EventController get_instance()
 	 */
 	class EventController {
 
