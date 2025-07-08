@@ -1,3 +1,6 @@
+Version 1.1.1 - Tuesday, 8th July 2025
+- Improvement: "FluentBoards" – Added new "Get CRM Contact for Task" Action
+
 Version 1.1.0 - Friday, 4th July 2025
 - New: Settings page added for granular OttoKit access control
 - New: Added "WP Travel Engine" Integration

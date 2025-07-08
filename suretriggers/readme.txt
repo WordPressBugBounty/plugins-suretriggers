@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -320,7 +320,7 @@ Yes, if you have apps that are not yet integrated with OttoKit, please submit a 
 
 We take plugin security extremely seriously. If you discover a security vulnerability, please report it in a safe and responsible manner.
 
-You can report the issue through our [Bug Bounty Program](https://brainstormforce.com/bug-bounty-program/). We collaborate with Patchstack to provide opportunities for researchers to report vulnerabilities. The Patchstack team will help validate, triage, and handle any reported security issues.
+You can report the issue through our [Bug Bounty Program](https://brainstormforce.com/bug-bounty-program/).
 
 == Screenshots ==
 
@@ -334,6 +334,9 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.1 - Tuesday, 8th July 2025 =
+* Improvement: "FluentBoards" – Added new "Get CRM Contact for Task" Action
+
 = Version 1.1.0 - Friday, 4th July 2025 =
 * New: Settings page added for granular OttoKit access control
 * New: Added "WP Travel Engine" Integration
