@@ -1,3 +1,8 @@
+Version 1.1.2 - Tuesday, 15th July 2025
+- New: Added "ClickWhale" Integration
+- Improvement: "WooCommerce" - Added new Actions
+- Improvement: "FluentCRM" - Added new "Send Email By Campaign" Action
+
 Version 1.1.1 - Tuesday, 8th July 2025
 - Improvement: "FluentBoards" – Added new "Get CRM Contact for Task" Action
 

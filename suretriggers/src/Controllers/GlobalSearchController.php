@@ -1814,7 +1814,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					}
 				}
 			}
-			$context['pluggable_data']                 = array_merge( $context['pluggable_data'], is_int( $posts[0]->post_author ) ? WordPress::get_user_context( $posts[0]->post_author ) : [] );
+			$context['pluggable_data']                 = array_merge( $context['pluggable_data'], is_numeric( $posts[0]->post_author ) ? WordPress::get_user_context( (int) $posts[0]->post_author ) : [] );
 			$context['pluggable_data']['post']         = $posts[0]->ID;
 			$context['pluggable_data']['custom_metas'] = $custom_metas;
 			$context['response_type']                  = 'live';
@@ -6024,8 +6024,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 				$product_id = get_post_meta( $attendee_id, '_tribe_rsvp_product', true );
 				$order_id   = get_post_meta( $attendee_id, '_tribe_rsvp_order', true );
-				if ( is_int( $product_id ) && is_int( $order_id ) ) {
-					$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				if ( is_numeric( $product_id ) && is_numeric( $order_id ) ) {
+					$event_context = TheEventCalendar::get_event_context( (int) $product_id, (int) $order_id );
 				}
 
 				if ( ! empty( $event_context ) ) {
@@ -6053,8 +6053,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$attendee_id = $attendee->ID;
 				$product_id  = get_post_meta( $attendee_id, '_tec_tickets_commerce_ticket', true );
 				$order_id    = $attendee_id;
-				if ( is_int( $product_id ) ) {
-					$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				if ( is_numeric( $product_id ) ) {
+					$event_context = TheEventCalendar::get_event_context( (int) $product_id, $order_id );
 				}
 				if ( ! empty( $event_context ) ) {
 					$event_data               = $event_context;
@@ -6113,8 +6113,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				}
 				$product_id = get_post_meta( $attendee_id, '_tribe_rsvp_product', true );
 				$order_id   = get_post_meta( $attendee_id, '_tribe_rsvp_order', true );
-				if ( is_int( $product_id ) && is_int( $order_id ) ) {
-					$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				if ( is_numeric( $product_id ) && is_numeric( $order_id ) ) {
+					$event_context = TheEventCalendar::get_event_context( (int) $product_id, (int) $order_id );
 				}
 				if ( ! empty( $event_context ) ) {
 					$event_data               = array_merge( $attendee, $event_context );
@@ -6209,8 +6209,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				}
 				$order_id   = get_post_meta( $attendee_id, '_tribe_wooticket_order', true );
 				$product_id = get_post_meta( $attendee_id, '_tribe_wooticket_product', true );
-				if ( is_int( $product_id ) && is_int( $order_id ) ) {
-					$event_context = TheEventCalendar::get_event_context( $product_id, $order_id );
+				if ( is_numeric( $product_id ) && is_numeric( $order_id ) ) {
+					$event_context = TheEventCalendar::get_event_context( (int) $product_id, (int) $order_id );
 				}
 				if ( ! empty( $event_context ) ) {
 					$event_data               = $event_context;
@@ -7017,12 +7017,12 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 						LifterLMS::get_lms_lesson_context( $result_post_id )
 					);
 					$parent_course = get_post_meta( $result_post_id, '_llms_parent_course', true );
-					if ( is_int( $parent_course ) ) {
-						$context['course'] = get_the_title( $parent_course );
+					if ( is_numeric( $parent_course ) ) {
+						$context['course'] = get_the_title( (int) $parent_course );
 					}
 					$parent_section = get_post_meta( $result_post_id, '_llms_parent_section', true );
-					if ( '' !== ( $parent_section ) && is_int( $parent_section ) ) {
-						$context['parent_section'] = get_the_title( $parent_section );
+					if ( '' !== $parent_section && is_numeric( $parent_section ) ) {
+						$context['parent_section'] = get_the_title( (int) $parent_section );
 					}
 					break;
 				case 'lifterlms_course_enrolled':
@@ -7061,7 +7061,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$context['order_type']        = get_post_meta( $result_post_id, '_llms_order_type', true );
 					$context['trial_offer']       = get_post_meta( $result_post_id, '_llms_trial_offer', true );
 					$context['billing_frequency'] = get_post_meta( $result_post_id, '_llms_billing_frequency', true );
-					$context                      = array_merge( $context, is_int( $user_id ) ? WordPress::get_user_context( $user_id ) : [] );
+					$context                      = array_merge( $context, is_numeric( $user_id ) ? WordPress::get_user_context( (int) $user_id ) : [] );
 					break;
 				case 'lifterlms_purchase_membership':
 					$user_id                      = get_post_meta( $result_post_id, '_llms_user_id', true );
@@ -7073,7 +7073,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$context['order_type']        = get_post_meta( $result_post_id, '_llms_order_type', true );
 					$context['trial_offer']       = get_post_meta( $result_post_id, '_llms_trial_offer', true );
 					$context['billing_frequency'] = get_post_meta( $result_post_id, '_llms_billing_frequency', true );
-					$context                      = array_merge( $context, is_int( $user_id ) ? WordPress::get_user_context( $user_id ) : [] );
+					$context                      = array_merge( $context, is_numeric( $user_id ) ? WordPress::get_user_context( (int) $user_id ) : [] );
 					break;
 				case 'lifterlms_cancel_membership':
 					$context                    = array_merge( WordPress::get_post_context( $result_post_id ), WordPress::get_user_context( $result[0]->user_id ) );
@@ -7279,7 +7279,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			}
 			$offer_product = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
 			$user_id       = get_post_meta( $order_upsell_id, '_customer_user', true );
-			$context       = is_int( $user_id ) ? WordPress::get_user_context( $user_id ) : [];
+			$context       = is_numeric( $user_id ) ? WordPress::get_user_context( (int) $user_id ) : [];
 			if ( $order instanceof \WC_Order ) {
 				$context['order'] = $order->get_data();
 			}
@@ -7314,7 +7314,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			}
 			$offer_product = wcf_pro()->utils->get_offer_data( $step_id, $variation_id, $input_qty, $order_id );
 			$user_id       = get_post_meta( $order_downsell_id, '_customer_user', true );
-			$context       = is_int( $user_id ) ? WordPress::get_user_context( $user_id ) : [];
+			$context       = is_numeric( $user_id ) ? WordPress::get_user_context( (int) $user_id ) : [];
 			if ( $order instanceof \WC_Order ) {
 				$context['order'] = $order->get_data();
 			}
@@ -8294,16 +8294,16 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 		if ( 'quiz_essay_submitted' == $term || 'quiz_essay_graded' == $term ) {
 			if ( ! empty( $essay ) ) {
-				$context                     = is_int( $essay[0]->post_author ) ? WordPress::get_user_context( $essay[0]->post_author ) : [];
+				$context                     = is_numeric( $essay[0]->post_author ) ? WordPress::get_user_context( (int) $essay[0]->post_author ) : [];
 				$course_id                   = get_post_meta( $essay[0]->ID, 'course_id', true );
 				$lesson_id                   = get_post_meta( $essay[0]->ID, 'lesson_id', true );
 				$context['quiz_name']        = get_the_title( $quiz_id );
 				$context['sfwd_quiz_id']     = $quiz_id;
 				$context['sfwd_question_id'] = $question_id;
-				$context['question_name']    = is_int( $question_id ) ? (int) get_the_title( $question_id ) : null;
-				$context['course_name']      = is_int( $course_id ) ? (int) get_the_title( $course_id ) : null;
+				$context['question_name']    = is_numeric( $question_id ) ? get_the_title( (int) $question_id ) : null;
+				$context['course_name']      = is_numeric( $course_id ) ? get_the_title( (int) $course_id ) : null;
 				$context['course_id']        = $course_id;
-				$context['lesson_name']      = is_int( $lesson_id ) ? (int) get_the_title( $lesson_id ) : null;
+				$context['lesson_name']      = is_numeric( $lesson_id ) ? get_the_title( (int) $lesson_id ) : null;
 				$context['lesson_id']        = $lesson_id;
 				$context['essay_id']         = $essay[0]->ID;
 				$context['essay']            = WordPress::get_post_context( $essay[0]->ID );
@@ -8526,7 +8526,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$job_data     = array_merge( 
 			$post_content, 
 			is_array( $post_meta ) ? $post_meta : [], 
-			is_int( $post->post_author ) ? WordPress::get_user_context( $post->post_author ) : [] 
+			is_numeric( $post->post_author ) ? WordPress::get_user_context( (int) $post->post_author ) : []
 		);
 		foreach ( $job_data as $key => $job ) {
 			$newkey = str_replace( 'post', 'wpjob', $key );
@@ -16605,8 +16605,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				}
 				if ( ! empty( $course_ids ) && is_array( $course_ids ) ) {
 					foreach ( $course_ids as $key => $course_id ) {
-						if ( is_int( $course_id ) ) {
-							$args  = [
+						if ( is_numeric( $course_id ) ) {
+							$course_id = (int) $course_id;
+							$args      = [
 								'include'    => [ $courses[0]->user_id ],
 								'meta_query' => [
 									[
@@ -16615,7 +16616,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 									],
 								],
 							];
-							$users = get_users( $args );
+							$users     = get_users( $args );
 							if ( ! empty( $users ) ) {
 								$context_data[ 'completed ' . $key ]['course_id']                 = $course_id;
 								$context_data[ 'completed ' . $key ]['course_title']              = get_the_title( $course_id );
@@ -21315,6 +21316,115 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$context = json_decode( '{"pluggable_data":{"listing_id":123,"listing_title":"Sample Business Listing","listing_type":"gd_place","listing_url":"' . site_url( '/places/sample-business-listing/' ) . '","description":"This is a sample business listing description.","categories":["Restaurant","Cafe"],"tags":["Food","Coffee","Breakfast"],"attachments":["' . site_url( '/wp-content/uploads/sample-image.jpg' ) . '"],"address":"123 Main St","country":"United States","region":"California","city":"San Francisco","postal_code":"94105","latitude":"37.7749","longitude":"-122.4194","wp_user_id":10,"user_login":"sampleuser","display_name":"Sample User","user_firstname":"Sample","user_lastname":"User","user_email":"sample@example.com","user_role":["subscriber"]},"response_type":"sample"}', true );
 		return $context;
 	}
+	/**
+	 * Prepare clickwhale categories.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_clickwhale_categories( $data ) {
+
+		$options = [];
+		global $wpdb;
+
+		$categories = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_categories ORDER BY id DESC", ARRAY_A );
+
+		if ( ! empty( $categories ) ) {
+			foreach ( $categories as $category ) {
+				$options[] = [
+					'label' => $category['title'],
+					'value' => $category['id'],
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+	
+	/**
+	 * Get ClickWhale Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_clickwhale_triggers_last_data( $data ) {
+		global $wpdb;
+
+		$term    = isset( $data['search_term'] ) ? $data['search_term'] : '';
+		$context = [];
+
+		$latest_link = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}clickwhale_links ORDER BY id DESC LIMIT 1", ARRAY_A );
+
+		$get_author_data = function( $author_id ) {
+			if ( class_exists( '\SureTriggers\Integrations\WordPress\WordPress' ) ) {
+				return WordPress::get_user_context( $author_id );
+			}
+			return [];
+		};
+
+		$format_link = function( $link_data ) use ( $get_author_data ) {
+			$author_id = isset( $link_data['author'] ) ? $link_data['author'] : 0;
+
+			return [
+				'id'          => isset( $link_data['id'] ) ? $link_data['id'] : 17,
+				'title'       => isset( $link_data['title'] ) ? $link_data['title'] : 'Sample Title',
+				'slug'        => isset( $link_data['slug'] ) ? $link_data['slug'] : 'sample-slug',
+				'url'         => isset( $link_data['url'] ) ? $link_data['url'] : 'https://example.com',
+				'redirection' => isset( $link_data['redirection'] ) ? $link_data['redirection'] : '301',
+				'link_target' => isset( $link_data['link_target'] ) ? $link_data['link_target'] : '',
+				'nofollow'    => isset( $link_data['nofollow'] ) ? $link_data['nofollow'] : '1',
+				'sponsored'   => isset( $link_data['sponsored'] ) ? $link_data['sponsored'] : '0',
+				'description' => isset( $link_data['description'] ) ? $link_data['description'] : '',
+				'categories'  => isset( $link_data['categories'] ) ? $link_data['categories'] : '',
+				'author_id'   => $author_id,
+				'author'      => $get_author_data( $author_id ),
+				'created_at'  => isset( $link_data['created_at'] ) ? $link_data['created_at'] : current_time( 'mysql' ),
+				'updated_at'  => isset( $link_data['updated_at'] ) ? $link_data['updated_at'] : current_time( 'mysql' ),
+			];
+		};
+
+		switch ( $term ) {
+			case 'link_created':
+			case 'link_updated':
+				$link_data                 = ! empty( $latest_link ) ? $format_link( $latest_link ) : $format_link( [] );
+				$context['pluggable_data'] = [ 'link' => $link_data ];
+				$context['response_type']  = ! empty( $latest_link ) ? 'live' : 'sample';
+				break;
+
+			case 'link_deleted':
+				if ( ! empty( $latest_link ) ) {
+					$context['pluggable_data'] = [
+						'link_id'    => $latest_link['id'],
+						'deleted_at' => current_time( 'mysql' ),
+					];
+					$context['response_type']  = 'live';
+				} else {
+					$context['pluggable_data'] = [
+						'link_id'    => 17,
+						'deleted_at' => current_time( 'mysql' ),
+					];
+					$context['response_type']  = 'sample';
+				}
+				break;              
+
+			case 'link_clicked':
+				$link_data = ! empty( $latest_link ) ? $format_link( $latest_link ) : $format_link( [] );
+
+				$context['pluggable_data'] = [
+					'link' => $link_data,
+				];
+				$context['response_type']  = ! empty( $latest_link ) ? 'live' : 'sample';
+				break;
+		}
+
+		return (array) $context;
+	}
+
 
 }
 
