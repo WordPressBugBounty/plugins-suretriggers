@@ -73,14 +73,16 @@ class CreateNewOrder extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		$user_id = ap_get_user_id_from_email( $selected_options['billing_email'] );
 		$order   = wc_create_order();
-		if ( ! $order instanceof \WC_Order || ! is_int( $user_id ) ) {
+		if ( ! $order instanceof \WC_Order ) {
 			return [
 				'status'  => 'error',
 				'message' => __( 'Unable to create order.', 'suretriggers' ),
 			];
 		}
-
-		$order->set_customer_id( $user_id );
+		
+		if ( is_int( $user_id ) ) {
+			$order->set_customer_id( $user_id );
+		}
 
 		$quantity = $selected_options['quantity'] ? $selected_options['quantity'] : 1;
 

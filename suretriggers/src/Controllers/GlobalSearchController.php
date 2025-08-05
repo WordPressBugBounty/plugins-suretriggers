@@ -786,19 +786,34 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_variable_products( $data ) {
-		$products = Utilities::get_variable_products( $data['search_term'], $data['page'] );
-		$options  = [];
-
-		foreach ( $products['result'] as $product ) {
-			$options[] = [
-				'label' => $product->get_title(),
-				'value' => (string) $product->get_id(),
+		if ( ! function_exists( 'wc_get_products' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
 			];
 		}
-
+		
+		$products = wc_get_products(
+			[
+				'type'   => 'variable',
+				'status' => 'publish',
+				'limit'  => -1,
+			]
+		);
+		
+		$options = [];
+		if ( is_array( $products ) ) {
+			foreach ( $products as $product ) {
+				$options[] = [
+					'label' => $product->get_name(),
+					'value' => (string) $product->get_id(),
+				];
+			}
+		}
+		
 		return [
 			'options' => $options,
-			'hasMore' => $products['has_more'],
+			'hasMore' => false,
 		];
 	}
 
@@ -3182,6 +3197,70 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					'value' => $tag->id,
 				];
 			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Prepare fluentcrm templates.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_fluentcrm_templates( $data ) {
+		if ( ! class_exists( '\FluentCrm\App\Models\Template' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+		
+		$options   = [];
+		$templates = \FluentCrm\App\Models\Template::emailTemplates( [ 'publish', 'draft' ] )->orderBy( 'ID', 'desc' )->get();
+		
+		foreach ( $templates as $template ) {
+			$options[] = [
+				'label'           => $template->post_title,
+				'value'           => $template->ID,
+				'email_subject'   => get_post_meta( $template->ID, '_email_subject', true ),
+				'design_template' => get_post_meta( $template->ID, '_design_template', true ),
+			];
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Prepare fluentcrm sequences.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_fluentcrm_sequences( $data ) {
+		if ( ! class_exists( '\FluentCampaign\App\Models\Sequence' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+		
+		$options   = [];
+		$sequences = \FluentCampaign\App\Models\Sequence::orderBy( 'id', 'DESC' )->get();
+		
+		foreach ( $sequences as $sequence ) {
+			$options[] = [
+				'label' => $sequence->title,
+				'value' => $sequence->id,
+			];
 		}
 
 		return [
@@ -21195,7 +21274,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'options' => $result,
 			'hasMore' => $posts_count > ( $offset + $limit ),
 		];
-	}   
+	}
 	/**
 	 * Get GeoDirectory trigger last data.
 	 *
@@ -21203,6 +21282,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array|mixed
 	 */
 	public function search_geodir_triggers_last_data( $data ) {
+		$term    = isset( $data['search_term'] ) ? $data['search_term'] : '';
 		$context = [];
 
 		if ( function_exists( 'geodir_get_post_info' ) ) {
@@ -21226,8 +21306,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				if ( taxonomy_exists( $cat_taxonomy ) ) {
 					$terms = wp_get_post_terms( $post_id, $cat_taxonomy );
 					if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-						foreach ( $terms as $term ) {
-							$categories[] = $term->name;
+						foreach ( $terms as $term_obj ) {
+							$categories[] = $term_obj->name;
 						}
 					}
 				}
@@ -21237,8 +21317,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				if ( taxonomy_exists( $tag_taxonomy ) ) {
 					$terms = wp_get_post_terms( $post_id, $tag_taxonomy );
 					if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-						foreach ( $terms as $term ) {
-							$tags[] = $term->name;
+						foreach ( $terms as $term_obj ) {
+							$tags[] = $term_obj->name;
 						}
 					}
 				}
@@ -21287,33 +21367,238 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					}
 				}
 
-				$context['pluggable_data'] = array_merge(
-					[
-						'listing_id'    => $post->ID,
-						'listing_title' => $post->post_title,
-						'listing_type'  => $post->post_type,
-						'listing_url'   => get_permalink( $post->ID ),
-						'description'   => $post->post_content,
-						'categories'    => $categories,
-						'tags'          => $tags,
-						'attachments'   => $attachments,
-						'address'       => $address,
-						'country'       => $country,
-						'region'        => $region,
-						'city'          => $city,
-						'postal_code'   => $postal_code,
-						'latitude'      => $latitude,
-						'longitude'     => $longitude,
-					],
-					$user
-				);
+				$base_data = [
+					'listing_id'    => $post->ID,
+					'listing_title' => $post->post_title,
+					'listing_type'  => $post->post_type,
+					'listing_url'   => get_permalink( $post->ID ),
+					'description'   => $post->post_content,
+					'categories'    => $categories,
+					'tags'          => $tags,
+					'attachments'   => $attachments,
+					'address'       => $address,
+					'country'       => $country,
+					'region'        => $region,
+					'city'          => $city,
+					'postal_code'   => $postal_code,
+					'latitude'      => $latitude,
+					'longitude'     => $longitude,
+				];
+
+				switch ( $term ) {
+					case 'geodir_claimed_listing_added':
+					case 'geodir_claim_approved':
+					case 'geodir_claim_rejected':
+						$claim             = [];
+						$claim_status_text = 'unknown';
+
+						if ( 'geodir_claimed_listing_added' === $term ) {
+							$claim_status_text = 'pending';
+						} elseif ( 'geodir_claim_approved' === $term ) {
+							$claim_status_text = 'approved';
+						} elseif ( 'geodir_claim_rejected' === $term ) {
+							$claim_status_text = 'rejected';
+						}
+
+						global $wpdb;
+						$claim_table = $wpdb->prefix . 'geodir_claim';
+
+						$claim_id = $wpdb->get_var(
+							$wpdb->prepare(
+								"SELECT id FROM {$wpdb->prefix}geodir_claim WHERE post_id = %d ORDER BY id DESC LIMIT 1",
+								$post_id
+							)
+						);
+
+						if ( $claim_id && class_exists( '\GeoDir_Claim_Post' ) && is_callable( [ '\GeoDir_Claim_Post', 'get_item' ] ) ) {
+							$claim = \GeoDir_Claim_Post::get_item( $claim_id );
+						}
+
+						$context['pluggable_data'] = array_merge(
+							$base_data,
+							[
+								'claim' => array_merge(
+									(array) $claim,
+									[
+										'status' => $claim_status_text,
+									]
+								),
+							],
+							$user
+						);
+						break;
+					case 'geodir_listing_upgraded':
+						$context['pluggable_data'] = array_merge(
+							$base_data,
+							[
+								'package_id'     => 789,
+								'package_name'   => 'Premium Package',
+								'package_amount' => '99.99',
+								'package_days'   => '365',
+							],
+							$user
+						);
+						break;
+					default:
+						$context['pluggable_data'] = array_merge( $base_data, $user );
+						break;
+				}
 
 				$context['response_type'] = 'live';
 				return $context;
 			}
 		}
 
-		$context = json_decode( '{"pluggable_data":{"listing_id":123,"listing_title":"Sample Business Listing","listing_type":"gd_place","listing_url":"' . site_url( '/places/sample-business-listing/' ) . '","description":"This is a sample business listing description.","categories":["Restaurant","Cafe"],"tags":["Food","Coffee","Breakfast"],"attachments":["' . site_url( '/wp-content/uploads/sample-image.jpg' ) . '"],"address":"123 Main St","country":"United States","region":"California","city":"San Francisco","postal_code":"94105","latitude":"37.7749","longitude":"-122.4194","wp_user_id":10,"user_login":"sampleuser","display_name":"Sample User","user_firstname":"Sample","user_lastname":"User","user_email":"sample@example.com","user_role":["subscriber"]},"response_type":"sample"}', true );
+		$sample_data = [
+			'listing_id'     => 123,
+			'listing_title'  => 'Sample Business Listing',
+			'listing_type'   => 'gd_place',
+			'listing_url'    => site_url( '/places/sample-business-listing/' ),
+			'description'    => 'This is a sample business listing description.',
+			'categories'     => [ 'Restaurant', 'Cafe' ],
+			'tags'           => [ 'Food', 'Coffee', 'Breakfast' ],
+			'attachments'    => [ site_url( '/wp-content/uploads/sample-image.jpg' ) ],
+			'address'        => '123 Main St',
+			'country'        => 'United States',
+			'region'         => 'California',
+			'city'           => 'San Francisco',
+			'postal_code'    => '94105',
+			'latitude'       => '37.7749',
+			'longitude'      => '-122.4194',
+			'wp_user_id'     => 10,
+			'user_login'     => 'sampleuser',
+			'display_name'   => 'Sample User',
+			'user_firstname' => 'Sample',
+			'user_lastname'  => 'User',
+			'user_email'     => 'sample@example.com',
+			'user_role'      => [ 'subscriber' ],
+		];
+
+		switch ( $term ) {
+			case 'geodir_claim_approved':
+			case 'geodir_claim_rejected':
+			case 'geodir_claimed_listing_added':
+				$sample_data['claim'] = [
+					'id'             => 14,
+					'post_id'        => 123,
+					'post_type'      => 'gd_place',
+					'author_id'      => 10,
+					'user_id'        => 10,
+					'user_fullname'  => 'Sample User',
+					'user_number'    => '+1234567890',
+					'user_position'  => 'Business Owner',
+					'user_ip'        => '127.0.0.1',
+					'user_comments'  => 'Hi, I am the owner of this business and I would like to claim it.',
+					'admin_comments' => '',
+					'claim_date'     => current_time( 'mysql' ),
+					'status'         => 'pending',
+					'rand_string'    => 'sampleclaimstring123',
+					'payment_id'     => 0,
+					'old_package_id' => 0,
+					'package_id'     => 0,
+					'meta'           => [
+						'ninja_form_id' => '2',
+						'ninja_sub_id'  => '',
+						'ninja_post'    => 123,
+						'extra_fields'  => [
+							'user_id' => [
+								'label' => 'User ID',
+								'value' => '10',
+							],
+						],
+					],
+				];
+				break;
+			case 'geodir_listing_upgraded':
+				$sample_data['package_id']     = 789;
+				$sample_data['package_name']   = 'Premium Package';
+				$sample_data['package_amount'] = '99.99';
+				$sample_data['package_days']   = '365';
+				break;
+		}
+
+		$context['pluggable_data'] = $sample_data;
+		$context['response_type']  = 'sample';
+		return $context;
+	}
+
+	/**
+	 * Get WP Subscription triggers last data.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_wp_subscription_triggers_last_data( $data ) {
+		global $wpdb;
+
+		$context = [];
+		$term    = isset( $data['search_term'] ) ? $data['search_term'] : '';
+
+		$needs_subscription = in_array(
+			$term,
+			[
+				'subscription_activated',
+				'subscription_cancelled',
+				'subscription_expired',
+				'subscription_status_changed',
+				'subscription_pending',
+				'subscription_pending_cancellation',
+			],
+			true
+		);
+
+		if ( ! $needs_subscription ) {
+			return $context; 
+		}
+
+		$subscription = $wpdb->get_row(
+			"SELECT * FROM {$wpdb->prefix}posts WHERE post_type = 'subscrpt_order' ORDER BY post_modified DESC LIMIT 1"
+		);
+
+		$sample_subscription                        = new \stdClass();
+		$sample_subscription->ID                    = 100;
+		$sample_subscription->post_author           = 2;
+		$sample_subscription->post_date             = '2025-07-07 09:51:52';
+		$sample_subscription->post_date_gmt         = '2025-07-07 09:51:52';
+		$sample_subscription->post_content          = '';
+		$sample_subscription->post_title            = 'Subscription #100';
+		$sample_subscription->post_excerpt          = '';
+		$sample_subscription->post_status           = 'active';
+		$sample_subscription->comment_status        = 'closed';
+		$sample_subscription->ping_status           = 'closed';
+		$sample_subscription->post_password         = '';
+		$sample_subscription->post_name             = 'subscription-100';
+		$sample_subscription->to_ping               = '';
+		$sample_subscription->pinged                = '';
+		$sample_subscription->post_modified         = '2025-07-07 10:15:16';
+		$sample_subscription->post_modified_gmt     = '2025-07-07 10:15:16';
+		$sample_subscription->post_content_filtered = '';
+		$sample_subscription->post_parent           = 0;
+		$sample_subscription->guid                  = 'http://example.com/subscrpt_order/';
+		$sample_subscription->menu_order            = 0;
+		$sample_subscription->post_type             = 'subscrpt_order';
+		$sample_subscription->post_mime_type        = '';
+		$sample_subscription->comment_count         = 4;
+		$sample_subscription->filter                = 'raw';
+
+		$sub  = $subscription ? $subscription : $sample_subscription;
+		$type = $subscription ? 'live' : 'sample';
+
+		$pluggable_data = [
+			'subscription_id' => $sub->ID,
+			'subscription'    => $sub,
+			'user_id'         => $sub->post_author,
+		];
+
+		if ( 'subscription_status_changed' === $term ) {
+			$pluggable_data['old_status'] = 'pending';
+			$pluggable_data['new_status'] = $sub->post_status;
+		}
+
+		$context['pluggable_data'] = $pluggable_data;
+		$context['response_type']  = $type;
+
 		return $context;
 	}
 	/**

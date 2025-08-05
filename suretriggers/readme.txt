@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,15 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.3 - Tuesday, 5th August 2025 =
+* New: Menus like Status and OttoKit Settings are now translated into French, Spanish, Portuguese, Russian, and Hindi
+* New: Added "WP Subscription" Integration
+* Improvement: "GeoDirectory" – Added new Triggers
+* Improvement: "FluentCRM" - Added new Actions
+* Improvement: "WooCommerce" - Added new "Fetch Coupon Details" Action
+* Improvement: "EDD" - Added new "Fetch Discount Details" Action
+* Improvement: "Voxel" - Added new “Membership Plan Updated” Trigger
+
 = Version 1.1.2 - Tuesday, 15th July 2025 =
 * New: Added "ClickWhale" Integration
 * Improvement: "WooCommerce" - Added new Actions

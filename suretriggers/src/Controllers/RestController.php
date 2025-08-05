@@ -582,9 +582,9 @@ class RestController {
 		$response   = self::verify_user_token();
 		$connection = ( wp_remote_retrieve_response_code( $response ) === 200 );
 		if ( $connection ) {
-			$connection_status = 'Connection Successfully Set';
+			$connection_status = __( 'Connection Successfully Set', 'suretriggers' );
 		} else {
-			$connection_status = 'Error in Connection';
+			$connection_status = __( 'Error in Connection', 'suretriggers' );
 		}
 		
 		$fields = [

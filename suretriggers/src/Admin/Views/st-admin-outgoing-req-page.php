@@ -93,13 +93,13 @@ class SureTriggersWebhookRequestsTable extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return [
-			'id'            => 'ID',
-			'response_code' => 'Response Code',
-			'status'        => 'Status',
-			'trigger_event' => 'Trigger Event',
-			'error_info'    => 'Error Info',
-			'created_at'    => 'Created At',
-			'retry'         => 'Retry',
+			'id'            => __( 'ID', 'suretriggers' ),
+			'response_code' => __( 'Response Code', 'suretriggers' ),
+			'status'        => __( 'Status', 'suretriggers' ),
+			'trigger_event' => __( 'Trigger Event', 'suretriggers' ),
+			'error_info'    => __( 'Error Info', 'suretriggers' ),
+			'created_at'    => __( 'Created At', 'suretriggers' ),
+			'retry'         => __( 'Retry', 'suretriggers' ),
 		];
 	}
 
@@ -126,7 +126,7 @@ class SureTriggersWebhookRequestsTable extends WP_List_Table {
 		$id = esc_attr( $item['id'] );
 		if ( 'failed' == $item['status'] ) {
 			return '
-				<input type="submit" class="button button-primary st-retry-btn" name="retry_st_request" value="Retry" data-id="' . $id . '">
+				<input type="submit" class="button button-primary st-retry-btn" name="retry_st_request" value="' . esc_attr__( 'Retry', 'suretriggers' ) . '" data-id="' . esc_attr( $id ) . '">
 			';
 		} else {
 			return;
@@ -230,7 +230,7 @@ class SureTriggersWebhookRequestsTable extends WP_List_Table {
 					<?php esc_html_e( 'Failed Requests', 'suretriggers' ); ?>
 				</option>
 			</select>
-			<input type="submit" name="suretriggers_filter_request" id="suretriggers_filter_request" class="button" value="Filter">
+			<input type="submit" name="suretriggers_filter_request" id="suretriggers_filter_request" class="button" value="<?php echo esc_attr__( 'Filter', 'suretriggers' ); ?>">
 		</div>
 		<?php
 	}
@@ -254,8 +254,10 @@ $list_table = new SureTriggersWebhookRequestsTable( $table_name );
 	$list_table->prepare_items(); 
 	$list_table->display();
 	echo '<div style="margin-top: 10px;">
-        <p style="font-style: italic;color: #666;margin-left: 55%;">Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be automatically deleted after 60 days.</p>
-    </div>';
+		<p style="font-style: italic; color: #666; margin-left: 55%;">';
+		esc_html_e( 'Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be automatically deleted after 60 days.', 'suretriggers' );
+	echo '</p>
+	</div>';
 	?>
 </form>
 <script type="text/javascript">
