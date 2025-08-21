@@ -74,7 +74,10 @@ class RemoveTagFromContact extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
-			throw new Exception( 'FluentCrmApi function not found.' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentCrmApi function not found.', 'suretriggers' ),
+			];
 		}
 		$context     = [];
 		$contact_api = FluentCrmApi( 'contacts' );
@@ -82,7 +85,10 @@ class RemoveTagFromContact extends AutomateAction {
 		$contact = $contact_api->getContact( trim( $selected_options['contact_email'] ) );
 
 		if ( is_null( $contact ) ) {
-			throw new Exception( 'Invalid contact.' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'Invalid contact.', 'suretriggers' ),
+			];
 		}
 
 		$tag_ids   = [];

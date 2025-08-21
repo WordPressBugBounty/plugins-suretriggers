@@ -75,7 +75,10 @@ class AddEvent extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
-			throw new Exception( 'FluentCRM API is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentCRM API is not active.', 'suretriggers' ),
+			];
 		}
 
 		// Required fields validation.

@@ -67,7 +67,7 @@ class Loader {
 		add_action( 'admin_notices', [ $this, 'display_notice' ] );
 
 		add_action( 'all_admin_notices', [ $this, 'suretriggers_show_api_connection_error' ] );
-		
+
 		add_action( 'wp_dashboard_setup', [ $this, 'add_dashboard_widgets' ] );
 
 		// Remove Webhook Requests retry cron and requests table.
@@ -110,7 +110,7 @@ class Loader {
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Get Started', 'suretriggers' ); ?> </a>
 		</div>
 		<?php
-	} 
+	}
 
 	/**
 	 * Load Plugin Text Domain.
@@ -166,7 +166,7 @@ class Loader {
 			load_plugin_textdomain( 'suretriggers', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		}
 	}
-	
+
 	/**
 	 * Check if file is valid.
 	 *
@@ -210,7 +210,7 @@ class Loader {
 
 	/**
 	 * Show Connection Error Admin Notice.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function suretriggers_show_api_connection_error() {
@@ -302,12 +302,12 @@ class Loader {
 		$sass_url    = 'https://app.ottokit.com';
 		$api_url     = 'https://api.ottokit.com';
 		$webhook_url = 'https://webhook.ottokit.com';
-		
+
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.1.3' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.1.3' );
+		define( 'SURE_TRIGGERS_VER', '1.1.4' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.1.4' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -381,11 +381,11 @@ class Loader {
 			);
 
 			add_submenu_page(
-				'suretriggers', 
-				__( 'OttoKit Status', 'suretriggers' ), 
-				__( 'Status', 'suretriggers' ), 
-				'read', 
-				'suretriggers-status', 
+				'suretriggers',
+				__( 'OttoKit Status', 'suretriggers' ),
+				__( 'Status', 'suretriggers' ),
+				'read',
+				'suretriggers-status',
 				[ $this, 'suretriggers_status_menu_callback' ]
 			);
 		}
@@ -517,7 +517,7 @@ class Loader {
 
 		$data['settingsNonce'] = esc_js( $settings_nonce );
 		$data['ajaxurl']       = esc_url( admin_url( 'admin-ajax.php' ) );
-		
+
 		return apply_filters( 'sure_trigger_control_localize_vars', $data );
 	}
 
@@ -543,7 +543,7 @@ class Loader {
 		// Check permalink structure first.
 		$permalink_structure = get_option( 'permalink_structure' );
 		$is_plain_permalink  = empty( $permalink_structure );
-		
+
 		// If permalink structure is "Plain" and we're trying to connect or already connected, show a prominent warning.
 		if ( $is_plain_permalink ) {
 			?>
@@ -567,8 +567,8 @@ class Loader {
 				</div>
 			</div>
 			<?php
-		} 
-			
+		}
+
 		// Verify Token.
 		$response      = RestController::verify_user_token();
 		$response_body = wp_remote_retrieve_body( $response );
@@ -659,6 +659,7 @@ class Loader {
 			$tabs        = [
 				'st_system_page'       => __( 'Status', 'suretriggers' ),
 				'st_outgoing_requests' => __( 'Outgoing Requests', 'suretriggers' ),
+				'st_troubleshooting'   => __( 'Troubleshooting', 'suretriggers' ),
 			];
 			$current_tab = 'st_system_page';
 			if ( isset( $_REQUEST['tab'], $_REQUEST['_wpnonce'] ) && wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'suretriggers_tab_nonce' ) ) {
@@ -692,6 +693,9 @@ class Loader {
 					break;
 				case 'st_outgoing_requests':
 					include_once __DIR__ . '/Admin/Views/st-admin-outgoing-req-page.php';
+					break;
+				case 'st_troubleshooting':
+					include_once __DIR__ . '/Admin/Views/st-admin-troubleshooting-page.php';
 					break;
 			}
 			?>
@@ -801,7 +805,7 @@ class Loader {
 		}
 		return esc_url_raw( $iframe_url );
 	}
-	
+
 
 	/**
 	 * Custom Filter data to check if user is logged in iframe.

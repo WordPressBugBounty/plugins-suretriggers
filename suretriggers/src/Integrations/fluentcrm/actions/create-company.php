@@ -85,11 +85,17 @@ class CreateCompany extends AutomateAction {
 		// Check if company module is enabled.
 		$is_company_enabled = Helper::isCompanyEnabled();
 		if ( ! $is_company_enabled ) {
-			throw new Exception( 'Company module disabled. You can add companies and assign contacts to companies only when it is enabled!!' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'Company module disabled. You can add companies and assign contacts to companies only when it is enabled!!', 'suretriggers' ),
+			];
 		}
 
 		if ( '' != $selected_options['company_email'] && ! is_email( $selected_options['company_email'] ) ) {
-			throw new Exception( 'Email address is invalid.' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'Email address is invalid.', 'suretriggers' ),
+			];
 		}
 
 		$data = [
@@ -138,7 +144,10 @@ class CreateCompany extends AutomateAction {
 					}
 
 					if ( ! $field_value ) {
-						throw new Exception( "The value '" . $value . "' is not a valid option in the " . $label . ' field in FluentCRM.' );
+						return [
+							'status'  => 'error',
+							'message' => sprintf( __( "The value '%1\$s' is not a valid option in the %2\$s field in FluentCRM.", 'suretriggers' ), $value, $label ),
+						];
 					}
 
 					$data['custom_values'][ $field_name ] = $field_value;
@@ -159,7 +168,10 @@ class CreateCompany extends AutomateAction {
 						}
 
 						if ( ! $field_value ) {
-							throw new Exception( "The value '" . $option_value . "' is not a valid option in the " . $label . ' field in FluentCRM.' );
+							return [
+								'status'  => 'error',
+								'message' => sprintf( __( "The value '%1\$s' is not a valid option in the %2\$s field in FluentCRM.", 'suretriggers' ), $option_value, $label ),
+							];
 						}
 
 						$options[] = $field_value;
@@ -171,14 +183,20 @@ class CreateCompany extends AutomateAction {
 				} elseif ( 'date' === $type ) {
 					$date = DateTime::createFromFormat( 'Y-m-d', $value );
 					if ( ! $date ) {
-						throw new Exception( "The date format does not conform to the 'yyyy-mm-dd' format in " . $label . ' field.' );
+						return [
+							'status'  => 'error',
+							'message' => sprintf( __( "The date format does not conform to the 'yyyy-mm-dd' format in %s field.", 'suretriggers' ), $label ),
+						];
 					}
 
 					$data['custom_values'][ $field_name ] = $value;
 				} elseif ( 'date_time' === $type ) {
 					$date = DateTime::createFromFormat( 'Y-m-d H:i:s', $value );
 					if ( ! $date ) {
-						throw new Exception( "The datetime format does not conform to the 'yyyy-mm-dd hh:mm:ss' format in " . $label . ' field.' );
+						return [
+							'status'  => 'error',
+							'message' => sprintf( __( "The datetime format does not conform to the 'yyyy-mm-dd hh:mm:ss' format in %s field.", 'suretriggers' ), $label ),
+						];
 					}
 
 					$data['custom_values'][ $field_name ] = $value;

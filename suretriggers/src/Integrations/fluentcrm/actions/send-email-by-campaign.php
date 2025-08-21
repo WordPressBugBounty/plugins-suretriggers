@@ -129,7 +129,10 @@ class SendEmailByCampaign extends AutomateAction {
 					);
 					$ids            = array_column( $filtered_lists, 'value' );
 					if ( ! empty( array_diff( $ids, $list_ids ) ) ) {
-						throw new Exception( "Selected List doesn't exists!!" );
+						return [
+							'status'  => 'error',
+							'message' => __( "Selected List doesn't exists!!", 'suretriggers' ),
+						];
 					}
 				}
 			} else {
@@ -137,7 +140,10 @@ class SendEmailByCampaign extends AutomateAction {
 				$list_response_body    = wp_remote_retrieve_body( $list_request );
 				$list_response_context = json_decode( $list_response_body, true );
 				if ( '' == $list_response_context ) {
-					throw new Exception( "Selected List doesn't exists!!" );
+					return [
+						'status'  => 'error',
+						'message' => __( "Selected List doesn't exists!!", 'suretriggers' ),
+					];
 				}
 			}
 		}
@@ -167,7 +173,10 @@ class SendEmailByCampaign extends AutomateAction {
 					);
 					$ids           = array_column( $filtered_tags, 'value' );
 					if ( ! empty( array_diff( $ids, $tag_ids ) ) ) {
-						throw new Exception( "Selected Tag doesn't exists!!" );
+						return [
+							'status'  => 'error',
+							'message' => __( "Selected Tag doesn't exists!!", 'suretriggers' ),
+						];
 					}
 				}
 			} else {
@@ -175,7 +184,10 @@ class SendEmailByCampaign extends AutomateAction {
 				$tags_body     = wp_remote_retrieve_body( $tags_response );
 				$tags_context  = json_decode( $tags_body, true );
 				if ( is_array( $tags_context ) && '' == $tags_context['tag'] ) {
-					throw new Exception( "Selected Tag doesn't exists!!" );
+					return [
+						'status'  => 'error',
+						'message' => __( "Selected Tag doesn't exists!!", 'suretriggers' ),
+					];
 				}
 			}
 		}
@@ -309,7 +321,10 @@ class SendEmailByCampaign extends AutomateAction {
 			$contacts                 = wp_remote_retrieve_body( $check_estimated_contacts );
 			$contacts_context         = json_decode( $contacts, true );
 			if ( is_array( $contacts_context ) && 0 == $contacts_context['count'] ) {
-				throw new Exception( 'No contacts found based on your selection!!' );
+				return [
+					'status'  => 'error',
+					'message' => __( 'No contacts found based on your selection!!', 'suretriggers' ),
+				];
 			}
 		}
 		/**

@@ -47,7 +47,6 @@ class ContactForm7 extends Integrations {
 	public function is_plugin_installed() {
 		return class_exists( 'WPCF7' );
 	}
-
 }
 
 IntegrationsController::register( ContactForm7::class );

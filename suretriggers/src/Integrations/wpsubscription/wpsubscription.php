@@ -32,8 +32,8 @@ class WPSubscription extends Integrations {
 	 * SureTrigger constructor.
 	 */
 	public function __construct() {
-		$this->name        = __( 'WP Subscription', 'suretriggers' );
-		$this->description = __( 'WP Subscription for WooCommerce integration.', 'suretriggers' );
+		$this->name        = __( 'WPSubscription', 'suretriggers' );
+		$this->description = __( 'WPSubscription for WooCommerce integration.', 'suretriggers' );
 		$this->icon_url    = SURE_TRIGGERS_URL . 'assets/icons/wpsubscription.svg';
 
 		parent::__construct();

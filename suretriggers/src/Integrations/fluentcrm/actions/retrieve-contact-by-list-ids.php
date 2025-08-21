@@ -74,7 +74,10 @@ class RetrieveContactByListIDs extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
-			throw new Exception( 'FluentCRM is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentCRM is not active.', 'suretriggers' ),
+			];
 		}
 
 		$list_ids = $selected_options['list_ids'];

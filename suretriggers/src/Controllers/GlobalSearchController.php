@@ -13910,6 +13910,345 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Get Store Engine Products list
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_store_engine_products( $data ) {
+		$options = [];
+		
+		if ( ! class_exists( 'StoreEngine' ) ) {
+			return $options;
+		}
+		
+		$products = get_posts(
+			[
+				'post_type'      => 'storeengine_product',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			]
+		);
+		
+		foreach ( $products as $product ) {
+			$current_price = get_post_meta( $product->ID, '_storeengine_product_price', true );
+			
+			$price_display = '';
+			if ( ! empty( $current_price ) && is_numeric( $current_price ) ) {
+				$price_display = ' - $' . number_format( floatval( $current_price ), 2 );
+			}
+			
+			$id_display = ' (ID: ' . $product->ID . ')';
+			
+			$options[] = [
+				'label' => $product->post_title . $price_display . $id_display,
+				'value' => $product->ID,
+			];
+		}
+		
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Get all countries list from StoreEngine
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_store_engine_countries( $data ) {
+		$options = [];
+		
+		if ( ! class_exists( 'StoreEngine\Classes\Countries' ) ) {
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		}
+		
+		$countries_obj = \StoreEngine\Classes\Countries::get_instance();
+		$countries     = $countries_obj->get_countries();
+		
+		foreach ( $countries as $code => $name ) {
+			$options[] = [
+				'label' => $name . ' (' . $code . ')',
+				'value' => $code,
+			];
+		}
+		
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Get Store Engine Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_se_triggers_last_data( $data ) {
+		$context = [];
+		global $wpdb;
+
+		$term = isset( $data['search_term'] ) ? $data['search_term'] : '';
+
+		if ( 'se_product_purchased' === $term ) {
+			$product = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT * FROM {$wpdb->prefix}posts 
+					WHERE post_type = %s 
+					AND post_status = %s 
+					ORDER BY ID DESC 
+					LIMIT 1",
+					'storeengine_product',
+					'publish'
+				),
+				ARRAY_A
+			);
+
+			if ( ! empty( $product ) ) {
+				$product_meta = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT meta_key, meta_value FROM {$wpdb->prefix}postmeta WHERE post_id = %d",
+						$product['ID']
+					),
+					ARRAY_A
+				);
+
+				$custom_metas = [];
+				foreach ( $product_meta as $meta ) {
+					if ( strpos( $meta['meta_key'], '_storeengine_' ) === 0 ) {
+						$clean_key                  = ltrim( $meta['meta_key'], '_' );
+						$custom_metas[ $clean_key ] = maybe_unserialize( $meta['meta_value'] );
+					}
+				}
+
+				$table_exists = $wpdb->get_var( 
+					$wpdb->prepare( 
+						'SHOW TABLES LIKE %s', 
+						$wpdb->prefix . 'storeengine_orders' 
+					) 
+				);
+				
+				$order = null;
+				if ( $table_exists ) {
+					$order = $wpdb->get_row(
+						$wpdb->prepare(
+							"SELECT * FROM {$wpdb->prefix}storeengine_orders 
+							ORDER BY id DESC 
+							LIMIT %d",
+							1
+						),
+						ARRAY_A
+					);
+				}
+
+				$customer_id = isset( $order['customer_id'] ) ? $order['customer_id'] : null;
+				$user        = null;
+				if ( $customer_id ) {
+					$user = get_userdata( $customer_id );
+				} else {
+					$customers = get_users(
+						[ 
+							'role__in' => [ 'storeengine_customer', 'customer' ],
+							'number'   => 1,
+							'orderby'  => 'ID',
+							'order'    => 'DESC',
+						] 
+					);
+					if ( ! empty( $customers ) ) {
+						$user = $customers[0];
+					} else {
+						$user = get_userdata( $product['post_author'] );
+					}
+				}
+
+				$product_data = [
+					'id'                    => (int) $product['ID'],
+					'guid'                  => $product['guid'],
+					'post'                  => (int) $product['ID'],
+					'filter'                => 'raw',
+					'pinged'                => $product['pinged'],
+					'to_ping'               => $product['to_ping'],
+					'order_id'              => '',
+					'permalink'             => get_permalink( $product['ID'] ),
+					'post_date'             => $product['post_date'],
+					'post_name'             => $product['post_name'],
+					'post_type'             => $product['post_type'],
+					'user_role'             => $user ? $user->roles : [],
+					'membership_details'    => [
+						'expiration_specific_date'       => '',
+						'expiration_fixed_date_duration' => 0,
+						'is_enable_expiration'           => 0,
+						'content_protects_rules'         => [],
+						'membership_plan'                => [
+							'id'     => null,
+							'name'   => '',
+							'slug'   => '',
+							'status' => '',
+						],
+					],
+					'menu_order'            => (int) $product['menu_order'],
+					'post_title'            => $product['post_title'],
+					'user_email'            => $user ? $user->user_email : '',
+					'user_login'            => $user ? $user->user_login : '',
+					'wp_user_id'            => $user ? $user->ID : 0,
+					'ping_status'           => $product['ping_status'],
+					'post_author'           => (int) $product['post_author'],
+					'post_parent'           => (int) $product['post_parent'],
+					'post_status'           => $product['post_status'],
+					'custom_metas'          => $custom_metas,
+					'display_name'          => $user ? $user->display_name : '',
+					'post_content'          => $product['post_content'],
+					'post_excerpt'          => $product['post_excerpt'],
+					'comment_count'         => (int) $product['comment_count'],
+					'post_date_gmt'         => $product['post_date_gmt'],
+					'post_modified'         => $product['post_modified'],
+					'post_password'         => $product['post_password'],
+					'user_lastname'         => $user ? get_user_meta( $user->ID, 'last_name', true ) : '',
+					'comment_status'        => $product['comment_status'],
+					'post_mime_type'        => $product['post_mime_type'],
+					'transaction_id'        => '',
+					'user_firstname'        => $user ? get_user_meta( $user->ID, 'first_name', true ) : '',
+					'user_registered'       => $user ? $user->user_registered : '',
+					'post_modified_gmt'     => $product['post_modified_gmt'],
+					'post_content_filtered' => $product['post_content_filtered'],
+				];
+
+				$integration = $wpdb->get_row( 
+					$wpdb->prepare( 
+						"SELECT integration_id, price_id FROM {$wpdb->prefix}storeengine_integrations 
+						WHERE product_id = %d AND provider = %s
+						LIMIT 1",
+						$product['ID'],
+						'storeengine/membership-addon'
+					)
+				);
+
+				$membership_plan_id = isset( $integration->integration_id ) ? $integration->integration_id : null;
+				if ( $membership_plan_id ) {
+					$access_group = get_post( $membership_plan_id );
+					if ( 'storeengine_groups' === $access_group && $access_group->post_type ) {
+						$product_data['membership_details']['membership_plan'] = [
+							'id'     => (int) $membership_plan_id,
+							'name'   => $access_group->post_title,
+							'slug'   => $access_group->post_name,
+							'status' => $access_group->post_status,
+						];
+						
+						$expiration_data = get_post_meta( $membership_plan_id, '_storeengine_membership_expiration', true );
+						if ( $expiration_data && is_array( $expiration_data ) ) {
+							$product_data['membership_details']['expiration_specific_date']       = isset( $expiration_data['specific_date'] ) ? $expiration_data['specific_date'] : '';
+							$product_data['membership_details']['expiration_fixed_date_duration'] = isset( $expiration_data['fixed_date_duration'] ) ? (int) $expiration_data['fixed_date_duration'] : 0;
+							$product_data['membership_details']['is_enable_expiration']           = isset( $expiration_data['is_enable'] ) ? (int) $expiration_data['is_enable'] : 0;}
+						
+						$content_protects = get_post_meta( $membership_plan_id, '_storeengine_membership_content_protect_types', true );
+						if ( $content_protects && is_array( $content_protects ) ) {
+							$product_data['membership_details']['content_protects_rules'] = $content_protects;
+						}
+					}
+				}
+
+				if ( $order ) {
+					$product_data['order_id']       = (int) $order['id'];
+					$product_data['transaction_id'] = isset( $order['transaction_id'] ) ? $order['transaction_id'] : '';
+				}
+
+				$context['pluggable_data'] = $product_data;
+				$context['response_type']  = 'live';
+
+			} else {
+				$sample_data = [
+					'id'                    => 53,
+					'guid'                  => 'http://suretriggers-wp.local/product/product-2/',
+					'post'                  => 53,
+					'filter'                => 'raw',
+					'pinged'                => '',
+					'to_ping'               => '',
+					'order_id'              => 43,
+					'permalink'             => 'http://suretriggers-wp.local/product/product-2/',
+					'post_date'             => '2025-07-24 07:01:01',
+					'post_name'             => 'product-2',
+					'post_type'             => 'storeengine_product',
+					'user_role'             => [ 'storeengine_customer' ],
+					'membership_details'    => [
+						'expiration_specific_date'       => '',
+						'expiration_fixed_date_duration' => 0,
+						'is_enable_expiration'           => 0,
+						'content_protects_rules'         => [],
+						'membership_plan'                => [
+							'id'     => null,
+							'name'   => '',
+							'slug'   => '',
+							'status' => '',
+						],
+					],
+					'menu_order'            => 0,
+					'post_title'            => 'Product 2',
+					'user_email'            => 'mucool@gmail.com',
+					'user_login'            => 'mucool',
+					'wp_user_id'            => 12,
+					'ping_status'           => 'open',
+					'post_author'           => 1,
+					'post_parent'           => 0,
+					'post_status'           => 'publish',
+					'custom_metas'          => [
+						'storeengine_product_hide'        => '',
+						'storeengine_product_type'        => 'simple',
+						'storeengine_product_shipping_type' => 'digital',
+						'storeengine_product_physical_weight' => '',
+						'storeengine_product_physical_weight_unit' => 'g',
+						'storeengine_product_digital_auto_complete' => 1,
+						'storeengine_product_integrated_plan_id' => 99,
+						'storeengine_product_gallery_ids' => [],
+						'storeengine_product_downloadable_files' => [
+							[
+								'id'      => '9bd1194a-0406-46f3-aff3-dc539cdc791f',
+								'name'    => '',
+								'file'    => 'http://suretriggers-wp.local/wp-content/uploads/2025/07/bd0f98d1bede01622fe7f03a4f8fdc2155abafb4.jpg',
+								'enabled' => 1,
+							],
+						],
+						'storeengine_upsell_ids'          => [],
+						'storeengine_crosssell_ids'       => [],
+					],
+					'display_name'          => 'mucool titirmare',
+					'post_content'          => '<p>sdfdsfsd</p>',
+					'post_excerpt'          => '',
+					'comment_count'         => 0,
+					'post_date_gmt'         => '2025-07-24 07:01:01',
+					'post_modified'         => '2025-07-24 08:14:01',
+					'post_password'         => '',
+					'user_lastname'         => 'titirmare',
+					'comment_status'        => 'open',
+					'post_mime_type'        => '',
+					'transaction_id'        => '',
+					'user_firstname'        => 'mucool',
+					'user_registered'       => '2025-07-24 08:16:48',
+					'post_modified_gmt'     => '2025-07-24 08:14:01',
+					'post_content_filtered' => '',
+				];
+				
+				$context['pluggable_data'] = $sample_data;
+				$context['response_type']  = 'sample';
+			}
+		}
+		
+		return $context;
+	}
+
+
+
+	/**
 	 * Get list for Woocommerce Subscriptions
 	 *
 	 * @param array $data data.
@@ -19487,6 +19826,36 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		return $context;
 	}
 
+	/**
+	 * Get Voxel Messages Triggers Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array|mixed|string
+	 */
+	public function search_voxel_messages_triggers_last_data( $data ) {
+		global $wpdb;
+		$context = [];
+		$term    = $data['search_term'];
+
+		if ( 'voxel_new_message_post_created' === $term ) {
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}voxel_messages ORDER BY id DESC LIMIT %d", 1 ), ARRAY_A );
+
+			if ( ! empty( $results ) ) {
+				$message                                 = $results[0];
+				$context['pluggable_data']['sender']     = WordPress::get_user_context( $message['sender_id'] );
+				$context['pluggable_data']['receiver']   = WordPress::get_user_context( $message['receiver_id'] );
+				$context['pluggable_data']['content']    = $message['content'];
+				$context['pluggable_data']['message_id'] = $message['id'];
+				$context['pluggable_data']['created_at'] = $message['created_at'];
+				$context['response_type']                = 'live';
+			} else {
+				$context = json_decode( '{"pluggable_data":{"sender":{"wp_user_id":9,"user_login":"johndoe","display_name":"John Doe","user_firstname":"John","user_lastname":"Doe","user_email":"john@example.com","user_registered":"2025-07-18 15:01:53","user_role":["author"]},"receiver":{"wp_user_id":11,"user_login":"janedoe","display_name":"Jane Smith","user_firstname":"Jane","user_lastname":"Smith","user_email":"jane@example.com","user_registered":"2025-07-21 03:16:45","user_role":["author"]},"content":"Hello, how are you?","message_id":11,"created_at":"2025-08-06 05:27:02"},"response_type":"sample"}', true );
+			}
+		}
+
+		return $context;
+	}
 
 	/**
 	 * Get Late Point Customer Fields
@@ -21197,36 +21566,192 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$data = get_post( $result['ID'] );
 				}
 				break;
+
+			case 'booking_created':
+			case 'booking_confirmed':
+			case 'booking_cancelled':
+				$result = $wpdb->get_row( 
+					"SELECT ID FROM {$wpdb->prefix}posts WHERE post_type = 'booking' ORDER BY ID DESC LIMIT 1", 
+					ARRAY_A 
+				);
+
+				if ( $result && isset( $result['ID'] ) ) {
+					$booking_id     = $result['ID'];
+					$booking_data   = get_post( $booking_id );
+					$booking_meta   = get_post_meta( $booking_id, 'wp_travel_engine_booking_setting', true );
+					$booking_status = get_post_meta( $booking_id, 'wp_travel_engine_booking_status', true );
+					
+					// Set correct booking status based on trigger type.
+					switch ( $term ) {
+						case 'booking_confirmed':
+							$booking_status = 'booked';
+							break;
+						case 'booking_cancelled':
+							$booking_status = 'cancelled';
+							break;
+					}
+					
+					// For booking_created, include payment data as well.
+					if ( 'booking_created' === $term ) {
+						$payment_status  = get_post_meta( $booking_id, 'wp_travel_engine_booking_payment_status', true );
+						$payment_gateway = get_post_meta( $booking_id, 'wp_travel_engine_booking_payment_gateway', true );
+						$payment_details = get_post_meta( $booking_id, 'wp_travel_engine_booking_payment_details', true );
+						
+						$data = [
+							'booking_data'    => $booking_data,
+							'booking_meta'    => $booking_meta,
+							'payment_status'  => $payment_status,
+							'payment_gateway' => $payment_gateway,
+							'payment_details' => $payment_details,
+						];
+					} else {
+						$data = [
+							'booking_data'   => $booking_data,
+							'booking_meta'   => $booking_meta,
+							'booking_status' => $booking_status,
+						];
+					}
+				}
+				break;
 		}
 
 		if ( ! empty( $result ) && isset( $result['ID'] ) ) {
-			$context['pluggable_data'] = [
-				'enquiry_post_id' => $result['ID'],
-				'post_data'       => $data,
-			];
-			$context['response_type']  = 'live';
+			if ( in_array( $term, [ 'booking_created', 'booking_confirmed', 'booking_cancelled' ] ) ) {
+				$context['pluggable_data'] = $data;
+			} else {
+				$context['pluggable_data'] = [
+					'enquiry_post_id' => $result['ID'],
+					'post_data'       => $data,
+				];
+			}
+			$context['response_type'] = 'live';
 		} else {
-			$context['pluggable_data'] = [
-				'enquiry_post_id' => 123,
-				'post_data'       => [
+			// Helper function to generate booking sample data.
+			$get_booking_sample_data = function( $customer, $trip, $booking_status = '', $payment_data = [] ) {
+				$booking_data = [
 					'ID'             => 123,
-					'post_title'     => 'Sample Enquiry',
-					'post_name'      => 'sample-enquiry',
-					'post_date'      => '2025-01-01 10:00:00',
+					'post_title'     => $customer['fname'] . ' ' . $customer['lname'] . ' #123',
+					'post_name'      => strtolower( $customer['fname'] . '-' . $customer['lname'] ) . '-123',
+					'post_date'      => '2025-01-15 10:00:00',
 					'post_status'    => 'publish',
-					'post_type'      => 'enquiry',
+					'post_type'      => 'booking',
 					'post_author'    => 1,
 					'post_content'   => '',
 					'post_excerpt'   => '',
 					'comment_status' => 'closed',
 					'ping_status'    => 'closed',
-					'post_modified'  => '2025-01-01 10:00:00',
-					'guid'           => 'http://example.com/enquiry/sample-enquiry',
-				],
-			];
-			$context['response_type']  = 'sample';
-		}
+					'post_modified'  => '2025-01-15 10:00:00',
+					'guid'           => 'http://example.com/booking/' . strtolower( $customer['fname'] . '-' . $customer['lname'] ) . '-123',
+				];
+				
+				$booking_meta = [
+					'place_order' => [
+						'traveler'     => 1,
+						'cost'         => 10,
+						'due'          => 10,
+						'tid'          => 1308,
+						'tname'        => 'New York',
+						'datetime'     => '2025-08-14',
+						'datewithtime' => '',
+						'booking'      => [
+							'fname'   => 'John',
+							'lname'   => 'Doe',
+							'email'   => 'john.doe@example.com',
+							'address' => '123 Main St',
+							'city'    => 'New York',
+							'country' => 'US',
+						],
+						'tax'          => '',
+						'tduration'    => '1 days',
+						'tenddate'     => '2025-08-14T00:00',
+						'trip_package' => 'Camp Trek',
+					],
+				];
+				
+				$sample_data = [
+					'booking_data' => $booking_data,
+					'booking_meta' => $booking_meta,
+				];
+				
+				if ( $booking_status ) {
+					$sample_data['booking_status'] = $booking_status;
+				}
+				
+				if ( ! empty( $payment_data ) ) {
+					$sample_data = array_merge( $sample_data, $payment_data );
+				}
+				
+				return $sample_data;
+			};
+			
+			// Sample data based on term.
+			if ( in_array( $term, [ 'booking_created', 'booking_confirmed', 'booking_cancelled' ] ) ) {
+				$sample_customer = [
+					'fname'   => 'John',
+					'lname'   => 'Doe',
+					'email'   => 'john.doe@example.com',
+					'address' => '123 Main St',
+					'city'    => 'New York',
+					'country' => 'US',
+				];
+				$sample_trip     = [
+					'travelers' => '2',
+					'cost'      => '800',
+					'id'        => '101',
+					'name'      => 'Sample Trip to Nepal',
+					'date'      => '2025-03-15',
+				];
+				
+				$booking_status = '';
+				
+				// Set correct booking status based on trigger type.
+				switch ( $term ) {
+					case 'booking_confirmed':
+						$booking_status = 'booked';
+						break;
+					case 'booking_cancelled':
+						$booking_status = 'cancelled';
+						break;
+				}
+				
+				// For booking_created, include payment data as well.
+				if ( 'booking_created' === $term ) {
+					$payment_data              = [
+						'payment_status'  => 'check-waiting',
+						'payment_gateway' => 'Check Payment',
+						'payment_details' => '',
+					];
+					$context['pluggable_data'] = $get_booking_sample_data( $sample_customer, $sample_trip, '', $payment_data );
+				} else {
+					$context['pluggable_data'] = $get_booking_sample_data( $sample_customer, $sample_trip, $booking_status );
+				}
+			} else {
+				switch ( $term ) {
 
+					default:
+						$context['pluggable_data'] = [
+							'enquiry_post_id' => 123,
+							'post_data'       => [
+								'ID'             => 123,
+								'post_title'     => 'Sample Enquiry',
+								'post_name'      => 'sample-enquiry',
+								'post_date'      => '2025-01-01 10:00:00',
+								'post_status'    => 'publish',
+								'post_type'      => 'enquiry',
+								'post_author'    => 1,
+								'post_content'   => '',
+								'post_excerpt'   => '',
+								'comment_status' => 'closed',
+								'ping_status'    => 'closed',
+								'post_modified'  => '2025-01-01 10:00:00',
+								'guid'           => 'http://example.com/enquiry/sample-enquiry',
+							],
+						];
+						break;
+				}
+				$context['response_type'] = 'sample';
+			}
+		}
 		return (array) $context;
 	}
 
