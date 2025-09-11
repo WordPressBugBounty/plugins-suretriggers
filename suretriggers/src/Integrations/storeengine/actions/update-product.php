@@ -75,18 +75,25 @@ class UpdateProduct extends AutomateAction {
 		if ( ! class_exists( 'StoreEngine' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'StoreEngine plugin is not active.', 'suretriggers' ),
+				'message' => __( 'StoreEngine plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
 		$product_id = isset( $selected_options['product_id'] ) ? absint( $selected_options['product_id'] ) : 0;
 		if ( empty( $product_id ) ) {
-			throw new Exception( 'Product ID is required.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Product ID is required.',
+			];
 		}
 
 		$product = get_post( $product_id );
 		if ( ! $product || 'storeengine_product' !== $product->post_type ) {
-			throw new Exception( 'Invalid product ID or product does not exist.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid product ID or product does not exist.',
+			];
 		}
 
 		$product_name           = isset( $selected_options['product_name'] ) ? sanitize_text_field( $selected_options['product_name'] ) : '';
@@ -160,7 +167,8 @@ class UpdateProduct extends AutomateAction {
 		if ( ! $updated_product_id || ! is_numeric( $updated_product_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to update product: Invalid product ID returned', 'suretriggers' ),
+				'message' => __( 'Failed to update product: Invalid product ID returned', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -321,7 +329,8 @@ class UpdateProduct extends AutomateAction {
 		if ( ! $updated_product ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to retrieve updated product.', 'suretriggers' ),
+				'message' => __( 'Failed to retrieve updated product.', 'suretriggers' ), 
+				
 			];
 		}
 

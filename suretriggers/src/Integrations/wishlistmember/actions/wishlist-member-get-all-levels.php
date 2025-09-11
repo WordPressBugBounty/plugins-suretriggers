@@ -88,7 +88,8 @@ class WishlistMemberGetAllLevels extends AutomateAction {
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'Failed to fetch a level', 'suretriggers' ),
+				'msg'     => __( 'Failed to fetch a level', 'suretriggers' ), 
+				
 			];   
 		}
 	}

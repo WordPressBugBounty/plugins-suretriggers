@@ -90,7 +90,10 @@ class GetOptionAcfValue extends AutomateAction {
 			}
 			return $context;
 		} else {
-			throw new Exception( 'Custom Field value not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Custom Field value not found.',
+			];
 		}
 	}
 }

@@ -77,7 +77,11 @@ class RecordSaleAffiliate extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'EasyAffiliate\Models\Transaction' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'EasyAffiliate\Models\Transaction class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$sale                                    = [];

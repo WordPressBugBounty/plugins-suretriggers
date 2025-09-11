@@ -75,7 +75,8 @@ class RetrieveCustomersTotals extends AutomateAction {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'WooCommerce is not installed or activated.', 'suretriggers' ),
+				'message' => __( 'WooCommerce is not installed or activated.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -91,7 +92,8 @@ class RetrieveCustomersTotals extends AutomateAction {
 		if ( ! $tables_exist ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Required WooCommerce tables not found.', 'suretriggers' ),
+				'message' => __( 'Required WooCommerce tables not found.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -123,7 +125,8 @@ class RetrieveCustomersTotals extends AutomateAction {
 		if ( 0 === $paying && 0 === $non_paying ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'No customers found.', 'suretriggers' ),
+				'message' => __( 'No customers found.', 'suretriggers' ), 
+				
 			];
 		}
 

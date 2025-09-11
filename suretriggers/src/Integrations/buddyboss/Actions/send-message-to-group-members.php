@@ -103,10 +103,16 @@ class SendMessageToGroupMembers extends AutomateAction {
 					if ( $user ) {
 						$sender_id = $user->ID;
 					} else {
-						throw new Exception( ' Sender user not found ' );
+						return [
+							'status'  => 'error',
+							'message' => ' Sender user not found ',
+						];
 					}
 				} else {
-					throw new Exception( ' Please provide valid email exists. ' );
+					return [
+						'status'  => 'error',
+						'message' => ' Please provide valid email exists. ',
+					];
 				}
 				if ( $members_ids || $sender_id ) {
 					// Attempt to send the message.
@@ -137,16 +143,28 @@ class SendMessageToGroupMembers extends AutomateAction {
 							return $context;
 						}
 					} else {
-						throw new Exception( 'BuddyBoss Private Messaging module is not active.' );
+						return [
+							'status'  => 'error',
+							'message' => 'BuddyBoss Private Messaging module is not active.',
+						];
 					}
 				} else {
-					throw new Exception( 'Group members not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Group members not found.',
+					];
 				}
 			} else {
-				throw new Exception( 'Group members not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Group members not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'BuddyBoss message module is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => 'BuddyBoss message module is not active.',
+			];
 		}
 	}
 }

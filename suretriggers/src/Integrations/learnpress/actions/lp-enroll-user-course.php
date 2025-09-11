@@ -92,7 +92,10 @@ class LpEnrollUserCourse extends AutomateAction {
 				$user    = learn_press_get_user( $user_id );
 				$course  = learn_press_get_course( $course_id );
 				if ( $user->has_enrolled_course( $course_id ) ) {
-					throw new Exception( 'User already enrolled in course.' );
+					return [
+						'status'  => 'error',
+						'message' => 'User already enrolled in course.',
+					];
 				}
 				if ( $course && $course->exists() ) {
 					$order = new LP_Order();
@@ -125,7 +128,10 @@ class LpEnrollUserCourse extends AutomateAction {
 					$result                       = $user_item_new->update();
 		
 					if ( ! $result ) {
-						throw new Exception( 'Can not enroll user to course.' );
+						return [
+							'status'  => 'error',
+							'message' => 'Can not enroll user to course.',
+						];
 					}
 					do_action( 'learnpress/user/course-enrolled', $order_id, $course->get_id(), $user->get_id() ); // @phpcs:ignore
 					return array_merge(
@@ -133,13 +139,22 @@ class LpEnrollUserCourse extends AutomateAction {
 						LearnPress::get_lpc_course_context( $course->get_id() )
 					);
 				} else {
-					throw new Exception( 'Course not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Course not found.',
+					];
 				}
 			} else {
-				throw new Exception( 'User not found' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

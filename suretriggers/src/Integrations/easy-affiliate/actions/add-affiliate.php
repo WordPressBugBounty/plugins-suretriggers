@@ -75,7 +75,11 @@ class AddAffiliate extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'EasyAffiliate\Models\User' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'EasyAffiliate\Models\User class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$aff                          = [];   
@@ -100,7 +104,10 @@ class AddAffiliate extends AutomateAction {
 		if ( $wp_user ) {
 			$is_user_affiliate = get_user_meta( $wp_user->ID, 'wafp_is_affiliate', true );
 			if ( isset( $is_user_affiliate ) && true === $is_user_affiliate ) {
-				throw new Exception( 'The user is already an affiliate.' );
+				return [
+					'status'  => 'error',
+					'message' => 'The user is already an affiliate.',
+				];
 			}
 			$user->rec->ID = $wp_user->ID;
 		}

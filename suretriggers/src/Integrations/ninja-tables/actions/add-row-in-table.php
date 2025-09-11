@@ -81,7 +81,10 @@ class AddRowInTable extends AutomateAction {
 		$table_id = $selected_options['table_id'];
 		$user     = get_userdata( (int) $owner_id );
 		if ( ! $user ) {
-			throw new Exception( 'No user exist with ' . $owner_id . ' ID' );
+			return [
+				'status'  => 'error',
+				'message' => 'No user exist with ' . $owner_id . ' ID',
+			];
 		}
 		$formatted_row = [];
 		if ( ! empty( $selected_options['row_fields'] ) ) {

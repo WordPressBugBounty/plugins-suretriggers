@@ -84,7 +84,10 @@ class CreateTicket extends AutomateAction {
 		$mailbox_id     = $selected_options['mailbox_id'] ? sanitize_text_field( $selected_options['mailbox_id'] ) : '';
 
 		if ( ! class_exists( 'FluentSupport\App\Models\Ticket' ) || ! class_exists( 'FluentSupport\App\Api\Classes\Tickets' ) ) {
-			throw new Exception( 'Error: Plugin did not installed correctly. Some classes are missing.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Error: Plugin did not installed correctly. Some classes are missing.',
+			];
 		}
 
 		$ticket = [
@@ -102,7 +105,10 @@ class CreateTicket extends AutomateAction {
 			return $response_data->getAttributes();
 		}
 
-		throw new Exception( 'Failed to create ticket.' );
+		return [
+			'status'  => 'error',
+			'message' => 'Failed to create ticket.',
+		];
 	}
 }
 

@@ -153,7 +153,10 @@ class CreateContact extends AutomateAction {
 		$contact = $webhook_class->create_contact( $post_data, $hook_setting ); // phpcs:ignore
 
 		if ( ! $contact ) {
-			throw new Exception( 'Something went wrong while creating contact.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Something went wrong while creating contact.',
+			];
 		}
 		
 		return ContactModel::get( $contact['contact_id'] );

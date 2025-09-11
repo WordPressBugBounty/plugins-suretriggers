@@ -145,7 +145,10 @@ class GhCreateContact extends AutomateAction {
 
 			return $response_array;
 		} else {
-			throw new Exception( 'Enter valid email' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email',
+			];
 		}
 	}
 

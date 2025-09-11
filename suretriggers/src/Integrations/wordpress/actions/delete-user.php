@@ -84,10 +84,16 @@ class DeleteUser extends AutomateAction {
 		$user = get_userdata( $delete_user );
 		
 		if ( ! $user ) {
-			throw new Exception( 'User not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found.',
+			];
 		}
 		if ( in_array( 'administrator', (array) $user->roles ) ) {
-			throw new Exception( 'You cannot delete an administrator.' );
+			return [
+				'status'  => 'error',
+				'message' => 'You cannot delete an administrator.',
+			];
 		}
 		require_once ABSPATH . '/wp-admin/includes/user.php';
 
@@ -100,7 +106,10 @@ class DeleteUser extends AutomateAction {
 					'reassign' => $reassign,
 				];
 			} else {
-				throw new Exception( 'There was an error in deleting the user.' );
+				return [
+					'status'  => 'error',
+					'message' => 'There was an error in deleting the user.',
+				];
 			}       
 		} else {
 			if ( wp_delete_user( $delete_user, $reassign ) ) {
@@ -112,7 +121,10 @@ class DeleteUser extends AutomateAction {
 				];
 
 			} else {
-				throw new Exception( 'There was an error in deleting the user.' );
+				return [
+					'status'  => 'error',
+					'message' => 'There was an error in deleting the user.',
+				];
 			}
 		}
 	}

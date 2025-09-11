@@ -75,7 +75,8 @@ class FetchDiscountDetails extends AutomateAction {
 		if ( ! function_exists( 'edd_get_discount_by' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'EDD plugin is not active.', 'suretriggers' ),
+				'message' => __( 'EDD plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -84,7 +85,8 @@ class FetchDiscountDetails extends AutomateAction {
 		if ( empty( $discount_identifier ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Discount code or ID is required.', 'suretriggers' ),
+				'message' => __( 'Discount code or ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -96,7 +98,8 @@ class FetchDiscountDetails extends AutomateAction {
 		if ( ! $discount ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Discount not found.', 'suretriggers' ),
+				'message' => __( 'Discount not found.', 'suretriggers' ), 
+				
 			];
 		}
 

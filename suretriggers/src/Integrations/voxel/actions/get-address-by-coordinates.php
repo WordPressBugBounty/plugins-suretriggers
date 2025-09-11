@@ -122,7 +122,10 @@ class GetAddressByCoordinates extends AutomateAction {
 			);
 
 			if ( is_wp_error( $request ) ) {
-				throw new Exception( 'Could not perform geocoding request.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Could not perform geocoding request.',
+				];
 			}
 
 			$response = json_decode( wp_remote_retrieve_body( $request ), false );
@@ -160,7 +163,10 @@ class GetAddressByCoordinates extends AutomateAction {
 			);
 	
 			if ( is_wp_error( $request ) ) {
-				throw new Exception( 'Could not perform geocoding request.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Could not perform geocoding request.',
+				];
 			}
 	
 			$response = json_decode( wp_remote_retrieve_body( $request ), false );

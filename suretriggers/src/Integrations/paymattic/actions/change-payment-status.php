@@ -92,7 +92,10 @@ class ChangePaymentStatus extends AutomateAction {
 			do_action( 'wppayform/after_payment_status_change', $submisson_id, $new_status ); //phpcs:ignore
 			return $submission->toArray();
 		} else {
-			throw new Exception( 'Failed to update status' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to update status',
+			];
 		}
 		
 	}

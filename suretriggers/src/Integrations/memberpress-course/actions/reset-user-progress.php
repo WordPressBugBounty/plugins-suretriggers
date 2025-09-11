@@ -78,16 +78,26 @@ class ResetCourseProgress extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! $user_id ) {
-			throw new Exception( 'User not found with this email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found with this email address.',
+			];
 		}
 		if ( ! class_exists( '\memberpress\courses\models\UserProgress' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( '\memberpress\courses\models\UserProgress class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$course_id       = $selected_options['course'];
 		$user_progresses = (array) models\UserProgress::find_all_by_user_and_course( $user_id, $course_id );
 		if ( count( $user_progresses ) == 0 ) {
-			throw new Exception( 'User has made no progress on the selected course.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User has made no progress on the selected course.',
+			];
 		}
 
 		foreach ( $user_progresses as $user_progress ) {

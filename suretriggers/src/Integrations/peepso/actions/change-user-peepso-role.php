@@ -90,18 +90,27 @@ class ChangeUserPeepsoRole extends AutomateAction {
 		];
 
 		if ( empty( $new_user_role ) || ! isset( $system_roles[ $new_user_role ] ) ) {
-			throw new Exception( "The selected role doesn't exist" );
+			return [
+				'status'  => 'error',
+				'message' => "The selected role doesn't exist",
+			];
 		}
 
 		$user = PeepSoUser::get_instance( $user_id );
 
 		if ( 0 === $user_id || null === $user->get_id() ) {
-			throw new Exception( 'Invalid User' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid User',
+			];
 		}
 
 		// Don't allow banning administrators.
 		if ( PeepSo::is_admin( $user_id ) && 'ban' === $new_user_role ) {
-			throw new Exception( 'You cannot ban administrators.' );
+			return [
+				'status'  => 'error',
+				'message' => 'You cannot ban administrators.',
+			];
 		}
 
 		$user->approve_user();

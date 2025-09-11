@@ -80,7 +80,11 @@ class CreateEntryGravityForm extends AutomateAction {
 		$from_input_values['form_id'] = absint( $form_id );
 
 		if ( ! class_exists( 'GFAPI' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'GFAPI class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		foreach ( $selected_options['field_row_repeater'] as $key => $field ) {

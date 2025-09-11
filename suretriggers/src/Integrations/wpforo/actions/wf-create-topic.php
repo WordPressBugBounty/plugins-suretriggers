@@ -120,23 +120,38 @@ class WfCreateTopic extends AutomateAction {
 					$min = wpforo_setting( 'posting', 'topic_body_min_length' );
 					if ( $min ) {
 						if ( wpfkey( $args, 'body' ) && (int) $min > wpforo_length( $args['body'] ) ) {
-							throw new Exception( 'The content is too short' );
+							return [
+								'status'  => 'error',
+								'message' => 'The content is too short',
+							];
 						}
 					}
 					if ( ! isset( $args['forumid'] ) ) {
-						throw new Exception( 'Add Topic error: No forum selected' );
+						return [
+							'status'  => 'error',
+							'message' => 'Add Topic error: No forum selected',
+						];
 					}
 			
 					if ( ! WPF()->forum->get_forum( $args['forumid'] ) ) {
-						throw new Exception( 'Add Topic error: No forum selected' );
+						return [
+							'status'  => 'error',
+							'message' => 'Add Topic error: No forum selected',
+						];
 					}
 			
 					if ( ! WPF()->perm->forum_can( 'ct', $args['forumid'] ) ) {
-						throw new Exception( 'You don\'t have permission to create topic into this forum' );
+						return [
+							'status'  => 'error',
+							'message' => 'You don\'t have permission to create topic into this forum',
+						];
 					}
 			
 					if ( ! WPF()->perm->can_post_now() ) {
-						throw new Exception( 'You are posting too quickly. Slow down.' );
+						return [
+							'status'  => 'error',
+							'message' => 'You are posting too quickly. Slow down.',
+						];
 					}
 					$topicid = WPF()->topic->add( $args );
 					if ( $topicid ) {
@@ -145,18 +160,28 @@ class WfCreateTopic extends AutomateAction {
 							'user'  => WordPress::get_user_context( $args['userid'] ),
 						];
 					} else {
-						throw new Exception( 'Topic not created.' );
+						return [
+							'status'  => 'error',
+							'message' => 'Topic not created.',
+						];
 					}
 				} else {
-					throw new Exception( 'Can not create topic.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Can not create topic.',
+					];
 				}
 			} else {
-				throw new Exception( 'User not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found.',
+				];
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;

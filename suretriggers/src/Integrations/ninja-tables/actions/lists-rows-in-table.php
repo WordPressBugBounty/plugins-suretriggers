@@ -82,7 +82,10 @@ class ListRowsIntable extends AutomateAction {
 		$sql        = 'SELECT * FROM ' . $table_name . ' WHERE table_id = %d';
 		$results    = $wpdb->get_results( $wpdb->prepare( $sql, $table_id ), ARRAY_A ); // @phpcs:ignore
 		if ( empty( $results ) ) {
-			throw new Exception( 'No row exist with ' . $table_id . ' table ID' );
+			return [
+				'status'  => 'error',
+				'message' => 'No row exist with ' . $table_id . ' table ID',
+			];
 		}
 		
 

@@ -97,7 +97,10 @@ class CreateGroup extends AutomateAction {
 					if ( is_wp_error( $group ) ) {
 						throw new Exception( $group->get_error_message() );
 					} elseif ( ! $group ) {
-						throw new Exception( 'There is an error on creating group.' );
+						return [
+							'status'  => 'error',
+							'message' => 'There is an error on creating group.',
+						];
 					} else {
 						// Adding other users.
 						if ( ! empty( $add_other_users ) ) {

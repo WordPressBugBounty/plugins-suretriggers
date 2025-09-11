@@ -85,7 +85,10 @@ class DeleteWallPost extends AutomateAction {
 		$post = \Voxel\Timeline\Status::get( $post_id );
 
 		if ( ! $post ) {
-			throw new Exception( 'Wall Post not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Wall Post not found',
+			];
 		}
 
 		// Delete the post.

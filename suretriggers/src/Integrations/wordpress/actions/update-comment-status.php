@@ -69,9 +69,7 @@ class UpdateCommentStatus extends AutomateAction {
 	 * @param int   $automation_id    Automation ID.
 	 * @param array $fields           Fields.
 	 * @param array $selected_options Selected options.
-	 * @return array|string
-	 * @throws Exception Exception.
-	 * @throws \InvalidArgumentException \InvalidArgumentException.
+	 * @return array
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		$comment_id = isset( $selected_options['comment_id'] ) ? (int) $selected_options['comment_id'] : 0;
@@ -80,17 +78,27 @@ class UpdateCommentStatus extends AutomateAction {
 		$comment = get_comment( $comment_id );
 
 		if ( ! $comment ) {
-			throw new Exception( 'Comment does not exist.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Comment does not exist.',
+			];
 		}
 
 		if ( ! in_array( $status, [ 'approve', 'hold', 'spam', 'trash' ], true ) ) {
-			throw new \InvalidArgumentException( 'Invalid comment status provided.' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'Invalid comment status provided.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$updated = wp_set_comment_status( $comment_id, $status );
 
 		if ( ! $updated ) {
-			throw new Exception( 'Failed to update comment status.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to update comment status.',
+			];
 		}
 		if ( is_object( $comment ) ) {
 			$comment = get_object_vars( $comment );

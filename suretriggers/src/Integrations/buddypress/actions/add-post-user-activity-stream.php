@@ -100,7 +100,10 @@ class AddPostUserActivityStream extends AutomateAction {
 					if ( is_wp_error( $activity ) ) {
 						throw new Exception( $activity->get_error_message() );
 					} elseif ( ! $activity ) {
-						throw new Exception( 'There is an error on posting stream.' );
+						return [
+							'status'  => 'error',
+							'message' => 'There is an error on posting stream.',
+						];
 					} else {
 						if ( class_exists( 'BP_Activity_Activity' ) ) {
 							$context = new BP_Activity_Activity( $activity );
@@ -114,10 +117,16 @@ class AddPostUserActivityStream extends AutomateAction {
 						}
 					}
 				} else {
-					throw new Exception( 'Author with the email provided not found.' ); 
+					return [
+						'status'  => 'error',
+						'message' => 'Author with the email provided not found.',
+					]; 
 				}
 			} else {
-				throw new Exception( 'Please enter valid email address.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Please enter valid email address.',
+				];
 			}
 		}
 	}

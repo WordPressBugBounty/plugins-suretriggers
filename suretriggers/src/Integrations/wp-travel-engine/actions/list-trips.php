@@ -74,7 +74,8 @@ class ListTrips extends AutomateAction {
 		if ( ! function_exists( 'wp_travel_engine_get_settings' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'WP Travel Engine plugin is not active.', 'suretriggers' ),
+				'message' => __( 'WP Travel Engine plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 		$limit = ! empty( $selected_options['limit'] ) ? intval( $selected_options['limit'] ) : 20;

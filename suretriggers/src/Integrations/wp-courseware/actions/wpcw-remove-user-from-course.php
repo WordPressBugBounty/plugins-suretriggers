@@ -75,7 +75,10 @@ class WpcwRemoveUserFromCourse extends AutomateAction {
 		$user_id   = $selected_options['wp_user_email'];
 
 		if ( ! function_exists( 'WPCW_users_getUserCourseList' ) ) {
-			throw new Exception( 'WPCW_users_getUserCourseList does not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'WPCW_users_getUserCourseList does not exists.',
+			];
 		}
 
 		if ( is_email( $user_id ) ) {
@@ -102,7 +105,10 @@ class WpcwRemoveUserFromCourse extends AutomateAction {
 				}
 
 				if ( ! function_exists( 'WPCW_courses_syncUserAccess' ) ) {
-					throw new Exception( 'WPCW_courses_syncUserAccess does not exists.' );
+					return [
+						'status'  => 'error',
+						'message' => 'WPCW_courses_syncUserAccess does not exists.',
+					];
 				}
 
 				WPCW_courses_syncUserAccess( $user_id, $sync_course_list, 'sync', false, true );
@@ -112,7 +118,8 @@ class WpcwRemoveUserFromCourse extends AutomateAction {
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;

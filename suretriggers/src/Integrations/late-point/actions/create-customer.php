@@ -77,7 +77,10 @@ class CreateCustomer extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'OsCustomerModel' ) ) {
-			throw new Exception( 'LatePoint plugin not installed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'LatePoint plugin not installed.',
+			];
 		}
 
 		$customer_params = [
@@ -111,7 +114,10 @@ class CreateCustomer extends AutomateAction {
 		} else {
 			$errors    = $customer->get_error_messages();
 			$error_msg = isset( $errors[0] ) ? $errors[0] : 'Customer could not be created.';
-			throw new Exception( $error_msg );
+			return [
+				'status'  => 'error',
+				'message' => $error_msg,
+			];
 		}
 	}
 

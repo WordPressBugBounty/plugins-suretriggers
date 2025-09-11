@@ -83,12 +83,18 @@ class CreateSubTask extends AutomateAction {
 			$group_id    = isset( $selected_options['group_id'] ) ? sanitize_text_field( $selected_options['group_id'] ) : '';
 
 		if ( empty( $task_id ) || empty( $title ) || empty( $board_id ) ) {
-			throw new Exception( 'Required fields are missing: task_id, title, or board_id.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Required fields are missing: task_id, title, or board_id.',
+			];
 		}
 
 			
 		if ( ! class_exists( '\FluentBoardsPro\App\Services\SubtaskService' ) ) {
-			throw new Exception( 'SubtaskService class is not available.' );
+			return [
+				'status'  => 'error',
+				'message' => 'SubtaskService class is not available.',
+			];
 		}
 
 		if ( ! class_exists( '\FluentBoards\App\Models\Task' ) ) {
@@ -101,7 +107,10 @@ class CreateSubTask extends AutomateAction {
 			
 			$task = \FluentBoards\App\Models\Task::where( 'id', $task_id )->where( 'board_id', $board_id )->first();
 		if ( ! $task ) {
-			throw new Exception( 'Invalid Task ID or Board ID. Please check the values and try again.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid Task ID or Board ID. Please check the values and try again.',
+			];
 		}
 
 			
@@ -121,7 +130,10 @@ class CreateSubTask extends AutomateAction {
 			$sub_task = $task_service->createSubtask( $task->id, $task_data );
 
 			if ( empty( $sub_task ) ) {
-				throw new Exception( 'There was an error creating the Sub Task.' );
+				return [
+					'status'  => 'error',
+					'message' => 'There was an error creating the Sub Task.',
+				];
 			}
 
 			return $sub_task;

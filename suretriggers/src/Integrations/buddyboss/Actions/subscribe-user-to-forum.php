@@ -75,7 +75,10 @@ class SubscribeUserToForum extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! function_exists( 'bbp_is_user_subscribed' ) || ! function_exists( 'bbp_add_user_subscription' ) || ! function_exists( 'bbp_get_forum' ) || ! function_exists( 'bbp_is_subscriptions_active' ) ) {
-			throw new Exception( 'Required BuddyBoss functions are not available.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Required BuddyBoss functions are not available.',
+			];
 		}
 
 		if ( empty( $selected_options['user'] ) ) {

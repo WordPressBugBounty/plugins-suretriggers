@@ -80,11 +80,18 @@ class GetBoardDetails extends AutomateAction {
 
 		// Check if FluentBoardsApi function exists, if not, return early.
 		if ( ! class_exists( 'FluentBoards\App\Models\Board' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentBoards\App\Models\Board class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$board = \FluentBoards\App\Models\Board::find( $board_id );
 		if ( empty( $board ) ) {
-			throw new Exception( 'There is error while getting board details.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There is error while getting board details.',
+			];
 		}
 		return $board;
 	}

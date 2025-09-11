@@ -85,6 +85,7 @@ use Mint\MRM\DataBase\Models\ContactGroupModel;
 use SureTriggers\Integrations\Voxel\Voxel;
 use FluentBoards\App\Models\Stage;
 use FluentCommunity\App\Functions\Utility;
+use ParagonIE\Sodium\Core\Util;
 use Surelywp_Support_Portal;
 use SureTriggers\Integrations\ProfileGrid\ProfileGrid;
 
@@ -7016,6 +7017,151 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Get last data for Jet Appointments Booking triggers.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_jet_appointment_triggers_last_data( $data ) {
+		if ( ! class_exists( '\JET_APB\Plugin' ) ) {
+			return [];
+		}
+
+		$term = isset( $data['search_term'] ) ? $data['search_term'] : '';
+
+		// Sample appointment data.
+		$appointment_data = [
+			'ID'                 => 1,
+			'group_ID'           => '',
+			'status'             => 'pending',
+			'service'            => 1,
+			'provider'           => 1,
+			'order_id'           => '',
+			'user_id'            => 1,
+			'user_name'          => 'john',
+			'user_email'         => 'john@example.com',
+			'date'               => time(),
+			'date_end'           => 0,
+			'slot'               => time() - 3600,
+			'slot_end'           => time(),
+			'type'               => 'single',
+			'appointment_date'   => gmdate( 'Y-m-d H:i:s' ),
+			'service_title'      => 'Sample Service',
+			'provider_title'     => 'Sample Provider',
+			'user_login'         => 'john',
+			'user_display_name'  => 'John Doe',
+			'date_formatted'     => date_i18n( is_string( get_option( 'date_format' ) ) ? get_option( 'date_format' ) : 'Y-m-d', time() ),
+			'slot_formatted'     => date_i18n( is_string( get_option( 'time_format' ) ) ? get_option( 'time_format' ) : 'H:i', time() - 3600 ),
+			'slot_end_formatted' => date_i18n( is_string( get_option( 'time_format' ) ) ? get_option( 'time_format' ) : 'H:i', time() ),
+		];
+
+		// Add term-specific fields based on search term.
+		if ( 'appointment_cancelled' === $term || 'appointment_status_changed' === $term ) {
+			$appointment_data['old_status'] = 'confirmed';
+			$appointment_data['new_status'] = 'appointment_cancelled' === $term ? 'cancelled' : 'completed';
+		}
+
+		$context = [
+			'response_type' => 'sample',
+		];
+
+		// Try to get live data using the same method as triggers.
+		if ( class_exists( '\JET_APB\Plugin' ) ) {
+			$live_appointment_data = \JET_APB\Plugin::instance()->db->appointments->query( [], 1 );
+			if ( ! empty( $live_appointment_data ) ) {
+				$live_data      = $live_appointment_data[0];
+				$appointment_id = $live_data['ID'];
+
+				// Get appointment meta using the same method as triggers.
+				$appointment_meta = $this->get_appointment_meta( $appointment_id );
+
+				// Merge appointment data with meta data.
+				$appointment_data = array_merge( $live_data, $appointment_meta );
+
+				// Add service title.
+				if ( ! empty( $appointment_data['service'] ) ) {
+					$service_post = get_post( $appointment_data['service'] );
+					if ( $service_post ) {
+						$appointment_data['service_title'] = $service_post->post_title;
+					}
+				}
+
+				// Add provider title.
+				if ( ! empty( $appointment_data['provider'] ) && $appointment_data['provider'] > 0 ) {
+					$provider_post = get_post( $appointment_data['provider'] );
+					if ( $provider_post ) {
+						$appointment_data['provider_title'] = $provider_post->post_title;
+					}
+				}
+
+				// Add user data.
+				if ( ! empty( $appointment_data['user_id'] ) ) {
+					$user = get_user_by( 'ID', $appointment_data['user_id'] );
+					if ( $user ) {
+						$appointment_data['user_login']        = $user->user_login;
+						$appointment_data['user_email']        = $user->user_email;
+						$appointment_data['user_display_name'] = $user->display_name;
+					}
+				}
+
+				// Add formatted dates.
+				$date_format                            = get_option( 'date_format' );
+				$time_format                            = get_option( 'time_format' );
+				$appointment_data['date_formatted']     = is_string( $date_format ) ? date_i18n( $date_format, $appointment_data['date'] ) : '';
+				$appointment_data['slot_formatted']     = is_string( $time_format ) ? date_i18n( $time_format, $appointment_data['slot'] ) : '';
+				$appointment_data['slot_end_formatted'] = is_string( $time_format ) ? date_i18n( $time_format, $appointment_data['slot_end'] ) : '';
+
+				// Add term-specific fields for live data.
+				if ( 'appointment_cancelled' === $term || 'appointment_status_changed' === $term ) {
+					$appointment_data['old_status'] = 'confirmed';
+					$appointment_data['new_status'] = 'appointment_cancelled' === $term ? 'cancelled' : 'completed';
+				}
+
+				$context['response_type'] = 'live';
+			}
+		}
+
+		$context['pluggable_data'] = $appointment_data;
+		return $context;
+	}
+
+	/**
+	 * Get appointment meta data.
+	 *
+	 * @param int $appointment_id Appointment ID.
+	 * @return array
+	 */
+	private function get_appointment_meta( $appointment_id ) {
+		if ( ! class_exists( '\JET_APB\Plugin' ) ) {
+			return [];
+		}
+
+		global $wpdb;
+		$meta_table = \JET_APB\Plugin::instance()->db->appointments_meta->table();
+		
+		if ( empty( $meta_table ) || is_array( $meta_table ) || ! is_string( $meta_table ) ) {
+			return [];
+		}
+
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT meta_key, meta_value FROM ' . esc_sql( $meta_table ) . ' WHERE appointment_id = %d',
+				$appointment_id
+			),
+			ARRAY_A
+		);
+
+		$meta = [];
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $row ) {
+				$meta[ $row['meta_key'] ] = $row['meta_value'];
+			}
+		}
+
+		return $meta;
+	}
+
+	/**
 	 * Search LMS data.
 	 *
 	 * @param array $data data.
@@ -7545,6 +7691,81 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		}
 		
 		
+		return $context;
+	}
+
+	/**
+	 * Search BuddyBoss private messages data.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_pluggables_bb_private_messages( $data ) {
+		global $wpdb;
+		$context                  = [];
+		$sample['pluggable_data'] = [
+			'wp_user_id'           => 2,
+			'user_login'           => 'johndoe',
+			'display_name'         => 'John Doe',
+			'user_firstname'       => 'John',
+			'user_lastname'        => 'Doe',
+			'user_email'           => 'john@example.com',
+			'user_role'            => [ 'subscriber' ],
+			'sender_id'            => 1,
+			'sender_first_name'    => 'Jane',
+			'sender_last_name'     => 'Smith',
+			'sender_email'         => 'jane@example.com',
+			'sender_display_name'  => 'Jane Smith',
+			'sender_avatar_url'    => 'http://example.com/avatar.jpg',
+			'message_id'           => 1,
+			'thread_id'            => 1,
+			'message_subject'      => 'Hello!',
+			'message_content'      => 'This is a sample private message.',
+			'message_content_html' => '<p>This is a sample private message.</p>',
+			'message_date'         => '2024-01-01 10:00:00',
+		];
+		$sample['response_type']  = 'sample';
+
+		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}bp_messages_messages'" );
+		if ( $table_exists ) {
+			$message = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}bp_messages_messages ORDER BY id DESC LIMIT 1" );
+			if ( ! empty( $message ) ) {
+				$recipients = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}bp_messages_recipients WHERE thread_id = %d", $message->thread_id ) );
+				if ( ! empty( $recipients ) ) {
+					foreach ( $recipients as $recipient ) {
+						if ( $recipient->user_id != $message->sender_id ) {
+							$recipient_context = WordPress::get_user_context( $recipient->user_id );
+							$sender_context    = WordPress::get_user_context( $message->sender_id );
+							
+							$context['pluggable_data'] = array_merge(
+								$recipient_context,
+								[
+									'sender_id'            => $message->sender_id,
+									'sender_first_name'    => $sender_context['user_firstname'],
+									'sender_last_name'     => $sender_context['user_lastname'],
+									'sender_email'         => $sender_context['user_email'],
+									'sender_display_name'  => $sender_context['display_name'],
+									'sender_avatar_url'    => get_avatar_url( $message->sender_id ),
+									'message_id'           => $message->id,
+									'thread_id'            => $message->thread_id,
+									'message_subject'      => $message->subject,
+									'message_content'      => wp_strip_all_tags( $message->message ),
+									'message_content_html' => $message->message,
+									'message_date'         => $message->date_sent,
+								] 
+							);
+							$context['response_type']  = 'live';
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		if ( empty( $context ) ) {
+			$context = $sample;
+		}
+
 		return $context;
 	}
 	
@@ -22235,6 +22456,177 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		return (array) $context;
 	}
 
+	/**
+	 * Get ProfilePress Payment Methods.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array|void
+	 */
+	public function search_profilepress_payment_methods( $data ) {
+
+		$options = [];
+		if ( class_exists( '\ProfilePress\Core\Membership\PaymentMethods\PaymentMethods' ) ) {
+			$payment_methods = \ProfilePress\Core\Membership\PaymentMethods\PaymentMethods::get_instance()->get_all();
+
+			$methods = [ '' => 'Default' ];
+			if ( ! empty( $payment_methods ) ) {
+				foreach ( $payment_methods as $method ) {
+					$methods[ $method->get_id() ] = $method->get_method_title();
+				}
+			}
+
+			$methods = apply_filters( 'ppress_admin_order_page_enabled_payment_methods', $methods );
+
+			if ( $methods ) {
+				foreach ( $methods as $id => $name ) {
+					$options[] = [
+						'label' => $name,
+						'value' => $id,
+					];
+				}
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Get ProfilePress Order Status List.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array|void
+	 */
+	public function search_profilepress_order_status_list( $data ) {
+
+		$options = [];
+
+		if ( class_exists( 'ProfilePress\Core\Membership\Models\Order\OrderStatus' ) ) {
+			$statuses = \ProfilePress\Core\Membership\Models\Order\OrderStatus::get_all();
+			if ( $statuses ) {
+				foreach ( $statuses as $id => $name ) {
+					$options[] = [
+						'label' => $name,
+						'value' => $id,
+					];
+				}
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Get ProfilePress Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_profilepress_triggers_last_data( $data ) {
+		global $wpdb;
+
+		$context = [];
+
+		$term = isset( $data['search_term'] ) ? $data['search_term'] : '';
+
+		switch ( $term ) {
+
+			/**
+			 * Customer Updated trigger.
+			 */
+			case 'profilepress_customer_updated':
+				if ( class_exists( '\ProfilePress\Core\Membership\Models\Customer\CustomerFactory' ) ) {
+					$customer = $wpdb->get_row(
+						"SELECT * FROM {$wpdb->prefix}ppress_customers ORDER BY id DESC LIMIT 1",
+						ARRAY_A
+					);
+	
+					if ( $customer ) {
+						$customer_id = isset( $customer['id'] ) ? (int) $customer['id'] : 0;
+						$customer    = \ProfilePress\Core\Membership\Models\Customer\CustomerFactory::fromId( absint( $customer_id ) );
+	
+						$pluggable_data = [
+							'customer' => Utilities::object_to_array( $customer ),
+						];
+	
+						$context = [
+							'pluggable_data' => $pluggable_data,
+							'response_type'  => 'live',
+						];
+					} else {
+	
+						$customer    = \ProfilePress\Core\Membership\Models\Customer\CustomerFactory::fromId( absint( 0 ) );
+						$sample_data = [
+							'customer' => Utilities::object_to_array( $customer ),
+						];
+	
+						$context = [
+							'pluggable_data' => $sample_data,
+							'response_type'  => 'sample',
+						];
+					}
+				}
+
+				break;
+
+			/**
+			 * Subscription Activated trigger.
+			 */
+			case 'profilepress_subscription_activated':
+				$latest_subscription = $wpdb->get_row(
+					'SELECT * FROM ' . $wpdb->prefix . 'ppress_subscriptions ORDER BY id DESC LIMIT 1',
+					ARRAY_A
+				);
+				
+				if ( $latest_subscription ) {
+					if ( class_exists( '\ProfilePress\Core\Membership\Models\Subscription\SubscriptionFactory' ) ) {
+						$latest_subscription                       = \ProfilePress\Core\Membership\Models\Subscription\SubscriptionFactory::fromId( intval( $latest_subscription['id'] ) );
+						$context['pluggable_data']['subscription'] = Utilities::object_to_array( $latest_subscription );
+						$context['response_type']                  = 'live';
+					}
+				} else {
+					$sample_subscription                       = [
+						'id'                 => 1,
+						'parent_order_id'    => 1,
+						'plan_id'            => 1,
+						'customer_id'        => 7,
+						'billing_frequency'  => 'monthly',
+						'initial_amount'     => '10.00000000',
+						'initial_tax_rate'   => '0',
+						'initial_tax'        => '0',
+						'recurring_amount'   => '10.00000000',
+						'recurring_tax_rate' => '0',
+						'recurring_tax'      => '0',
+						'total_payments'     => '0',
+						'trial_period'       => 'disabled',
+						'profile_id'         => '',
+						'status'             => 'active',
+						'notes'              => null,
+						'created_date'       => '2025-08-19 11:45:41',
+						'expiration_date'    => '2025-09-19 11:45:41',
+					];
+					$context['pluggable_data']['subscription'] = $sample_subscription;
+					$context['response_type']                  = 'sample';
+				}
+				break;
+
+			default:
+				$context['pluggable_data'] = [];
+				$context['response_type']  = 'error';
+				break;
+
+		}
+
+		return $context;
+	}
 
 }
 

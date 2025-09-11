@@ -77,7 +77,10 @@ class UpdatePost extends AutomateAction {
 		$meta_array = [];
 
 		if ( empty( $selected_options['post_details'] ) ) {
-			throw new Exception( 'No post data found to update the post!' );
+			return [
+				'status'  => 'error',
+				'message' => 'No post data found to update the post!',
+			];
 		}
 
 		foreach ( $selected_options['post_details'] as $meta ) {
@@ -97,12 +100,11 @@ class UpdatePost extends AutomateAction {
 
 		// Update the user.
 		if ( empty( $meta_array ) ) {
-			$this->set_error(
-				[
-					'msg' => __( 'No post meta array found to update!', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'No post meta array found to update!', 'suretriggers' ), 
+				
+			];
 		}
 
 		$meta_array['ID'] = $post_id;

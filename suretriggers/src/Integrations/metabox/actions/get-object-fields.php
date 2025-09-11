@@ -77,7 +77,8 @@ class GetObjectFields extends AutomateAction {
 
 			if ( empty( $response ) ) {
 				$response = [
-					'response' => esc_attr__( 'No value found.', 'suretriggers' ),
+					'response' => esc_attr__( 'No value found.', 'suretriggers' ), 
+					
 				];
 			} else {
 				$response = [
@@ -88,7 +89,8 @@ class GetObjectFields extends AutomateAction {
 			$response =
 			[
 				'status'  => esc_attr__( 'Error', 'suretriggers' ),
-				'message' => esc_attr__( 'Function rwmb_get_object_fields not exists. Please make sure the Metabox plugin is installed and active.', 'suretriggers' ),
+				'message' => esc_attr__( 'Function rwmb_get_object_fields not exists. Please make sure the Metabox plugin is installed and active.', 'suretriggers' ), 
+				
 			];
 		}
 		return $response;

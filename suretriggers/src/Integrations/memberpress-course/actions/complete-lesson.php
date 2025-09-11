@@ -78,7 +78,10 @@ class CompleteLesson extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! $user_id ) {
-			throw new Exception( 'User not found with this email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found with this email address.',
+			];
 		}
 
 		$course_id = $selected_options['course'];
@@ -107,11 +110,15 @@ class CompleteLesson extends AutomateAction {
 	 * @param int $user_id user's id.
 	 * @param int $course_id course id.
 	 * @param int $lesson_id lesson id.
-	 * @return void
+	 * @return array|void
 	 */
 	public function mark_lesson_completed( $user_id, $course_id, $lesson_id ) {
 		if ( ! class_exists( '\memberpress\courses\models\UserProgress' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( '\memberpress\courses\models\UserProgress class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		if ( empty( $lesson_id ) && empty( $course_id ) ) {
 			return;

@@ -79,7 +79,8 @@ class ListEnrolledUsers extends AutomateAction {
 		if ( ! function_exists( 'tutor_utils' ) || ! class_exists( 'Tutor\Helpers\QueryHelper' ) || ! function_exists( 'tutor' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Required Tutor LMS functions or classes are not available.', 'suretriggers' ),
+				'message' => __( 'Required Tutor LMS functions or classes are not available.', 'suretriggers' ), 
+				
 			];
 		}
 		
@@ -87,7 +88,8 @@ class ListEnrolledUsers extends AutomateAction {
 		if ( ! $course ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid course ID provided.', 'suretriggers' ),
+				'message' => __( 'Invalid course ID provided.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -97,7 +99,8 @@ class ListEnrolledUsers extends AutomateAction {
 		if ( empty( $enrolled_users ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'No enrolled users found for this course.', 'suretriggers' ),
+				'message' => __( 'No enrolled users found for this course.', 'suretriggers' ), 
+				
 			];
 		}
 

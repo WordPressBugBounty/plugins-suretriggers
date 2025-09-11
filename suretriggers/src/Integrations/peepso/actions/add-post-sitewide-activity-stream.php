@@ -104,7 +104,10 @@ class AddPostSitewideActivityStream extends AutomateAction {
 
 		// check $id for failure.
 		if ( 0 === $id ) {
-			throw new Exception( 'Unable to create post.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Unable to create post.',
+			];
 		}
 
 		// add data to Activity Stream data table.
@@ -123,7 +126,10 @@ class AddPostSitewideActivityStream extends AutomateAction {
 		$res = $wpdb->insert( $wpdb->prefix . $table_name, $a_act_data );
 
 		if ( ! is_int( $res ) ) {
-			throw new Exception( 'Unable to create activity.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Unable to create activity.',
+			];
 		}
 
 		if ( 1 === absint( $a_act_data['act_module_id'] ) ) {

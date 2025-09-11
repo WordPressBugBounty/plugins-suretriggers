@@ -78,7 +78,8 @@ class CreateProduct extends AutomateAction {
 		if ( ! class_exists( 'StoreEngine' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'StoreEngine plugin is not active.', 'suretriggers' ),
+				'message' => __( 'StoreEngine plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -98,7 +99,8 @@ class CreateProduct extends AutomateAction {
 		if ( empty( $product_name ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Product name is required.', 'suretriggers' ),
+				'message' => __( 'Product name is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -165,7 +167,8 @@ class CreateProduct extends AutomateAction {
 		if ( ! $product_id || ! is_numeric( $product_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to create product: Invalid product ID returned', 'suretriggers' ),
+				'message' => __( 'Failed to create product: Invalid product ID returned', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -309,7 +312,8 @@ class CreateProduct extends AutomateAction {
 		if ( ! $product ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to retrieve created product.', 'suretriggers' ),
+				'message' => __( 'Failed to retrieve created product.', 'suretriggers' ), 
+				
 			];
 		}
 

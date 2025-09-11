@@ -77,7 +77,11 @@ class ChangeSubscriptionStatus extends AutomateAction {
 		$status          = $selected_options['status'];
 
 		if ( ! function_exists( 'wcs_get_subscription' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'wcs_get_subscription function not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$subscription = wcs_get_subscription( $subscription_id );
 		if ( $subscription ) {
@@ -106,7 +110,10 @@ class ChangeSubscriptionStatus extends AutomateAction {
 			];
 			return $context;
 		} else {
-			throw new Exception( 'Subscription not found for the provided Subscription ID.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Subscription not found for the provided Subscription ID.',
+			];
 		}
 	}
 }

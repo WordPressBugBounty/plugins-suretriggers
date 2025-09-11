@@ -75,7 +75,11 @@ class ListContacts extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'Mint\MRM\DataBase\Models\ContactModel' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Mint\MRM\DataBase\Models\ContactModel class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$limit = 20;
 		if ( isset( $selected_options['limit'] ) && ! empty( $selected_options['limit'] ) ) {

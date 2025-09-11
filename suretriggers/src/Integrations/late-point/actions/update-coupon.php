@@ -76,17 +76,26 @@ class UpdateCoupon extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'OsCouponModel' ) ) {
-			throw new Exception( 'LatePoint Pro Features plugin is not installed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'LatePoint Pro Features plugin is not installed.',
+			];
 		}
 
 		$coupon_id = isset( $selected_options['coupon_id'] ) ? $selected_options['coupon_id'] : '';
 		if ( empty( $coupon_id ) ) {
-			throw new Exception( 'Coupon ID is required.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Coupon ID is required.',
+			];
 		}
 
 		$coupon = new OsCouponModel( $coupon_id );
 		if ( ! isset( $coupon->id ) || empty( $coupon->id ) ) {
-			throw new Exception( 'Coupon not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Coupon not found.',
+			];
 		}
 
 		$coupon_params = [
@@ -118,7 +127,8 @@ class UpdateCoupon extends AutomateAction {
 		} else {
 			return [
 				'status'  => 'failure',
-				'message' => __( 'Failed to update the coupon.', 'suretriggers' ),
+				'message' => __( 'Failed to update the coupon.', 'suretriggers' ), 
+				
 			];
 		}
 	}

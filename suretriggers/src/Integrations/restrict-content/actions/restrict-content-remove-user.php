@@ -87,13 +87,19 @@ class RestrictContentRemoveUser extends AutomateAction {
 		$wp_user = get_user_by( 'email', $rcp_user_email );
 
 		if ( empty( $wp_user ) ) {
-			throw new Exception( 'User not found with this email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found with this email address.',
+			];
 		}
 
 		$customer = rcp_get_customer_by_user_id( $wp_user->ID );
 
 		if ( empty( $customer ) ) {
-			throw new Exception( 'Customer not found with this email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Customer not found with this email address.',
+			];
 		}
 
 		$membership_level = [];

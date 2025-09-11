@@ -77,7 +77,10 @@ class GetPostTaxonomy extends AutomateAction {
 
 		$taxonomies = get_post_taxonomies( $post_id );
 		if ( ! $taxonomies ) {
-			throw new Exception( 'No taxonomies found for the post.' );
+			return [
+				'status'  => 'error',
+				'message' => 'No taxonomies found for the post.',
+			];
 		}
 		return $taxonomies;
 	}

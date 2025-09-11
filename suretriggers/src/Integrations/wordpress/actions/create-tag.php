@@ -91,7 +91,10 @@ class CreateTag extends AutomateAction {
 				$category,
 			];
 		} else {
-			throw new Exception( 'Not able to create a tag.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Not able to create a tag.',
+			];
 		}
 	}
 }

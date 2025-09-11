@@ -76,7 +76,11 @@ class SliceWPCreateCommission extends AutomateAction {
 		$affiliate_id = $selected_options['affiliate_id'];
 
 		if ( ! function_exists( 'slicewp_insert_commission' ) || ! function_exists( 'slicewp_get_affiliate' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$affiliate         = slicewp_get_affiliate( $affiliate_id );
 		$affiliate_user_id = $affiliate->get( 'user_id' );
@@ -104,10 +108,16 @@ class SliceWPCreateCommission extends AutomateAction {
 				$commission_data['commission_id'] = $commission_id;
 				return $commission_data;
 			} else {
-				throw new Exception( 'We are unable to add commission.' );
+				return [
+					'status'  => 'error',
+					'message' => 'We are unable to add commission.',
+				];
 			}
 		} else {
-			throw new Exception( 'The user is not an affiliate.' );
+			return [
+				'status'  => 'error',
+				'message' => 'The user is not an affiliate.',
+			];
 		}
 	}
 }

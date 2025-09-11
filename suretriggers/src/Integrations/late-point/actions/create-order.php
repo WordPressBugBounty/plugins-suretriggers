@@ -81,7 +81,10 @@ class CreateBundleOrder extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'OsBundleModel' ) || ! class_exists( 'OsCustomerModel' ) || 
 				! class_exists( 'OsOrderModel' ) || ! class_exists( 'OsOrderItemModel' ) ) {
-			throw new Exception( 'LatePoint plugin not installed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'LatePoint plugin not installed.',
+			];
 		}
 		
 			$required_params = [
@@ -91,14 +94,20 @@ class CreateBundleOrder extends AutomateAction {
 		
 			foreach ( $required_params as $param ) {
 				if ( ! isset( $selected_options[ $param ] ) ) {
-					throw new Exception( "Missing required parameter: {$param}" );
+					return [
+						'status'  => 'error',
+						'message' => "Missing required parameter: {$param}",
+					];
 				}
 			}
 		
 			$bundle = new OsBundleModel( $selected_options['bundle_id'] );
 			
 			if ( ! $bundle->id ) {
-				throw new Exception( 'Invalid bundle ID provided.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Invalid bundle ID provided.',
+				];
 			}
 		
 			$customer_type = isset( $selected_options['customer_type'] ) ? 
@@ -109,7 +118,10 @@ class CreateBundleOrder extends AutomateAction {
 				$customer_id = isset( $selected_options['customer_id'] ) ? $selected_options['customer_id'] : null;
 				
 				if ( ! $customer_id ) {
-					throw new Exception( 'Customer ID not provided.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Customer ID not provided.',
+					];
 				}
 			}
 		
@@ -155,12 +167,18 @@ class CreateBundleOrder extends AutomateAction {
 				if ( ! $customer->save() ) {
 					$errors    = $customer->get_error_messages();
 					$error_msg = isset( $errors[0] ) ? $errors[0] : 'Customer could not be created.';
-					throw new Exception( $error_msg );
+					return [
+						'status'  => 'error',
+						'message' => $error_msg,
+					];
 				}
 			} else {
 				$customer = new OsCustomerModel( $customer_id );
 				if ( ! $customer->id ) {
-					throw new Exception( 'Customer not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Customer not found.',
+					];
 				}
 			}
 		
@@ -173,7 +191,10 @@ class CreateBundleOrder extends AutomateAction {
 			if ( ! $order->save() ) {
 				$errors    = $order->get_error_messages();
 				$error_msg = isset( $errors[0] ) ? $errors[0] : 'Order could not be created.';
-				throw new Exception( $error_msg );
+				return [
+					'status'  => 'error',
+					'message' => $error_msg,
+				];
 			}
 		
 			$order_item_model           = new OsOrderItemModel();
@@ -183,7 +204,10 @@ class CreateBundleOrder extends AutomateAction {
 			if ( ! $order_item_model->save() ) {
 				$errors    = $order_item_model->get_error_messages();
 				$error_msg = isset( $errors[0] ) ? $errors[0] : 'Order Item could not be created.';
-				throw new Exception( $error_msg );
+				return [
+					'status'  => 'error',
+					'message' => $error_msg,
+				];
 			}
 		
 			$bundle_data = [

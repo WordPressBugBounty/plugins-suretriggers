@@ -83,7 +83,10 @@ class FollowUser extends AutomateAction {
 			if ( $initiator_friend_user ) {
 				if ( $user ) {
 					if ( $initiator_friend_user->ID == $user->ID ) {
-						throw new Exception( 'User can not follow itself.' );
+						return [
+							'status'  => 'error',
+							'message' => 'User can not follow itself.',
+						];
 					}
 					if ( function_exists( 'bp_start_following' ) || 
 					( function_exists( 'bp_is_active' ) && bp_is_active( 'follow' ) && 
@@ -95,12 +98,18 @@ class FollowUser extends AutomateAction {
 						if ( function_exists( 'bp_is_active' ) && bp_is_active( 'follow' ) && function_exists( 'bp_follow_start_following' ) ) {
 							$following = bp_follow_start_following( $args );
 							if ( false == $following ) {
-								throw new Exception( 'User is already following.' );
+								return [
+									'status'  => 'error',
+									'message' => 'User is already following.',
+								];
 							}
 						} elseif ( function_exists( 'bp_start_following' ) ) {
 							$following = bp_start_following( $args );
 							if ( false == $following ) {
-								throw new Exception( 'User is already following.' );
+								return [
+									'status'  => 'error',
+									'message' => 'User is already following.',
+								];
 							}
 						}
 						$context['initiator'] = WordPress::get_user_context( $initiator_friend_user->ID );
@@ -109,14 +118,23 @@ class FollowUser extends AutomateAction {
 					}
 				} else {
 					// If there's no user found, return default message.
-					throw new Exception( 'Follower User provided not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Follower User provided not found.',
+					];
 				}
 			} else {
 				// If there's no user found, return default message.
-				throw new Exception( 'Inititator User with the email provided not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Inititator User with the email provided not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

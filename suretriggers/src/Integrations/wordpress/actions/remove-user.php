@@ -100,18 +100,21 @@ class RemoveUser extends AutomateAction {
 
 				$user_arr = [
 					'status'   => esc_attr__( 'Success', 'suretriggers' ),
-					'response' => esc_attr__( 'User deleted successfully.', 'suretriggers' ),
+					'response' => esc_attr__( 'User deleted successfully.', 'suretriggers' ), 
+					
 				];
 			} else {
 				$user_arr = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'User not found.', 'suretriggers' ),
+					'response' => esc_attr__( 'User not found.', 'suretriggers' ), 
+					
 				];
 			}
 		} else {
 			$user_arr = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email.', 'suretriggers' ), 
+				
 			];
 		}
 

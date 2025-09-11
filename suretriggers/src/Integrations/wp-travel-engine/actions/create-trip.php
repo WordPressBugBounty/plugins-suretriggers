@@ -73,7 +73,8 @@ class CreateTrip extends AutomateAction {
 		if ( ! function_exists( 'wp_travel_engine_get_settings' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'WP Travel Engine plugin is not active.', 'suretriggers' ),
+				'message' => __( 'WP Travel Engine plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -102,7 +103,8 @@ class CreateTrip extends AutomateAction {
 		if ( empty( $trip_name ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Trip name is required.', 'suretriggers' ),
+				'message' => __( 'Trip name is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -149,7 +151,8 @@ class CreateTrip extends AutomateAction {
 		if ( empty( $post_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to create trip.', 'suretriggers' ),
+				'message' => __( 'Failed to create trip.', 'suretriggers' ), 
+				
 			];
 		}
 

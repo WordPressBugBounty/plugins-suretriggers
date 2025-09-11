@@ -106,7 +106,8 @@ class EnrollUserToCourse extends AutomateAction {
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;
@@ -124,12 +125,14 @@ class EnrollUserToCourse extends AutomateAction {
 	
 				$response = [
 					'status'   => esc_attr__( 'Success', 'suretriggers' ),
-					'response' => esc_attr__( 'User enrolled into course successfully.', 'suretriggers' ),
+					'response' => esc_attr__( 'User enrolled into course successfully.', 'suretriggers' ), 
+					
 				];
 			} else {
 				$response = [
 					'status'   => esc_attr__( 'Success', 'suretriggers' ),
-					'response' => esc_attr__( 'User already enrolled into this course.', 'suretriggers' ),
+					'response' => esc_attr__( 'User already enrolled into this course.', 'suretriggers' ), 
+					
 				];
 			}
 			return $response;

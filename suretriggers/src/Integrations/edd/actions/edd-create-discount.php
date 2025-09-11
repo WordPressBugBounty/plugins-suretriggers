@@ -76,7 +76,10 @@ class EDDCreateDiscount extends AutomateAction {
 
 		// Add conditional check as this action only works with EDD Discounts Pro extension.
 		if ( ! class_exists( 'edd_dp' ) ) {
-			throw new Exception( 'EDD Discounts Pro plugin is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => 'EDD Discounts Pro plugin is not active.',
+			];
 		}
 
 		$title = ! empty( $selected_options['discount_title'] ) ? $selected_options['discount_title'] : false;
@@ -148,8 +151,8 @@ class EDDCreateDiscount extends AutomateAction {
 			$groups = [];
 		}
 
-		if ( isset( $selected_options['include_or_exclude'] ) ) {
-			$include_or_exclude = sanitize_text_field( $selected_options['include_or_exclude'] );
+		if ( isset( $selected_options['product_condition'] ) ) {
+			$include_or_exclude = sanitize_text_field( $selected_options['product_condition'] );
 		} else {
 			$include_or_exclude = 'include';
 		}

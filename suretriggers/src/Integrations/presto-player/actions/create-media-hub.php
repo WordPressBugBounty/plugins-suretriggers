@@ -87,7 +87,8 @@ class CreateMediaHub extends AutomateAction {
 		
 		if ( empty( $video_url ) && empty( $basic_video_url ) ) {
 			return [
-				'message' => __( 'Both YouTube and self-hosted video URLs are empty. Please provide at least one.', 'suretriggers' ),
+				'message' => __( 'Both YouTube and self-hosted video URLs are empty. Please provide at least one.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -109,7 +110,8 @@ class CreateMediaHub extends AutomateAction {
 				];
 			} else {
 				return [
-					'message' => __( 'Invalid YouTube URL.', 'suretriggers' ),
+					'message' => __( 'Invalid YouTube URL.', 'suretriggers' ), 
+					
 				];
 			}
 		}
@@ -130,7 +132,8 @@ class CreateMediaHub extends AutomateAction {
 			return WordPress::get_post_context( $id );
 		} else {
 			return [
-				'message' => __( 'There was an error creating the video!', 'suretriggers' ),
+				'message' => __( 'There was an error creating the video!', 'suretriggers' ), 
+				
 			];
 		}
 	}

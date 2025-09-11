@@ -93,7 +93,10 @@ class AddPostWall extends AutomateAction {
 		// Get the post.
 		$post = \Voxel\Post::force_get( $post_id );
 		if ( ! $post ) {
-			throw new Exception( 'Post not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found',
+			];
 		}
 
 		$details = [];

@@ -88,12 +88,14 @@ class WishlistMemberCheckIfUserIsMember extends AutomateAction {
 		if ( $response ) {
 			return [
 				'success' => true,
-				'msg'     => __( 'User exists in the membership level.', 'suretriggers' ),
+				'msg'     => __( 'User exists in the membership level.', 'suretriggers' ), 
+				
 			];
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'User does not exist in the membership level.', 'suretriggers' ),
+				'msg'     => __( 'User does not exist in the membership level.', 'suretriggers' ), 
+				
 			];   
 		}
 	}

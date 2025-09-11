@@ -69,7 +69,7 @@ if ( ! class_exists( 'OrderCreated' ) ) :
 			$triggers[ $this->integration ][ $this->trigger ] = [
 				'label'         => __( 'Order created', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => [ 'woocommerce_checkout_order_processed', 'woocommerce_store_api_checkout_order_processed' ],
+				'common_action' => [ 'woocommerce_new_order' ],
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
 				'accepted_args' => 1,

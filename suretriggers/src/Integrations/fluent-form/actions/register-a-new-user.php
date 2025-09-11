@@ -78,7 +78,10 @@ class RegisterANewUser extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( empty( $selected_options['user_email'] ) || ! is_email( $selected_options['user_email'] ) ) {
-			throw new Exception( 'Invalid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid email.',
+			];
 		}
 
 		$email = sanitize_email( $selected_options['user_email'] );
@@ -113,7 +116,10 @@ class RegisterANewUser extends AutomateAction {
 			$user    = get_userdata( $user_id );
 			$context = [];
 			if ( ! $user ) {
-				throw new Exception( 'Invalid user.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Invalid user.',
+				];
 			}
 			$context['wp_user_id']     = $user->ID;
 			$context['user_login']     = $user->user_login;
@@ -124,7 +130,10 @@ class RegisterANewUser extends AutomateAction {
 			return $context;
 		}
 
-		throw new Exception( 'User already Registered.' );
+		return [
+			'status'  => 'error',
+			'message' => 'User already Registered.',
+		];
 
 	}
 }

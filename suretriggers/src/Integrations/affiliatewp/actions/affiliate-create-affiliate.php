@@ -83,23 +83,35 @@ class AffiliateCreateAffiliate extends AutomateAction {
 		$wp_user = get_user_by( 'login', $affiliate['user_name'] );
 
 		if ( ! function_exists( 'affwp_is_affiliate' ) || ! function_exists( 'affwp_add_affiliate' ) || ! function_exists( 'affwp_get_affiliate' ) ) {
-			throw new Exception( 'AffiliateWP functions not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'AffiliateWP functions not found.',
+			];
 		}
 
 		if ( false === $wp_user ) {
-			throw new Exception( 'User does not exist.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User does not exist.',
+			];
 		}
 
 		$is_affiliate = affwp_is_affiliate( $wp_user->data->ID );
 
 		if ( false !== $is_affiliate ) {
-			throw new Exception( 'User is already an affiliate.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User is already an affiliate.',
+			];
 		}
 
 		$affiliate_id = affwp_add_affiliate( $affiliate );
 
 		if ( false === $affiliate_id ) {
-			throw new Exception( 'Not able to create new affiliate, try later.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Not able to create new affiliate, try later.',
+			];
 		} else {
 			$affiliate      = affwp_get_affiliate( $affiliate_id );
 			$affiliate_data = get_object_vars( $affiliate );

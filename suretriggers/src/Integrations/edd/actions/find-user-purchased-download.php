@@ -96,7 +96,6 @@ class FindIfUserPurchasedDownload extends AutomateAction {
 				'download' => $download_id,
 				'user'     => $user_id,
 				'output'   => 'payments',
-				
 			];
 		} else {
 			$args = [

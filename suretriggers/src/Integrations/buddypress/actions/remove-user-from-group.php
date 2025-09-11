@@ -121,10 +121,16 @@ class RemoveUserFromGroup extends AutomateAction {
 				}
 			} else {
 				// If there's no user found, return default message.
-				throw new Exception( 'User with the email provided not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User with the email provided not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

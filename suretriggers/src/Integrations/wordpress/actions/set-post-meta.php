@@ -73,12 +73,11 @@ class SetPostMeta extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( empty( $selected_options['post_meta_operations'] ) ) {
-			$this->set_error(
-				[
-					'msg' => __( 'No post meta operation found!', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'No post meta operation found!', 'suretriggers' ), 
+				
+			];
 		}
 
 		$dynamic_response = [];

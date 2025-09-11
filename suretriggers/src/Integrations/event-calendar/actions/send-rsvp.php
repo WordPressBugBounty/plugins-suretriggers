@@ -72,7 +72,10 @@ class EventCalendarSendRsvp extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'Tribe__Tickets__Main' ) || ! class_exists( 'Tribe__Events__Main' ) || ! class_exists( 'Tribe__Tickets__Tickets_Handler' ) || ! class_exists( 'Tribe__Tickets__RSVP' ) ) {
-			throw new Exception( 'The Events Calendar or Event Tickets plugin not installed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'The Events Calendar or Event Tickets plugin not installed.',
+			];
 		}
 
 		$attendee_name    = $selected_options['attendee_name'];
@@ -80,7 +83,10 @@ class EventCalendarSendRsvp extends AutomateAction {
 		$number_of_guests = $selected_options['number_of_guests'];
 
 		if ( ! is_numeric( $number_of_guests ) ) {
-			throw new Exception( 'Number of Guests should be a numeric value.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Number of Guests should be a numeric value.',
+			];
 		}
 
 		$ticket_handler   = new Tribe__Tickets__Tickets_Handler();

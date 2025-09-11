@@ -74,20 +74,18 @@ class RemoveAccessFromGroup extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'SureMembers\Inc\Helper' ) ) {
-			$this->set_error(
-				[
-					'msg' => __( 'SureMembers Helper class not found.', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'SureMembers Helper class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		if ( ! $user_id ) {
-			$this->set_error(
-				[
-					'msg' => __( 'User Not found', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'User Not found', 'suretriggers' ), 
+				
+			];
 		}
 
 		$access_group_id = $selected_options['st_access_group'];

@@ -88,7 +88,8 @@ class WishlistMemberGetSpecificMemberLevel extends AutomateAction {
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'Member is not added to any level.', 'suretriggers' ),
+				'msg'     => __( 'Member is not added to any level.', 'suretriggers' ), 
+				
 			];   
 		}
 	}

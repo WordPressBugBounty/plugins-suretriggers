@@ -112,17 +112,24 @@ class RemoveUserFromGroup extends AutomateAction {
 								return array_merge( WordPress::get_user_context( $user_id ), $group );
 							}
 						} else {
-							throw new Exception( 'User is not member of specified group' );
+							return [
+								'status'  => 'error',
+								'message' => 'User is not member of specified group',
+							];
 						}
 					}
 				} else {
-					throw new Exception( 'User not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'User not found.',
+					];
 				}
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;

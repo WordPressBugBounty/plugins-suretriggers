@@ -73,7 +73,10 @@ class SetUserMeta extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( empty( $selected_options['user_meta_operations'] ) ) {
-			throw new Exception( 'No user meta operation found' );
+			return [
+				'status'  => 'error',
+				'message' => 'No user meta operation found',
+			];
 		}
 
 		$dynamic_response = [];

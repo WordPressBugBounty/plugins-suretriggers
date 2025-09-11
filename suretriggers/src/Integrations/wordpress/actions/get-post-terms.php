@@ -77,7 +77,10 @@ class GetPostTerms extends AutomateAction {
 		$taxonomy_name = $selected_options['taxonomy'];
 		$terms         = wp_get_post_terms( $post_id, $taxonomy_name );
 		if ( ! $terms ) {
-			throw new Exception( 'No taxonomy term found for the post.' );
+			return [
+				'status'  => 'error',
+				'message' => 'No taxonomy term found for the post.',
+			];
 		}
 		return [
 			$terms,

@@ -93,7 +93,8 @@ class SetMetaValue extends AutomateAction {
 		} else {
 			$response = [
 				'status'  => esc_attr__( 'Error', 'suretriggers' ),
-				'message' => esc_attr__( 'Function rwmb_set_meta not exists. Please make sure the Metabox plugin is installed and active.', 'suretriggers' ),
+				'message' => esc_attr__( 'Function rwmb_set_meta not exists. Please make sure the Metabox plugin is installed and active.', 'suretriggers' ), 
+				
 			];
 			return $response;
 		}

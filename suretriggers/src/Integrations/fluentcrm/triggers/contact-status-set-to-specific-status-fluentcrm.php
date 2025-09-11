@@ -77,7 +77,7 @@ if ( ! class_exists( 'ContactStatusSetToSpecificStatusFluentCRM' ) ) :
 					'fluentcrm_subscriber_status_to_pending',
 					'fluentcrm_subscriber_status_to_unsubscribed',
 					'fluentcrm_subscriber_status_to_bounced',
-					'fluentcrm_subscriber_status_to_complained', 
+					'fluentcrm_subscriber_status_to_complained',
 				],
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,

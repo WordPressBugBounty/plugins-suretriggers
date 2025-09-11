@@ -94,21 +94,19 @@ class MarkCourseComplete extends AutomateAction {
 				$user_id = $user->ID;
 				$course  = get_post( (int) $course_id );
 				if ( ! $course ) {
-					$this->set_error(
-						[
-							'msg' => __( 'No course is available ', 'suretriggers' ),
-						]
-					);
-					return false;
+					return [
+						'status'  => 'error',
+						'message' => __( 'No course is available ', 'suretriggers' ), 
+						
+					];
 				}
 
 				if ( ! function_exists( 'llms_mark_complete' ) ) {
-					$this->set_error(
-						[
-							'msg' => __( 'The function llms_mark_complete does not exist', 'suretriggers' ),
-						]
-					);
-					return false;
+					return [
+						'status'  => 'error',
+						'message' => __( 'The function llms_mark_complete does not exist', 'suretriggers' ), 
+						
+					];
 				}
 				
 				$course   = new \LLMS_Course( $course_id );
@@ -128,10 +126,16 @@ class MarkCourseComplete extends AutomateAction {
 				llms_mark_complete( $user_id, $course_id, 'course' );
 				return LifterLMS::get_lms_course_context( $course_id );
 			} else {
-				throw new Exception( 'User not exists.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not exists.',
+				];
 			}
 		} else {
-			throw new Exception( 'Enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email address.',
+			];
 		}
 	}
 

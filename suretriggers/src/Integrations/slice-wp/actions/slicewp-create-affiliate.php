@@ -73,38 +73,93 @@ class SliceWPCreateAffiliate extends AutomateAction {
 	 * @return array|bool|void
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
+		
+	
+		if ( ! function_exists( 'slicewp_insert_affiliate' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => 'SliceWP functions not found.',
+			];
+		}
+
+		// Get user by email.
 		$wp_user = get_user_by( 'email', $selected_options['user_login'] );
-		if ( $wp_user ) {
-			$userid               = $wp_user->data->ID;
-			$affiliate['user_id'] = $userid;
+		if ( ! $wp_user ) {
+			return [
+				'status'  => 'error',
+				'message' => 'User not found. Please provide a valid user email.',
+			];
 		}
 		
+		$userid = $wp_user->data->ID;
+		
+		// Check if user is already an affiliate.
+		if ( function_exists( 'slicewp_get_affiliate_by_user_id' ) ) {
+			$existing_affiliate = slicewp_get_affiliate_by_user_id( $userid );
+			if ( $existing_affiliate ) {
+				return [
+					'status'  => 'error',
+					'message' => 'User is already an affiliate.',
+				];
+			}
+		}
+
+		// Prepare affiliate data exactly like SliceWP implementation.
 		$affiliate                  = [];
-		$affiliate['status']        = $selected_options['status'];
-		$date                       = $selected_options['affiliate_date'];
-		$affiliate['payment_email'] = $selected_options['payment_email'];
-		$affiliate['welcome_email'] = $selected_options['welcome_email'];
-		$affiliate['welcome_email'] = ( 'true' === $affiliate['welcome_email'] ) ? true : false;
-		$affiliate['date_created']  = $date;
-		$affiliate['date_modified'] = $date;
-
-
-		if ( ! function_exists( 'slicewp_insert_affiliate' ) ) {
-			throw new Exception( 'Slicewp functions not found.' );
+		$affiliate['user_id']       = absint( $userid );
+		$affiliate['date_created']  = ! empty( $selected_options['affiliate_date'] ) ? $selected_options['affiliate_date'] : ( function_exists( 'slicewp_mysql_gmdate' ) ? slicewp_mysql_gmdate() : current_time( 'mysql', true ) );
+		$affiliate['date_modified'] = $affiliate['date_created'];
+		$affiliate['payment_email'] = ! empty( $selected_options['payment_email'] ) ? sanitize_email( $selected_options['payment_email'] ) : '';
+		$affiliate['website']       = ! empty( $selected_options['website'] ) ? esc_url( $selected_options['website'] ) : '';
+		$affiliate['status']        = ! empty( $selected_options['status'] ) ? sanitize_text_field( $selected_options['status'] ) : 'active';
+		
+		// Handle welcome email flag for backward compatibility - handle both string and integer inputs.
+		$welcome_email_input = ! empty( $selected_options['welcome_email'] ) ? $selected_options['welcome_email'] : false;
+		
+		// Convert various inputs to boolean.
+		if ( 'true' === $welcome_email_input || true === $welcome_email_input || 1 === $welcome_email_input || '1' === $welcome_email_input ) {
+			$affiliate['welcome_email'] = true;
+		} else {
+			$affiliate['welcome_email'] = false;
 		}
 
-		if ( false === $wp_user ) {
-			throw new Exception( 'User does not exist.' );
-		}
+		
+
+
 
 		// Insert affiliate into the database.
 		$affiliate_id = slicewp_insert_affiliate( $affiliate );
 		if ( ! $affiliate_id ) {
-			throw new Exception( 'Not able to create new affiliate, try later.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Not able to create new affiliate, try later.',
+			];
 		} else {
-			$affiliate['affiliate_id'] = $affiliate_id;
-			unset( $affiliate['welcome_email'] );
-			return $affiliate;
+			// Get affiliate name using SliceWP's function (same as in SliceWP admin).
+			$affiliate_name = '';
+			if ( function_exists( 'slicewp_get_affiliate_name' ) ) {
+				$affiliate_name = slicewp_get_affiliate_name( $affiliate_id );
+			}
+			
+			// Prepare comprehensive response data.
+			$response = [
+				'status'           => 'success',
+				'affiliate_id'     => $affiliate_id,
+				'user_id'          => $userid,
+				'affiliate_name'   => $affiliate_name,
+				'user_email'       => $wp_user->user_email,
+				'user_login'       => $wp_user->user_login,
+				'first_name'       => $wp_user->first_name,
+				'last_name'        => $wp_user->last_name,
+				'display_name'     => $wp_user->display_name,
+				'payment_email'    => $affiliate['payment_email'],
+				'website'          => $affiliate['website'],
+				'affiliate_status' => $affiliate['status'],
+				'date_created'     => $affiliate['date_created'],
+				'date_modified'    => $affiliate['date_modified'],
+			];
+			
+			return $response;
 		}
 	}
 }

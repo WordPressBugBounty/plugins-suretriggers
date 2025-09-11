@@ -135,7 +135,8 @@ class MarkLessonCompleteForUser extends AutomateAction {
 		if ( empty( $curriculum_arr ) ) {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'No Lessons found in selected Course.', 'suretriggers' ),
+				'response' => esc_attr__( 'No Lessons found in selected Course.', 'suretriggers' ), 
+				
 			];
 			return $error;
 		}
@@ -169,7 +170,11 @@ class MarkLessonCompleteForUser extends AutomateAction {
 			}
 
 			if ( ! class_exists( '\STM_LMS_Lesson' ) ) {
-				return;
+				return [
+					'status'  => 'error',
+					'message' => __( '\STM_LMS_Lesson class not found.', 'suretriggers' ), 
+					
+				];
 			}
 			foreach ( $lessons as $lesson_id ) {
 				if ( ! \STM_LMS_Lesson::is_lesson_completed( $user_id, $course_id, $lesson_id ) ) {
@@ -204,12 +209,14 @@ class MarkLessonCompleteForUser extends AutomateAction {
 			// Set the success response.
 			$response = [
 				'status'   => esc_attr__( 'Success', 'suretriggers' ),
-				'response' => esc_attr__( 'Lesson marked complete successfully.', 'suretriggers' ),
+				'response' => esc_attr__( 'Lesson marked complete successfully.', 'suretriggers' ), 
+				
 			];
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Lesson not found.', 'suretriggers' ),
+				'response' => esc_attr__( 'Lesson not found.', 'suretriggers' ), 
+				
 			];
 
 			return $error;

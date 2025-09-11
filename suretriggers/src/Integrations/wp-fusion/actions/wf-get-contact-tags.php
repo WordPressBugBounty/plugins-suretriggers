@@ -95,7 +95,8 @@ class WfGetContactTags extends AutomateAction {
 			} else {
 				$response = [
 					'status'  => 'error',
-					'message' => esc_html__( 'No tags found for the given contact ID.', 'suretriggers' ),
+					'message' => esc_html__( 'No tags found for the given contact ID.', 'suretriggers' ), 
+					
 				];
 			}
 		}

@@ -92,7 +92,10 @@ class CreateRole extends AutomateAction {
 				if ( array_key_exists( $capability, $all_capabilities ) ) {
 					$role_capabilities[ $capability ] = true;
 				} else {
-						throw new Exception( 'Capability ' . $capability . ' does not exist.' );
+						return [
+							'status'  => 'error',
+							'message' => 'Capability ' . $capability . ' does not exist.',
+						];
 				}
 			}
 		} elseif ( is_array( $role_capabilities_options ) ) {
@@ -103,17 +106,26 @@ class CreateRole extends AutomateAction {
 				if ( array_key_exists( $capability, $all_capabilities ) ) {
 					$role_capabilities[ $capability ] = true;
 				} else {
-					throw new Exception( 'Capability ' . $capability . ' does not exist.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Capability ' . $capability . ' does not exist.',
+					];
 				}
 			}
 		} else {
-			throw new Exception( 'Map Role Capabilities in comma-separated values.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Map Role Capabilities in comma-separated values.',
+			];
 		}
 
 			$new_role = add_role( $role_name, $role_dis_name, $role_capabilities ); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.custom_role_add_role
 
 		if ( ! $new_role ) {
-			throw new Exception( 'Role with same name exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Role with same name exists.',
+			];
 		} else {
 			return [
 				$new_role,

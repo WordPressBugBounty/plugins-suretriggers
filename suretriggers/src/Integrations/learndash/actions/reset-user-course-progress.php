@@ -111,7 +111,7 @@ class ResetUserCourseProgress extends AutomateAction {
 	 * @param int $user_id User ID.
 	 * @param int $course_id Course ID.
 	 * 
-	 * @return void
+	 * @return array|void
 	 */
 	public function delete_user_activity( $user_id, $course_id ) {
 		global $wpdb;
@@ -192,12 +192,15 @@ class ResetUserCourseProgress extends AutomateAction {
 	 * @param int $user_id User ID.
 	 * @param int $course_id Course ID.
 	 * 
-	 * @return void
+	 * @return array|void
 	 */
 	public function reset_quiz_progress( $user_id, $course_id ) {
-		if ( ! function_exists( 'learndash_get_lesson_list' ) || 
-		! function_exists( 'learndash_get_lesson_quiz_list' ) ) {
-			return;
+		if ( ! function_exists( 'learndash_get_lesson_list' ) || ! function_exists( 'learndash_get_lesson_quiz_list' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$lessons = learndash_get_lesson_list( $course_id, [ 'num' => 0 ] );
 		foreach ( $lessons as $lesson ) {
@@ -253,12 +256,15 @@ class ResetUserCourseProgress extends AutomateAction {
 	 * @param int $lesson_id Lesson ID.
 	 * @param int $course_id Course ID.
 	 * 
-	 * @return void
+	 * @return array|void
 	 */
 	public function get_topics_quiz( $user_id, $lesson_id, $course_id ) {
-		if ( ! function_exists( 'learndash_get_lesson_quiz_list' ) ||
-		! function_exists( 'learndash_get_topic_list' ) ) {
-			return;
+		if ( ! function_exists( 'learndash_get_lesson_quiz_list' ) || ! function_exists( 'learndash_get_topic_list' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$topic_list = learndash_get_topic_list( $lesson_id, $course_id );
 		if ( $topic_list ) {
@@ -311,11 +317,15 @@ class ResetUserCourseProgress extends AutomateAction {
 	 * @param  int $user_id User ID.
 	 * @param int $course_id Course ID.
 	 * 
-	 * @return void
+	 * @return array|void
 	 */
 	public function delete_quiz_progress( $user_id, $course_id = null ) {
 		if ( ! function_exists( 'learndash_get_course_quiz_list' ) || ! class_exists( 'LDLMS_DB' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$quizzes = learndash_get_course_quiz_list( $course_id, $user_id );
 		if ( $quizzes ) {
@@ -406,7 +416,7 @@ class ResetUserCourseProgress extends AutomateAction {
 	/**
 	 * Delete assignments of course, related to lessons / topics
 	 * 
-	 * @return void
+	 * @return array|void
 	 */
 	public function delete_assignments() {
 		global $wpdb;

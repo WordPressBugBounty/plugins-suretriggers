@@ -123,7 +123,10 @@ class RevokeAchivementUser extends AutomateAction {
 						$context
 					);
 				} else {
-					throw new Exception( "The user didn't have the specified achievement." );
+					return [
+						'status'  => 'error',
+						'message' => "The user didn't have the specified achievement.",
+					];
 				}
 			}
 		}
@@ -148,7 +151,10 @@ class RevokeAchivementUser extends AutomateAction {
 					$context
 				);
 			} else {
-				throw new Exception( "The user didn't have the specified achievement." );
+				return [
+					'status'  => 'error',
+					'message' => "The user didn't have the specified achievement.",
+				];
 			}
 		}
 	}

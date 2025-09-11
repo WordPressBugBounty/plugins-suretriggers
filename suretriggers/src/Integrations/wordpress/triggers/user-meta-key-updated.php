@@ -14,6 +14,7 @@
 namespace SureTriggers\Integrations\Wordpress\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
+use SureTriggers\Controllers\OptionController;
 use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
 
@@ -87,7 +88,18 @@ class UserMetaKeyUpdated {
 	 * @return void
 	 */
 	public function trigger_listener( $meta_id, $object_id, $meta_key, $_meta_value ) {
-
+		$trigger_data = OptionController::get_option( 'trigger_data' );
+		
+		// Check if user has specified a meta key for this trigger.
+		if ( is_array( $trigger_data ) && isset( $trigger_data[ $this->integration ][ $this->trigger ]['selected_options']['meta_key'] ) ) {
+			$selected_meta_key = $trigger_data[ $this->integration ][ $this->trigger ]['selected_options']['meta_key'];
+			
+			// Only trigger if the updated meta key matches the specified one.
+			if ( $selected_meta_key !== $meta_key ) {
+				return;
+			}
+		}
+		
 		$context               = WordPress::get_user_context( $object_id );
 		$context['meta_key']   = $meta_key;
 		$context['meta_value'] = $_meta_value;

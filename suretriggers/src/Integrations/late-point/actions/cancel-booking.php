@@ -79,23 +79,35 @@ class CancelBooking extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'OsBookingModel' ) ) {
-			throw new Exception( 'LatePoint plugin not installed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'LatePoint plugin not installed.',
+			];
 		}
 
 		$booking_id = isset( $selected_options['booking_id'] ) ? $selected_options['booking_id'] : null;
 		if ( ! $booking_id ) {
-			throw new Exception( 'Booking ID not provided.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Booking ID not provided.',
+			];
 		}
 
 		$booking = new OsBookingModel( $booking_id );
 		if ( ! isset( $booking->id ) || ! $booking->id ) {
-			throw new Exception( 'Booking not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Booking not found.',
+			];
 		}
 
 		if ( $booking->update_status( 'cancelled' ) ) {
 			return $booking->get_data_vars();
 		} else {
-			throw new Exception( 'Booking could not be cancelled.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Booking could not be cancelled.',
+			];
 		}
 	}
 

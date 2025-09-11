@@ -83,7 +83,10 @@ class MarkCourseCompleteForUser extends AutomateAction {
 			return false;
 		}
 		if ( ! $user_id ) {
-			throw new Exception( 'User email not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User email not exists.',
+			];
 		}
 
 		$course_id = ( isset( $selected_options['sfwd-courses'] ) ) ? $selected_options['sfwd-courses'] : '0';
@@ -105,7 +108,10 @@ class MarkCourseCompleteForUser extends AutomateAction {
 
 			$course = get_post( (int) $course_id );
 			if ( ! $course ) {
-				throw new Exception( 'No course is available.' );
+				return [
+					'status'  => 'error',
+					'message' => 'No course is available.',
+				];
 			}
 
 			$courses = [ $course_id ];
@@ -136,11 +142,15 @@ class MarkCourseCompleteForUser extends AutomateAction {
 	 * 
 	 * @param int $user_id user id.
 	 * @param int $course_id course id.
-	 * @return void
+	 * @return array|void
 	 */
 	public function mark_steps_done( $user_id, $course_id ) {
 		if ( ! function_exists( 'learndash_get_lesson_list' ) || ! function_exists( 'learndash_process_mark_complete' ) || ! function_exists( 'learndash_get_lesson_quiz_list' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$lessons = learndash_get_lesson_list( $course_id, [ 'num' => 0 ] );
 		foreach ( $lessons as $lesson ) {
@@ -165,11 +175,15 @@ class MarkCourseCompleteForUser extends AutomateAction {
 	 * @param int $user_id User Id.
 	 * @param int $lesson_id Lesson ID.
 	 * @param int $course_id Course ID.
-	 * @return void
+	 * @return array|void
 	 */
 	public function mark_topics_done( $user_id, $lesson_id, $course_id ) {
 		if ( ! function_exists( 'learndash_get_topic_list' ) || ! function_exists( 'learndash_process_mark_complete' ) || ! function_exists( 'learndash_get_lesson_quiz_list' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$topic_list = learndash_get_topic_list( $lesson_id, $course_id );
 		if ( $topic_list ) {
@@ -191,11 +205,15 @@ class MarkCourseCompleteForUser extends AutomateAction {
 	 * 
 	 * @param  int $user_id User ID.
 	 * @param int $course_id Course ID.
-	 * @return void
+	 * @return array|void
 	 */
 	public function mark_quiz_complete( $user_id, $course_id = null ) {
-		if ( ! function_exists( 'learndash_get_course_quiz_list' ) || ! function_exists( 'learndash_is_quiz_complete' ) || ! function_exists( 'learndash_update_user_activity' ) ) { 
-			return; 
+		if ( ! function_exists( 'learndash_get_course_quiz_list' ) || ! function_exists( 'learndash_is_quiz_complete' ) || ! function_exists( 'learndash_update_user_activity' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$quizzes = learndash_get_course_quiz_list( $course_id, $user_id );
 		if ( $quizzes ) {

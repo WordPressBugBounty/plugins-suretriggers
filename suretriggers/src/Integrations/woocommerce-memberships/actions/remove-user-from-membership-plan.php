@@ -85,7 +85,8 @@ class RemoveUserFromMembershipPlan extends AutomateAction {
 					if ( empty( $user_all_memberships ) ) {
 						$error = [
 							'status'   => esc_attr__( 'Error', 'suretriggers' ),
-							'response' => esc_attr__( 'The user was not a member of any membership plans.', 'suretriggers' ),
+							'response' => esc_attr__( 'The user was not a member of any membership plans.', 'suretriggers' ), 
+							
 						];
 						return $error;
 					} else {
@@ -109,7 +110,8 @@ class RemoveUserFromMembershipPlan extends AutomateAction {
 						if ( true !== $check_membership_plan ) {
 							$error = [
 								'status'   => esc_attr__( 'Error', 'suretriggers' ),
-								'response' => esc_attr__( 'The user was not a member of the specified membership plan.', 'suretriggers' ),
+								'response' => esc_attr__( 'The user was not a member of the specified membership plan.', 'suretriggers' ), 
+								
 							];
 							return $error;
 						} else {
@@ -133,7 +135,8 @@ class RemoveUserFromMembershipPlan extends AutomateAction {
 			} else {
 				$error = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'This user is not registered.', 'suretriggers' ),
+					'response' => esc_attr__( 'This user is not registered.', 'suretriggers' ), 
+					
 				];
 				return $error;
 			}

@@ -89,7 +89,10 @@ class AwardPointsToUser extends AutomateAction {
 		}
 
 		if ( ! is_numeric( $points ) ) {
-			throw new Exception( 'Points should be a numeric value.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Points should be a numeric value.',
+			];
 		}
 
 		$description = ! empty( $selected_options['description'] ) ? $selected_options['description'] : __( 'Awarded by SureTriggers', 'suretriggers' );

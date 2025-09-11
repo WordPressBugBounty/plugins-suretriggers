@@ -84,19 +84,29 @@ class ResetUserCourseProgress extends AutomateAction {
 				$user_id = $user->ID;
 
 				if ( ! $course_id || ! is_numeric( $course_id ) || ! tutor_utils()->is_enrolled( $course_id, $user_id ) ) {
-					throw new Exception( 'Invalid Course ID or Access Denied.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Invalid Course ID or Access Denied.',
+					];
 				}
 				tutor_utils()->delete_course_progress( $course_id, $user_id );
 				$response = [
 					'status'   => esc_attr__( 'Success', 'suretriggers' ),
-					'response' => esc_attr__( 'User course progress has been successfully reset.', 'suretriggers' ),
+					'response' => esc_attr__( 'User course progress has been successfully reset.', 'suretriggers' ), 
+					
 				];
 				return $response;
 			} else {
-				throw new Exception( 'User not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email address.',
+			];
 		}
 	}
 }

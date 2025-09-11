@@ -76,7 +76,8 @@ class RetrieveContactByTagIDs extends AutomateAction {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCRM is not active.', 'suretriggers' ),
+				'message' => __( 'FluentCRM is not active.', 'suretriggers' ), 
+				
 			];
 		}
 

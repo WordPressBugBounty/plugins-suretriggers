@@ -80,7 +80,10 @@ class UpdateStatusOfOrder extends AutomateAction {
 		$order = wc_get_order( $order_id );
 
 		if ( ! $order instanceof WC_Order ) {
-			throw new Exception( 'No order found with the specified Order ID.' );
+			return [
+				'status'  => 'error',
+				'message' => 'No order found with the specified Order ID.',
+			];
 		}
 
 		$order->update_status( $status );

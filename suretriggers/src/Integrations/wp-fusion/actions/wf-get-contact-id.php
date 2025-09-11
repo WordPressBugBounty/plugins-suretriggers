@@ -97,7 +97,8 @@ class WfGetContactID extends AutomateAction {
 			} else {
 				$response = [
 					'status'  => 'error',
-					'message' => esc_html__( 'No contact found for the given email', 'suretriggers' ),
+					'message' => esc_html__( 'No contact found for the given email', 'suretriggers' ), 
+					
 				];
 			}
 		}

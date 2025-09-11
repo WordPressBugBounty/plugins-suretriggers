@@ -100,14 +100,16 @@ class RevokeBadgeFromUser extends AutomateAction {
 				} else {
 					return [
 						'success' => false,
-						'msg'     => __( 'The user does not have the selected badge.', 'suretriggers' ),
+						'msg'     => __( 'The user does not have the selected badge.', 'suretriggers' ), 
+						
 					];   
 				}
 			}
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'The user does not have badges.', 'suretriggers' ),
+				'msg'     => __( 'The user does not have badges.', 'suretriggers' ), 
+				
 			];   
 		}
 	}

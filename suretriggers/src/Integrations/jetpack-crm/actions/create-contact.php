@@ -94,7 +94,10 @@ class CreateContact extends AutomateAction {
 		$contact_id = $zbs->DAL->contacts->addUpdateContact( $contact_details ); // phpcs:ignore
 
 		if ( ! $contact_id ) {
-			throw new Exception( 'Something went wrong while creating contact.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Something went wrong while creating contact.',
+			];
 		}
 
 		return JetpackCRM::get_contact_context( $contact_id );

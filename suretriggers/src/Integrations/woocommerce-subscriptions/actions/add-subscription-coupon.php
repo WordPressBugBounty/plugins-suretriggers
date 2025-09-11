@@ -109,7 +109,10 @@ class AddSubscriptionCoupon extends AutomateAction {
 				
 				return $context;
 			} else {
-				throw new Exception( 'Subscription not found for the provided Subscription ID.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Subscription not found for the provided Subscription ID.',
+				];
 			}
 		}
 	}

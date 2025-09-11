@@ -103,16 +103,28 @@ class MarkCourseComplete extends AutomateAction {
 						$context['course_name'] = get_the_title( $course_id );
 						return $context;
 					} else {
-						throw new Exception( 'Course Cannot be completed.' );
+						return [
+							'status'  => 'error',
+							'message' => 'Course Cannot be completed.',
+						];
 					}
 				} else {
-					throw new Exception( 'User has already completed this course.' );
+					return [
+						'status'  => 'error',
+						'message' => 'User has already completed this course.',
+					];
 				}
 			} else {
-				throw new Exception( 'User not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email address.',
+			];
 		}
 	}
 }

@@ -79,7 +79,11 @@ class AddUserToList extends AutomateAction {
 		$user_email = $selected_options['wp_user_email'];
 		
 		if ( ! class_exists( 'Newsletter' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Newsletter class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( is_email( $user_email ) ) {

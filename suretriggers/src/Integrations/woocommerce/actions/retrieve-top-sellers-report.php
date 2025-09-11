@@ -76,7 +76,8 @@ class RetrieveTopSellersReport extends AutomateAction {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'WooCommerce is not installed or activated.', 'suretriggers' ),
+				'message' => __( 'WooCommerce is not installed or activated.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -98,7 +99,8 @@ class RetrieveTopSellersReport extends AutomateAction {
 		if ( ! class_exists( 'Automattic\\WooCommerce\\Admin\\API\\Reports\\Products\\Query' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'WooCommerce Admin Reports API not available.', 'suretriggers' ),
+				'message' => __( 'WooCommerce Admin Reports API not available.', 'suretriggers' ), 
+				
 			];
 		}
 		

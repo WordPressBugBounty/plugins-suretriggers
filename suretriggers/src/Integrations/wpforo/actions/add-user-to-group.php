@@ -89,15 +89,22 @@ class AddUserToGroup extends AutomateAction {
 					$user = WPF()->member->get_member( $user_id );
 					return $user;
 				} else {
-					throw new Exception( 'User not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'User not found.',
+					];
 				}
 			} else {
-				throw new Exception( 'User not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found.',
+				];
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;

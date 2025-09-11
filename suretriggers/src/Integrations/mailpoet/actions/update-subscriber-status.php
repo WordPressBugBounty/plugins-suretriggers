@@ -77,7 +77,8 @@ class UpdateSubscriberStatus extends AutomateAction {
 		if ( ! class_exists( '\MailPoet\API\API' ) || ! class_exists( '\MailPoet\API\MP\v1\APIException' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'MailPoet API class not exists.', 'suretriggers' ),
+				'message' => __( 'MailPoet API class not exists.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -92,7 +93,8 @@ class UpdateSubscriberStatus extends AutomateAction {
 		if ( '' === $email ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Please enter a subscriber email.', 'suretriggers' ),
+				'message' => __( 'Please enter a subscriber email.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -124,11 +126,17 @@ class UpdateSubscriberStatus extends AutomateAction {
 					$wpdb->update( $table_name, [ 'status' => $subscriber['status'] ], [ 'id' => $subscriber_id ] );
 				} else {
 					// Throw error if subscriber not found.
-					throw new Exception( 'Subscriber not found for entered email.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Subscriber not found for entered email.',
+					];
 				}
 			} else {
 				// Throw error if adds new email.
-				throw new Exception( 'Add existing subscriber email.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Add existing subscriber email.',
+				];
 			}
 
 			$context = $subscriber;

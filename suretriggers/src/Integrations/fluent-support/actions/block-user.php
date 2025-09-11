@@ -80,17 +80,26 @@ class BlockUser extends AutomateAction {
 		$email = sanitize_email( $selected_options['customer_email'] );
 
 		if ( ! is_email( $email ) ) {
-			throw new Exception( 'Invalid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid email.',
+			];
 		}
 
 		if ( ! class_exists( 'FluentSupport\App\Models\Customer' ) ) {
-			throw new Exception( 'Error: Fluent Support plugin is missing or not installed correctly.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Error: Fluent Support plugin is missing or not installed correctly.',
+			];
 		}
 
 		$customer_record = Customer::where( 'email', $email )->first();
 
 		if ( ! $customer_record ) {
-			throw new Exception( 'User not found in Fluent Support.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found in Fluent Support.',
+			];
 		}
 
 		// Update status to "Blocked".

@@ -91,7 +91,8 @@ class WishlistMemberGetMemberByUsername extends AutomateAction {
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'No user found for the searched username', 'suretriggers' ),
+				'msg'     => __( 'No user found for the searched username', 'suretriggers' ), 
+				
 			];   
 		}
 	}

@@ -112,10 +112,16 @@ class WPLoyaltyAddPointsCustomer extends AutomateAction {
 				}
 				return $context;
 			} else {
-				throw new Exception( 'Points not added.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Points not added.',
+				];
 			}
 		} else {
-			throw new Exception( 'Campaign Not Found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Campaign Not Found.',
+			];
 		}
 	}
 

@@ -78,7 +78,11 @@ class DeleteEntryGravityForm extends AutomateAction {
 		$entry_id = $selected_options['gravity_form_entry_id'];
 
 		if ( ! class_exists( 'GFAPI' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'GFAPI class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$entry_result = GFAPI::entry_exists( $entry_id );
@@ -91,15 +95,22 @@ class DeleteEntryGravityForm extends AutomateAction {
 				} else {
 					$context = [
 						'status'   => esc_attr__( 'Success', 'suretriggers' ),
-						'response' => esc_attr__( 'Entry deleted successfully.', 'suretriggers' ),
+						'response' => esc_attr__( 'Entry deleted successfully.', 'suretriggers' ), 
+						
 					];
 					return $context;
 				}
 			} else {
-				throw new Exception( 'Entry ID is not for specific form.' );    
+				return [
+					'status'  => 'error',
+					'message' => 'Entry ID is not for specific form.',
+				];    
 			}
 		} else {
-			throw new Exception( 'No Entry Found' );
+			return [
+				'status'  => 'error',
+				'message' => 'No Entry Found',
+			];
 		}
 	}
 }

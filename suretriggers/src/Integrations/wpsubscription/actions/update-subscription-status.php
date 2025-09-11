@@ -79,14 +79,16 @@ class UpdateSubscriptionStatus extends AutomateAction {
 		if ( empty( $subscription_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Subscription ID is required.', 'suretriggers' ),
+				'message' => __( 'Subscription ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
 		if ( empty( $new_status ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Status is required.', 'suretriggers' ),
+				'message' => __( 'Status is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -94,7 +96,8 @@ class UpdateSubscriptionStatus extends AutomateAction {
 		if ( ! $subscription || 'subscrpt_order' !== $subscription->post_type ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid subscription ID.', 'suretriggers' ),
+				'message' => __( 'Invalid subscription ID.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -102,7 +105,8 @@ class UpdateSubscriptionStatus extends AutomateAction {
 		if ( ! in_array( $new_status, $valid_statuses, true ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid status provided.', 'suretriggers' ),
+				'message' => __( 'Invalid status provided.', 'suretriggers' ), 
+				
 			];
 		}
 

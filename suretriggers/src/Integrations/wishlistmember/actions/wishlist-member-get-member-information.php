@@ -88,7 +88,8 @@ class WishlistMemberGetMemberInformation extends AutomateAction {
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'Failed to get a member information', 'suretriggers' ),
+				'msg'     => __( 'Failed to get a member information', 'suretriggers' ), 
+				
 			];   
 		}
 	}

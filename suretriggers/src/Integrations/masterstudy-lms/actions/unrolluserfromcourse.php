@@ -83,14 +83,16 @@ class UnrollUserFromCourse extends AutomateAction {
 				// If there's no user found, return default message.
 				$error = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'User with the email provided not found.', 'suretriggers' ),
+					'response' => esc_attr__( 'User with the email provided not found.', 'suretriggers' ), 
+					
 				];
 				return $error;
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;
@@ -102,7 +104,8 @@ class UnrollUserFromCourse extends AutomateAction {
 			if ( empty( $course ) ) {
 				$response = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'User not enrolled into this course.', 'suretriggers' ),
+					'response' => esc_attr__( 'User not enrolled into this course.', 'suretriggers' ), 
+					
 				];
 			} else {
 				// Reset the user's progress.
@@ -226,14 +229,16 @@ class UnrollUserFromCourse extends AutomateAction {
 					// Set the success response.
 					$response = [
 						'status'   => esc_attr__( 'Success', 'suretriggers' ),
-						'response' => esc_attr__( 'User progress reset successfully.', 'suretriggers' ),
+						'response' => esc_attr__( 'User progress reset successfully.', 'suretriggers' ), 
+						
 					];
 				} else {
 					// If there's no response, return an error message.
 					$error =
 						[
 							'status'   => esc_attr__( 'Error', 'suretriggers' ),
-							'response' => esc_attr__( 'Something went wrong. Please check the action step configuration.', 'suretriggers' ),
+							'response' => esc_attr__( 'Something went wrong. Please check the action step configuration.', 'suretriggers' ), 
+							
 						];
 					return $error;
 				}
@@ -248,7 +253,8 @@ class UnrollUserFromCourse extends AutomateAction {
 	
 				$response = [
 					'status'   => esc_attr__( 'Success', 'suretriggers' ),
-					'response' => esc_attr__( 'User unrolled from course successfully.', 'suretriggers' ),
+					'response' => esc_attr__( 'User unrolled from course successfully.', 'suretriggers' ), 
+					
 				];
 			}
 	

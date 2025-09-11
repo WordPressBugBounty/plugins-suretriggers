@@ -75,12 +75,18 @@ class AddPostToActivityFeed extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( empty( $selected_options['bb_author'] ) || ! is_email( $selected_options['bb_author'] ) ) {
-			throw new Exception( 'Invalid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid email.',
+			];
 		}
 		$user_id = email_exists( $selected_options['bb_author'] );
 
 		if ( false === $user_id ) {
-			throw new Exception( 'User with email ' . $selected_options['bb_author'] . ' does not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User with email ' . $selected_options['bb_author'] . ' does not exists.',
+			];
 		}
 
 		$content = $selected_options['bb_activity_content'];
@@ -100,7 +106,10 @@ class AddPostToActivityFeed extends AutomateAction {
 
 			// Check if link preview is active.
 			if ( ! function_exists( 'bp_is_activity_link_preview_active' ) ) {
-				throw new Exception( 'Link preview is not activated.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Link preview is not activated.',
+				];
 			}
 			if ( $activity_id && bp_is_activity_link_preview_active() ) {
 				// Check if content has links.
@@ -109,13 +118,19 @@ class AddPostToActivityFeed extends AutomateAction {
 				if ( ! empty( $links ) ) {
 					// Get URL parsed data.
 					if ( ! function_exists( 'bp_core_parse_url' ) ) {
-						throw new Exception( 'Link preview function is not present.' );
+						return [
+							'status'  => 'error',
+							'message' => 'Link preview function is not present.',
+						];
 					}
 					$parse_url_data = bp_core_parse_url( $links[0] );
 
 					// If empty data then send error.
 					if ( empty( $parse_url_data ) ) {
-						throw new Exception( 'There was a problem generating a link preview.' );
+						return [
+							'status'  => 'error',
+							'message' => 'There was a problem generating a link preview.',
+						];
 					}
 					
 					if ( ! empty( $parse_url_data['images'] ) ) {
@@ -149,7 +164,10 @@ class AddPostToActivityFeed extends AutomateAction {
 				}
 			}
 		}
-		throw new Exception( SURE_TRIGGERS_ACTION_ERROR_MESSAGE );
+		return [
+			'status'  => 'error',
+			'message' => SURE_TRIGGERS_ACTION_ERROR_MESSAGE,
+		];
 	}
 }
 

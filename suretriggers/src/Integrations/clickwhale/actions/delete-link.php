@@ -78,7 +78,8 @@ class DeleteLink extends AutomateAction {
 		if ( empty( $link_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Link ID is required to delete a link.', 'suretriggers' ),
+				'message' => __( 'Link ID is required to delete a link.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -98,7 +99,8 @@ class DeleteLink extends AutomateAction {
 		if ( ! $link ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Link not found.', 'suretriggers' ),
+				'message' => __( 'Link not found.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -111,7 +113,8 @@ class DeleteLink extends AutomateAction {
 		if ( false === $result ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to delete link from ClickWhale.', 'suretriggers' ),
+				'message' => __( 'Failed to delete link from ClickWhale.', 'suretriggers' ), 
+				
 			];
 		}
 

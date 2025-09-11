@@ -72,7 +72,8 @@ class RetrieveBooking extends AutomateAction {
 		if ( empty( $selected_options['booking_id'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Booking ID is required.', 'suretriggers' ),
+				'message' => __( 'Booking ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -82,7 +83,8 @@ class RetrieveBooking extends AutomateAction {
 		if ( ! $booking || 'booking' !== $booking->post_type ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Booking not found.', 'suretriggers' ),
+				'message' => __( 'Booking not found.', 'suretriggers' ), 
+				
 			];
 		}
 

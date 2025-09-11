@@ -76,7 +76,10 @@ class GetAllTickets extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'FluentSupport\App\Models\Ticket' ) || ! class_exists( 'FluentSupport\App\Api\Classes\Tickets' ) ) {
-			throw new Exception( 'Error: FluentSupport plugin is not installed correctly. Required classes are missing.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Error: FluentSupport plugin is not installed correctly. Required classes are missing.',
+			];
 		}
 
 		try {

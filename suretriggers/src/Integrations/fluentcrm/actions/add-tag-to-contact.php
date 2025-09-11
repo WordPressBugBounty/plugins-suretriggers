@@ -77,7 +77,8 @@ class AddTagToContact extends AutomateAction {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCrmApi function not found.', 'suretriggers' ),
+				'message' => __( 'FluentCrmApi function not found.', 'suretriggers' ), 
+				
 			];
 		}
 		$contact_api = FluentCrmApi( 'contacts' );
@@ -87,7 +88,8 @@ class AddTagToContact extends AutomateAction {
 		if ( is_null( $contact ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid contact.', 'suretriggers' ),
+				'message' => __( 'Invalid contact.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -105,7 +107,8 @@ class AddTagToContact extends AutomateAction {
 				if ( ! class_exists( 'FluentCrm\App\Models\Tag' ) ) {
 					return [
 						'status'  => 'error',
-						'message' => __( 'Tag model not found.', 'suretriggers' ),
+						'message' => __( 'Tag model not found.', 'suretriggers' ), 
+						
 					];
 				}
 				if ( ! empty( $tags_arr ) ) {

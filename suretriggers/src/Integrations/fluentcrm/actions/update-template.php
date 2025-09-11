@@ -77,7 +77,8 @@ class UpdateTemplate extends AutomateAction {
 		if ( ! class_exists( '\FluentCrm\App\Models\Template' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCRM is not installed or activated.', 'suretriggers' ),
+				'message' => __( 'FluentCRM is not installed or activated.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -86,7 +87,8 @@ class UpdateTemplate extends AutomateAction {
 		if ( ! $template_id ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Template ID is required.', 'suretriggers' ),
+				'message' => __( 'Template ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -96,7 +98,8 @@ class UpdateTemplate extends AutomateAction {
 		if ( ! $template ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Template not found.', 'suretriggers' ),
+				'message' => __( 'Template not found.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -148,7 +151,8 @@ class UpdateTemplate extends AutomateAction {
 		if ( ! $updated_template ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to update template.', 'suretriggers' ),
+				'message' => __( 'Failed to update template.', 'suretriggers' ), 
+				
 			];
 		}
 

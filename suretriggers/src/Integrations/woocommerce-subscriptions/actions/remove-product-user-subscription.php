@@ -78,30 +78,46 @@ class RemoveProductUserSubscription extends AutomateAction {
 		$subscription_id         = $selected_options['subscription_id'];
 		
 		if ( ! class_exists( 'WC_Subscription' ) || ! function_exists( 'wcs_get_users_subscriptions' ) || ! function_exists( 'wcs_get_subscriptions' ) || ! function_exists( 'wcs_get_subscription' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$user = get_userdata( $user_id );
 		if ( $user ) {
 			$product = wc_get_product( absint( $subscription_product_id ) );
 
 			if ( $product instanceof \WC_Product && ! $product->is_type( [ 'subscription_variation', 'variable-subscription', 'subscription' ] ) ) {
-				throw new Exception( 'The provided product is not a valid subscription product.' );
+				return [
+					'status'  => 'error',
+					'message' => 'The provided product is not a valid subscription product.',
+				];
 			}
 
 			if ( ! empty( $subscription_id ) ) {
 				$subscription = wcs_get_subscription( absint( $subscription_id ) );
 				if ( ! $subscription instanceof WC_Subscription ) {
-					throw new Exception( 'The provided subscription ID is not a valid subscription ID.' );
+					return [
+						'status'  => 'error',
+						'message' => 'The provided subscription ID is not a valid subscription ID.',
+					];
 				}
 
 				if ( ! $subscription->has_product( $subscription_product_id ) ) {
-					throw new Exception( 'The subscription does not contain the provided product.' );
+					return [
+						'status'  => 'error',
+						'message' => 'The subscription does not contain the provided product.',
+					];
 				}
 
 				$subscription_items = $subscription->get_items();
 
 				if ( empty( $subscription_items ) ) {
-					throw new Exception( 'The subscription does not contain the provided product.' );
+					return [
+						'status'  => 'error',
+						'message' => 'The subscription does not contain the provided product.',
+					];
 				}
 
 				$modified = false;
@@ -132,11 +148,17 @@ class RemoveProductUserSubscription extends AutomateAction {
 				 * @phpstan-ignore-next-line
 				 */
 				if ( ! $modified ) {
-					throw new Exception( 'Unable to remove the product from the subscription.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Unable to remove the product from the subscription.',
+					];
 				}
 			}
 		} else {
-			throw new Exception( 'User does not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User does not exists.',
+			];
 		}
 	}
 }

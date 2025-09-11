@@ -73,21 +73,24 @@ class UpdateBookingStatus extends AutomateAction {
 		if ( ! function_exists( 'wp_travel_engine_get_booking_status' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'WP Travel Engine plugin is not active.', 'suretriggers' ),
+				'message' => __( 'WP Travel Engine plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
 		if ( empty( $selected_options['booking_id'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Booking ID is required.', 'suretriggers' ),
+				'message' => __( 'Booking ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
 		if ( empty( $selected_options['new_status'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'New status is required.', 'suretriggers' ),
+				'message' => __( 'New status is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -98,7 +101,8 @@ class UpdateBookingStatus extends AutomateAction {
 		if ( ! $booking || 'booking' !== $booking->post_type ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Booking not found.', 'suretriggers' ),
+				'message' => __( 'Booking not found.', 'suretriggers' ), 
+				
 			];
 		}
 

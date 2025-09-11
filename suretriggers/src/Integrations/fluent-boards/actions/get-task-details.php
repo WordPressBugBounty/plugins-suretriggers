@@ -81,11 +81,18 @@ class GetTaskDetails extends AutomateAction {
 
 		// Check if FluentBoardsApi function exists, if not, return early.
 		if ( ! class_exists( 'FluentBoards\App\Models\Task' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentBoards\App\Models\Task class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$task = \FluentBoards\App\Models\Task::find( $task_id );
 		if ( empty( $task ) ) {
-			throw new Exception( 'There is error while getting task details.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There is error while getting task details.',
+			];
 		}
 		return $task;
 	}

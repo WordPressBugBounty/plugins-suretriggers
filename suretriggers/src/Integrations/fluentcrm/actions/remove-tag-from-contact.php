@@ -76,7 +76,8 @@ class RemoveTagFromContact extends AutomateAction {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCrmApi function not found.', 'suretriggers' ),
+				'message' => __( 'FluentCrmApi function not found.', 'suretriggers' ), 
+				
 			];
 		}
 		$context     = [];
@@ -87,7 +88,8 @@ class RemoveTagFromContact extends AutomateAction {
 		if ( is_null( $contact ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid contact.', 'suretriggers' ),
+				'message' => __( 'Invalid contact.', 'suretriggers' ), 
+				
 			];
 		}
 

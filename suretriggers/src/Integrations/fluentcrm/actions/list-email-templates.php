@@ -76,7 +76,8 @@ class ListEmailTemplates extends AutomateAction {
 		if ( ! class_exists( '\FluentCrm\App\Models\Template' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCRM is not installed or activated.', 'suretriggers' ),
+				'message' => __( 'FluentCRM is not installed or activated.', 'suretriggers' ), 
+				
 			];
 		}
 

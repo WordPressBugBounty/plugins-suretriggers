@@ -75,12 +75,11 @@ class EnrollToCourse extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! $user_id ) {
-			$this->set_error(
-				[
-					'msg' => __( 'User Not found', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'User Not found', 'suretriggers' ), 
+				
+			];
 		}
 
 		$course_id = ( isset( $selected_options['sfwd-courses'] ) ) ? $selected_options['sfwd-courses'] : '0';
@@ -102,12 +101,11 @@ class EnrollToCourse extends AutomateAction {
 
 			$course = get_post( (int) $course_id );
 			if ( ! $course ) {
-				$this->set_error(
-					[
-						'msg' => __( 'No course is available ', 'suretriggers' ),
-					]
-				);
-				return false;
+				return [
+					'status'  => 'error',
+					'message' => __( 'No course is available ', 'suretriggers' ), 
+					
+				];
 			}
 
 			$courses = [ $course_id ];

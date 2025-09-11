@@ -75,7 +75,11 @@ class ListCampaigns extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'Mint\MRM\DataBase\Models\CampaignModel' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Mint\MRM\DataBase\Models\CampaignModel class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		global $wpdb;
 		$limit = 20;

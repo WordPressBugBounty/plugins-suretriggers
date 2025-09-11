@@ -71,7 +71,8 @@ class FindCourseTaxonomies extends AutomateAction {
 
 		if ( empty( $course_id ) || get_post_type( $course_id ) !== 'sfwd-courses' ) {
 			return [
-				'message' => __( 'Invalid Course ID.', 'suretriggers' ),
+				'message' => __( 'Invalid Course ID.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -94,7 +95,8 @@ class FindCourseTaxonomies extends AutomateAction {
 
 		return [
 			'course_id'  => $course_id,
-			'taxonomies' => ! empty( $course_taxonomies ) ? $course_taxonomies : __( 'No taxonomies found.', 'suretriggers' ),
+			'taxonomies' => ! empty( $course_taxonomies ) ? $course_taxonomies : __( 'No taxonomies found.', 'suretriggers' ), 
+			
 		];
 	}
 }

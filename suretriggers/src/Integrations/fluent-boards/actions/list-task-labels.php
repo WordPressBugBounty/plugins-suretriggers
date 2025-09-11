@@ -81,11 +81,18 @@ class ListTaskLabels extends AutomateAction {
 
 		// Check if FluentBoardsApi function exists, if not, return early.
 		if ( ! class_exists( 'FluentBoards\App\Models\Label' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentBoards\App\Models\Label class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$labels = Label::where( 'board_id', $board_id )->orderBy( 'created_at', 'ASC' )->get();
 		if ( empty( $labels ) ) {
-			throw new Exception( 'There is error while getting labels list.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There is error while getting labels list.',
+			];
 		}
 		return $labels;
 	}

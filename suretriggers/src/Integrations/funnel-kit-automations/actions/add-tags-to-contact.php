@@ -79,13 +79,19 @@ class AddTagsToContact extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'BWFCRM_Contact' ) ) {
-			throw new Exception( 'Plugin not installed correctly.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Plugin not installed correctly.',
+			];
 		}
 
 		$email = sanitize_email( $selected_options['contact_email'] );
 
 		if ( ! is_email( $email ) ) {
-			throw new Exception( 'Invalid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid email.',
+			];
 		}
 
 		$tag_ids = $selected_options['tag_ids'];

@@ -71,10 +71,16 @@ class AddReplyInTopic extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'bbPress' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'bbPress class not found.', 'suretriggers' ), 
+			];
 		}
 		if ( ! function_exists( 'bbp_get_topic' ) || ! function_exists( 'bbp_get_forum' ) || ! function_exists( 'bbp_is_forum_category' ) || ! function_exists( 'bbp_get_reply_post_type' ) || ! function_exists( 'bbp_get_topic_reply_count' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+			];
 		}
 		$user_id = $selected_options['wp_user_email'];
 		if ( is_email( $user_id ) ) {
@@ -85,7 +91,7 @@ class AddReplyInTopic extends AutomateAction {
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
 			];
 
 			return $error;
@@ -96,24 +102,36 @@ class AddReplyInTopic extends AutomateAction {
 		$anonymous_data    = 0;
 
 		if ( ! bbp_get_topic( $topic_id ) ) {
-			throw new Exception( 'Sorry, Discussion does not exist' );
+			return [
+				'status'  => 'error',
+				'message' => 'Sorry, Discussion does not exist', 
+			];
 		}
 
 		if ( ! bbp_get_forum( $forum_id ) ) {
-			throw new Exception( 'Sorry, Forum does not exist' );
+			return [
+				'status'  => 'error',
+				'message' => 'Sorry, Forum does not exist', 
+			];
 		}
 		// Forum exists.
 		if ( ! empty( $forum_id ) ) {
 
 			// Forum is a category.
 			if ( bbp_is_forum_category( $forum_id ) ) {
-				throw new Exception( 'Sorry, This forum is a category. No discussions can be created in this forum' );
+				return [
+					'status'  => 'error',
+					'message' => 'Sorry, This forum is a category. No discussions can be created in this forum', 
+				];
 				// Forum is not a category.
 			} else {
 
 				// Forum is closed and user cannot access.
 				if ( function_exists( 'bbp_is_forum_closed' ) && bbp_is_forum_closed( $forum_id ) && ! current_user_can( 'edit_forum', $forum_id ) ) {
-					throw new Exception( 'Sorry, This forum has been closed to new discussions' );
+					return [
+						'status'  => 'error',
+						'message' => 'Sorry, This forum has been closed to new discussions', 
+					];
 				}
 
 				/**
@@ -141,7 +159,10 @@ class AddReplyInTopic extends AutomateAction {
 						( empty( $group_ids ) && ! current_user_can( 'read_private_forums' ) )
 						|| ( ! empty( $group_ids ) && ! $is_member )
 					) {
-						throw new Exception( 'Sorry, This forum is private and you do not have the capability to read or create new discussions in it' );
+						return [
+							'status'  => 'error',
+							'message' => 'Sorry, This forum is private and you do not have the capability to read or create new discussions in it', 
+						];
 					}
 
 					// Forum is hidden and user cannot access.
@@ -150,7 +171,10 @@ class AddReplyInTopic extends AutomateAction {
 						( empty( $group_ids ) && ! current_user_can( 'read_hidden_forums' ) )
 						|| ( ! empty( $group_ids ) && ! $is_member )
 					) {
-						throw new Exception( 'Sorry, This forum is hidden and you do not have the capability to read or create new discussions in it' );
+						return [
+							'status'  => 'error',
+							'message' => 'Sorry, This forum is hidden and you do not have the capability to read or create new discussions in it', 
+						];
 					}
 				}
 			}
@@ -177,18 +201,27 @@ class AddReplyInTopic extends AutomateAction {
 				'anonymous_data' => $anonymous_data,
 			]
 		) ) {
-			throw new Exception( "Duplicate reply detected; it looks as though you've already said that!" );
+			return [
+				'status'  => 'error',
+				'message' => "Duplicate reply detected; it looks as though you've already said that!",
+			];
 		}
 
 		/** Topic Closed */
 		// If topic is closed, moderators can still reply.
 		if ( function_exists( 'bbp_is_topic_closed' ) && bbp_is_topic_closed( $topic_id ) && ! current_user_can( 'moderate' ) ) {
-			throw new Exception( 'Sorry, Discussion is closed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Sorry, Discussion is closed.', 
+			];
 		}
 
 		/** Reply Blacklist */
 		if ( function_exists( 'bbp_check_for_blacklist' ) && ! bbp_check_for_blacklist( $anonymous_data, $user_id, '', $reply_content ) ) {
-			throw new Exception( 'Sorry, Your reply cannot be created at this time.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Sorry, Your reply cannot be created at this time.', 
+			];
 		}
 
 		/** Reply Status */
@@ -203,7 +236,10 @@ class AddReplyInTopic extends AutomateAction {
 		/** Topic Closed */
 		// If topic is closed, moderators can still reply.
 		if ( function_exists( 'bbp_is_topic_closed' ) && bbp_is_topic_closed( $topic_id ) && ! current_user_can( 'moderate' ) ) {
-			throw new Exception( 'Sorry, Discussion is closed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Sorry, Discussion is closed.', 
+			];
 		}
 
 		/** No Errors */
@@ -228,7 +264,10 @@ class AddReplyInTopic extends AutomateAction {
 		$reply_id = wp_insert_post( $reply_data );
 
 		if ( empty( $reply_id ) ) {
-			throw new Exception( 'We are facing a problem to creating a reply' );
+			return [
+				'status'  => 'error',
+				'message' => 'We are facing a problem to creating a reply', 
+			];
 		}
 
 		/** Trash Check */
@@ -288,7 +327,7 @@ class AddReplyInTopic extends AutomateAction {
 			'forum_title'       => get_the_title( $forum_id ),
 			'forum_link'        => get_the_permalink( $forum_id, true ),
 			'reply_description' => $reply_content,
-			'reply_link'        => get_the_permalink( $reply_id, true ),
+			'reply_link'        => get_the_permalink( $reply_id, true ), 
 		];
 		return $context;
 	}

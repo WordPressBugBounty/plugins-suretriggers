@@ -88,7 +88,8 @@ class WishlistMemberGetMemberByEmail extends AutomateAction {
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'No user found for the searched email', 'suretriggers' ),
+				'msg'     => __( 'No user found for the searched email', 'suretriggers' ), 
+				
 			];   
 		}
 	}

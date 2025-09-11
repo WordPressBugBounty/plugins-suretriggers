@@ -84,7 +84,11 @@ class MarkSectionComplete extends AutomateAction {
 		$user_email = $selected_options['wp_user_email'];
 
 		if ( ! class_exists( 'LLMS_Section' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'LLMS_Section class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( is_email( $user_email ) ) {
@@ -92,12 +96,11 @@ class MarkSectionComplete extends AutomateAction {
 			if ( $user ) {
 				$user_id = $user->ID;
 				if ( ! function_exists( 'llms_mark_complete' ) ) {
-					$this->set_error(
-						[
-							'msg' => __( 'The function llms_mark_complete does not exist', 'suretriggers' ),
-						]
-					);
-					return false;
+					return [
+						'status'  => 'error',
+						'message' => __( 'The function llms_mark_complete does not exist', 'suretriggers' ), 
+						
+					];
 				}
 
 				// Get all lessons of section.
@@ -113,10 +116,16 @@ class MarkSectionComplete extends AutomateAction {
 
 				return array_merge( WordPress::get_post_context( $section_id ), WordPress::get_user_context( $user_id ) );
 			} else {
-				throw new Exception( 'User not exists.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not exists.',
+				];
 			}
 		} else {
-			throw new Exception( 'Enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email address.',
+			];
 		}
 	}
 

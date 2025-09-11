@@ -76,12 +76,19 @@ class AddNewCustomer extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! function_exists( 'wc_create_new_customer' ) ) {
-			throw new Exception( 'WooCommerce function wc_create_new_customer not found.' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'WooCommerce function wc_create_new_customer not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( ! class_exists( 'WC_Customer' ) ) {
-
-			throw new Exception( 'WooCommerce class WC_Customer not found.' );
+			return [
+				'status'  => 'error',
+				'message' => __( 'WooCommerce class WC_Customer not found.', 'suretriggers' ), 
+				
+			];
 		}
 		
 		$email    = $selected_options['email'];
@@ -89,13 +96,20 @@ class AddNewCustomer extends AutomateAction {
 		$username = isset( $selected_options['username'] ) ? $selected_options['username'] : sanitize_user( current( explode( '@', $email ) ), true );
 
 		if ( email_exists( $email ) ) {
-			return new WP_Error( 'email_exists', __( 'Email already exists.', 'suretriggers' ) );
+			return [
+				'status'  => 'error',
+				'message' => __( 'Email already exists.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$user_id = wc_create_new_customer( $email, $username, $password );
 
 		if ( is_wp_error( $user_id ) ) {
-			return $user_id;
+			return [
+				'status'  => 'error',
+				'message' => $user_id->get_error_message(),
+			];
 		}
 
 		$customer = new WC_Customer( $user_id );

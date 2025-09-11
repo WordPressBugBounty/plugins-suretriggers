@@ -106,7 +106,10 @@ class FindSubscriptionByUserID extends AutomateAction {
 						}
 					}
 					if ( empty( $ids ) && empty( $product_ids ) ) {
-						throw new Exception( 'There are no active subscriptions for this user.' );
+						return [
+							'status'  => 'error',
+							'message' => 'There are no active subscriptions for this user.',
+						];
 					}
 					$context = [
 						'ids'           => implode( ', ', $ids ),
@@ -115,11 +118,17 @@ class FindSubscriptionByUserID extends AutomateAction {
 						'product_names' => implode( ', ', $product_names ),
 					];
 				} else {
-					throw new Exception( 'There are no subscriptions for this user.' );
+					return [
+						'status'  => 'error',
+						'message' => 'There are no subscriptions for this user.',
+					];
 				}
 				return $context;
 			} else {
-				throw new Exception( 'User does not exists for the provided User ID.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User does not exists for the provided User ID.',
+				];
 			}
 		}
 	}

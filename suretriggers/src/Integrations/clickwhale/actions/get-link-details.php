@@ -79,7 +79,8 @@ class GetLinkDetails extends AutomateAction {
 		if ( empty( $link_id ) && empty( $slug ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Either Link ID or Slug is required to get link details.', 'suretriggers' ),
+				'message' => __( 'Either Link ID or Slug is required to get link details.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -99,7 +100,8 @@ class GetLinkDetails extends AutomateAction {
 			if ( ! $link ) {
 				return [
 					'status'  => 'error',
-					'message' => __( 'Invalid Link ID.', 'suretriggers' ),
+					'message' => __( 'Invalid Link ID.', 'suretriggers' ), 
+					
 				];
 			}
 		} elseif ( $slug ) {
@@ -107,7 +109,8 @@ class GetLinkDetails extends AutomateAction {
 			if ( ! $link ) {
 				return [
 					'status'  => 'error',
-					'message' => __( 'Invalid Slug.', 'suretriggers' ),
+					'message' => __( 'Invalid Slug.', 'suretriggers' ), 
+					
 				];
 			}
 		}

@@ -99,7 +99,8 @@ class ListMembers extends AutomateAction {
 		if ( empty( $results ) ) {
 			return [
 				'status'   => esc_attr__( 'Success', 'suretriggers' ),
-				'response' => esc_attr__( 'No active members found for the selected level.', 'suretriggers' ),
+				'response' => esc_attr__( 'No active members found for the selected level.', 'suretriggers' ), 
+				
 			];
 		}
 	

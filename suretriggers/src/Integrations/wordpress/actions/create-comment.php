@@ -68,7 +68,7 @@ class CreateComment extends AutomateAction {
 	 * @param int   $automation_id automation_id.
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
-	 * @return \WP_Comment|null|bool
+	 * @return \WP_Comment|array|null|bool
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
@@ -90,7 +90,10 @@ class CreateComment extends AutomateAction {
 		$comment_id = wp_new_comment( $result_arr );
 	
 		if ( ! $comment_id || is_wp_error( $comment_id ) ) {
-			throw new Exception( 'Failed to insert comment' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to insert comment', 
+			];
 		}
 		
 		if ( ! empty( $result_arr['comment_approved'] ) ) {

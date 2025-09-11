@@ -77,7 +77,8 @@ class AddEmailToSequence extends AutomateAction {
 		if ( ! class_exists( '\FluentCampaign\App\Models\Sequence' ) || ! class_exists( '\FluentCampaign\App\Models\SequenceMail' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCampaign Pro is not installed or activated.', 'suretriggers' ),
+				'message' => __( 'FluentCampaign Pro is not installed or activated.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -86,7 +87,8 @@ class AddEmailToSequence extends AutomateAction {
 		if ( ! $sequence_id ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Sequence ID is required.', 'suretriggers' ),
+				'message' => __( 'Sequence ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -95,7 +97,8 @@ class AddEmailToSequence extends AutomateAction {
 		if ( ! $sequence ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Sequence not found.', 'suretriggers' ),
+				'message' => __( 'Sequence not found.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -185,7 +188,8 @@ class AddEmailToSequence extends AutomateAction {
 		if ( ! $sequence_email ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to add email to sequence.', 'suretriggers' ),
+				'message' => __( 'Failed to add email to sequence.', 'suretriggers' ), 
+				
 			];
 		}
 

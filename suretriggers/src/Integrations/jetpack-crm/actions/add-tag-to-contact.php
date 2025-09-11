@@ -78,20 +78,29 @@ class AddTagToContact extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! function_exists( 'zeroBS_getCustomerIDWithEmail' ) || ! function_exists( 'zeroBSCRM_getCustomerTagsByID' ) || ! function_exists( 'zeroBSCRM_site' ) || ! function_exists( 'zeroBSCRM_team' ) || ! defined( 'ZBS_TYPE_CONTACT' ) ) {
-			throw new Exception( 'Seems like Jetpack CRM plugin is not installed correctly.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Seems like Jetpack CRM plugin is not installed correctly.',
+			];
 		}
 
 		$email  = sanitize_email( $selected_options['contact_email'] );
 		$tag_id = $selected_options['tag_id'];
 
 		if ( ! is_email( $email ) ) {
-			throw new Exception( 'Invalid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid email.',
+			];
 		}
 
 		$customer_id = zeroBS_getCustomerIDWithEmail( $email );
 
 		if ( ! $customer_id ) {
-			throw new Exception( 'Contact not found with this email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Contact not found with this email.',
+			];
 		}
 
 		$customer_tags = zeroBSCRM_getCustomerTagsByID( $customer_id );

@@ -78,7 +78,8 @@ class RemoveContact extends AutomateAction {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCrmApi function not found.', 'suretriggers' ),
+				'message' => __( 'FluentCrmApi function not found.', 'suretriggers' ), 
+				
 			];
 		}
 		$contact_api = FluentCrmApi( 'contacts' );
@@ -88,7 +89,8 @@ class RemoveContact extends AutomateAction {
 		if ( is_null( $contact ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid contact.', 'suretriggers' ),
+				'message' => __( 'Invalid contact.', 'suretriggers' ), 
+				
 			];
 		}
 

@@ -105,7 +105,8 @@ class ChangeContactStatus extends AutomateAction {
 				'contact_status' => $status,
 				'contact_email'  => $contact_email,
 				'success'        => true,
-				'msg'            => __( 'The contact status has been updated.', 'suretriggers' ),
+				'msg'            => __( 'The contact status has been updated.', 'suretriggers' ), 
+				
 			];
 		} else {
 			throw new Exception( __( 'Contact was not found matching.', 'suretriggers' ) );

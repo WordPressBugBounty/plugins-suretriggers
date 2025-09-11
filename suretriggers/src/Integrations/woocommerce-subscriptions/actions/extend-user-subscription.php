@@ -78,7 +78,11 @@ class ExtendUserSubscription extends AutomateAction {
 		$subscription_id = $selected_options['subscription_id'];
 		
 		if ( ! function_exists( 'wcs_get_users_subscriptions' ) || ! function_exists( 'wcs_get_subscriptions' ) || ! function_exists( 'wcs_get_subscription' ) || ! function_exists( 'wcs_add_time' ) || ! function_exists( 'wcs_get_edit_post_link' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$user = get_userdata( $user_id );
 		if ( $user ) {
@@ -93,10 +97,16 @@ class ExtendUserSubscription extends AutomateAction {
 				]
 			);
 			if ( empty( $subscriptions ) ) {
-				throw new Exception( 'No active subscriptions were found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'No active subscriptions were found.',
+				];
 			}
 			if ( ! array_key_exists( $subscription_id, $subscriptions ) ) {
-				throw new Exception( 'No active subscriptions was found with provided Subscription ID.' );
+				return [
+					'status'  => 'error',
+					'message' => 'No active subscriptions was found with provided Subscription ID.',
+				];
 			}
 
 			$count        = 0;
@@ -104,7 +114,10 @@ class ExtendUserSubscription extends AutomateAction {
 
 			$expiry = $subscription->get_date( 'end' );
 			if ( empty( $expiry ) || intval( $expiry ) === 0 ) {
-				throw new Exception( 'The subscription does not expire, no need to extend the date.' );
+				return [
+					'status'  => 'error',
+					'message' => 'The subscription does not expire, no need to extend the date.',
+				];
 			}
 			
 			$new_extended_date = strtotime( '+' . $selected_options['extend_no'] . ' ' . $selected_options['extend_length'], $subscription->get_time( 'end' ) );
@@ -124,7 +137,10 @@ class ExtendUserSubscription extends AutomateAction {
 					$subscription->add_order_note( sprintf( __( 'Failed to extend subscription after customer renewed early. Order %s', 'suretriggers' ), $order_link ) );
 				}
 				if ( 0 === $count ) {
-					throw new Exception( 'The subscription has no end date.' );
+					return [
+						'status'  => 'error',
+						'message' => 'The subscription has no end date.',
+					];
 				}
 
 				$subscription_status            = $subscription->get_status();
@@ -142,7 +158,10 @@ class ExtendUserSubscription extends AutomateAction {
 				return $context;
 			}
 		} else {
-			throw new Exception( 'User does not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User does not exists.',
+			];
 		}
 	}
 }

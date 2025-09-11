@@ -83,11 +83,17 @@ class CreateOrObtainCustomer extends AutomateAction {
 		$last_name  = sanitize_text_field( $selected_options['last_name'] );
 
 		if ( ! is_email( $email ) ) {
-			throw new Exception( 'Invalid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid email.',
+			];
 		}
 
 		if ( ! class_exists( 'FluentSupport\App\Models\Customer' ) ) {
-			throw new Exception( 'Error: Plugin did not installed correctly. Some classes are missing.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Error: Plugin did not installed correctly. Some classes are missing.',
+			];
 		}
 
 		$customer_record = Customer::where( 'email', $email )->first();

@@ -79,10 +79,16 @@ class AddMembership extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'MeprTransaction' ) || ! class_exists( 'MeprUser' ) || ! class_exists( 'MeprProduct' ) || ! class_exists( 'MeprEvent' ) ) {
-			throw new Exception( 'MemberPress class not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'MemberPress class not found.',
+			];
 		}
 		if ( ! $user_id ) {
-			throw new Exception( 'User not found with this email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found with this email address.',
+			];
 		}
 
 		if ( is_array( $selected_options['memberpressproduct'] ) ) {
@@ -112,7 +118,10 @@ class AddMembership extends AutomateAction {
 		$txn->status     = sanitize_text_field( $tnx_status );
 		$txn->gateway    = sanitize_text_field( $gateway );
 		if ( ! class_exists( 'MeprUtils' ) ) {
-			throw new Exception( 'MemberPress plugin is not installed' );
+			return [
+				'status'  => 'error',
+				'message' => 'MemberPress plugin is not installed',
+			];
 		}
 		$txn->created_at = MeprUtils::ts_to_mysql_date( time() );
 

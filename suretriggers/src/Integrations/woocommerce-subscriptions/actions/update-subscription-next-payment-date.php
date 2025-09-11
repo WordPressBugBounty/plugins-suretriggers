@@ -77,13 +77,20 @@ class UpdateSubscriptionNextPaymentDate extends AutomateAction {
 		$date            = $selected_options['next_payment_date'];
 
 		if ( ! function_exists( 'wcs_get_subscription' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'wcs_get_subscription function not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$subscription = wcs_get_subscription( $subscription_id );
 		if ( $subscription ) {
 			$user_id = $subscription->get_user_id();
 			if ( strtotime( $date ) == false ) {
-				throw new Exception( 'Provided Next Payment Date is not valid.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Provided Next Payment Date is not valid.',
+				];
 			}
 			$datetime              = strtotime( $date );
 			$dates['next_payment'] = gmdate( 'Y-m-d H:i:s', $datetime );
@@ -122,7 +129,10 @@ class UpdateSubscriptionNextPaymentDate extends AutomateAction {
 				throw new Exception( $e->getMessage() );
 			}
 		} else {
-			throw new Exception( 'Subscription not found for the provided Subscription ID.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Subscription not found for the provided Subscription ID.',
+			];
 		}
 	}
 }

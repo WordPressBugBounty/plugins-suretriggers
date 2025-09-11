@@ -74,7 +74,10 @@ class GetForumSubscribers extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! function_exists( 'bbp_get_forum' ) || ! function_exists( 'bbp_get_forum_subscribers' ) ) {
-			throw new Exception( 'Required BuddyBoss functions do not exist.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Required BuddyBoss functions do not exist.',
+			];
 		}
 
 		if ( empty( $selected_options['bb_forum'] ) ) {

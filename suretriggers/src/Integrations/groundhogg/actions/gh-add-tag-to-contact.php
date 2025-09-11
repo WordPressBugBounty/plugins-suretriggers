@@ -85,7 +85,10 @@ class GhAddTagToContact extends AutomateAction {
 				$contact = \Groundhogg\Plugin::$instance->utils->get_contact( $email, true );
 
 				if ( ! $contact ) {
-					throw new Exception( 'Contact not found with this email.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Contact not found with this email.',
+					];
 				}
 
 				$tags_to_add = [ $tag_id ];
@@ -94,7 +97,10 @@ class GhAddTagToContact extends AutomateAction {
 				return $context;
 			}
 		} else {
-			throw new Exception( 'Enter valid email' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email',
+			];
 		}
 	}
 

@@ -93,12 +93,18 @@ class FollowPost extends AutomateAction {
 		// Get the post.
 		$post = \Voxel\Post::get( $post_id );
 		if ( ! $post ) {
-			throw new Exception( 'Post not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found.',
+			];
 		}
 
 		$current_user = \Voxel\User::get( $user_id );
 		if ( ! $current_user ) {
-			throw new Exception( 'User not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found.',
+			];
 		}
 		$current_status = $current_user->get_follow_status( 'post', $post->get_id() );
 		if ( 1 === $current_status ) {

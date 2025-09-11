@@ -69,14 +69,17 @@ class UpdatePostExcerpt extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
 	 *
-	 * @return bool|object
+	 * @return array|bool|object
 	 * @throws Exception Error.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		$post_id      = $selected_options['post_id'];
 		$post_excerpt = $selected_options['post_excerpt'];
 		if ( is_null( get_post( $post_id ) ) ) {
-			throw new Exception( 'Invalid post ID.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid post ID.', 
+			];
 		}
 
 		$post_data    = [
@@ -87,7 +90,10 @@ class UpdatePostExcerpt extends AutomateAction {
 
 		if ( is_wp_error( $post_updated ) ) {
 			$message = $post_updated->get_error_message();
-			throw new Exception( $message );
+			return [
+				'status'  => 'error',
+				'message' => $message,
+			];
 		}
 		$last_response = get_post( $post_id );
 

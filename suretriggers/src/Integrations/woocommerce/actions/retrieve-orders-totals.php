@@ -75,7 +75,8 @@ class RetrieveOrdersTotals extends AutomateAction {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'WooCommerce is not installed or activated.', 'suretriggers' ),
+				'message' => __( 'WooCommerce is not installed or activated.', 'suretriggers' ), 
+				
 			];
 		}
 

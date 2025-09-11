@@ -73,7 +73,10 @@ class EDDDeleteDiscount extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! function_exists( 'edd_delete_discount' ) || ! function_exists( 'edd_get_discount' ) ) {
-			throw new Exception( 'EDD plugin is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => 'EDD plugin is not active.',
+			];
 		}       
 
 		if ( empty( $selected_options['discount_id'] ) ) {

@@ -76,7 +76,10 @@ class AffiliateCreateReferralUser extends AutomateAction {
 			$user = get_user_by( 'email', $user_email );
 			if ( $user ) {
 				if ( ! function_exists( 'affwp_add_referral' ) || ! function_exists( 'affwp_get_referral' ) || ! function_exists( 'affwp_get_affiliate_id' ) ) {
-					throw new Exception( 'AffiliateWP function not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'AffiliateWP function not found.',
+					];
 				}
 				$affiliate_id = affwp_get_affiliate_id( $user->ID );
 				if ( $affiliate_id ) {
@@ -98,16 +101,28 @@ class AffiliateCreateReferralUser extends AutomateAction {
 						$referral_data = get_object_vars( $referral );
 						return $referral_data;
 					} else {
-						throw new Exception( 'We are unable to add referral.' );
+						return [
+							'status'  => 'error',
+							'message' => 'We are unable to add referral.',
+						];
 					}
 				} else {
-					throw new Exception( 'User is not an affiliate.' );
+					return [
+						'status'  => 'error',
+						'message' => 'User is not an affiliate.',
+					];
 				}
 			} else {
-				throw new Exception( 'User not exists.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not exists.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

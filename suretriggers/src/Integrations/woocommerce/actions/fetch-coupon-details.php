@@ -78,7 +78,8 @@ class FetchCouponDetails extends AutomateAction {
 		if ( empty( $coupon_identifier ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Coupon code or ID is required.', 'suretriggers' ),
+				'message' => __( 'Coupon code or ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -87,7 +88,8 @@ class FetchCouponDetails extends AutomateAction {
 		if ( ! $coupon->get_id() ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Coupon not found.', 'suretriggers' ),
+				'message' => __( 'Coupon not found.', 'suretriggers' ), 
+				
 			];
 		}
 

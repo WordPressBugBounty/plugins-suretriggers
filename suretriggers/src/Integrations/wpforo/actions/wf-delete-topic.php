@@ -83,7 +83,10 @@ class WfDeleteTopic extends AutomateAction {
 		if ( $topicid ) {
 			return [ 'message' => 'Topic deleted successfully.' ];
 		} else {
-			throw new Exception( 'Topic not deleted.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Topic not deleted.',
+			];
 		}
 	}
 

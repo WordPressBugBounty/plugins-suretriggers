@@ -78,7 +78,10 @@ class CompleteCourse extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! $user_id ) {
-			throw new Exception( 'User not found with this email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found with this email address.',
+			];
 		}
 
 		$sections  = [];
@@ -114,11 +117,15 @@ class CompleteCourse extends AutomateAction {
 	 * @param int $course_id course id.
 	 * @param int $lesson_id lesson id.
 	 * @param int $section  section.
-	 * @return void
+	 * @return array|void
 	 */
 	public function mark_lesson_completed( $user_id, $course_id, $lesson_id, $section ) {
 		if ( ! class_exists( '\memberpress\courses\models\UserProgress' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( '\memberpress\courses\models\UserProgress class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		if ( empty( $section ) && empty( $course_id ) ) {
 			return;
@@ -179,7 +186,11 @@ class CompleteCourse extends AutomateAction {
 	 */
 	public function find_all_by_section( $section_id ) {
 		if ( ! class_exists( '\memberpress\courses\models\Lesson' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( '\memberpress\courses\models\Lesson class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		global $wpdb;
 		$post_types_string = models\Lesson::lesson_cpts();

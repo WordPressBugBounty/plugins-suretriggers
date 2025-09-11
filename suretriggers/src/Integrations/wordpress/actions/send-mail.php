@@ -96,9 +96,15 @@ class SendMail extends AutomateAction {
 
 		if ( ! $is_valid->valid ) {
 			if ( $is_valid->multiple ) {
-				throw new Exception( 'One or more To email address is not valid' );
+				return [
+					'status'  => 'error',
+					'message' => 'One or more To email address is not valid',
+				];
 			} else {
-				throw new Exception( 'To email address is not valid' );
+				return [
+					'status'  => 'error',
+					'message' => 'To email address is not valid',
+				];
 			}
 		}
 
@@ -107,9 +113,15 @@ class SendMail extends AutomateAction {
 
 			if ( ! $is_valid->valid ) {
 				if ( $is_valid->multiple ) {
-					throw new Exception( 'One or more From email address is not valid' );
+					return [
+						'status'  => 'error',
+						'message' => 'One or more From email address is not valid',
+					];
 				} else {
-					throw new Exception( 'From email address is not valid' );
+					return [
+						'status'  => 'error',
+						'message' => 'From email address is not valid',
+					];
 				}
 			}
 			if ( ! empty( $from_name ) ) {
@@ -125,9 +137,15 @@ class SendMail extends AutomateAction {
 
 			if ( ! $is_valid->valid ) {
 				if ( $is_valid->multiple ) {
-					throw new Exception( 'One or more CC email address is not valid' );
+					return [
+						'status'  => 'error',
+						'message' => 'One or more CC email address is not valid',
+					];
 				} else {
-					throw new Exception( 'CC email address is not valid' );
+					return [
+						'status'  => 'error',
+						'message' => 'CC email address is not valid',
+					];
 				}
 			}
 
@@ -138,9 +156,15 @@ class SendMail extends AutomateAction {
 
 			if ( ! $is_valid->valid ) {
 				if ( $is_valid->multiple ) {
-					throw new Exception( 'One or more BCC email address is not valid' );
+					return [
+						'status'  => 'error',
+						'message' => 'One or more BCC email address is not valid',
+					];
 				} else {
-					throw new Exception( 'BCC email address is not valid' );
+					return [
+						'status'  => 'error',
+						'message' => 'BCC email address is not valid',
+					];
 				}
 			}
 
@@ -150,7 +174,10 @@ class SendMail extends AutomateAction {
 		$result = wp_mail( $to_email, $result_arr['subject'], $result_arr['email_body'], $result_arr['headers'], $attachments = [] ); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
 
 		if ( ! $result ) {
-			throw new Exception( 'Email sending failed!' );
+			return [
+				'status'  => 'error',
+				'message' => 'Email sending failed!',
+			];
 		}
 
 		return $result_arr;

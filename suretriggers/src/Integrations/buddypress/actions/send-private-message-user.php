@@ -81,15 +81,24 @@ class SendPrivateMessageUser extends AutomateAction {
 		$message_content = $selected_options['message_content'];
 
 		if ( empty( $sender ) || ! is_email( $sender ) ) {
-			throw new Exception( 'Invalid sender email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid sender email.',
+			];
 		}
 
 		if ( empty( $receiver ) || ! is_email( $receiver ) ) { 
-			throw new Exception( 'Invalid reciever email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid reciever email.',
+			];
 		}
 
 		if ( empty( $message_content ) ) { 
-			throw new Exception( 'Please enter message content.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter message content.',
+			];
 		}
 
 		$user      = get_user_by( 'email', $sender );
@@ -122,7 +131,10 @@ class SendPrivateMessageUser extends AutomateAction {
 				}
 			}
 		} else {
-			throw new Exception( 'BuddyPress message module is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => 'BuddyPress message module is not active.',
+			];
 		}
 	}
 }

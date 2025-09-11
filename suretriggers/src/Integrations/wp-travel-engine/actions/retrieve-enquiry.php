@@ -72,7 +72,8 @@ class RetrieveEnquiry extends AutomateAction {
 		if ( empty( $selected_options['enquiry_id'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Enquiry ID is required.', 'suretriggers' ),
+				'message' => __( 'Enquiry ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 	
@@ -82,7 +83,8 @@ class RetrieveEnquiry extends AutomateAction {
 		if ( ! $post || 'enquiry' !== $post->post_type ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Enquiry not found.', 'suretriggers' ),
+				'message' => __( 'Enquiry not found.', 'suretriggers' ), 
+				
 			];
 		}
 	

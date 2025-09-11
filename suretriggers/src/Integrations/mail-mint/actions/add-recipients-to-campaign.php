@@ -81,7 +81,10 @@ class AddRecipientsToCampaign extends AutomateAction {
 		}
 		$campaign_id = $selected_options['campaign_id'] ? $selected_options['campaign_id'] : 0;
 		if ( ! CampaignModel::is_campaign_exist( $campaign_id ) ) {
-			throw new Exception( 'There is no campaign with provided id.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There is no campaign with provided id.',
+			];
 		}
 		$selected_tags  = $selected_options['campaign_tags'] ? explode( ',', $selected_options['campaign_tags'] ) : [];
 		$selected_lists = $selected_options['campaign_lists'] ? explode( ',', $selected_options['campaign_lists'] ) : [];

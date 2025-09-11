@@ -72,10 +72,16 @@ class AddTopicInForum extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'bbPress' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'bbPress class not found.', 'suretriggers' ), 
+			];
 		}
 		if ( ! function_exists( 'bbp_get_topic_post_type' ) || ! function_exists( 'bbp_get_topic' ) || ! function_exists( 'bbp_get_forum' ) || ! function_exists( 'bbp_is_forum_category' ) || ! function_exists( 'bbp_get_reply_post_type' ) || ! function_exists( 'bbp_get_topic_reply_count' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+			];
 		}
 		
 		$user_id = $selected_options['wp_user_email'];
@@ -87,7 +93,7 @@ class AddTopicInForum extends AutomateAction {
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
 			];
 
 			return $error;
@@ -101,14 +107,20 @@ class AddTopicInForum extends AutomateAction {
 
 			// Forum is a category.
 			if ( bbp_is_forum_category( $forum_id ) ) {
-				throw new Exception( 'Sorry, This forum is a category. No discussions can be created in this forum.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Sorry, This forum is a category. No discussions can be created in this forum.', 
+				];
 				
 				// Forum is not a category.
 			} else {
 
 				// Forum is closed and user cannot access.
 				if ( function_exists( 'bbp_is_forum_closed' ) && bbp_is_forum_closed( $forum_id ) && ! current_user_can( 'edit_forum', $forum_id ) ) {
-					throw new Exception( 'Sorry, This forum has been closed to new discussions.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Sorry, This forum has been closed to new discussions.', 
+					];
 				}
 
 				/**
@@ -137,7 +149,10 @@ class AddTopicInForum extends AutomateAction {
 						( empty( $group_ids ) && ! current_user_can( 'read_private_forums' ) )
 						|| ( ! empty( $group_ids ) && ! $is_member )
 					) {
-						throw new Exception( 'Sorry, This forum is private and you do not have the capability to read or create new discussions in it.' );
+						return [
+							'status'  => 'error',
+							'message' => 'Sorry, This forum is private and you do not have the capability to read or create new discussions in it.', 
+						];
 					}
 
 					// Forum is hidden and user cannot access.
@@ -147,7 +162,10 @@ class AddTopicInForum extends AutomateAction {
 						|| ( ! empty( $group_ids ) && ! $is_member )
 					) {
 						$action_data['complete_with_errors'] = true;
-						throw new Exception( 'Sorry, This forum is hidden and you do not have the capability to read or create new discussions in it.' );
+						return [
+							'status'  => 'error',
+							'message' => 'Sorry, This forum is hidden and you do not have the capability to read or create new discussions in it.', 
+						];
 					}
 				}
 			}
@@ -162,13 +180,19 @@ class AddTopicInForum extends AutomateAction {
 			]
 		) ) {
 			
-			throw new Exception( "Duplicate discussion detected; it looks as though you've already said that!." );
+			return [
+				'status'  => 'error',
+				'message' => "Duplicate discussion detected; it looks as though you've already said that!.",
+			];
 		}
 
 		/** Topic Blacklist */
 		if ( function_exists( 'bbp_check_for_blacklist' ) && ! bbp_check_for_blacklist( $anonymous_data, $user_id, $topic_title, $topic_description ) ) {
 			
-			throw new Exception( 'Sorry, Your discussion cannot be created at this time.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Sorry, Your discussion cannot be created at this time.', 
+			];
 		}
 
 		/** Topic Status */
@@ -193,7 +217,7 @@ class AddTopicInForum extends AutomateAction {
 				'post_parent'    => $forum_id,
 				'post_type'      => bbp_get_topic_post_type(),
 				'tax_input'      => [],
-				'comment_status' => 'closed',
+				'comment_status' => 'closed', 
 			]
 		);
 
@@ -202,7 +226,10 @@ class AddTopicInForum extends AutomateAction {
 
 		if ( empty( $topic_id ) ) {
 			$append_error = 'We are facing a problem to creating a topic.';
-			throw new Exception( $append_error );
+			return [
+				'status'  => 'error',
+				'message' => $append_error,
+			];
 
 		}
 
@@ -248,7 +275,7 @@ class AddTopicInForum extends AutomateAction {
 			'forum_link'        => get_the_permalink( $forum_id ),
 			'topic_title'       => $topic_title,
 			'topic_description' => $topic_description,
-			'topic_lonk'        => get_the_permalink( $topic_id ),
+			'topic_lonk'        => get_the_permalink( $topic_id ), 
 		];
 			
 		return $context;

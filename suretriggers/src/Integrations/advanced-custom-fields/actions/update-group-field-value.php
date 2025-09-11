@@ -107,7 +107,10 @@ class UpdateGroupFieldValue extends AutomateAction {
 			$response_array['field_name']  = $field_name;
 			return $response_array;
 		} else {
-			throw new Exception( 'Field values are empty.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Field values are empty.',
+			];
 		}
 	}
 }

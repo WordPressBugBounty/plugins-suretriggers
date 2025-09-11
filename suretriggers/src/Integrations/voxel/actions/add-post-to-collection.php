@@ -89,7 +89,10 @@ class AddPostToCollection extends AutomateAction {
 			// Get the post.
 			$post = \Voxel\Post::force_get( $c_post_id );
 			if ( ! $post ) {
-				throw new Exception( 'Post not found' );
+				return [
+					'status'  => 'error',
+					'message' => 'Post not found',
+				];
 			}
 
 			// Get the collection.
@@ -100,7 +103,10 @@ class AddPostToCollection extends AutomateAction {
 				&& $collection->get_status() === 'publish'
 				&& $collection->post_type->get_key() === 'collection'
 			) ) {
-				throw new Exception( 'Collection not found' );
+				return [
+					'status'  => 'error',
+					'message' => 'Collection not found',
+				];
 			}
 
 			// Get the items field.

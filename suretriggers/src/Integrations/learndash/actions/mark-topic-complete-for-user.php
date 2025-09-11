@@ -83,7 +83,10 @@ class MarkTopicCompleteForUser extends AutomateAction {
 			return false;
 		}
 		if ( ! $user_id ) {
-			throw new Exception( 'User email not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User email not exists.',
+			];
 		}
 
 		$course_id = ( isset( $selected_options['sfwd-courses'] ) ) ? $selected_options['sfwd-courses'] : '0';
@@ -133,11 +136,15 @@ class MarkTopicCompleteForUser extends AutomateAction {
 	 * 
 	 * @param  int $user_id User ID.
 	 * @param int $course_id Course ID.
-	 * @return void
+	 * @return array|void
 	 */
 	public function mark_quiz_complete( $user_id, $course_id = null ) {
-		if ( ! function_exists( 'learndash_get_course_quiz_list' ) || ! function_exists( 'learndash_is_quiz_complete' ) || ! function_exists( 'learndash_update_user_activity' ) ) { 
-			return; 
+		if ( ! function_exists( 'learndash_get_course_quiz_list' ) || ! function_exists( 'learndash_is_quiz_complete' ) || ! function_exists( 'learndash_update_user_activity' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 		$quizz_progress = [];
 		if ( ! empty( $this->quiz_list ) ) {

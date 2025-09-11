@@ -117,7 +117,10 @@ class RevokeRankUser extends AutomateAction {
 				$context
 			);
 		} else {
-			throw new Exception( "The user didn't have the specified rank." );
+			return [
+				'status'  => 'error',
+				'message' => "The user didn't have the specified rank.",
+			];
 		}
 	}
 }

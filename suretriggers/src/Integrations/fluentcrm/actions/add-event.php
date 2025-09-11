@@ -77,7 +77,8 @@ class AddEvent extends AutomateAction {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCRM API is not active.', 'suretriggers' ),
+				'message' => __( 'FluentCRM API is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -85,7 +86,8 @@ class AddEvent extends AutomateAction {
 		if ( empty( $selected_options['email'] ) || empty( $selected_options['event_key'] ) || empty( $selected_options['title'] ) ) {
 			return [
 				'success' => false,
-				'message' => __( 'Email, Event Key, and Title are required.', 'suretriggers' ),
+				'message' => __( 'Email, Event Key, and Title are required.', 'suretriggers' ), 
+				
 			];
 		}
 		$value    = $selected_options['value'] ? sanitize_text_field( $selected_options['value'] ) : '';
@@ -104,7 +106,8 @@ class AddEvent extends AutomateAction {
 		if ( ! $result ) {
 			return [
 				'success' => false,
-				'message' => __( 'Failed to add event. Please try again.', 'suretriggers' ),
+				'message' => __( 'Failed to add event. Please try again.', 'suretriggers' ), 
+				
 			];
 		}
 

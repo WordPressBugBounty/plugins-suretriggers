@@ -76,7 +76,10 @@ class RemoveRole extends AutomateAction {
 		$field = reset( $fields );
 		$user  = new WP_User( $user_id );
 		if ( ! $user instanceof WP_User ) {
-			throw new Exception( 'This user is not type of WP_User' );
+			return [
+				'status'  => 'error',
+				'message' => 'This user is not type of WP_User',
+			];
 		}
 
 		$user->remove_role( $selected_options[ $field['name'] ] );

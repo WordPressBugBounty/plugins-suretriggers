@@ -82,7 +82,10 @@ class RemoveTagFromContact extends AutomateAction {
 		}
 		$contact_id = $selected_options['contact_id'] ? $selected_options['contact_id'] : 0;
 		if ( ! ContactModel::is_contact_ids_exists( [ $contact_id ] ) ) {
-			throw new Exception( 'There is no contact with provided id.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There is no contact with provided id.',
+			];
 		}
 		$selected_tags = $selected_options['contact_tags'] ? explode( ',', $selected_options['contact_tags'] ) : [];
 		$tags_data     = [];

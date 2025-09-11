@@ -87,7 +87,8 @@ class WishlistMemberGetSpecificLevelDetails extends AutomateAction {
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'Failed to update a level', 'suretriggers' ),
+				'msg'     => __( 'Failed to update a level', 'suretriggers' ), 
+				
 			];   
 		}
 	}

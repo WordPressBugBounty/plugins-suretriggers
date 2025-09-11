@@ -78,7 +78,8 @@ class UserRoleChange extends AutomateAction {
 			$this->set_error(
 				[
 					'wp_user_id' => $user_id,
-					'msg'        => __( 'This user is not type of WP_User', 'suretriggers' ),
+					'msg'        => __( 'This user is not type of WP_User', 'suretriggers' ), 
+					
 				]
 			);
 			return false;

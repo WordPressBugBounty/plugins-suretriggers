@@ -79,7 +79,11 @@ class CreateCompany extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'FluentCrm\App\Services\Helper' ) || ! function_exists( 'FluentCrmApi' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		// Check if company module is enabled.
@@ -87,14 +91,16 @@ class CreateCompany extends AutomateAction {
 		if ( ! $is_company_enabled ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Company module disabled. You can add companies and assign contacts to companies only when it is enabled!!', 'suretriggers' ),
+				'message' => __( 'Company module disabled. You can add companies and assign contacts to companies only when it is enabled!!', 'suretriggers' ), 
+				
 			];
 		}
 
 		if ( '' != $selected_options['company_email'] && ! is_email( $selected_options['company_email'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Email address is invalid.', 'suretriggers' ),
+				'message' => __( 'Email address is invalid.', 'suretriggers' ), 
+				
 			];
 		}
 

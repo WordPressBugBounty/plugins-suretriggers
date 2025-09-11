@@ -87,7 +87,10 @@ class AwardAchivementUser extends AutomateAction {
 		if ( function_exists( 'gamipress_achievement_user_exceeded_max_earnings' ) ) {
 			$earned = gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id );
 			if ( $earned ) {
-				throw new Exception( 'Achievement maximum earnings reached.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Achievement maximum earnings reached.',
+				];
 			}
 		}
 

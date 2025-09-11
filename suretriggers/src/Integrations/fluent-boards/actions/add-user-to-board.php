@@ -81,10 +81,18 @@ class AddUserToBoard extends AutomateAction {
 		$board_id = $selected_options['board_id'] ? sanitize_text_field( $selected_options['board_id'] ) : '';
 		$assignee = $selected_options['assignee'] ? sanitize_text_field( $selected_options['assignee'] ) : '';
 		if ( ! class_exists( 'FluentBoards\App\Services\BoardService' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentBoards\App\Services\BoardService class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		if ( ! class_exists( 'FluentBoards\App\Models\Board' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentBoards\App\Models\Board class not found.', 'suretriggers' ), 
+				
+			];
 		}
 		
 		$board = \FluentBoards\App\Models\Board::find( $board_id );

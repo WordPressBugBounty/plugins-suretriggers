@@ -82,7 +82,10 @@ class AddNewMedia extends AutomateAction {
 		$image_url = filter_var( $image, FILTER_SANITIZE_URL );
 
 		if ( empty( $image_url ) ) {
-			throw new Exception( 'Image URL is empty or invalid.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Image URL is empty or invalid.',
+			];
 		}
 
 		require_once ABSPATH . 'wp-admin/includes/media.php';
@@ -100,7 +103,10 @@ class AddNewMedia extends AutomateAction {
 		if ( $image_uploaded ) {
 			$filetype = wp_check_filetype( basename( $image_uploaded ) );
 		} else {
-			throw new Exception( 'Failed to get the uploaded image URL.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to get the uploaded image URL.',
+			];
 		}
 
 		$image_details = [
@@ -115,7 +121,10 @@ class AddNewMedia extends AutomateAction {
 		$image_updated = wp_insert_attachment( $image_details );
 
 		if ( ! $image_updated || ! is_numeric( $image_updated ) ) {
-			throw new Exception( 'Failed to update the image attachment.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to update the image attachment.',
+			];
 		}
 
 		update_post_meta( (int) $image_id, '_wp_attachment_image_alt', $alt_text );

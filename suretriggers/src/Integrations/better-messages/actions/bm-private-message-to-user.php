@@ -74,7 +74,10 @@ class BMPrivateMessageToUser extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( empty( $selected_options['sender_user'] ) || ! is_email( $selected_options['sender_user'] ) ) {
-			throw new Exception( 'Invalid sender email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid sender email.',
+			];
 		}
 
 		if ( ! function_exists( 'Better_Messages' ) ) {
@@ -82,17 +85,26 @@ class BMPrivateMessageToUser extends AutomateAction {
 		}
 
 		if ( empty( $selected_options['receiver_user'] ) ) { 
-			throw new Exception( 'Invalid receiver email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid receiver email.',
+			];
 		}
 
 		$sender_id   = email_exists( $selected_options['sender_user'] );
 		$receiver_id = email_exists( $selected_options['receiver_user'] );
 
 		if ( false === $sender_id ) {
-			throw new Exception( 'User with email ' . $selected_options['sender_user'] . ' does not exists .' );
+			return [
+				'status'  => 'error',
+				'message' => 'User with email ' . $selected_options['sender_user'] . ' does not exists .',
+			];
 		}
 		if ( false === $receiver_id ) {
-			throw new Exception( 'User with email ' . $selected_options['receiver_user'] . ' does not exists .' );
+			return [
+				'status'  => 'error',
+				'message' => 'User with email ' . $selected_options['receiver_user'] . ' does not exists .',
+			];
 		}
 
 		$message_subject    = $selected_options['message_subject'];
@@ -127,7 +139,10 @@ class BMPrivateMessageToUser extends AutomateAction {
 		// If there was an error, it'll be logged in action log with an error message.
 		if ( is_wp_error( $result ) ) {
 			$error_message = $result->get_error_message();
-			throw new Exception( $error_message );
+			return [
+				'status'  => 'error',
+				'message' => $error_message,
+			];
 		} else {
 			return Better_Messages()->functions->get_message( $result );
 		}

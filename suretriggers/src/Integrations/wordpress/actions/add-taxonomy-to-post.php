@@ -76,11 +76,17 @@ class AddTaxonomyToPost extends AutomateAction {
 		$post_id       = $selected_options['post_id'];
 		$last_response = get_post( $post_id );
 		if ( ! $last_response ) {
-			throw new Exception( 'Invalid post ID or post not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid post ID or post not found.',
+			];
 		}
 		$post_type = get_post_type( $post_id );
 		if ( ! $post_type ) {
-			throw new Exception( 'Invalid post ID or post type not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid post ID or post type not found.',
+			];
 		}
 	
 		$taxonomy_terms = [];

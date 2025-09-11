@@ -106,13 +106,15 @@ class WfAddTagToUser extends AutomateAction {
 						} else {
 							return [
 								'status'   => esc_attr__( 'Error', 'suretriggers' ),
-								'response' => esc_attr__( 'Failed to create new tag.', 'suretriggers' ),
+								'response' => esc_attr__( 'Failed to create new tag.', 'suretriggers' ), 
+								
 							];
 						}
 					} else {
 						return [
 							'status'   => esc_attr__( 'Error', 'suretriggers' ),
-							'response' => esc_attr__( 'WP Fusion CRM does not support tag creation.', 'suretriggers' ),
+							'response' => esc_attr__( 'WP Fusion CRM does not support tag creation.', 'suretriggers' ), 
+							
 						];
 					}
 				}
@@ -153,13 +155,15 @@ class WfAddTagToUser extends AutomateAction {
 			} else {
 				return [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'Please enter valid user.', 'suretriggers' ),
+					'response' => esc_attr__( 'Please enter valid user.', 'suretriggers' ), 
+					
 				];
 			}
 		} else {
 			return [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 		}
 	}

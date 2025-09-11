@@ -69,7 +69,7 @@ class CreatePost extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
 	 *
-	 * @return bool|object
+	 * @return array|bool|object
 	 * @throws Exception Error.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
@@ -82,7 +82,7 @@ class CreatePost extends AutomateAction {
 					$patterns                     = [
 						'/<head\b[^>]*>.*?<\/head>/is',
 						'/<script\b[^>]*>.*?<\/script>/is',
-						'/<style\b[^>]*>.*?<\/style>/is',
+						'/<style\b[^>]*>.*?<\/style>/is', 
 					];
 					$html_content                 = preg_replace( $patterns, '', $html_content );
 					$result_arr[ $field['name'] ] = $html_content;
@@ -118,7 +118,10 @@ class CreatePost extends AutomateAction {
 				$post_id        = $post_exists->ID;
 				$is_post_update = true;
 			} else {
-				throw new Exception( 'The URL entered is incorrect. Please provide the correct URL for the post.' );
+				return [
+					'status'  => 'error',
+					'message' => 'The URL entered is incorrect. Please provide the correct URL for the post.', 
+				];
 			}
 		} elseif ( ! empty( $selected_options['post_id'] ) ) {
 			$post_id     = absint( $selected_options['post_id'] );
@@ -130,7 +133,10 @@ class CreatePost extends AutomateAction {
 				$last_response  = get_post( $post_id );
 				$is_post_update = true;
 			} else {
-				throw new Exception( 'Invalid Post ID provided. No post found with that ID.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Invalid Post ID provided. No post found with that ID.', 
+				];
 			}
 		} else {
 			/**
@@ -143,7 +149,7 @@ class CreatePost extends AutomateAction {
 				$this->set_error(
 					[
 						'post_data' => $result_arr,
-						'msg'       => __( 'Failed to insert post!', 'suretriggers' ),
+						'msg'       => __( 'Failed to insert post!', 'suretriggers' ), 
 					]
 				);
 				return false;
@@ -201,8 +207,7 @@ class CreatePost extends AutomateAction {
 				return (object) [
 					$last_response,
 					'taxonomy_term'      => $taxonomy_terms,
-					'featured_image_url' => 'Failed to set featured image',
-					
+					'featured_image_url' => 'Failed to set featured image', 
 				];
 			}
 			

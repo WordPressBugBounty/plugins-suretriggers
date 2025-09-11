@@ -79,24 +79,37 @@ class ChangeUserMembershipPlan extends AutomateAction {
 		$user_id          = $selected_options['wp_user_email'];
 
 		if ( ! is_email( $user_id ) ) {
-			throw new Exception( 'The user email is not valid.' );
+			return [
+				'status'  => 'error',
+				'message' => 'The user email is not valid.',
+			];
 		}
 
 		$user = get_user_by( 'email', $user_id );
 
 		if ( ! $user ) {
-			throw new Exception( 'This user is not registered.' );
+			return [
+				'status'  => 'error',
+				'message' => 'This user is not registered.',
+			];
 		}
 
 		$user_id = $user->ID;
 
 		if ( ! function_exists( 'wc_memberships_get_user_membership' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'wc_memberships_get_user_membership function not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$check_for_membership = wc_memberships_get_user_membership( $user_id, $new_plan );
 		if ( $check_for_membership ) {
-			throw new Exception( 'Plan could not be changed or created because the user is using the plan.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Plan could not be changed or created because the user is using the plan.',
+			];
 		} else {
 			$membership = $existing_plan_id ? wc_memberships_get_user_membership( $user_id, $existing_plan_id ) : false;
 			if ( $membership ) {

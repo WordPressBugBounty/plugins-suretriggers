@@ -74,12 +74,11 @@ class RemoveUserGroup extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! $user_id ) {
-			$this->set_error(
-				[
-					'msg' => __( 'User Not found', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'User Not found', 'suretriggers' ), 
+				
+			];
 		}
 
 		$group_id = ( isset( $selected_options['groups'] ) ) ? $selected_options['groups'] : '';
@@ -92,12 +91,11 @@ class RemoveUserGroup extends AutomateAction {
 
 			// Bail if group doesn't exists.
 			if ( ! $group ) {
-				$this->set_error(
-					[
-						'msg' => __( 'No group is available ', 'suretriggers' ),
-					]
-				);
-				return false;
+				return [
+					'status'  => 'error',
+					'message' => __( 'No group is available ', 'suretriggers' ), 
+					
+				];
 			}
 
 			$groups = [ $group_id ];

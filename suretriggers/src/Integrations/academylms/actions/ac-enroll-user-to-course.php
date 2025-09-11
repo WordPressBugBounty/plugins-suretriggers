@@ -77,7 +77,10 @@ class AcEnrollUserToCourse extends AutomateAction {
 		global $wpdb;
 
 		if ( ! class_exists( '\Academy\Helper' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( '\Academy\Helper class not found.', 'suretriggers' ),
+			];
 		}
 
 		if ( is_email( $user_id ) ) {

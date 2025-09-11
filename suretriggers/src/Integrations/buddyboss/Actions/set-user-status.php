@@ -77,11 +77,19 @@ class SetUserStatus extends AutomateAction {
 		$status     = $selected_options['status'];
 
 		if ( ! function_exists( 'bp_is_active' ) || ! function_exists( 'bp_moderation_is_user_suspended' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( ! class_exists( 'BP_Suspend_Member' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'BP_Suspend_Member class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( is_email( $user_email ) ) {
@@ -97,16 +105,23 @@ class SetUserStatus extends AutomateAction {
 					$bp_current_user = new \WP_User( $user_id );
 					return $bp_current_user;
 				} else {
-					throw new Exception(
-						'To change members status in your network, 
-                    please activate the Moderation component.' 
-					);
+					return [
+						'status'  => 'error',
+						'message' => 'To change members status in your network, 
+                    please activate the Moderation component.',
+					];
 				}
 			} else {
-				throw new Exception( 'User Not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User Not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email.',
+			];
 		}
 	}
 }

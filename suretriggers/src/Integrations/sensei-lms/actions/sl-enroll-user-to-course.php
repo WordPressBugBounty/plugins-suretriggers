@@ -84,14 +84,16 @@ class SlEnrollUserToCourse extends AutomateAction {
 			} else {
 				$error = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'User not found with specified email address.', 'suretriggers' ),
+					'response' => esc_attr__( 'User not found with specified email address.', 'suretriggers' ), 
+					
 				];
 				return $error;
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;
@@ -125,7 +127,8 @@ class SlEnrollUserToCourse extends AutomateAction {
 		}
 		$response = [
 			'status'   => esc_attr__( 'Success', 'suretriggers' ),
-			'response' => esc_attr__( 'User enrolled successfully', 'suretriggers' ),
+			'response' => esc_attr__( 'User enrolled successfully', 'suretriggers' ), 
+			
 		];
 		return $response;
 	}

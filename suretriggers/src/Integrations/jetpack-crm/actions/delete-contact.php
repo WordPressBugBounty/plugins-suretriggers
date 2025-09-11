@@ -77,7 +77,10 @@ class DeleteContact extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! function_exists( 'zeroBS_deleteCustomer' ) ) {
-			throw new Exception( 'Seems like Jetpack CRM plugin is not installed correctly.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Seems like Jetpack CRM plugin is not installed correctly.',
+			];
 		}
 
 		$contact = sanitize_text_field( $selected_options['contact'] );
@@ -86,7 +89,10 @@ class DeleteContact extends AutomateAction {
 		$contact_id = $wpdb->get_var( $wpdb->prepare( "SELECT `ID` FROM `{$wpdb->prefix}zbs_contacts` WHERE ID = %d OR zbsc_email LIKE %s", $contact, $contact ) );
 
 		if ( empty( $contact_id ) ) {
-			throw new Exception( 'Contact not found with this ID or Email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Contact not found with this ID or Email.',
+			];
 		}
 
 		zeroBS_deleteCustomer( $contact_id, false );

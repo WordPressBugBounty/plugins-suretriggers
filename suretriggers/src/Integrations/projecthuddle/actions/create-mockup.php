@@ -92,7 +92,10 @@ class CreateMockup extends AutomateAction {
 		$post_id = wp_insert_post( $result_arr );
 
 		if ( ! $post_id ) {
-			throw new Exception( 'Failed to insert mockup!' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to insert mockup!',
+			];
 		}
 		$project_access_link = get_post_meta( $post_id, 'access_token', true );
 

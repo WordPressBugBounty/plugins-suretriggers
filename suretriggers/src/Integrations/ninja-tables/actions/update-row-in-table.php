@@ -83,7 +83,10 @@ class UpdateRowInTable extends AutomateAction {
 		if ( '' !== $owner_id ) {
 			$user = get_userdata( (int) $owner_id );
 			if ( ! $user ) {
-				throw new Exception( 'No user exist with ' . $owner_id . ' ID' );
+				return [
+					'status'  => 'error',
+					'message' => 'No user exist with ' . $owner_id . ' ID',
+				];
 			}
 		}
 
@@ -103,7 +106,10 @@ class UpdateRowInTable extends AutomateAction {
 		$sql        = 'SELECT * FROM ' . $table_name . ' WHERE id = %d';
 		$results    = $wpdb->get_row( $wpdb->prepare( $sql, $row_id ), ARRAY_A ); // @phpcs:ignore
 		if ( empty( $results ) ) {
-			throw new Exception( 'No row exist with ' . $row_id . ' ID' );
+			return [
+				'status'  => 'error',
+				'message' => 'No row exist with ' . $row_id . ' ID',
+			];
 		}
 		
 		if ( 'null' === $results['value'] ) {

@@ -110,10 +110,16 @@ class PostReplyTopicForum extends AutomateAction {
 					'reply_creator' => WordPress::get_user_context( $creator_id ),
 				];
 			} else {
-				throw new Exception( 'Reply user does not exist!!' );
+				return [
+					'status'  => 'error',
+					'message' => 'Reply user does not exist!!',
+				];
 			}
 		} else {
-			throw new Exception( 'Invalid Email!!' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid Email!!',
+			];
 		}
 	}
 }

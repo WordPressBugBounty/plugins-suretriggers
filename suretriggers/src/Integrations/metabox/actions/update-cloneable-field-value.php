@@ -77,7 +77,11 @@ class UpdateCloneableFieldValue extends AutomateAction {
 		$current_row    = [];
 
 		if ( ! function_exists( 'rwmb_set_meta' ) || ! function_exists( 'rwmb_get_value' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( ! empty( $selected_options['mb_meta_update_value'] ) ) {
@@ -105,7 +109,10 @@ class UpdateCloneableFieldValue extends AutomateAction {
 			$response_array['field_name']  = $field_name;
 			return $response_array;
 		} else {
-			throw new Exception( 'Field values are empty.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Field values are empty.',
+			];
 		}
 	}
 }

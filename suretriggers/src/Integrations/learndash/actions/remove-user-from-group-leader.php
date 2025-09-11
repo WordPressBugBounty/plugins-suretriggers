@@ -85,7 +85,10 @@ class RemoveUserFromGroupLeader extends AutomateAction {
 		
 		$all_groups_list = learndash_get_administrators_group_ids( $user_id, true );
 		if ( empty( $all_groups_list ) ) {
-			throw new Exception( 'The user is not a Group Leader of any group.' );
+			return [
+				'status'  => 'error',
+				'message' => 'The user is not a Group Leader of any group.',
+			];
 		}
 
 		$common_groups = array_intersect( [ $group_id ], $all_groups_list );

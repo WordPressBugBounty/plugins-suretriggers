@@ -82,7 +82,10 @@ class FollowUser extends AutomateAction {
 		$userdata       = get_userdata( $follow_user_id );
 
 		if ( ! $userdata ) {
-			throw new Exception( "The user doesn't exist" );
+			return [
+				'status'  => 'error',
+				'message' => "The user doesn't exist",
+			];
 		}
 
 		$follow               = 1;

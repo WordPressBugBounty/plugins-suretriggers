@@ -96,7 +96,10 @@ class CreateCategory extends AutomateAction {
 				$category_name,
 			];
 		} else {
-			throw new Exception( 'Not able to create a category.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Not able to create a category.',
+			];
 		}
 		
 	}

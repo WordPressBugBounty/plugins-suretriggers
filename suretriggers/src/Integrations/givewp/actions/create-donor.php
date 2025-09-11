@@ -81,7 +81,11 @@ class CreateDonor extends AutomateAction {
 		$company_name = $selected_options['company_name'];
 
 		if ( ! class_exists( 'Give_Donor' ) || ! function_exists( 'Give' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( is_email( $email ) ) {
@@ -99,7 +103,10 @@ class CreateDonor extends AutomateAction {
 				return \Give()->donors->get_donor_by( 'id', $donor_id );
 			}
 		} else {
-			throw new Exception( 'Invalid Email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid Email.',
+			];
 		}
 	}
 

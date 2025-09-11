@@ -124,7 +124,10 @@ class AddStoreCreditToUser extends AutomateAction {
 					}
 					$check = $store_credit_entry->save();
 					if ( is_wp_error( $check ) ) {
-						throw new Exception( 'The amount enter is not valid.' );
+						return [
+							'status'  => 'error',
+							'message' => 'The amount enter is not valid.',
+						];
 					}
 					if ( function_exists( 'ACFWF' ) ) {
 						$cur_balance                = apply_filters( 'acfw_filter_amount', \ACFWF()->Store_Credits_Calculate->get_customer_balance( $user_id ) );
@@ -137,10 +140,16 @@ class AddStoreCreditToUser extends AutomateAction {
 					}
 				}
 			} else {
-				throw new Exception( 'Invalid User.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Invalid User.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

@@ -156,7 +156,10 @@ class SendAllMembersGroupNotification extends AutomateAction {
 		$members_ids          = [];
 		$context              = [];
 		if ( empty( $sender ) || ! is_email( $sender ) ) {
-			throw new Exception( 'Invalid sender email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid sender email.',
+			];
 		}
 
 		if ( function_exists( 'groups_get_group_members' ) ) {
@@ -218,10 +221,16 @@ class SendAllMembersGroupNotification extends AutomateAction {
 					return $context;
 				}
 			} else {
-				throw new Exception( 'No members found in group.' );
+				return [
+					'status'  => 'error',
+					'message' => 'No members found in group.',
+				];
 			}
 		} else {
-			throw new Exception( 'BuddyPress notification module is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => 'BuddyPress notification module is not active.',
+			];
 		}
 	}
 }

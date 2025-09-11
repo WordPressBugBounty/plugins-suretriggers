@@ -85,14 +85,16 @@ class CreateLink extends AutomateAction {
 		if ( empty( $title ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Title is required to create a link.', 'suretriggers' ),
+				'message' => __( 'Title is required to create a link.', 'suretriggers' ), 
+				
 			];
 		}
 
 		if ( empty( $url ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'URL is required to create a link.', 'suretriggers' ),
+				'message' => __( 'URL is required to create a link.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -168,7 +170,8 @@ class CreateLink extends AutomateAction {
 		if ( false === $result ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to create link in ClickWhale.', 'suretriggers' ),
+				'message' => __( 'Failed to create link in ClickWhale.', 'suretriggers' ), 
+				
 			];
 		}
 

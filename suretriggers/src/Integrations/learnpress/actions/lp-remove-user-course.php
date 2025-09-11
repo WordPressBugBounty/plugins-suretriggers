@@ -93,10 +93,16 @@ class LpRemoveUserCourse extends AutomateAction {
 					LearnPress::get_lpc_course_context( $course_id )
 				);
 			} else {
-				throw new Exception( 'User not found' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

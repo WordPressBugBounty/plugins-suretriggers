@@ -87,13 +87,15 @@ class WishlistMemberDeleteExistingMember extends AutomateAction {
 			return array_merge(
 				[
 					'success' => true,
-					'msg'     => __( 'Member deleted successfully.', 'suretriggers' ),
+					'msg'     => __( 'Member deleted successfully.', 'suretriggers' ), 
+					
 				]
 			);
 		} else {
 			return [
 				'success' => false,
-				'msg'     => __( 'Failed to delete a member.', 'suretriggers' ),
+				'msg'     => __( 'Failed to delete a member.', 'suretriggers' ), 
+				
 			];   
 		}
 	}

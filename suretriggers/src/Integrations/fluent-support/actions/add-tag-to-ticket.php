@@ -76,7 +76,10 @@ class AddTagToTicket extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'FluentSupport\App\Models\Ticket' ) || ! class_exists( 'FluentSupport\App\Models\TicketTag' ) ) {
-			throw new Exception( 'Error: FluentSupport plugin is not installed correctly. Required classes are missing.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Error: FluentSupport plugin is not installed correctly. Required classes are missing.',
+			];
 		}
 
 		$ticket_id = isset( $selected_options['ticket_id'] ) ? (int) $selected_options['ticket_id'] : 0;

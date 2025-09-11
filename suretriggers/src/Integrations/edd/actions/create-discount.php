@@ -73,7 +73,10 @@ class CreateDiscountFree extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! function_exists( 'edd_add_discount' ) || ! function_exists( 'edd_get_discount' ) ) {
-			throw new Exception( 'EDD plugin is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => 'EDD plugin is not active.',
+			];
 		}        
 		
 		if ( empty( $selected_options['name'] ) || empty( $selected_options['code'] ) || empty( $selected_options['amount'] ) ) {
@@ -126,7 +129,10 @@ class CreateDiscountFree extends AutomateAction {
 
 		if ( ! $discount_id ) {
 			$error_message = 'Failed to create discount. Please check your parameters and try again.';
-			throw new Exception( $error_message );
+			return [
+				'status'  => 'error',
+				'message' => $error_message,
+			];
 		}
 		
 		$discount_data = [

@@ -88,24 +88,39 @@ class SendFriendshipRequestUser extends AutomateAction {
 					if ( function_exists( 'friends_add_friend' ) ) {
 						$send = friends_add_friend( $sender_user_id, $user_id );
 						if ( false === $send ) {
-							throw new Exception( 'We are unable to send friendship request to selected user.' );
+							return [
+								'status'  => 'error',
+								'message' => 'We are unable to send friendship request to selected user.',
+							];
 						} else {
 							$context['sender']   = WordPress::get_user_context( $sender_user_id );
 							$context['receiver'] = WordPress::get_user_context( $user_id );
 							return $context;
 						}
 					} else {
-						throw new Exception( 'BuddyBoss connection module is not active.' );
+						return [
+							'status'  => 'error',
+							'message' => 'BuddyBoss connection module is not active.',
+						];
 					}
 				} else {
-					throw new Exception( 'Receiver with the email provided not found.' );   
+					return [
+						'status'  => 'error',
+						'message' => 'Receiver with the email provided not found.',
+					];   
 				}
 			} else {
 				// If there's no user found, return default message.
-				throw new Exception( 'Sender with the email provided not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Sender with the email provided not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

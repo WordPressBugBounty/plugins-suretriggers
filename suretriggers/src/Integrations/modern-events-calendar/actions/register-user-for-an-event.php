@@ -81,12 +81,20 @@ class RegisterUserForAnEvent extends AutomateAction {
 
 		// Check hard dependency for \MEC_gateway_pay_locally class if it exists.
 		if ( ! class_exists( '\MEC_gateway_pay_locally' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( '\MEC_gateway_pay_locally class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		// Check hard dependency for \MEC_feature_books class if it exists.
 		if ( ! class_exists( '\MEC_feature_books' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( '\MEC_feature_books class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$gateway  = new \MEC_gateway_pay_locally();
@@ -97,13 +105,19 @@ class RegisterUserForAnEvent extends AutomateAction {
 		$wp_user_email      = sanitize_text_field( $selected_options['wp_user_email'] );
 
 		if ( ! is_email( $wp_user_email ) ) {
-			throw new Exception( 'Invalid user email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid user email.',
+			];
 		}
 
 		$user = get_user_by( 'email', $wp_user_email );
 
 		if ( ! $user ) {
-			throw new Exception( 'User email not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User email not exists.',
+			];
 		}
 
 		$book = $mec_book->getBook();
@@ -127,7 +141,10 @@ class RegisterUserForAnEvent extends AutomateAction {
 		} else {
 			// log error here.
 			$error_message = 'Event Start Date and End Date is missing. Please check if the select Event has a corresponding dates.';
-			throw new Exception( $error_message );
+			return [
+				'status'  => 'error',
+				'message' => $error_message,
+			];
 		}
 
 		// The attendees count. We will set it to `1` since there can only be 1 logged-in user at a time.

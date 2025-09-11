@@ -75,7 +75,10 @@ class WpcwEnrollUserToCourse extends AutomateAction {
 		$user_id   = $selected_options['wp_user_email'];
 
 		if ( ! function_exists( 'wpcw_get_courses' ) ) {
-			throw new Exception( 'wpcw_get_courses does not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'wpcw_get_courses does not exists.',
+			];
 		}
 
 		if ( is_email( $user_id ) ) {
@@ -96,7 +99,10 @@ class WpcwEnrollUserToCourse extends AutomateAction {
 				}
 
 				if ( ! function_exists( 'WPCW_courses_syncUserAccess' ) ) {
-					throw new Exception( 'WPCW_courses_syncUserAccess does not exists.' );
+					return [
+						'status'  => 'error',
+						'message' => 'WPCW_courses_syncUserAccess does not exists.',
+					];
 				}
 
 				WPCW_courses_syncUserAccess( $user_id, $enroll_course_list, 'add' );
@@ -110,7 +116,8 @@ class WpcwEnrollUserToCourse extends AutomateAction {
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;

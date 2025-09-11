@@ -77,7 +77,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( ! class_exists( '\FluentCrm\App\Models\Template' ) || ! class_exists( '\FluentCrm\App\Models\Campaign' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCRM is not installed or activated.', 'suretriggers' ),
+				'message' => __( 'FluentCRM is not installed or activated.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -88,7 +89,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( ! $template_id ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Template ID is required.', 'suretriggers' ),
+				'message' => __( 'Template ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -98,7 +100,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( ! $template ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Template not found.', 'suretriggers' ),
+				'message' => __( 'Template not found.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -187,9 +190,30 @@ class SendEmailByTemplate extends AutomateAction {
 		$response_context           = json_decode( $new_campaign_response_body, true );
 
 		if ( 200 !== $response_code ) {
+
+			$error_message = __( 'Failed to create campaign.', 'suretriggers' );
+
+			switch ( $response_code ) {
+				case 422:
+					$messages = [];
+					if ( is_array( $response_context ) ) {
+						foreach ( $response_context as $field_errors ) {
+							foreach ( $field_errors as $msg ) {
+								$messages[] = $msg;
+							}
+						}
+						$error_message = implode( ', ', $messages );
+					}
+					break;
+				default:
+					$error_message = __( 'Failed to create campaign.', 'suretriggers' );
+					break;
+			}
+
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to create campaign.', 'suretriggers' ),
+				'message' => __( 'Failed to create campaign.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -223,7 +247,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( false === $settings_data ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to encode campaign settings data.', 'suretriggers' ),
+				'message' => __( 'Failed to encode campaign settings data.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -237,7 +262,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( ! is_array( $response_context ) || ! isset( $response_context['id'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid campaign response: missing ID.', 'suretriggers' ),
+				'message' => __( 'Invalid campaign response: missing ID.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -249,7 +275,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( 200 !== $settings_response_code ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to update campaign settings.', 'suretriggers' ),
+				'message' => __( 'Failed to update campaign settings.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -262,7 +289,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( false === $contact_body ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to encode contact data.', 'suretriggers' ),
+				'message' => __( 'Failed to encode contact data.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -280,7 +308,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( is_array( $contacts_context ) && 0 == $contacts_context['count'] ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'No contacts found based on your selection.', 'suretriggers' ),
+				'message' => __( 'No contacts found based on your selection.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -294,7 +323,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( ! is_array( $settings_context ) || ! isset( $settings_context['campaign'] ) || ! isset( $settings_context['campaign']['id'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid campaign ID.', 'suretriggers' ),
+				'message' => __( 'Invalid campaign ID.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -313,7 +343,8 @@ class SendEmailByTemplate extends AutomateAction {
 		if ( is_wp_error( $final_request ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to schedule campaign.', 'suretriggers' ),
+				'message' => __( 'Failed to schedule campaign.', 'suretriggers' ), 
+				
 			];
 		}
 

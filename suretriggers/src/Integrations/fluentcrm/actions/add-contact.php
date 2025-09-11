@@ -80,13 +80,15 @@ class AddContact extends AutomateAction {
 		if ( ! function_exists( 'FluentCrmApi' ) || ! function_exists( 'fluentcrm_get_custom_contact_fields' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCRM functions not found.', 'suretriggers' ),
+				'message' => __( 'FluentCRM functions not found.', 'suretriggers' ), 
+				
 			];
 		}
 		if ( empty( $selected_options['contact_email'] ) || ! is_email( $selected_options['contact_email'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Email address is invalid.', 'suretriggers' ),
+				'message' => __( 'Email address is invalid.', 'suretriggers' ), 
+				
 			];
 		}
 		$forced_update = false;
@@ -120,7 +122,8 @@ class AddContact extends AutomateAction {
 			if ( ! $date_of_birth ) {
 				return [
 					'status'  => 'error',
-					'message' => __( "The date format does not conform to the 'yyyy-mm-dd' format in Date of Birth field.", 'suretriggers' ),
+					'message' => __( "The date format does not conform to the 'yyyy-mm-dd' format in Date of Birth field.", 'suretriggers' ), 
+					
 				];
 			}
 			$data['date_of_birth'] = $dob;
@@ -238,7 +241,8 @@ class AddContact extends AutomateAction {
 				if ( ! class_exists( 'FluentCrm\App\Models\Tag' ) ) {
 					return [
 						'status'  => 'error',
-						'message' => __( 'Tag model not found.', 'suretriggers' ),
+						'message' => __( 'Tag model not found.', 'suretriggers' ), 
+						
 					];
 				}
 				foreach ( $tags_arr as $tag ) {
@@ -276,7 +280,8 @@ class AddContact extends AutomateAction {
 		if ( ! $contact ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid contact.', 'suretriggers' ),
+				'message' => __( 'Invalid contact.', 'suretriggers' ), 
+				
 			];
 		}
 

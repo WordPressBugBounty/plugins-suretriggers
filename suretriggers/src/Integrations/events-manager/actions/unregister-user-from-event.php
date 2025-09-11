@@ -75,7 +75,10 @@ class UnregisterUserFromEvent extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! $user_id ) {
-			throw new Exception( 'User not found with this email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found with this email address.',
+			];
 		}
 		$event_id = $selected_options['event_id'];
 
@@ -90,7 +93,10 @@ class UnregisterUserFromEvent extends AutomateAction {
 		}
 
 		if ( empty( $all_bookings ) ) {
-			throw new Exception( 'The user was not registered for the specified event.' ); 
+			return [
+				'status'  => 'error',
+				'message' => 'The user was not registered for the specified event.',
+			]; 
 		}
 
 		foreach ( $all_bookings as $booking ) {

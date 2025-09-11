@@ -97,10 +97,16 @@ class RemoveUserMeta extends AutomateAction {
 				];
 				return $dynamic_response;
 			} else {
-				throw new Exception( 'Meta key not found' );
+				return [
+					'status'  => 'error',
+					'message' => 'Meta key not found',
+				];
 			}
 		} else {
-			throw new Exception( 'Meta key is required' );
+			return [
+				'status'  => 'error',
+				'message' => 'Meta key is required',
+			];
 		}
 		
 	}

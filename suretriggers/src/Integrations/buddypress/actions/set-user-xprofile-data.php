@@ -94,7 +94,10 @@ class SetUserXprofileData extends AutomateAction {
 			}
 			return $context;
 		} else {
-			throw new Exception( 'Please add Extended profile fields.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please add Extended profile fields.',
+			];
 		}
 	}
 }

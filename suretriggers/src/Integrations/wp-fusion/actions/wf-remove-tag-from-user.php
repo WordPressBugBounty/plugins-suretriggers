@@ -108,14 +108,16 @@ class WfRemoveTagFromUser extends AutomateAction {
 			} else {
 				$error = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'Please enter valid user.', 'suretriggers' ),
+					'response' => esc_attr__( 'Please enter valid user.', 'suretriggers' ), 
+					
 				];
 				return $error;
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 			return $error;
 		}

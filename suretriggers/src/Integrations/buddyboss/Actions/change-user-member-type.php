@@ -82,7 +82,10 @@ class ChangeUserMemberType extends AutomateAction {
 		}
 
 		if ( ! function_exists( 'bp_set_member_type' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'bp_set_member_type function not found.', 'suretriggers' ), 
+			];
 		}
 
 		$member_type = get_post_meta( $profile_type, '_bp_member_type_key', true );

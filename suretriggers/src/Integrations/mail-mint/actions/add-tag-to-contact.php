@@ -81,7 +81,10 @@ class AddTagToContact extends AutomateAction {
 		$contact_id    = $selected_options['contact_id'] ? $selected_options['contact_id'] : 0;
 		$selected_tags = $selected_options['contact_tags'] ? explode( ',', $selected_options['contact_tags'] ) : [];
 		if ( ! ContactModel::is_contact_ids_exists( [ $contact_id ] ) ) {
-			throw new Exception( 'There is no contact with provided id.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There is no contact with provided id.',
+			];
 		}
 		$tags_data = [];
 		foreach ( $selected_tags as $tag ) {

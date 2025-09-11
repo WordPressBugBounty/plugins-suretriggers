@@ -79,7 +79,10 @@ class GetPostMetadata extends AutomateAction {
 		$post = get_post( $post_id );
 
 		if ( ! $post ) {
-			throw new Exception( 'Post not found for the specified Post ID.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found for the specified Post ID.',
+			];
 		}
 		$response = get_object_vars( $post );
 		if ( '' !== $meta_key ) {

@@ -89,11 +89,18 @@ class CreateBoard extends AutomateAction {
 			fn( $value) => '' !== $value
 		);
 			if ( ! function_exists( 'FluentBoardsApi' ) ) {
-				return;
+				return [
+					'status'  => 'error',
+					'message' => __( 'FluentBoardsApi function not found.', 'suretriggers' ), 
+					
+				];
 			}
 			$board = FluentBoardsApi( 'boards' )->create( $board_data );
 			if ( empty( $board ) ) {
-				throw new Exception( 'There is error while creating a Board.' );
+				return [
+					'status'  => 'error',
+					'message' => 'There is error while creating a Board.',
+				];
 			}
 			return $board;
 	}

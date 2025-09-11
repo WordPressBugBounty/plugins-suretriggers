@@ -71,22 +71,19 @@ class CreateCouponCode extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! $user_id ) {
-			$this->set_error(
-				[
-					'msg' => __( 'User Not found', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'User Not found', 'suretriggers' ), 
+				
+			];
 		}
 
 		foreach ( $fields as $field ) {
 			if ( array_key_exists( 'validationProps', $field ) && empty( $selected_options[ $field['name'] ] ) ) {
-				$this->set_error(
-					[
-						'msg' => __( 'Required field is missing: ', 'suretriggers' ) . $field['name'],
-					]
-				);
-				return false;
+				return [
+					'status'  => 'error',
+					'message' => __( 'Required field is missing: ', 'suretriggers' ) . $field['name'],
+				];
 			}
 		}
 

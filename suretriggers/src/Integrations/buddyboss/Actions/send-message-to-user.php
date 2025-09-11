@@ -74,11 +74,17 @@ class SendMessageToUsers extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( empty( $selected_options['sender_user'] ) || ! is_email( $selected_options['sender_user'] ) ) {
-			throw new Exception( 'Invalid sender email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid sender email.',
+			];
 		}
 
 		if ( empty( $selected_options['reciever_user'] ) ) { 
-			throw new Exception( 'Invalid reciever email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid reciever email.',
+			];
 		}
 
 		$reciever_users = explode( ',', $selected_options['reciever_user'] );
@@ -96,7 +102,10 @@ class SendMessageToUsers extends AutomateAction {
 		$sender_id = email_exists( $selected_options['sender_user'] );
 
 		if ( false === $sender_id ) {
-			throw new Exception( 'User with email ' . $selected_options['sender_user'] . ' does not exists .' );
+			return [
+				'status'  => 'error',
+				'message' => 'User with email ' . $selected_options['sender_user'] . ' does not exists .',
+			];
 		}
 
 		$message_subject    = $selected_options['message_subject'];
@@ -121,10 +130,16 @@ class SendMessageToUsers extends AutomateAction {
 				];
 				return $context;    
 			} else {
-				throw new Exception( 'Failed to send message' );
+				return [
+					'status'  => 'error',
+					'message' => 'Failed to send message',
+				];
 			}
 		} else {
-			throw new Exception( 'Failed to send message' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to send message',
+			];
 		}
 	}
 }

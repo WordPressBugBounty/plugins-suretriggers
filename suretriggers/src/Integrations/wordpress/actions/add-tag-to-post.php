@@ -79,7 +79,10 @@ class AddTagToPost extends AutomateAction {
 		$tag = wp_set_object_terms( $post_id, (int) $tag_id, 'post_tag', true );
 
 		if ( ! $tag ) {
-			throw new Exception( 'Failed to add tag.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to add tag.',
+			];
 		}
 
 		$last_response = get_post( $post_id );
@@ -87,7 +90,10 @@ class AddTagToPost extends AutomateAction {
 		$post_type = get_post_type( $post_id );
 
 		if ( ! $post_type ) {
-			throw new Exception( 'Invalid post ID or post type not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid post ID or post type not found.',
+			];
 		}
 
 		$response_taxonomy = get_object_taxonomies( $post_type );

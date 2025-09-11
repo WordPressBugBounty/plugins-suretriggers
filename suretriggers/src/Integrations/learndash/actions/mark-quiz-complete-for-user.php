@@ -79,7 +79,10 @@ class MarkQuizCompleteForUser extends AutomateAction {
 			return false;
 		}
 		if ( ! $user_id ) {
-			throw new Exception( 'User email not exists.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User email not exists.',
+			];
 		}
 
 		$course_id = ( isset( $selected_options['sfwd-courses'] ) ) ? $selected_options['sfwd-courses'] : '0';
@@ -91,7 +94,10 @@ class MarkQuizCompleteForUser extends AutomateAction {
 
 		// If the course progress is empty, then there is nothing to update.
 		if ( empty( $course_updates ) ) {
-			throw new Exception( 'Lesson/Topic not associated with quiz.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Lesson/Topic not associated with quiz.',
+			];
 		}
 
 		$update = [

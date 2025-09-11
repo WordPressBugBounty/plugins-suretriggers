@@ -74,7 +74,10 @@ class BMPostMessageToChatroom extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( empty( $selected_options['sender_user'] ) || ! is_email( $selected_options['sender_user'] ) ) {
-			throw new Exception( 'Invalid sender email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid sender email.',
+			];
 		}
 
 		if ( ! function_exists( 'Better_Messages_Chats' ) || ! function_exists( 'Better_Messages' ) ) {
@@ -83,7 +86,10 @@ class BMPostMessageToChatroom extends AutomateAction {
 
 		$sender_id = email_exists( $selected_options['sender_user'] );
 		if ( false === $sender_id ) {
-			throw new Exception( 'User with email ' . $selected_options['sender_user'] . ' does not exists .' );
+			return [
+				'status'  => 'error',
+				'message' => 'User with email ' . $selected_options['sender_user'] . ' does not exists .',
+			];
 		}
 
 		$message_subject    = $selected_options['message_subject'];
@@ -99,7 +105,10 @@ class BMPostMessageToChatroom extends AutomateAction {
 		$is_chat = $chat->is_chat_room( $chatroom_id );
 
 		if ( ! $is_chat ) {
-			throw new Exception( 'Invalid Chatroom.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid Chatroom.',
+			];
 		}
 
 		$thread_id = $chat->get_chat_thread_id( $chatroom_id );
@@ -110,7 +119,10 @@ class BMPostMessageToChatroom extends AutomateAction {
 		if ( ! $is_participant ) {
 			$join = $chat->add_to_chat( $sender_id, $chatroom_id );
 			if ( ! $join ) {
-				throw new Exception( 'Specified sender could not join this chatroom.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Specified sender could not join this chatroom.',
+				];
 			}
 		}
 
@@ -127,7 +139,10 @@ class BMPostMessageToChatroom extends AutomateAction {
 		// If there was an error, it'll be logged in action log with an error message.
 		if ( is_wp_error( $result ) ) {
 			$error_message = $result->get_error_message();
-			throw new Exception( $error_message );
+			return [
+				'status'  => 'error',
+				'message' => $error_message,
+			];
 		} else {
 			return Better_Messages()->functions->get_message( $result );
 		}

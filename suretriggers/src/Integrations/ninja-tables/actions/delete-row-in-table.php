@@ -83,7 +83,10 @@ class DeleteRowInTable extends AutomateAction {
 		$sql        = 'SELECT * FROM ' . $table_name . ' WHERE id = %d';
 		$results    = $wpdb->get_row( $wpdb->prepare( $sql, $row_id ), ARRAY_A ); // @phpcs:ignore
 		if ( empty( $results ) ) {
-			throw new Exception( 'No row exist with ' . $row_id . ' ID' );
+			return [
+				'status'  => 'error',
+				'message' => 'No row exist with ' . $row_id . ' ID',
+			];
 		}
 		$where = [
 			'id' => $row_id,

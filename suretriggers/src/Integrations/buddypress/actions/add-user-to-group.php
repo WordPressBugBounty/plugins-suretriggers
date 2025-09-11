@@ -88,7 +88,10 @@ class AddUsertoGroup extends AutomateAction {
 						$group             = groups_get_group( $group_id );
 						$has_joined_groups = groups_join_group( $group, $user_id );
 						if ( true !== $has_joined_groups ) {
-							throw new Exception( 'Failed to add member into the group.' );
+							return [
+								'status'  => 'error',
+								'message' => 'Failed to add member into the group.',
+							];
 						}
 					}
 				}
@@ -104,10 +107,16 @@ class AddUsertoGroup extends AutomateAction {
 				}
 			} else {
 				// If there's no user found, return default message.
-				throw new Exception( 'User with the email provided not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User with the email provided not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

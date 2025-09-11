@@ -78,14 +78,16 @@ class GetCrmContactForTask extends AutomateAction {
 		if ( empty( $task_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Task ID is required.', 'suretriggers' ),
+				'message' => __( 'Task ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
 		if ( ! function_exists( 'FluentBoardsApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentBoards plugin is not active.', 'suretriggers' ),
+				'message' => __( 'FluentBoards plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -93,14 +95,16 @@ class GetCrmContactForTask extends AutomateAction {
 		if ( empty( $task ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Task not found.', 'suretriggers' ),
+				'message' => __( 'Task not found.', 'suretriggers' ), 
+				
 			];
 		}
 		
 		if ( ! empty( $board_id ) && $task->board_id != $board_id ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Task does not belong to the specified board.', 'suretriggers' ),
+				'message' => __( 'Task does not belong to the specified board.', 'suretriggers' ), 
+				
 			];
 		}
 

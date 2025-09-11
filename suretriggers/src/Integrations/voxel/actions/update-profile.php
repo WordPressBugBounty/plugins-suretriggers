@@ -83,7 +83,10 @@ class UpdateProfile extends AutomateAction {
 		$profile = \Voxel\User::get_by_profile_id( $profile_id );
 
 		if ( ! $profile ) {
-			throw new Exception( 'Profile not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Profile not found',
+			];
 		}
 
 		// Create the profile, if not exist.

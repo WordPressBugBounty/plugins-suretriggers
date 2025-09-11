@@ -82,7 +82,8 @@ class CreateOrder extends AutomateAction {
 		if ( ! class_exists( 'StoreEngine' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'StoreEngine plugin is not active.', 'suretriggers' ),
+				'message' => __( 'StoreEngine plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -208,7 +209,8 @@ class CreateOrder extends AutomateAction {
 		if ( ! class_exists( '\\StoreEngine\\Classes\\Order' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'StoreEngine Order class not found. Please ensure StoreEngine is properly installed.', 'suretriggers' ),
+				'message' => __( 'StoreEngine Order class not found. Please ensure StoreEngine is properly installed.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -258,7 +260,8 @@ class CreateOrder extends AutomateAction {
 		if ( ! $order->get_id() ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to create the order.', 'suretriggers' ),
+				'message' => __( 'Failed to create the order.', 'suretriggers' ), 
+				
 			];
 		}
 

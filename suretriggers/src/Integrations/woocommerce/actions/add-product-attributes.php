@@ -114,7 +114,8 @@ class AddProductAttributes extends AutomateAction {
 	
 			return [
 				'status'  => 'success',
-				'message' => esc_html__( 'Attributes added succcessfully.', 'suretriggers' ),
+				'message' => esc_html__( 'Attributes added succcessfully.', 'suretriggers' ), 
+				
 			];
 		}
 	}

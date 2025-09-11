@@ -96,7 +96,8 @@ class UpdateLink extends AutomateAction {
 		if ( empty( $link_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Link ID is required to update a link.', 'suretriggers' ),
+				'message' => __( 'Link ID is required to update a link.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -139,7 +140,8 @@ class UpdateLink extends AutomateAction {
 		if ( empty( $update_data ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'At least one field is required to update the link.', 'suretriggers' ),
+				'message' => __( 'At least one field is required to update the link.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -165,7 +167,8 @@ class UpdateLink extends AutomateAction {
 		if ( false === $result ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to update link in ClickWhale.', 'suretriggers' ),
+				'message' => __( 'Failed to update link in ClickWhale.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -174,7 +177,8 @@ class UpdateLink extends AutomateAction {
 		if ( ! $link ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Link not found after update.', 'suretriggers' ),
+				'message' => __( 'Link not found after update.', 'suretriggers' ), 
+				
 			];
 		}
 		

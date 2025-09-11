@@ -88,14 +88,20 @@ class RemovePostFromCollection extends AutomateAction {
 		$post = \Voxel\Post::force_get( $post_id );
 
 		if ( ! $post ) {
-			throw new Exception( 'Post not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found',
+			];
 		}
 
 		// Get the collection.
 		$collection = \Voxel\Post::force_get( $collection_id );
 
 		if ( ! $collection ) {
-			throw new Exception( 'Collection not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Collection not found',
+			];
 		}
 
 		// Get the items field.
@@ -106,12 +112,18 @@ class RemovePostFromCollection extends AutomateAction {
 
 		// If items are not available, return error.
 		if ( ! $items ) {
-			throw new Exception( 'Collection items not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Collection items not found',
+			];
 		}
 
 		// If the post is not in the collection, then skip.
 		if ( ! in_array( $post_id, $items, true ) ) {
-			throw new Exception( 'Post not found in collection' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found in collection',
+			];
 		}
 
 		// Remove the post from the items.

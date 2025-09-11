@@ -83,7 +83,11 @@ class CreateStage extends AutomateAction {
 		$status   = $selected_options['status'] ? sanitize_text_field( $selected_options['status'] ) : '';
 		
 		if ( ! class_exists( 'FluentBoards\App\Services\StageService' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentBoards\App\Services\StageService class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$stage_data        = array_filter(
@@ -98,7 +102,10 @@ class CreateStage extends AutomateAction {
 			$stage         = $stage_service->createStage( $stage_data, $board_id );
 			
 			if ( empty( $stage ) ) {
-				throw new Exception( 'There is error while creating a Stage.' );
+				return [
+					'status'  => 'error',
+					'message' => 'There is error while creating a Stage.',
+				];
 			}
 			return $stage;
 	}

@@ -61,7 +61,8 @@ class Voxel extends Integrations {
 			return wp_json_encode(
 				[
 					'success' => false,
-					'message' => esc_attr__( 'Post not found', 'suretriggers' ),
+					'message' => esc_attr__( 'Post not found', 'suretriggers' ), 
+					
 				]
 			);
 		}
@@ -343,7 +344,8 @@ class Voxel extends Integrations {
 						'key'   => 'image_id',
 						'label' => esc_attr__( 'Image ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Image ID', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Image ID', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -355,7 +357,8 @@ class Voxel extends Integrations {
 						'key'   => 'image_id',
 						'label' => esc_attr__( 'Image ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Image ID', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Image ID', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -369,7 +372,8 @@ class Voxel extends Integrations {
 						'key'   => 'image_id',
 						'label' => esc_attr__( 'Image ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Image IDs, separated by comma', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Image IDs, separated by comma', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -381,7 +385,8 @@ class Voxel extends Integrations {
 						'key'   => 'image_id',
 						'label' => esc_attr__( 'Image ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Image IDs, separated by comma', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Image IDs, separated by comma', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -436,7 +441,8 @@ class Voxel extends Integrations {
 						'key'   => 'repeat_every',
 						'label' => esc_attr__( 'Event Unit', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Accepted values: day, week, month, year', 'suretriggers' ),
+						'help'  => esc_attr__( 'Accepted values: day, week, month, year', 'suretriggers' ), 
+						
 					],
 					[
 						'key'   => 'event_until',
@@ -459,19 +465,22 @@ class Voxel extends Integrations {
 						'key'   => 'work_days',
 						'label' => esc_attr__( 'Work Days', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Accepted values: mon, tue, wed, thu, fri, sat, sun', 'suretriggers' ),
+						'help'  => esc_attr__( 'Accepted values: mon, tue, wed, thu, fri, sat, sun', 'suretriggers' ), 
+						
 					],
 					[
 						'key'   => 'work_hours',
 						'label' => esc_attr__( 'Work Hours', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Enter value pairs as start and end time, separated by dash. For multiple pairs, use comma separator. Eg. 09:00-17:00, 09:00-12:00', 'suretriggers' ),
+						'help'  => esc_attr__( 'Enter value pairs as start and end time, separated by dash. For multiple pairs, use comma separator. Eg. 09:00-17:00, 09:00-12:00', 'suretriggers' ), 
+						
 					],
 					[
 						'key'   => 'work_status',
 						'label' => esc_attr__( 'Work Status', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Accepted values: hours, open, close, appointments_only', 'suretriggers' ),
+						'help'  => esc_attr__( 'Accepted values: hours, open, close, appointments_only', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -483,7 +492,8 @@ class Voxel extends Integrations {
 						'key'   => 'image_id',
 						'label' => esc_attr__( 'Image ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Image ID', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Image ID', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -495,7 +505,8 @@ class Voxel extends Integrations {
 						'key'   => 'image_id',
 						'label' => esc_attr__( 'Image ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Image ID', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Image ID', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -575,7 +586,8 @@ class Voxel extends Integrations {
 						'key'   => 'product',
 						'label' => esc_attr__( 'Product ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Product ID', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Product ID', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -612,7 +624,8 @@ class Voxel extends Integrations {
 						'key'   => 'image_id',
 						'label' => esc_attr__( 'Image ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Image IDs. Separate with comma.', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Image IDs. Separate with comma.', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -627,7 +640,8 @@ class Voxel extends Integrations {
 						'key'   => 'file_id',
 						'label' => esc_attr__( 'File ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide File ID', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide File ID', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -678,7 +692,8 @@ class Voxel extends Integrations {
 						'key'   => 'repeat_every',
 						'label' => esc_attr__( 'Event Unit', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Accepted values: day, week, month, year', 'suretriggers' ),
+						'help'  => esc_attr__( 'Accepted values: day, week, month, year', 'suretriggers' ), 
+						
 					],
 					[
 						'key'   => 'event_until',
@@ -695,7 +710,8 @@ class Voxel extends Integrations {
 						'key'   => 'post_id',
 						'label' => esc_attr__( 'Post ID', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Post ID', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Post ID', 'suretriggers' ), 
+						 
 					],
 				],
 			],
@@ -741,7 +757,8 @@ class Voxel extends Integrations {
 						'key'   => 'image_id',
 						'label' => esc_attr__( 'Image IDs', 'suretriggers' ),
 						'type'  => 'text',
-						'help'  => esc_attr__( 'Provide Image IDs. Separate with comma.', 'suretriggers' ),
+						'help'  => esc_attr__( 'Provide Image IDs. Separate with comma.', 'suretriggers' ), 
+						 
 					],
 				],
 			],

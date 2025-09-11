@@ -112,10 +112,16 @@ class WPLoyaltyRemovePointsCustomer extends AutomateAction {
 				}
 				return $context;
 			} else {
-				throw new Exception( 'Points not reduced.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Points not reduced.',
+				];
 			}
 		} else {
-			throw new Exception( 'Campaign Not Found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Campaign Not Found.',
+			];
 		}
 	}
 

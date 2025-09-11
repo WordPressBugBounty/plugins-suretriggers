@@ -155,11 +155,17 @@ class SendUserNotification extends AutomateAction {
 		$notification_link    = $selected_options['notification_link'];
 
 		if ( empty( $sender ) || ! is_email( $sender ) ) {
-			throw new Exception( 'Invalid sender email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid sender email.',
+			];
 		}
 
 		if ( empty( $receiver ) || ! is_email( $receiver ) ) {
-			throw new Exception( 'Invalid receiver email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid receiver email.',
+			];
 		}
 
 		$sender_user   = get_user_by( 'email', $sender );
@@ -208,7 +214,10 @@ class SendUserNotification extends AutomateAction {
 				}
 			}
 		} else {
-			throw new Exception( 'BuddyPress notification module is not active.' );
+			return [
+				'status'  => 'error',
+				'message' => 'BuddyPress notification module is not active.',
+			];
 		}
 	}
 }

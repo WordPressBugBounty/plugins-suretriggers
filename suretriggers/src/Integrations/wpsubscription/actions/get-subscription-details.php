@@ -80,7 +80,8 @@ class GetSubscriptionDetails extends AutomateAction {
 		if ( empty( $subscription_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Subscription ID is required.', 'suretriggers' ),
+				'message' => __( 'Subscription ID is required.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -88,7 +89,8 @@ class GetSubscriptionDetails extends AutomateAction {
 		if ( ! ( $subscription instanceof \WP_Post ) || 'subscrpt_order' !== $subscription->post_type ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid subscription ID.', 'suretriggers' ),
+				'message' => __( 'Invalid subscription ID.', 'suretriggers' ), 
+				
 			];
 		}
 

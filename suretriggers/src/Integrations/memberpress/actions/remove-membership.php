@@ -77,10 +77,16 @@ class RemoveMembership extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'MeprSubscription' ) || ! class_exists( 'MeprHooks' ) || ! class_exists( 'MeprTransaction' ) ) {
-			throw new Exception( 'MemberPress classes not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'MemberPress classes not found.',
+			];
 		}
 		if ( ! $user_id ) {
-			throw new Exception( 'User not found with this email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found with this email address.',
+			];
 		}
 
 		if ( is_array( $selected_options['memberpressproduct'] ) ) {
@@ -90,7 +96,10 @@ class RemoveMembership extends AutomateAction {
 		}
 		$user_obj = get_user_by( 'id', $user_id );
 		if ( ! $user_obj instanceof \WP_User ) {
-			throw new Exception( 'User not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found.',
+			];
 		}
 		$table = MeprSubscription::account_subscr_table(
 			'created_at',
@@ -112,12 +121,11 @@ class RemoveMembership extends AutomateAction {
 		);
 
 		if ( 0 === $table['count'] ) {
-			$this->set_error(
-				[
-					'msg' => __( 'Empty subscription table ', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Empty subscription table ', 'suretriggers' ), 
+				
+			];
 		}
 
 		foreach ( $table['results'] as $row ) {

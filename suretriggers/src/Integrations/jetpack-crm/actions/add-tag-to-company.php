@@ -78,20 +78,29 @@ class AddTagToCompany extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! function_exists( 'zeroBS_getCompanyIDWithEmail' ) || ! function_exists( 'zeroBSCRM_getCompanyTagsByID' ) || ! function_exists( 'zeroBSCRM_site' ) || ! function_exists( 'zeroBSCRM_team' ) || ! defined( 'ZBS_TYPE_COMPANY' ) ) {
-			throw new Exception( 'Seems like Jetpack CRM plugin is not installed correctly.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Seems like Jetpack CRM plugin is not installed correctly.',
+			];
 		}
 
 		$email  = sanitize_email( $selected_options['company_email'] );
 		$tag_id = $selected_options['tag_id'];
 
 		if ( ! is_email( $email ) ) {
-			throw new Exception( 'Invalid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid email.',
+			];
 		}
 
 		$company_id = zeroBS_getCompanyIDWithEmail( $email );
 
 		if ( ! $company_id ) {
-			throw new Exception( 'Company not found with this email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Company not found with this email.',
+			];
 		}
 
 		$company_tags  = zeroBSCRM_getCompanyTagsByID( $company_id );

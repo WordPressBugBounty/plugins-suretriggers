@@ -71,13 +71,16 @@ class DeleteContact extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selected_options.
 	 *
-	 * @return bool|void
+	 * @return array|bool|void
 	 *
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! class_exists( 'Mint\MRM\DataBase\Models\ContactModel' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Mint\MRM\DataBase\Models\ContactModel class not found.', 'suretriggers' ), 
+			];
 		}
 		if ( empty( $selected_options['email'] ) ) {
 			return;
@@ -87,7 +90,10 @@ class DeleteContact extends AutomateAction {
 		if ( $contact ) {
 			$deleted = ContactModel::destroy( $contact['id'] );
 		} else {
-			throw new Exception( 'There is no contact with provided email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There is no contact with provided email.', 
+			];
 		}
 		
 		return true;

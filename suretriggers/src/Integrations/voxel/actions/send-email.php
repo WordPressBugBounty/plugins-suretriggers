@@ -97,15 +97,22 @@ class SendEmail extends AutomateAction {
 			];
 			$email = \Voxel\Queues\Async_Email::instance()->data( $args )->dispatch();
 			if ( ! $email ) {
-				throw new Exception( 'Email not sent' );
+				return [
+					'status'  => 'error',
+					'message' => 'Email not sent',
+				];
 			} else {
 				return [
 					'success' => true,
-					'message' => esc_attr__( 'Email sent successfully', 'suretriggers' ),
+					'message' => esc_attr__( 'Email sent successfully', 'suretriggers' ), 
+					
 				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 

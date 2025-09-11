@@ -74,7 +74,10 @@ class AffiliateCreateReferral extends AutomateAction {
 
 		if ( ! function_exists( 'affwp_get_affiliate_user_id' ) || ! function_exists( 'affwp_is_affiliate' ) 
 		|| ! function_exists( 'affwp_add_referral' ) || ! function_exists( 'affwp_get_referral' ) ) {
-			throw new Exception( 'AffiliateWP functions not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'AffiliateWP functions not found.',
+			];
 		}
 
 		$affiliate_user_id = affwp_get_affiliate_user_id( $affiliate_id );
@@ -101,10 +104,16 @@ class AffiliateCreateReferral extends AutomateAction {
 				$referral_data = get_object_vars( $referral );
 				return $referral_data;
 			} else {
-				throw new Exception( 'We are unable to add referral.' );
+				return [
+					'status'  => 'error',
+					'message' => 'We are unable to add referral.',
+				];
 			}       
 		} else {
-			throw new Exception( 'The user is not an affiliate.' );
+			return [
+				'status'  => 'error',
+				'message' => 'The user is not an affiliate.',
+			];
 		}
 	}
 }

@@ -135,10 +135,16 @@ class NewProfile extends AutomateAction {
 					'profile_author' => $user_id,
 				];
 			} else {
-				throw new Exception( 'User not found' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found',
+				];
 			}
 		} else {
-			throw new Exception( 'Enter valid email address' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email address',
+			];
 		}
 	}
 

@@ -116,7 +116,10 @@ class RevokePointsUser extends AutomateAction {
 				}
 			}
 		} else {
-			throw new Exception( 'Something went wrong.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Something went wrong.',
+			];
 		}
 	}
 }

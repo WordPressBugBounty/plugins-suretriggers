@@ -76,7 +76,8 @@ class ListSequences extends AutomateAction {
 		if ( ! class_exists( '\FluentCampaign\App\Models\Sequence' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCRM Pro is not installed or activated.', 'suretriggers' ),
+				'message' => __( 'FluentCRM Pro is not installed or activated.', 'suretriggers' ), 
+				
 			];
 		}
 

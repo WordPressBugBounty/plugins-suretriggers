@@ -83,13 +83,19 @@ class GetMemberByProfileID extends AutomateAction {
 		$member = \Voxel\User::get_by_profile_id( $member_profile_id );
 
 		if ( ! $member ) {
-			throw new Exception( 'Member not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Member not found',
+			];
 		}
 		$member_id = $member->get_id();
 		$member    = \Voxel\User::get( $member_id );
 
 		if ( ! $member ) {
-			throw new Exception( 'Member not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Member not found',
+			];
 		}
 
 		$profile_id = $member->get_profile_id();

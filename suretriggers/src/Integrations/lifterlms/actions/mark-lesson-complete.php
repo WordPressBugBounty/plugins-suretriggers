@@ -86,21 +86,26 @@ class MarkLessonComplete extends AutomateAction {
 			if ( $user ) {
 				$user_id = $user->ID;
 				if ( ! function_exists( 'llms_mark_complete' ) ) {
-					$this->set_error(
-						[
-							'msg' => __( 'The function llms_mark_complete does not exist', 'suretriggers' ),
-						]
-					);
-					return false;
+					return [
+						'status'  => 'error',
+						'message' => __( 'The function llms_mark_complete does not exist', 'suretriggers' ), 
+						
+					];
 				}
 				// Mark lesson completed.
 				llms_mark_complete( $user_id, $lesson_id, 'lesson' );
 				return LifterLMS::get_lms_lesson_context( $lesson_id );
 			} else {
-				throw new Exception( 'User not exists.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not exists.',
+				];
 			}
 		} else {
-			throw new Exception( 'Enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email address.',
+			];
 		}
 	}
 

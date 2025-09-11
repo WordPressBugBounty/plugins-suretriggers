@@ -80,7 +80,7 @@ class SubscribeUserInForum extends AutomateAction {
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
 			];
 
 			return $error;
@@ -88,7 +88,10 @@ class SubscribeUserInForum extends AutomateAction {
 
 
 		if ( function_exists( 'bbp_is_subscriptions_active' ) && bbp_is_subscriptions_active() === false ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+			];
 		}
 		$forum_ids = [];
 
@@ -109,7 +112,10 @@ class SubscribeUserInForum extends AutomateAction {
 				$success         = false;
 
 				if ( true === $is_subscription ) {
-					throw new Exception( 'The user is already subscribed to the specified forum' );
+					return [
+						'status'  => 'error',
+						'message' => 'The user is already subscribed to the specified forum', 
+					];
 				} elseif ( function_exists( 'bbp_add_user_subscription' ) ) {
 					$success = bbp_add_user_subscription( $user_id, $forum_id );
 					// Do additional subscriptions actions.
@@ -117,12 +123,15 @@ class SubscribeUserInForum extends AutomateAction {
 				}
 
 				if ( false === $success && false === $is_subscription ) {
-					throw new Exception( 'There was a problem subscribing to that forum!' );
+					return [
+						'status'  => 'error',
+						'message' => 'There was a problem subscribing to that forum!', 
+					];
 				} else {
 					$context = [
 						'user_email'  => $selected_options['wp_user_email'],
 						'forum_title' => get_the_title( $forum_id ),
-						'forum_link'  => get_the_permalink( $forum_id ),
+						'forum_link'  => get_the_permalink( $forum_id ), 
 					];
 		
 					return $context;

@@ -74,14 +74,16 @@ class CreateCoupon extends AutomateAction {
 		if ( ! function_exists( 'wp_travel_engine_get_settings' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'WP Travel Engine plugin is not active.', 'suretriggers' ),
+				'message' => __( 'WP Travel Engine plugin is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
 		if ( empty( $selected_options['coupon_code'] ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Coupon code is required.', 'suretriggers' ),
+				'message' => __( 'Coupon code is required.', 'suretriggers' ), 
+				
 			];
 		}
 

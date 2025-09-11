@@ -204,13 +204,15 @@ class MarkCourseCompleteForUser extends AutomateAction {
 			}
 			$response = [
 				'status'   => esc_attr__( 'Success', 'suretriggers' ),
-				'response' => esc_attr__( 'Course marked as completed successfully.', 'suretriggers' ),
+				'response' => esc_attr__( 'Course marked as completed successfully.', 'suretriggers' ), 
+				
 			];
 			return $response;
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Course does not have any lessons or quizzes added.', 'suretriggers' ),
+				'response' => esc_attr__( 'Course does not have any lessons or quizzes added.', 'suretriggers' ), 
+				
 			];
 
 			return $error;

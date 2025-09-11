@@ -109,12 +109,19 @@ class CreateTask extends AutomateAction {
 			fn( $value) => '' !== $value
 		);
 			if ( ! function_exists( 'FluentBoardsApi' ) ) {
-				return;
+				return [
+					'status'  => 'error',
+					'message' => __( 'FluentBoardsApi function not found.', 'suretriggers' ), 
+					
+				];
 			}
 			
 			$task = FluentBoardsApi( 'tasks' )->create( $task_data );
 			if ( empty( $task ) ) {
-				throw new Exception( 'There is error while creating a Task.' );
+				return [
+					'status'  => 'error',
+					'message' => 'There is error while creating a Task.',
+				];
 			}
 			
 			if ( ! empty( $assignees ) ) {

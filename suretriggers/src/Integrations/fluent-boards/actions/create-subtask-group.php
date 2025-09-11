@@ -76,7 +76,10 @@ class CreateSubtaskGroup extends AutomateAction {
 		$group_name = isset( $selected_options['group_name'] ) ? sanitize_text_field( $selected_options['group_name'] ) : '';
 
 		if ( empty( $task_id ) || empty( $group_name ) ) {
-			throw new Exception( 'Required fields are missing: task_id or group_name.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Required fields are missing: task_id or group_name.',
+			];
 		}
 
 		if ( ! class_exists( '\FluentBoards\App\Models\Task' ) ) {
@@ -85,11 +88,17 @@ class CreateSubtaskGroup extends AutomateAction {
 
 		$task = Task::find( $task_id );
 		if ( ! $task ) {
-			throw new Exception( 'Task not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Task not found.',
+			];
 		}
 
 		if ( ! class_exists( '\FluentBoardsPro\App\Services\SubtaskService' ) ) {
-			throw new Exception( 'SubtaskService class is not available.' );
+			return [
+				'status'  => 'error',
+				'message' => 'SubtaskService class is not available.',
+			];
 		}
 
 		$subtask_service = new SubtaskService();
@@ -100,7 +109,10 @@ class CreateSubtaskGroup extends AutomateAction {
 		$group = $subtask_service->createSubtaskGroup( $task_id, $group_data );
 		
 		if ( empty( $group ) ) {
-			throw new Exception( 'Failed to create subtask group.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Failed to create subtask group.',
+			];
 		}
 		
 		return [

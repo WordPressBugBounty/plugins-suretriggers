@@ -77,7 +77,10 @@ class CreateCoupon extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'OsCouponModel' ) ) {
-			throw new Exception( 'LatePoint Pro Features plugin is not installed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'LatePoint Pro Features plugin is not installed.',
+			];
 		}
 
 		$coupon_params = [

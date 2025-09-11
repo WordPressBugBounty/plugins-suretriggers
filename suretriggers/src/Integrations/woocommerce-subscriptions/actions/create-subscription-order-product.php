@@ -77,15 +77,26 @@ class CreateSubscriptionOrderProduct extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		// First make sure all required functions and classes exist.
 		if ( ! function_exists( 'wc_create_order' ) || ! function_exists( 'wcs_create_subscription' ) || ! class_exists( 'WC_Subscriptions' ) ) {
-			throw new Exception( '`wc_create_order` or `wcs_create_subscription` function is missing.' );
+			return [
+				'status'  => 'error',
+				'message' => '`wc_create_order` or `wcs_create_subscription` function is missing.',
+			];
 		}
 
 		if ( ! class_exists( '\WC_Order' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( '\WC_Order class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( ! class_exists( 'WC_Subscriptions_Product' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'WC_Subscriptions_Product class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$products = $selected_options['product_id'];
@@ -163,7 +174,10 @@ class CreateSubscriptionOrderProduct extends AutomateAction {
 
 			if ( is_wp_error( $sub ) ) {
 				wp_delete_post( $order->get_id(), true );
-				throw new Exception( 'Failed to create a subscription.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Failed to create a subscription.',
+				];
 			}
 
 			$sub->add_product( wc_get_product( intval( $selected_options['product_id'] ) ), intval( $quantity ) );

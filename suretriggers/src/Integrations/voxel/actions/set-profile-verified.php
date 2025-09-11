@@ -83,7 +83,10 @@ class SetProfileVerified extends AutomateAction {
 		$post = \Voxel\Post::force_get( $profile_id );
 
 		if ( ! $post ) {
-			throw new Exception( 'Profile not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Profile not found',
+			];
 		}
 
 		// Set the post as verified.
@@ -91,7 +94,8 @@ class SetProfileVerified extends AutomateAction {
 
 		return [
 			'success' => true,
-			'message' => esc_attr__( 'Profile Verified Successfully', 'suretriggers' ),
+			'message' => esc_attr__( 'Profile Verified Successfully', 'suretriggers' ), 
+			
 		];
 	}
 

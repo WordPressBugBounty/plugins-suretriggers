@@ -99,7 +99,10 @@ class SendDirectMessage extends AutomateAction {
 					
 					// check if users have blocked each other.
 					if ( $sender_user->get_follow_status( 'user', $receiver_user->get_id() ) === -1 || $receiver_user->get_follow_status( 'user', $sender_user->get_id() ) === -1 ) {
-						throw new Exception( 'You cannot message the user.' );
+						return [
+							'status'  => 'error',
+							'message' => 'You cannot message the user.',
+						];
 					}
 
 					$message = \Voxel\Direct_Messages\Message::create(
@@ -164,13 +167,22 @@ class SendDirectMessage extends AutomateAction {
 						],
 					];
 				} else {
-					throw new Exception( 'Please enter valid receiver.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Please enter valid receiver.',
+					];
 				}
 			} else {
-				throw new Exception( 'Please enter valid sender.' );
+				return [
+					'status'  => 'error',
+					'message' => 'Please enter valid sender.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 

@@ -76,7 +76,8 @@ class CreateNewOrder extends AutomateAction {
 		if ( ! $order instanceof \WC_Order ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Unable to create order.', 'suretriggers' ),
+				'message' => __( 'Unable to create order.', 'suretriggers' ), 
+				
 			];
 		}
 		

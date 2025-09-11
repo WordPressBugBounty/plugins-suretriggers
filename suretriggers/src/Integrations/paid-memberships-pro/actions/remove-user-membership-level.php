@@ -75,7 +75,11 @@ class RemoveUserMembershipLevel extends AutomateAction {
 		$membership_level = $selected_options['membership_id'];
 
 		if ( ! function_exists( 'pmpro_getMembershipLevelsForUser' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'pmpro_getMembershipLevelsForUser function not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$user_membership_levels = pmpro_getMembershipLevelsForUser( $user_id );
@@ -95,7 +99,8 @@ class RemoveUserMembershipLevel extends AutomateAction {
 			if ( empty( $user_membership_levels ) ) {
 				$error = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'User does not belong to any membership levels.', 'suretriggers' ),
+					'response' => esc_attr__( 'User does not belong to any membership levels.', 'suretriggers' ), 
+					
 				];
 				return $error;
 			}
@@ -109,7 +114,8 @@ class RemoveUserMembershipLevel extends AutomateAction {
 
 			$response = [
 				'status'   => esc_attr__( 'Success', 'suretriggers' ),
-				'response' => esc_attr__( 'User removed from Membership level.', 'suretriggers' ),
+				'response' => esc_attr__( 'User removed from Membership level.', 'suretriggers' ), 
+				
 			];
 			return $response;
 
@@ -120,7 +126,8 @@ class RemoveUserMembershipLevel extends AutomateAction {
 			// Complete with error if the user was not a member of the specified level.
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'User was not a member of the specified level.', 'suretriggers' ),
+				'response' => esc_attr__( 'User was not a member of the specified level.', 'suretriggers' ), 
+				
 			];
 			return $error;
 		}
@@ -130,20 +137,23 @@ class RemoveUserMembershipLevel extends AutomateAction {
 			if ( pmpro_cancelMembershipLevel( absint( $membership_level ), absint( $user_id ) ) ) {
 				$response = [
 					'status'   => esc_attr__( 'Success', 'suretriggers' ),
-					'response' => esc_attr__( 'User removed from Membership level.', 'suretriggers' ),
+					'response' => esc_attr__( 'User removed from Membership level.', 'suretriggers' ), 
+					
 				];
 				return $response;
 			} else {
 				$error = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( "We're unable to cancel the specified level from the user.", 'suretriggers' ),
+					'response' => esc_attr__( "We're unable to cancel the specified level from the user.", 'suretriggers' ), 
+					
 				];
 				return $error;
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( "We're unable to cancel the specified level from the user.", 'suretriggers' ),
+				'response' => esc_attr__( "We're unable to cancel the specified level from the user.", 'suretriggers' ), 
+				
 			];
 			return $error;
 		}

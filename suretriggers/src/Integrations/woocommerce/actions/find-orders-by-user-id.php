@@ -81,7 +81,10 @@ class FindOrdersByUserID extends AutomateAction {
 		];
 		$customer_orders = wc_get_orders( $order_arg );
 		if ( empty( $customer_orders ) ) {
-			throw new Exception( 'There are no orders for this user.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There are no orders for this user.',
+			];
 		}
 		$ids           = [];
 		$status        = [];
@@ -113,7 +116,10 @@ class FindOrdersByUserID extends AutomateAction {
 			}
 		}
 		if ( empty( $ids ) && empty( $product_ids ) ) {
-			throw new Exception( 'There are no completed orders for this user.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There are no completed orders for this user.',
+			];
 		}
 		$context = [
 			'ids'           => implode( ', ', $ids ),

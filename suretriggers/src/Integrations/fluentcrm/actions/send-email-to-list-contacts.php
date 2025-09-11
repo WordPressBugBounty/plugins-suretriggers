@@ -131,7 +131,8 @@ class SendEmailToListContacts extends AutomateAction {
 					if ( ! empty( array_diff( $ids, $list_ids ) ) ) {
 						return [
 							'status'  => 'error',
-							'message' => __( "Selected List doesn't exists!!", 'suretriggers' ),
+							'message' => __( "Selected List doesn't exists!!", 'suretriggers' ), 
+							
 						];
 					}
 				}
@@ -142,7 +143,8 @@ class SendEmailToListContacts extends AutomateAction {
 				if ( '' == $list_response_context ) {
 					return [
 						'status'  => 'error',
-						'message' => __( "Selected List doesn't exists!!", 'suretriggers' ),
+						'message' => __( "Selected List doesn't exists!!", 'suretriggers' ), 
+						
 					];
 				}
 			}
@@ -175,7 +177,8 @@ class SendEmailToListContacts extends AutomateAction {
 					if ( ! empty( array_diff( $ids, $tag_ids ) ) ) {
 						return [
 							'status'  => 'error',
-							'message' => __( "Selected Tag doesn't exists!!", 'suretriggers' ),
+							'message' => __( "Selected Tag doesn't exists!!", 'suretriggers' ), 
+							
 						];
 					}
 				}
@@ -186,7 +189,8 @@ class SendEmailToListContacts extends AutomateAction {
 				if ( is_array( $tags_context ) && '' == $tags_context['tag'] ) {
 					return [
 						'status'  => 'error',
-						'message' => __( "Selected Tag doesn't exists!!", 'suretriggers' ),
+						'message' => __( "Selected Tag doesn't exists!!", 'suretriggers' ), 
+						
 					];
 				}
 			}
@@ -300,7 +304,8 @@ class SendEmailToListContacts extends AutomateAction {
 			if ( is_array( $contacts_context ) && 0 == $contacts_context['count'] ) {
 				return [
 					'status'  => 'error',
-					'message' => __( 'No contacts found based on your selection!!', 'suretriggers' ),
+					'message' => __( 'No contacts found based on your selection!!', 'suretriggers' ), 
+					
 				];
 			}
 		}

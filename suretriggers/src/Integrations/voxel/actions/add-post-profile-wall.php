@@ -91,7 +91,10 @@ class AddPostProfileWall extends AutomateAction {
 		$profile_id = $profile->get_profile_id();
 
 		if ( ! $profile ) {
-			throw new Exception( 'Profile not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Profile not found',
+			];
 		}
 
 		$details = [];

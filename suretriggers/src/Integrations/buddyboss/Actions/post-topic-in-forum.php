@@ -108,10 +108,16 @@ class PostTopicInForum extends AutomateAction {
 				$context['forum_title'] = get_the_title( $forum_id );
 				return $context;
 			} else {
-				throw new Exception( 'Creator user does not exist!!' );
+				return [
+					'status'  => 'error',
+					'message' => 'Creator user does not exist!!',
+				];
 			}
 		} else {
-			throw new Exception( 'Invalid Email!!' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid Email!!',
+			];
 		}   
 	}
 }

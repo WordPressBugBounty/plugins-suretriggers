@@ -84,7 +84,11 @@ class CreateLabel extends AutomateAction {
 		$bg_color = ! empty( $selected_options['bg-color'] ) ? sanitize_text_field( $selected_options['bg-color'] ) : '';
 		
 		if ( ! class_exists( 'FluentBoards\App\Services\LabelService' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentBoards\App\Services\LabelService class not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$label_data = array_filter(
@@ -101,7 +105,10 @@ class CreateLabel extends AutomateAction {
 			$label         = $label_service->createLabel( $label_data, $board_id );
 		
 			if ( empty( $label ) ) {
-				throw new Exception( 'There was an error while creating the label.' );
+				return [
+					'status'  => 'error',
+					'message' => 'There was an error while creating the label.',
+				];
 			}
 
 			return $label;

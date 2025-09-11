@@ -97,7 +97,10 @@ class AwardAchievementToUser extends AutomateAction {
 					if ( method_exists( '\LearnDash\Achievements\Achievement', 'store' ) ) {
 						$stored = \LearnDash\Achievements\Achievement::store( $award, $user_id );
 						if ( false === $stored ) {
-							throw new Exception( 'Something went wrong.' );
+							return [
+								'status'  => 'error',
+								'message' => 'Something went wrong.',
+							];
 						}
 						$context = WordPress::get_user_context( $user_id );
 						if ( class_exists( '\Database' ) ) {
@@ -113,18 +116,28 @@ class AwardAchievementToUser extends AutomateAction {
 						}
 						return $context;
 					}
-					throw new Exception( 'Store method not exists.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Store method not exists.',
+					];
 
 				} else {
-					throw new Exception( 'Achievement class not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Achievement class not found.',
+					];
 				}
 			} else {
-				throw new Exception( 'User not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found.',
+				];
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 
 			return $error;

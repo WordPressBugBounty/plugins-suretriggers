@@ -100,18 +100,27 @@ class ChangeMembershipPlan extends AutomateAction {
 		// Get the user.
 		$voxel_user = \Voxel\User::get( $user_id );
 		if ( ! $voxel_user ) {
-			throw new Exception( 'User not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found',
+			];
 		}
 
 		// Get the plan.
 		$plan = \Voxel\Plan::get( $plan_key );
 		if ( ! $plan ) {
-			throw new Exception( 'Plan not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Plan not found',
+			];
 		}
 
 		// Check if user has at least one role that supports chosen plan.
 		if ( ! $plan->supports_user( $voxel_user ) ) {
-			throw new Exception( "This plan is not supported for the specified user's role" );
+			return [
+				'status'  => 'error',
+				'message' => "This plan is not supported for the specified user's role",
+			];
 		}
 
 		// Change the plan.

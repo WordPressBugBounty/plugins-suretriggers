@@ -79,7 +79,10 @@ class GetTaxonomyByName extends AutomateAction {
 		$data = get_term_by( 'name', $taxonomy_term, $taxonomy_name );
 
 		if ( ! $data ) {
-			throw new Exception( 'No taxonomy is found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'No taxonomy is found.',
+			];
 		}
 		return [
 			$data,

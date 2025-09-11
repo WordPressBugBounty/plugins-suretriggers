@@ -77,7 +77,11 @@ class AddUpdateSubscriptionCustomFields extends AutomateAction {
 
 		// Check if function exists to get subscription object.
 		if ( ! function_exists( 'wcs_get_subscription' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'wcs_get_subscription function not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		// Get subscription object using subscription id.
@@ -96,7 +100,10 @@ class AddUpdateSubscriptionCustomFields extends AutomateAction {
 			// Return subscription data.
 			return $subscription->get_data();
 		} else {
-			throw new Exception( 'Subscription not found for the provided Subscription ID.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Subscription not found for the provided Subscription ID.',
+			];
 		}
 	}
 }

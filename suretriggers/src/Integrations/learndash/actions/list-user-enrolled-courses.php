@@ -95,21 +95,24 @@ class ListUserEnrolledCourses extends AutomateAction {
 				} else {
 					$message = [
 						'status'   => esc_attr__( 'Success', 'suretriggers' ),
-						'response' => esc_attr__( 'No Enrolled Courses found for this User.', 'suretriggers' ),
+						'response' => esc_attr__( 'No Enrolled Courses found for this User.', 'suretriggers' ), 
+						
 					];
 					return $message;
 				}
 			} else {
 				$error = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'User not found with specified email address.', 'suretriggers' ),
+					'response' => esc_attr__( 'User not found with specified email address.', 'suretriggers' ), 
+					
 				];
 				return $error;
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ),
+				'response' => esc_attr__( 'Please enter valid email address.', 'suretriggers' ), 
+				
 			];
 			return $error;
 		}

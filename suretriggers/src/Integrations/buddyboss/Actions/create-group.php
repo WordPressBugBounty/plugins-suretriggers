@@ -86,7 +86,10 @@ class CreateGroup extends AutomateAction {
 		! function_exists( 'groups_get_group' ) || ! function_exists( 'bp_groups_get_group_type' ) || 
 			! function_exists( 'bp_get_group_cover_url' ) || ! function_exists( 'bp_get_group_avatar_url' ) ||
 			! function_exists( 'groups_get_group_members' ) || ! function_exists( 'groups_get_invites' ) || ! function_exists( 'bp_groups_set_group_type' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'BuddyBoss Groups functions not found.', 'suretriggers' ), 
+			];
 		}
 
 		// Creating a group.
@@ -102,9 +105,15 @@ class CreateGroup extends AutomateAction {
 					]
 				);
 				if ( is_wp_error( $group ) ) {
-					throw new Exception( $group->get_error_message() );
+					return [
+						'status'  => 'error',
+						'message' => $group->get_error_message(), 
+					];
 				} elseif ( ! $group ) {
-					throw new Exception( 'There is an error on creating group.' );
+					return [
+						'status'  => 'error',
+						'message' => __( 'There is an error on creating group.', 'suretriggers' ), 
+					];
 				} else {
 					// set group type.
 					if ( isset( $group_type ) && ! empty( $group_type ) ) {
@@ -154,7 +163,10 @@ class CreateGroup extends AutomateAction {
 					return $context;
 				}
 			} else {
-				throw new Exception( 'Group Creator Not Found.' );
+				return [
+					'status'  => 'error',
+					'message' => __( 'Group Creator Not Found.', 'suretriggers' ), 
+				];
 			}
 		}
 	}

@@ -78,7 +78,10 @@ class GetPostByID extends AutomateAction {
 		$post = get_post( $post_id );
 
 		if ( ! $post ) {
-			throw new Exception( 'Post not found for the specified Post ID.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found for the specified Post ID.',
+			];
 		}
 		
 		$post_metas = get_post_meta( $post_id );

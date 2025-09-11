@@ -82,7 +82,10 @@ class AddPostSitewideActivityStream extends AutomateAction {
 		$action_author  = $selected_options['wp_user_email'];
 
 		if ( empty( $action_author ) || ! is_email( $action_author ) ) {
-			throw new Exception( 'Invalid sender email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid sender email.',
+			];
 		}
 
 		$action_author_user = get_user_by( 'email', $action_author );
@@ -104,7 +107,10 @@ class AddPostSitewideActivityStream extends AutomateAction {
 				if ( is_wp_error( $activity ) ) {
 					throw new Exception( $activity->get_error_message() );
 				} elseif ( ! $activity ) {
-					throw new Exception( 'There is an error on posting stream.' );
+					return [
+						'status'  => 'error',
+						'message' => 'There is an error on posting stream.',
+					];
 				} else {
 					if ( class_exists( 'BP_Activity_Activity' ) ) {
 						$context = new BP_Activity_Activity( $activity );
@@ -118,7 +124,10 @@ class AddPostSitewideActivityStream extends AutomateAction {
 					}
 				}
 			} else {
-				throw new Exception( 'User email not exists.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User email not exists.',
+				];
 			}
 		}
 	}

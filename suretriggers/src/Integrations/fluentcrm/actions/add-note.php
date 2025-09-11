@@ -80,7 +80,8 @@ class AddNote extends AutomateAction {
 		if ( ! function_exists( 'FluentCrmApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentCRM is not active.', 'suretriggers' ),
+				'message' => __( 'FluentCRM is not active.', 'suretriggers' ), 
+				
 			];
 		}
 
@@ -127,7 +128,8 @@ class AddNote extends AutomateAction {
 		if ( ! $subscriber_note ) {
 			return [
 				'success' => false,
-				'message' => __( 'Failed to add note. Please try again.', 'suretriggers' ),
+				'message' => __( 'Failed to add note. Please try again.', 'suretriggers' ), 
+				
 			];
 		}
 

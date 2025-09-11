@@ -82,7 +82,8 @@ class AddUserMembershipLevel extends AutomateAction {
 		if ( ! empty( $current_level ) && absint( $current_level->ID ) == absint( $membership_level ) ) {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'User is already a member of the specified level.', 'suretriggers' ),
+				'response' => esc_attr__( 'User is already a member of the specified level.', 'suretriggers' ), 
+				
 			];
 			return $error;
 		}
@@ -92,7 +93,8 @@ class AddUserMembershipLevel extends AutomateAction {
 		if ( null === $pmpro_membership_level ) {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'Invalid level.', 'suretriggers' ),
+				'response' => esc_attr__( 'Invalid level.', 'suretriggers' ), 
+				
 			];
 			return $error;
 		}
@@ -137,13 +139,15 @@ class AddUserMembershipLevel extends AutomateAction {
 		if ( true === $new_level ) {
 			$response = [
 				'status'   => esc_attr__( 'Success', 'suretriggers' ),
-				'response' => esc_attr__( 'User added to Membership level.', 'suretriggers' ),
+				'response' => esc_attr__( 'User added to Membership level.', 'suretriggers' ), 
+				
 			];
 			return $response;
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( "We're unable to assign the specified level to the user.", 'suretriggers' ),
+				'response' => esc_attr__( "We're unable to assign the specified level to the user.", 'suretriggers' ), 
+				
 			];
 			return $error;
 		}

@@ -111,7 +111,10 @@ class AddPlace extends AutomateAction {
 	
 				return array_merge( (array) $post_data, $post_details );
 			} else {
-				throw new Exception( 'The URL entered is incorrect. Please provide the correct URL for the post' );
+				return [
+					'status'  => 'error',
+					'message' => 'The URL entered is incorrect. Please provide the correct URL for the post',
+				];
 			}
 		}
 	
@@ -121,7 +124,8 @@ class AddPlace extends AutomateAction {
 			$this->set_error(
 				[
 					'post_data' => $post_data,
-					'msg'       => __( 'Failed to insert post!', 'suretriggers' ),
+					'msg'       => __( 'Failed to insert post!', 'suretriggers' ), 
+					
 				]
 			);
 			return [];

@@ -695,5 +695,22 @@ class Utilities extends Model {
 		return $count;
 	}
 
+	/**
+	 * Convert an object to an array.
+	 *
+	 * @param object $object The object to convert.
+	 * @return array The object as an array.
+	 */
+	public static function object_to_array( $object ) {
+		$array      = [];
+		$reflection = new \ReflectionClass( $object );
+
+		foreach ( $reflection->getProperties() as $property ) {
+			$property->setAccessible( true );
+			$array[ $property->getName() ] = $property->getValue( $object );
+		}
+
+		return $array;
+	}
 
 }

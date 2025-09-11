@@ -73,7 +73,10 @@ class RemoveFromCourse extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! function_exists( 'tutor_utils' ) || ! function_exists( 'tutor' ) ) {
-			throw new Exception( 'Tutor LMS function not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Tutor LMS function not found.',
+			];
 		}
 		$context = [];
 
@@ -81,19 +84,28 @@ class RemoveFromCourse extends AutomateAction {
 		$course_id       = ( isset( $selected_options['courses'] ) && 'all' !== $selected_options['courses'] ) ? $selected_options['courses'] : 0;
 		$course_data     = get_post( $course_id );
 		if ( ! $course_data instanceof \WP_Post ) {
-			throw new Exception( 'No Course is available.' );
+			return [
+				'status'  => 'error',
+				'message' => 'No Course is available.',
+			];
 		}
 		$user_email = ( isset( $selected_options['wp_user_email'] ) ) ? $selected_options['wp_user_email'] : '';
 		$user_id    = email_exists( $user_email );
 		if ( ! $user_id ) {
-			throw new Exception( 'User not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found.',
+			];
 		}
 
 		$enrolled_courses    = tutor_utils()->get_enrolled_courses_by_user( $user_id );
 		$enrolled_courses_id = [];
 
 		if ( false === $enrolled_courses ) {
-			throw new Exception( $user_email . ' is not enrolled in any course.' );
+			return [
+				'status'  => 'error',
+				'message' => $user_email . ' is not enrolled in any course.',
+			];
 		}
 
 		foreach ( $enrolled_courses->posts as $key => $course ) {
@@ -101,11 +113,17 @@ class RemoveFromCourse extends AutomateAction {
 		}
 
 		if ( ! $remove_from_all && ! in_array( $course_id, $enrolled_courses_id, true ) ) {
-			throw new Exception( $user_email . ' is not enrolled in ' . $course_data->post_title . ' course.' );
+			return [
+				'status'  => 'error',
+				'message' => $user_email . ' is not enrolled in ' . $course_data->post_title . ' course.',
+			];
 		}
 		$user = get_user_by( 'id', $user_id );
 		if ( ! $user instanceof \WP_User ) {
-			throw new Exception( 'User not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found.',
+			];
 		}
 		$context['user_id']    = $user->ID;
 		$context['user_name']  = $user->display_name;
@@ -123,13 +141,19 @@ class RemoveFromCourse extends AutomateAction {
 		} else {
 			$course = get_post( (int) $course_id );
 			if ( ! $course ) {
-				throw new Exception( 'No Course is available.' );
+				return [
+					'status'  => 'error',
+					'message' => 'No Course is available.',
+				];
 			}
 			$courses = [ $course_id ];
 		}
 
 		if ( empty( $courses ) ) {
-			throw new Exception( 'No Courses are available.' );
+			return [
+				'status'  => 'error',
+				'message' => 'No Courses are available.',
+			];
 		}
 
 		$unenrolled_courses = [];
@@ -137,7 +161,10 @@ class RemoveFromCourse extends AutomateAction {
 			if ( in_array( $course_id, $enrolled_courses_id, true ) ) {
 				$course_data = get_post( $course_id );
 				if ( ! $course_data instanceof \WP_Post ) {
-					throw new Exception( 'No Course is available.' );
+					return [
+						'status'  => 'error',
+						'message' => 'No Course is available.',
+					];
 				}
 				$unenrolled_courses['id'][]   = $course_data->ID;
 				$unenrolled_courses['name'][] = $course_data->post_title;

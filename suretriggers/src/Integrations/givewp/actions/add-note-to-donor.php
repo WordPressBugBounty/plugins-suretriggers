@@ -79,7 +79,11 @@ class AddNoteToDonor extends AutomateAction {
 		$donor_note = $selected_options['donor_note'];
 
 		if ( ! class_exists( 'Give_Donor' ) || ! function_exists( 'Give' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( is_email( $email ) ) {
@@ -92,11 +96,17 @@ class AddNoteToDonor extends AutomateAction {
 						return array_merge( [ 'note' => $donor->get_notes() ], $donor_arr );
 					}
 				} else {
-					throw new Exception( 'Donor does not exist.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Donor does not exist.',
+					];
 				}
 			}
 		} else {
-			throw new Exception( 'Invalid Email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid Email.',
+			];
 		}
 	}
 

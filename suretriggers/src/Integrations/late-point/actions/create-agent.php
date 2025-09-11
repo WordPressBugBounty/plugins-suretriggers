@@ -77,7 +77,10 @@ class CreateAgent extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'OsAgentModel' ) ) {
-			throw new Exception( 'LatePoint plugin not installed.' );
+			return [
+				'status'  => 'error',
+				'message' => 'LatePoint plugin not installed.',
+			];
 		}
 
 		$services = [];
@@ -135,7 +138,10 @@ class CreateAgent extends AutomateAction {
 		} else {
 			$errors    = $agent->get_error_messages();
 			$error_msg = isset( $errors[0] ) ? $errors[0] : 'Agent could not be created.';
-			throw new Exception( $error_msg );
+			return [
+				'status'  => 'error',
+				'message' => $error_msg,
+			];
 		}
 	}
 

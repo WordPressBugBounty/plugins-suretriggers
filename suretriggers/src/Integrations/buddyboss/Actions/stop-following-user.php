@@ -76,7 +76,11 @@ class StopFollowingUser extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! function_exists( 'bp_is_active' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'bp_is_active function not found.', 'suretriggers' ), 
+				
+			];
 		}
 			
 		$initiator_friend = $selected_options['wp_initiator_user_email'];
@@ -87,7 +91,10 @@ class StopFollowingUser extends AutomateAction {
 			if ( $initiator_friend_user ) {
 				if ( $user ) {
 					if ( $initiator_friend_user->ID == $user->ID ) {
-						throw new Exception( 'User can not follow itself.' );
+						return [
+							'status'  => 'error',
+							'message' => 'User can not follow itself.',
+						];
 					}
 					if ( bp_is_active( 'moderation' ) ) {
 						$args = [
@@ -97,31 +104,47 @@ class StopFollowingUser extends AutomateAction {
 						if ( bp_is_active( 'follow' ) && function_exists( 'bp_follow_stop_following' ) ) {
 							$following = bp_follow_stop_following( $args );
 							if ( false == $following ) {
-								throw new Exception( 'The Initiator User was not following member - ' . $unfollower_email . '. ' );
+								return [
+									'status'  => 'error',
+									'message' => 'The Initiator User was not following member - ' . $unfollower_email . '. ',
+								];
 							}
 						} elseif ( function_exists( 'bp_stop_following' ) ) {
 							$following = bp_stop_following( $args );
 							if ( false == $following ) {
-								throw new Exception( 'The Initiator User was not following member - ' . $unfollower_email . '. ' );
+								return [
+									'status'  => 'error',
+									'message' => 'The Initiator User was not following member - ' . $unfollower_email . '. ',
+								];
 							}
 						}
 						$context['follower'] = WordPress::get_user_context( $initiator_friend_user->ID );
 						$context['leader']   = WordPress::get_user_context( $user->ID );
 						return $context;
 					} else {
-						throw new Exception(
-							'To un follow members, 
-                        please activate the Moderation component.' 
-						);
+						return [
+							'status'  => 'error',
+							'message' => 'To un follow members, 
+                        please activate the Moderation component.',
+						];
 					}
 				} else {
-					throw new Exception( 'User to Un follow Not found.' );
+					return [
+						'status'  => 'error',
+						'message' => 'User to Un follow Not found.',
+					];
 				}
 			} else {
-				throw new Exception( 'User Not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User Not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email.',
+			];
 		}
 	}
 }

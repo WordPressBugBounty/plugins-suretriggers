@@ -82,14 +82,20 @@ class GetMemberByEmail extends AutomateAction {
 		$member = get_user_by( 'email', $user_email );
 
 		if ( ! $member ) {
-			throw new Exception( 'Member not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Member not found',
+			];
 		}
 
 		$member_id = $member->ID;
 		$member    = \Voxel\User::get( $member_id );
 
 		if ( ! $member ) {
-			throw new Exception( 'Member not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Member not found',
+			];
 		}
 
 		$profile_id = $member->get_profile_id();

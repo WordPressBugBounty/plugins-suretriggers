@@ -78,7 +78,11 @@ class DetachSubscribersCompany extends AutomateAction {
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
 		if ( ! class_exists( 'FluentCrm\App\Services\Helper' ) || ! function_exists( 'FluentCrmApi' ) ) {
-			return;
+			return [
+				'status'  => 'error',
+				'message' => __( 'Required functions not found.', 'suretriggers' ), 
+				
+			];
 		}
 
 		$is_company_enabled = Helper::isCompanyEnabled();
@@ -86,7 +90,8 @@ class DetachSubscribersCompany extends AutomateAction {
 		if ( ! $is_company_enabled ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Company module disabled. You can add companies and assign contacts to companies only when it is enabled!!', 'suretriggers' ),
+				'message' => __( 'Company module disabled. You can add companies and assign contacts to companies only when it is enabled!!', 'suretriggers' ), 
+				
 			];
 		}
 		$contact_api = FluentCrmApi( 'contacts' );
@@ -114,7 +119,8 @@ class DetachSubscribersCompany extends AutomateAction {
 		if ( ! $result ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Invalid data', 'suretriggers' ),
+				'message' => __( 'Invalid data', 'suretriggers' ), 
+				
 			];
 		}
 

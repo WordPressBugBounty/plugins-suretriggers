@@ -87,7 +87,10 @@ class SetCustomPriority extends AutomateAction {
 		$post = \Voxel\Post::force_get( $post_id );
 
 		if ( ! $post ) {
-			throw new Exception( 'Post not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found',
+			];
 		}
 
 		// Set the priority.

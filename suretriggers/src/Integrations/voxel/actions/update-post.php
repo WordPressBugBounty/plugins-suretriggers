@@ -87,7 +87,10 @@ class UpdatePost extends AutomateAction {
 		$selected_post_posttype = get_post_type( $post_id );
 
 		if ( $post_type != $selected_post_posttype ) {
-			throw new Exception( 'Post ID type does not match the selected post type.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post ID type does not match the selected post type.',
+			];
 		}
 
 		$post_fields = [];

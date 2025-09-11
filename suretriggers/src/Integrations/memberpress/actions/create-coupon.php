@@ -88,7 +88,10 @@ class CreateCoupon extends AutomateAction {
 		];
 		$couponexist = get_page_by_title( $coupon_code, OBJECT, 'memberpresscoupon' ); // @phpcs:ignore
 		if ( $couponexist ) {
-			throw new Exception( 'Coupon is already exist with provided code' );
+			return [
+				'status'  => 'error',
+				'message' => 'Coupon is already exist with provided code',
+			];
 		}
 		// Insert the post into the database.
 		$new_coupon = wp_insert_post( $new_post );

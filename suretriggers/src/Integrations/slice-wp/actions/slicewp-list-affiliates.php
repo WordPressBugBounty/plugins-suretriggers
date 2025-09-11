@@ -89,7 +89,10 @@ class SliceWPListAffiliates extends AutomateAction {
 		$affiliate_results = $wpdb->get_results( $query ); //phpcs:ignore
 
 		if ( empty( $affiliate_results ) ) {
-			throw new Exception( 'Not able to list affiliates, try later.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Not able to list affiliates, try later.',
+			];
 		} else {
 			return $affiliate_results;
 		}

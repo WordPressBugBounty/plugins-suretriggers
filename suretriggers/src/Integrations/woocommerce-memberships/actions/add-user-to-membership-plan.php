@@ -85,7 +85,8 @@ class AddUserToMembershipPlan extends AutomateAction {
 						if ( true === $check_membership_plan && true === wc_memberships_is_user_active_member( $user_id, $plan ) ) {
 							$error = [
 								'status'   => esc_attr__( 'Error', 'suretriggers' ),
-								'response' => esc_attr__( 'This user has already an active membership in the specified membership plan.', 'suretriggers' ),
+								'response' => esc_attr__( 'This user has already an active membership in the specified membership plan.', 'suretriggers' ), 
+								
 							];
 							return $error;
 						} else {
@@ -113,14 +114,16 @@ class AddUserToMembershipPlan extends AutomateAction {
 			} else {
 				$error = [
 					'status'   => esc_attr__( 'Error', 'suretriggers' ),
-					'response' => esc_attr__( 'This user is not registered.', 'suretriggers' ),
+					'response' => esc_attr__( 'This user is not registered.', 'suretriggers' ), 
+					
 				];
 				return $error;
 			}
 		} else {
 			$error = [
 				'status'   => esc_attr__( 'Error', 'suretriggers' ),
-				'response' => esc_attr__( 'The user email is not valid.', 'suretriggers' ),
+				'response' => esc_attr__( 'The user email is not valid.', 'suretriggers' ), 
+				
 			];
 			return $error;
 		}

@@ -104,7 +104,7 @@ class SendNotificationToAllMembersOfGroup extends AutomateAction {
 			'bp_notifications_get_registered_components',
 			[
 				$this,
-				'st_bdb_component',
+				'st_bdb_component', 
 			],
 			99,
 			2
@@ -114,7 +114,7 @@ class SendNotificationToAllMembersOfGroup extends AutomateAction {
 			'bp_notifications_get_notifications_for_user',
 			[
 				$this,
-				'st_bdb_notification_content',
+				'st_bdb_notification_content', 
 			],
 			99,
 			8
@@ -142,17 +142,23 @@ class SendNotificationToAllMembersOfGroup extends AutomateAction {
 		if ( ! function_exists( 'bp_core_current_time' ) || ! function_exists( 'bp_notifications_update_meta' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'BuddyBoss core functions not found.', 'suretriggers' ),
+				'message' => __( 'BuddyBoss core functions not found.', 'suretriggers' ), 
 			];
 		}
 		if ( empty( $selected_options['sender_user'] ) || ! is_email( $selected_options['sender_user'] ) ) {
-			throw new Exception( 'Invalid email.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Invalid email.', 
+			];
 		}
 
 		$sender_id = email_exists( $selected_options['sender_user'] );
 
 		if ( false === $sender_id ) {
-			throw new Exception( 'User with email ' . $selected_options['sender_user'] . ' does not exists .' );
+			return [
+				'status'  => 'error',
+				'message' => 'User with email ' . $selected_options['sender_user'] . ' does not exists .', 
+			];
 		}
 		$group_id             = $selected_options['bb_group']['value'];
 		$notification_content = $selected_options['bb_notification_content'];
@@ -196,7 +202,10 @@ class SendNotificationToAllMembersOfGroup extends AutomateAction {
 			}
 		}
 
-		throw new Exception( SURE_TRIGGERS_ACTION_ERROR_MESSAGE );
+		return [
+			'status'  => 'error',
+			'message' => SURE_TRIGGERS_ACTION_ERROR_MESSAGE,
+		];
 	}
 }
 

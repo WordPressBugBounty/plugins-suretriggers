@@ -151,7 +151,10 @@ class GetPostsByVoxelField extends AutomateAction {
 		}
 
 		if ( ! $posts ) {
-			throw new Exception( 'No posts found' );
+			return [
+				'status'  => 'error',
+				'message' => 'No posts found',
+			];
 		}
 		$posts_array = [
 			'all_posts' => [],

@@ -83,7 +83,10 @@ class GetPostByID extends AutomateAction {
 		}
 
 		if ( ! $post ) {
-			throw new Exception( 'Post not found' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found',
+			];
 		}
 
 		// Get the post fields.

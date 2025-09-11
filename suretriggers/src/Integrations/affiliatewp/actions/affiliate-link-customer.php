@@ -76,7 +76,10 @@ class AffiliateLinkCustomer extends AutomateAction {
 		$user_email         = $selected_options['customer_email'];
 
 		if ( ! function_exists( 'affiliate_wp' ) || ! function_exists( 'affwp_get_customer' ) || ! function_exists( 'affwp_add_customer' ) || ! function_exists( 'affiliate_wp_lifetime_commissions' ) ) {
-			throw new Exception( 'AffiliateWP functions not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'AffiliateWP functions not found.',
+			];
 		}
 
 		if ( is_email( $user_email ) ) {
@@ -86,7 +89,10 @@ class AffiliateLinkCustomer extends AutomateAction {
 				if ( $affiliate_user ) {
 					// Prevent affiliates from setting themselves as a lifetime customer.
 					if ( $affiliate_user->ID === $user_ID ) {
-						throw new Exception( 'Can not add affiliate themselves as a lifetime customer' );
+						return [
+							'status'  => 'error',
+							'message' => 'Can not add affiliate themselves as a lifetime customer',
+						];
 					}
 
 					$customer = affiliate_wp()->customers->get_by( 'user_id', $user_ID );
@@ -113,7 +119,10 @@ class AffiliateLinkCustomer extends AutomateAction {
 					if ( $lifetime_customer && ! $affiliate ) {
 						affiliate_wp_lifetime_commissions()
 						->lifetime_customers->delete( $lifetime_customer->lifetime_customer_id );
-						throw new Exception( 'Affiliate was not set.' );
+						return [
+							'status'  => 'error',
+							'message' => 'Affiliate was not set.',
+						];
 					}
 
 					// Add a new lifetime customer if the provided lifetime customer does not exist.
@@ -138,13 +147,22 @@ class AffiliateLinkCustomer extends AutomateAction {
 						->lifetime_customers->get_by( 'affwp_customer_id', $customer->customer_id );
 					}
 				} else {
-					throw new Exception( 'Affiliate User not exists.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Affiliate User not exists.',
+					];
 				}
 			} else {
-				throw new Exception( 'User not exists.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not exists.',
+				];
 			}
 		} else {
-			throw new Exception( 'Please enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
 		}
 	}
 }

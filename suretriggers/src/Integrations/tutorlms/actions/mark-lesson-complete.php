@@ -90,13 +90,22 @@ class MarkLessonComplete extends AutomateAction {
 					$context['lesson_name'] = get_the_title( $lesson_id );
 					return $context;
 				} else {
-					throw new Exception( 'Lesson Cannot be completed.' );
+					return [
+						'status'  => 'error',
+						'message' => 'Lesson Cannot be completed.',
+					];
 				}
 			} else {
-				throw new Exception( 'User not found.' );
+				return [
+					'status'  => 'error',
+					'message' => 'User not found.',
+				];
 			}
 		} else {
-			throw new Exception( 'Enter valid email address.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Enter valid email address.',
+			];
 		}
 	}
 }

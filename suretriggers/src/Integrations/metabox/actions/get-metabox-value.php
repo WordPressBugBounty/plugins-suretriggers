@@ -77,7 +77,8 @@ class GetMetaBoxValue extends AutomateAction {
 			$response = rwmb_get_value( $field_id, '', $object_id );
 			if ( empty( $response ) ) {
 				$response = [
-					'response' => esc_attr__( 'No value found.', 'suretriggers' ),
+					'response' => esc_attr__( 'No value found.', 'suretriggers' ), 
+					
 				];
 			} else {
 				$response = [
@@ -86,7 +87,8 @@ class GetMetaBoxValue extends AutomateAction {
 			}
 		} else {
 			$response = [
-				'Error' => esc_attr__( 'Function rwmb_get_value not exists. Please make sure the Metabox plugin is installed and active.', 'suretriggers' ),
+				'Error' => esc_attr__( 'Function rwmb_get_value not exists. Please make sure the Metabox plugin is installed and active.', 'suretriggers' ), 
+				
 			];
 		}
 		return $response;

@@ -85,7 +85,10 @@ class GetUserByRole extends AutomateAction {
 
 		// Check if users are found.
 		if ( ! $users ) {
-			throw new Exception( 'No user with the selected role was found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'No user with the selected role was found.',
+			];
 		}
 
 		return [

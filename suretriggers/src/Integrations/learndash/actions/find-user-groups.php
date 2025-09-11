@@ -72,21 +72,19 @@ class FindUserGroups extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		if ( ! $user_id ) {
-			$this->set_error(
-				[
-					'msg' => __( 'User Not Found', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'User Not Found', 'suretriggers' ), 
+				
+			];
 		}
 
 		if ( ! function_exists( 'learndash_get_users_group_ids' ) ) {
-			$this->set_error(
-				[
-					'msg' => __( 'LearnDash function not available', 'suretriggers' ),
-				]
-			);
-			return false;
+			return [
+				'status'  => 'error',
+				'message' => __( 'LearnDash function not available', 'suretriggers' ), 
+				
+			];
 		}
 		
 
@@ -94,7 +92,8 @@ class FindUserGroups extends AutomateAction {
 		
 		if ( empty( $user_groups ) ) {
 			return [
-				'message' => __( 'User is not part of any group', 'suretriggers' ),
+				'message' => __( 'User is not part of any group', 'suretriggers' ), 
+				
 			];
 		}
 

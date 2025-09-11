@@ -77,7 +77,10 @@ class GetOrderDetailsByOrderID extends AutomateAction {
 		
 		$order = wc_get_order( $order_id );
 		if ( empty( $order ) ) {
-			throw new Exception( 'There is no order associated with this Order ID.' );
+			return [
+				'status'  => 'error',
+				'message' => 'There is no order associated with this Order ID.',
+			];
 		}
 
 		return WooCommerce::get_order_context( $order_id );

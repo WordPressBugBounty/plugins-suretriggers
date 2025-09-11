@@ -85,7 +85,10 @@ class ClaimPost extends AutomateAction {
 		
 		// Check if claims are enabled.
 		if ( ! \Voxel\get( 'product_settings.claims.enabled' ) ) {
-			throw new Exception( 'Claims are not enabled.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Claims are not enabled.',
+			];
 		}
 
 		if ( is_email( $user_email ) ) {
@@ -98,12 +101,18 @@ class ClaimPost extends AutomateAction {
 		// Get the post.
 		$post = \Voxel\Post::get( $post_id );
 		if ( ! $post ) {
-			throw new Exception( 'Post not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'Post not found.',
+			];
 		}
 
 		$current_user = \Voxel\User::get( $user_id );
 		if ( ! $current_user ) {
-			throw new Exception( 'User not found.' );
+			return [
+				'status'  => 'error',
+				'message' => 'User not found.',
+			];
 		}
 
 		// Set the post author to claimer.
