@@ -1,3 +1,9 @@
+Version 1.1.7 - Thursday, 11th September 2025
+- Removed: "Jet Appointments Booking" integration
+
+Version 1.1.6 - Thursday, 11th September 2025
+- Removed: "Jet Appointments Booking" integration
+
 Version 1.1.5 - Thursday, 11th September 2025
 - New: Added "ProfilePress" Integration
 - New: Added "Jet Appointments Booking" Integration
