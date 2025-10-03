@@ -229,13 +229,25 @@ class Voxel extends Integrations {
 			if ( isset( $fields[ $field_key ] ) ) {
 				$field_value = $fields[ $field_key ];
 				if ( '' != $field_value ) {
-					if ( in_array( $field_type, [ 'file', 'image', 'profile-avatar' ], true ) ) {
+					if ( in_array( $field_type, [ 'file', 'profile-avatar' ], true ) || ( 'image' === $field_type && 'gallery' !== $field_key ) ) {
 						$field_value = [
 							[
 								'source'  => 'existing',
 								'file_id' => (int) $field_value,
 							],
 						];
+					} elseif ( 'image' === $field_type && 'gallery' === $field_key ) {
+						// Handle gallery field with multiple comma-separated image IDs.
+						$image_ids   = array_map( 'trim', explode( ',', $field_value ) );
+						$field_value = array_map(
+							function( $image_id ) {
+								return [
+									'source'  => 'existing',
+									'file_id' => (int) $image_id,
+								];
+							},
+							$image_ids
+						);
 					} elseif ( 'post-relation' === $field_type ) {
 						$field_value = array_map(
 							function( $post_id ) {

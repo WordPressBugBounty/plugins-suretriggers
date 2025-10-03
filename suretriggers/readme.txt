@@ -3,12 +3,12 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.8
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Experience the power of automation within WordPress: Connect 1,000+ apps, automate manual tasks, and unlock your full potential. Get started now!
+Experience the power of automation within WordPress: Connect 1,200+ apps, automate manual tasks, and unlock your full potential. Get started now!
 
 == Description ==
 
@@ -334,6 +334,11 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.8 - Friday, 3rd October 2025 =
+* Improvement: "Fluent Booking" – Added new "Create Booking (Pro)" Action
+* Improvement: "Voxel" - Added new Trigger and Actions
+* Improvement: "Kadence Forms" - Added new "Advanced Form" Trigger support
+
 = Version 1.1.7 - Thursday, 11th September 2025 =
 * Removed: "Jet Appointments Booking" integration
 

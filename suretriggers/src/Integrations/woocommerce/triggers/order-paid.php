@@ -69,12 +69,9 @@ if ( ! class_exists( 'OrderPaid' ) ) :
 			$triggers[ $this->integration ][ $this->trigger ] = [
 				'label'         => __( 'Order Paid', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => [
-					'woocommerce_order_status_completed',
-					'woocommerce_payment_complete',
-				],
+				'common_action' => [ 'woocommerce_new_order', 'woocommerce_order_status_completed' ],
 				'function'      => [ $this, 'trigger_listener' ],
-				'priority'      => 99,
+				'priority'      => 10,
 				'accepted_args' => 1,
 			];
 
@@ -89,44 +86,33 @@ if ( ! class_exists( 'OrderPaid' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $order_id ) {
-			static $processed_orders = [];
-			if ( ! $order_id || isset( $processed_orders[ $order_id ] ) ) {
-				return;
-			}
-			$processed_orders[ $order_id ] = true;
-	
 			$order = wc_get_order( $order_id );
-	
-			if ( ! $order instanceof \WC_Order ) {
+			
+			if ( ! $order || ! $order instanceof \WC_Order ) {
 				return;
 			}
-
-			if ( 'woocommerce_order_status_completed' === (string) current_action() || 'woocommerce_payment_complete' === (string) current_action() ) {
-				if ( 'completed' !== $order->get_status() ) {
-					return;
-				}
+			
+			if ( 'completed' !== $order->get_status() ) {
+				return;
 			}
-	
+			
 			$payment_method = $order->get_payment_method();
-	
+
 			if ( empty( $payment_method ) ) {
 				return;
 			}
-
-			$user_id      = $order->get_customer_id();
-			$order_detail = WooCommerce::get_order_context( $order_id );
-			if ( is_array( $order_detail ) ) {
-				$context = array_merge(
-					$order_detail,
-					WordPress::get_user_context( $user_id )
-				);
-				AutomationController::sure_trigger_handle_trigger(
-					[
-						'trigger' => $this->trigger,
-						'context' => $context,
-					]
-				);
-			}
+			$user_id       = $order->get_customer_id();
+			$order_context = WooCommerce::get_order_context( $order_id );
+			$context       = array_merge(
+				isset( $order_context ) ? $order_context : [],
+				WordPress::get_user_context( $user_id )
+			);
+			AutomationController::sure_trigger_handle_trigger(
+				[
+					'trigger' => $this->trigger,
+					'context' => $context,
+				]
+			);
 		}
 	}
 

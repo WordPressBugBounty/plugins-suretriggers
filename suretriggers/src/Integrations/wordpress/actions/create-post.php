@@ -86,6 +86,9 @@ class CreatePost extends AutomateAction {
 					];
 					$html_content                 = preg_replace( $patterns, '', $html_content );
 					$result_arr[ $field['name'] ] = $html_content;
+				} elseif ( 'post_date' === $field['name'] ) {
+					// Handle post_date field for scheduling.
+					$result_arr[ $field['name'] ] = $selected_options[ $field['name'] ];
 				} else {
 					$result_arr[ $field['name'] ] = $selected_options[ $field['name'] ];
 				}
@@ -153,6 +156,45 @@ class CreatePost extends AutomateAction {
 					]
 				);
 				return false;
+			}
+		}
+
+		// Handle scheduled posts.
+		if ( isset( $selected_options['post_status'] ) && 'future' === $selected_options['post_status'] ) {
+			if ( ! empty( $selected_options['post_date'] ) ) {
+				// Validate date is in future.
+				$schedule_date = strtotime( $selected_options['post_date'] );
+				$current_time  = time();
+				
+				if ( $schedule_date > $current_time ) {
+					// Update post with scheduled date.
+					wp_update_post(
+						[
+							'ID'          => $post_id,
+							'post_date'   => $selected_options['post_date'],
+							'post_status' => 'future',
+						]
+					);
+					// Post scheduled successfully.
+				} else {
+					// Date is in past, publish immediately.
+					wp_update_post(
+						[
+							'ID'          => $post_id,
+							'post_status' => 'publish',
+						]
+					);
+					// Schedule date in past, post published immediately.
+				}
+			} else {
+				// If no date provided, change status to draft.
+				wp_update_post(
+					[
+						'ID'          => $post_id,
+						'post_status' => 'draft',
+					]
+				);
+				// No schedule date provided, post saved as draft.
 			}
 		}       
 

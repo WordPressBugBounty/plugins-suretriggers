@@ -570,36 +570,56 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_term_list_for_all_taxonomy( $data ) {
-		$taxonomy = $data['dynamic'];
-		if ( ! is_array( $taxonomy ) ) {
-			$taxonomy = explode( ',', $taxonomy );
-			$taxonomy = array_map(
-				function ( $tax ) {
-					return [
-						'label' => trim( $tax ),
-						'value' => trim( $tax ),
-					];
-				},
-				$taxonomy 
-			);
-		}
-	
+		global $wpdb;
+		
 		$result = [];
-		$terms  = [];
-		foreach ( $taxonomy as $tax ) {
-			$terms = Utilities::get_terms( '', $data['page'], $tax['value'] );
-	
-			foreach ( $terms['result'] as $tax_term ) {
-				$result[] = [
-					'label' => $tax_term->name . ' - ' . ucwords( $tax['label'] ),
-					'value' => $tax_term->term_id . '%-%' . $tax['value'],
+
+		$all_taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+		$taxonomy_names = array_keys( $all_taxonomies );
+		
+		if ( empty( $taxonomy_names ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$all_terms = get_terms(
+			[
+				'taxonomy'   => $taxonomy_names,
+				'hide_empty' => false,
+				'number'     => 0,
+				'orderby'    => 'name',
+				'order'      => 'ASC',
+			]
+		);
+
+		$terms = [];
+		if ( ! is_wp_error( $all_terms ) && ! empty( $all_terms ) ) {
+			foreach ( $all_terms as $term ) {
+				$terms[] = (object) [
+					'term_id'  => $term->term_id,
+					'name'     => $term->name,
+					'taxonomy' => $term->taxonomy,
 				];
 			}
 		}
-	
+
+		if ( ! empty( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$taxonomy_obj   = isset( $all_taxonomies[ $term->taxonomy ] ) ? $all_taxonomies[ $term->taxonomy ] : null;
+				$taxonomy_label = $taxonomy_obj ? $taxonomy_obj->label : $term->taxonomy;
+				
+				$result[] = [
+					'label' => $term->name . ' - ' . ucwords( $taxonomy_label ),
+					'value' => $term->term_id . '%-%' . $term->taxonomy,
+				];
+			}
+		}
+
 		return [
 			'options' => $result,
-			'hasMore' => $terms['has_more'],
+			'hasMore' => false,
 		];
 	}
 	
@@ -700,18 +720,21 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array
 	 */
 	public function search_role_capabilities( $data ) {
-		$user_roles = wp_roles();
-		$result     = [];
+		$user_roles   = wp_roles();
+		$result       = [];
+		$capabilities = [];
 
 		foreach ( $user_roles->roles as $name => $role ) {
 			foreach ( $role['capabilities'] as $key => $cap ) {
-				$result[] = [
-					'label' => $key,
-					'value' => esc_attr( $key ),
-				];
+				if ( ! in_array( $key, $capabilities ) ) {
+					$capabilities[] = $key;
+					$result[]       = [
+						'label' => $key,
+						'value' => esc_attr( $key ),
+					];
+				}
 			}
 		}
-		$result = array_unique( $result, SORT_REGULAR );
 
 		return [
 			'options' => $result,
@@ -1098,7 +1121,6 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				];
 			}
 		}
-
 		return [
 			'options' => $options,
 			'hasMore' => false,
@@ -17643,7 +17665,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return array|void|mixed
 	 */
 	public function search_pfd_feedback_last_data( $data ) {
-		$sample_data = '{"pluggable_data":{"feedback": "no","questions": "- I need help with something else...","comment": "help me out!!","doc_id": "2409","time": "2024-09-11 11:56:48","doc_name": "Sample doc","doc_link": "https://example.com","doc_author_email": "john@example.com"},"response_type":"sample"}';
+		$sample_data = '{"pluggable_data":{"wp_user_id":4587,"user_login":"alice.wright","display_name":"Alice Wright","user_firstname":"Alice","user_lastname":"Wright","user_email":"alice.wright@example.com","user_registered":"2024-11-15 09:30:00","user_role":["subscriber","editor"],"doc_id":"3245","feedback":"yes","questions":"— Can you explain the next steps for this document?","comment":"Looking forward to your feedback.","name":"Alice Wright","email":"alice.wright@example.com","doc_name":"Project Plan Q4","doc_link":"https://example.com/project-plan-q4","time":"2025-09-29 10:00:00","doc_author_email":"author@company.com"},"response_type":"sample"}';
 		$context     = json_decode( $sample_data, true );
 
 		return $context;
@@ -19784,6 +19806,14 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		} elseif ( 'timeline_post_approved' === $term ) {
 			$sql     = "SELECT vt.* FROM  {$wpdb->prefix}voxel_timeline vt JOIN {$wpdb->prefix}posts p ON vt.post_id = p.ID JOIN  {$wpdb->prefix}postmeta pm ON pm.post_id = p.ID WHERE vt.feed = %s AND vt.moderation = %d AND p.post_type LIKE %s ORDER BY vt.id DESC LIMIT 1";
 			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'post_timeline', 1, $post_type ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'taxonomy_updated' === $term ) {
+			$sql     = "SELECT tr.object_id as post_id, tt.taxonomy, tr.term_taxonomy_id 
+			FROM {$wpdb->prefix}term_relationships tr 
+			JOIN {$wpdb->prefix}term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+			JOIN {$wpdb->prefix}posts p ON tr.object_id = p.ID 
+			WHERE p.post_type LIKE %s 
+			ORDER BY tr.object_id DESC LIMIT 1";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, $post_type ), ARRAY_A );// @phpcs:ignore
 		} elseif ( 'post_followed' === $term ) {
 			$sql     = "SELECT * FROM {$wpdb->prefix}voxel_followers WHERE object_type = %s LIMIT 1";
 			$results      = $wpdb->get_results( $wpdb->prepare( $sql, 'post' ), ARRAY_A );// @phpcs:ignore
@@ -19881,6 +19911,44 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$context['response_type'] = 'live';
 			} else {
 				$context = json_decode( '{"pluggable_data":{"post":{"field_step-general":null,"field_title":"How Data Fundamentally Changed Marketing","field__thumbnail_id":{"_thumbnail_id_0_url":"https://example.com/wp-content/uploads/2025/01/169cbc8.jpg"},"field_taxonomy":"General"},"user_display_name":"john d","user_name":"john","user_email":"johnd@example.com","user_id":"2","wall_post":{"id":31,"user_id":2,"post_id":447,"published_as":null,"content":"new hello","feed":"post_wall","moderation":0,"repost_of":null,"quote_of":null,"created_at":"2025-01-22 08:56:24","edited_at":null,"review_score":null,"like_count":0,"reply_count":0,"details":[],"liked_by_user":false,"reposted_by_user":false,"last3_liked":[],"friends_reposted":[],"friends_liked":[]}},"response_type":"sample"}', true );// @phpcs:ignore
+			}
+		} elseif ( 'taxonomy_updated' === $term ) {
+			if ( ! empty( $results ) ) {
+				$post_id                                = $results[0]['post_id'];
+				$context['pluggable_data']              = WordPress::get_post_context( $post_id );
+				$context['pluggable_data']['post']      = Voxel::get_post_fields( $post_id );
+				$context['pluggable_data']['post_type'] = get_post_type( $post_id );
+				
+				// Get taxonomy details.
+				$term_obj = get_term( $results[0]['term_taxonomy_id'] );
+				if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+					$context['pluggable_data']['taxonomy']                = $results[0]['taxonomy'];
+					$context['pluggable_data']['update_type']             = 'updated';
+					$context['pluggable_data']['terms_added']             = [ $results[0]['term_taxonomy_id'] ];
+					$context['pluggable_data']['terms_removed']           = [];
+					$context['pluggable_data']['current_terms']           = [ $results[0]['term_taxonomy_id'] ];
+					$context['pluggable_data']['previous_terms']          = [];
+					$context['pluggable_data']['added_terms_details']     = [
+						[
+							'term_id' => $term_obj->term_id,
+							'name'    => $term_obj->name,
+							'slug'    => $term_obj->slug,
+						],
+					];
+					$context['pluggable_data']['removed_terms_details']   = [];
+					$context['pluggable_data']['current_terms_details']   = [
+						[
+							'term_id' => $term_obj->term_id,
+							'name'    => $term_obj->name,
+							'slug'    => $term_obj->slug,
+						],
+					];
+					$context['pluggable_data']['is_voxel_taxonomy_field'] = false;
+					$context['pluggable_data']['voxel_field_data']        = null;
+				}
+				$context['response_type'] = 'live';
+			} else {
+				$context = json_decode( '{"pluggable_data":{"ID": 557,"post_author": "1","post_date": "2022-11-18 12:18:14","post_date_gmt": "2022-11-18 12:18:14","post_content": "Test Post Content","post_title": "Test Post","post_excerpt": "","post_status": "publish","comment_status": "open","ping_status": "open","post_password": "","post_name": "test-post","to_ping": "","pinged": "","post_modified": "2022-11-18 12:18:14","post_modified_gmt": "2022-11-18 12:18:14","post_content_filtered": "","post_parent": 0,"guid": "https://example.com/test-post/","menu_order": 0,"post_type": "post","post_mime_type": "","comment_count": 0,"filter": "raw","post": {"field_step-general": null,"field_title": "Test Post","field_taxonomy": "General"},"post_type": "post","taxonomy": "category","update_type": "added","terms_added": [1],"terms_removed": [],"current_terms": [1],"previous_terms": [],"added_terms_details": [{"term_id": 1,"name": "Uncategorized","slug": "uncategorized"}],"removed_terms_details": [],"current_terms_details": [{"term_id": 1,"name": "Uncategorized","slug": "uncategorized"}],"is_voxel_taxonomy_field": false,"voxel_field_data": null},"response_type":"sample"}', true );// @phpcs:ignore
 			}
 		} elseif ( 'post_followed' === $term ) {
 			if ( ! empty( $results ) ) {

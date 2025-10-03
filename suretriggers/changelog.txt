@@ -1,3 +1,8 @@
+Version 1.1.8 - Friday, 3rd October 2025
+- Improvement: "Fluent Booking" – Added new "Create Booking (Pro)" Action
+- Improvement: "Voxel" - Added new Trigger and Actions
+- Improvement: "Kadence Forms" - Added new "Advanced Form" Trigger support
+
 Version 1.1.7 - Thursday, 11th September 2025
 - Removed: "Jet Appointments Booking" integration
 

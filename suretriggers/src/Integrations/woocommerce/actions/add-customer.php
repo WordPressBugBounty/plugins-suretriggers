@@ -103,7 +103,18 @@ class AddNewCustomer extends AutomateAction {
 			];
 		}
 
-		$user_id = wc_create_new_customer( $email, $username, $password );
+		$user_args = [];
+		if ( isset( $selected_options['first_name'] ) ) {
+			$user_args['first_name'] = $selected_options['first_name'];
+		}
+		if ( isset( $selected_options['last_name'] ) ) {
+			$user_args['last_name'] = $selected_options['last_name'];
+		}
+		if ( isset( $selected_options['display_name'] ) ) {
+			$user_args['display_name'] = $selected_options['display_name'];
+		}
+
+		$user_id = wc_create_new_customer( $email, $username, $password, $user_args );
 
 		if ( is_wp_error( $user_id ) ) {
 			return [

@@ -58,6 +58,7 @@ if ( ! class_exists( 'KadenceFormSubmit' ) ) :
 		 */
 		public function __construct() {
 			add_filter( 'sure_trigger_register_trigger', [ $this, 'register' ] );
+			add_action( 'kadence_blocks_advanced_form_submission', [ $this, 'advanced_form_listener' ], 10, 3 );
 		}
 
 		/**
@@ -105,6 +106,45 @@ if ( ! class_exists( 'KadenceFormSubmit' ) ) :
 			}
 
 			$context['kadence_form'] = $form_id;
+			$context['entry']        = $simple_entry;
+
+			AutomationController::sure_trigger_handle_trigger(
+				[
+					'trigger'    => $this->trigger,
+					'wp_user_id' => ap_get_current_user_id(),
+					'context'    => $context,
+				]
+			);
+		}
+
+		/**
+		 * Advanced form trigger listener
+		 *
+		 * @param array $form_args Form arguments.
+		 * @param array $processed_fields Processed form fields.
+		 * @param int   $post_id Form post ID.
+		 * @since 1.0.0
+		 *
+		 * @return void
+		 */
+		public function advanced_form_listener( $form_args, $processed_fields, $post_id ) {
+			$simple_entry = [
+				'form_id' => isset( $form_args['attributes']['formID'] ) ? $form_args['attributes']['formID'] : 'advanced_form',
+				'post_id' => $post_id,
+			];
+
+			foreach ( $processed_fields as $field ) {
+				$label = str_replace( [ ' ', '-' ], '_', strtolower( $field['label'] ) );
+				$value = $field['value'];
+				
+				if ( strpos( $value, ', ' ) !== false ) {
+					$value = explode( ', ', $value );
+				}
+				
+				$simple_entry[ $label ] = $value;
+			}
+
+			$context['kadence_form'] = isset( $form_args['attributes']['formID'] ) ? $form_args['attributes']['formID'] : 'advanced_form';
 			$context['entry']        = $simple_entry;
 
 			AutomationController::sure_trigger_handle_trigger(

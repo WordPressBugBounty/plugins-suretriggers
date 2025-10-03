@@ -54,7 +54,7 @@ class AddTagToPost extends AutomateAction {
 	 */
 	public function register( $actions ) {
 		$actions[ $this->integration ][ $this->action ] = [
-			'label'    => __( 'Get All Users By Role', 'suretriggers' ),
+			'label'    => __( 'Add Tag To Post', 'suretriggers' ),
 			'action'   => 'add_tag_to_post',
 			'function' => [ $this, 'action_listener' ],
 		];
@@ -73,27 +73,44 @@ class AddTagToPost extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$tag_id  = $selected_options['tag'];
+		$tags    = $selected_options['tag'];
 		$post_id = $selected_options['post_id'];
 
-		$tag = wp_set_object_terms( $post_id, (int) $tag_id, 'post_tag', true );
-
-		if ( ! $tag ) {
+		$last_response = get_post( $post_id );
+		if ( ! $last_response ) {
 			return [
 				'status'  => 'error',
-				'message' => 'Failed to add tag.',
+				'message' => 'Invalid post ID or post not found.',
 			];
 		}
 
-		$last_response = get_post( $post_id );
-
 		$post_type = get_post_type( $post_id );
-
 		if ( ! $post_type ) {
 			return [
 				'status'  => 'error',
 				'message' => 'Invalid post ID or post type not found.',
 			];
+		}
+
+		$tag_ids = [];
+		if ( is_array( $tags ) ) {
+			foreach ( $tags as $tag ) {
+				if ( isset( $tag['value'] ) ) {
+					$tag_ids[] = (int) $tag['value'];
+				}
+			}
+		} else {
+			$tag_ids[] = (int) $tags;
+		}
+
+		if ( ! empty( $tag_ids ) ) {
+			$result = wp_set_object_terms( $post_id, $tag_ids, 'post_tag', true );
+			if ( is_wp_error( $result ) ) {
+				return [
+					'status'  => 'error',
+					'message' => 'Failed to add tags: ' . $result->get_error_message(),
+				];
+			}
 		}
 
 		$response_taxonomy = get_object_taxonomies( $post_type );
@@ -107,15 +124,10 @@ class AddTagToPost extends AutomateAction {
 			}           
 		}
 
-		if ( ! $last_response ) {
-			return 'Tag added successfully.';
-		} else {
-			return [
-				$last_response,
-				'taxonomy_terms' => $taxonomy_terms,
-			];
-		}
-
+		return [
+			'last_response'  => $last_response,
+			'taxonomy_terms' => $taxonomy_terms,
+		];
 	}
 }
 

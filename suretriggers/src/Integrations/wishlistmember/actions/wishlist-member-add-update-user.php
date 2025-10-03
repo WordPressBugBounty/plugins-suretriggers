@@ -77,9 +77,10 @@ class WishlistMemberAddOrUpdateUser extends AutomateAction {
 	 * @return array|bool
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$email    = sanitize_email( $selected_options['user_email'] );
-		$level_id = $selected_options['wlm_levels'];
-		$user     = get_user_by( 'email', $email );
+		$email      = sanitize_email( $selected_options['user_email'] );
+		$level_id   = $selected_options['wlm_levels'];
+		$send_email = isset( $selected_options['send_email'] ) ? (int) $selected_options['send_email'] : 1;
+		$user       = get_user_by( 'email', $email );
 		if ( empty( $email ) || empty( $level_id ) ) {
 			return false;
 		}
@@ -147,12 +148,23 @@ class WishlistMemberAddOrUpdateUser extends AutomateAction {
 			}       
 		} else {
 			if ( function_exists( 'wlmapi_add_member' ) ) {
-				wlmapi_add_member( $userdata );
+				$userdata['Levels']           = [ $level_id ];
+				$userdata['SendMailPerLevel'] = $send_email;
+				$result                       = wlmapi_add_member( $userdata );
+				if ( isset( $result['member'][0]['ID'] ) ) {
+					$user_id = $result['member'][0]['ID'];
+				} else {
+					$created_user = get_user_by( 'email', $email );
+					if ( $created_user ) {
+						$user_id = $created_user->ID;
+					}
+				}
 			}
 		}
 	
 		$args = [
-			'Users' => $user_id,
+			'Users'            => $user_id,
+			'SendMailPerLevel' => $send_email,
 		];
 		
 
