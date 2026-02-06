@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name:         OttoKit (Formerly SureTriggers)
+ * Plugin Name:         OttoKit
  * Description:         OttoKit helps people automate their work by integrating multiple apps and plugins, allowing them to share data and perform tasks automatically.
- * Author:              OttoKit (Formerly SureTriggers)
+ * Author:              OttoKit
  * Author URI:          https://ottokit.com/
  * Plugin URI:          https://ottokit.com/
  * Text Domain:         suretriggers
  * Domain Path:         /languages
  * License:             GPLv3
  * License URI:         https://www.gnu.org/licenses/gpl-3.0.html
- * Version:             1.1.8
+ * Version:             1.1.19
  * Requires at least:   5.4
  * Requires PHP:        5.6
  *

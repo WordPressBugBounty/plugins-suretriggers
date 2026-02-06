@@ -193,7 +193,7 @@ class CreateBookingPro extends AutomateAction {
 					
 					switch ( $location_type ) {
 						case 'google_meet':
-							$meet_link = $this->generate_google_meet_link( $booking_data, $host_user_id ? $host_user_id : $calendar_slot->user_id );
+							$meet_link = $this->generate_google_meet_link( $booking_data, $host_user_id ? $host_user_id : $calendar_slot->user_id, $calendar_slot );
 							if ( $meet_link ) {
 								$location_details['online_platform_link'] = $meet_link;
 								$location_details['description']          = $meet_link;
@@ -201,7 +201,7 @@ class CreateBookingPro extends AutomateAction {
 							break;
 							
 						case 'zoom_meeting':
-							$zoom_link = $this->generate_zoom_meeting_link( $booking_data, $host_user_id ? $host_user_id : $calendar_slot->user_id );
+							$zoom_link = $this->generate_zoom_meeting_link( $booking_data, $host_user_id ? $host_user_id : $calendar_slot->user_id, $calendar_slot );
 							if ( $zoom_link ) {
 								$location_details['online_platform_link'] = $zoom_link;
 								$location_details['description']          = $zoom_link;
@@ -257,11 +257,12 @@ class CreateBookingPro extends AutomateAction {
 	/**
 	 * Generate Google Meet link for the booking.
 	 *
-	 * @param array $booking_data The booking data.
-	 * @param int   $user_id The host user ID.
+	 * @param array  $booking_data The booking data.
+	 * @param int    $user_id The host user ID.
+	 * @param object $calendar_slot The calendar slot object.
 	 * @return string|null The Google Meet link or null if failed.
 	 */
-	private function generate_google_meet_link( $booking_data, $user_id ) {
+	private function generate_google_meet_link( $booking_data, $user_id, $calendar_slot ) {
 		try {
 			// Check if Google Calendar integration is available.
 			if ( ! class_exists( 'FluentBookingPro\App\Services\Integrations\Calendars\Google\GoogleHelper' ) ) {
@@ -277,8 +278,23 @@ class CreateBookingPro extends AutomateAction {
 			}
 
 			// Prepare event data for Google Calendar with Meet integration.
+			$host_user   = get_userdata( $user_id );
+			$host_name   = $host_user ? $host_user->display_name : 'Host';
+			$event_title = 'Meeting';
+			
+			// Try multiple ways to get the event title.
+			if ( is_object( $calendar_slot ) ) {
+				if ( isset( $calendar_slot->title ) && ! empty( $calendar_slot->title ) ) {
+					$event_title = $calendar_slot->title;
+				} elseif ( isset( $calendar_slot->event_title ) && ! empty( $calendar_slot->event_title ) ) {
+					$event_title = $calendar_slot->event_title;
+				} elseif ( isset( $calendar_slot->name ) && ! empty( $calendar_slot->name ) ) {
+					$event_title = $calendar_slot->name;
+				}
+			}
+			
 			$event_data = [
-				'summary'        => sprintf( __( 'Meeting with %s', 'suretriggers' ), $booking_data['name'] ),
+				'summary'        => sprintf( '%s meeting between %s and %s', $event_title, $host_name, $booking_data['name'] ),
 				'description'    => $booking_data['message'],
 				'start'          => [
 					'dateTime' => gmdate( 'c', strtotime( $booking_data['start_time'] ) ),
@@ -321,11 +337,12 @@ class CreateBookingPro extends AutomateAction {
 	/**
 	 * Generate Zoom meeting link for the booking.
 	 *
-	 * @param array $booking_data The booking data.
-	 * @param int   $user_id The host user ID.
+	 * @param array  $booking_data The booking data.
+	 * @param int    $user_id The host user ID.
+	 * @param object $calendar_slot The calendar slot object.
 	 * @return string|null The Zoom meeting link or null if failed.
 	 */
-	private function generate_zoom_meeting_link( $booking_data, $user_id ) {
+	private function generate_zoom_meeting_link( $booking_data, $user_id, $calendar_slot ) {
 		try {
 			// Check if Zoom integration is available.
 			if ( ! class_exists( 'FluentBookingPro\App\Services\Integrations\ZoomMeeting\ZoomHelper' ) ) {
@@ -340,8 +357,23 @@ class CreateBookingPro extends AutomateAction {
 			}
 
 			// Prepare meeting data for Zoom.
+			$host_user   = get_userdata( $user_id );
+			$host_name   = $host_user ? $host_user->display_name : 'Host';
+			$event_title = 'Meeting'; // Default fallback.
+			
+			// Try multiple ways to get the event title.
+			if ( is_object( $calendar_slot ) ) {
+				if ( isset( $calendar_slot->title ) && ! empty( $calendar_slot->title ) ) {
+					$event_title = $calendar_slot->title;
+				} elseif ( isset( $calendar_slot->event_title ) && ! empty( $calendar_slot->event_title ) ) {
+					$event_title = $calendar_slot->event_title;
+				} elseif ( isset( $calendar_slot->name ) && ! empty( $calendar_slot->name ) ) {
+					$event_title = $calendar_slot->name;
+				}
+			}
+			
 			$meeting_data = [
-				'topic'      => sprintf( __( 'Meeting with %s', 'suretriggers' ), $booking_data['name'] ),
+				'topic'      => sprintf( '%s meeting between %s and %s', $event_title, $host_name, $booking_data['name'] ),
 				'type'       => 2,
 				'start_time' => gmdate( 'Y-m-d\TH:i:s\Z', strtotime( $booking_data['start_time'] ) ),
 				'duration'   => intval( $booking_data['slot_minutes'] ),

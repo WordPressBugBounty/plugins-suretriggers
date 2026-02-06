@@ -1,9 +1,9 @@
-=== OttoKit: All-in-One Automation Platform (Formerly SureTriggers) ===
+=== OttoKit: All-in-One Automation Platform ===
 Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
-Tested up to: 6.8
-Stable tag: 1.1.8
+Tested up to: 6.9
+Stable tag: 1.1.19
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Experience the power of automation within WordPress: Connect 1,200+ apps, automa
 
 == Description ==
 
-**OttoKit – THE ALL IN ONE AUTOMATION PLUGIN AND BEYOND (Formerly SureTriggers)**
+**OttoKit – THE ALL IN ONE AUTOMATION PLUGIN AND BEYOND**
 ★★★★★
 
 👉 [Official Website Link](https://ottokit.com/)
@@ -334,6 +334,62 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.19 - Tuesday, 27th January 2026 =
+* New: Added "FluentAffiliate" Integration
+* Improvement: "Advanced Coupons" – Added new "Create Coupon" Action
+* Improvement: "WP Travel Engine" – Added new Actions
+
+= Version 1.1.18 - Thursday, 15th January 2026 =
+* New: Added "Jet Appointments Booking" Integration
+* Improvement: "Jetpack CRM" – Added new "Create Company" Action
+* Improvement: "LatePoint" - Added new "Add Booking to Existing Order" Action
+* Improvement: "SureDash" – Added new "Create Post in Discussion Space" Action
+
+= Version 1.1.17 - Tuesday, 6th January 2026 =
+* New: Added "Thrive Ovation" Integration
+* Improvement: "EDD" – Added new Triggers
+* Improvement: "FluentCommunity" - Added new Trigger and Actions
+* Improvement: "WooCommerce" – Added new "Create Bundle Product Order" Action
+
+= Version 1.1.16 - Thursday, 25th December 2025 =
+* New: Added "Thrive Apprentice" Integration
+* Improvement: "Amelia" – Added new Triggers
+* Improvement: "Voxel" – Added new Actions
+* Improvement: "WordPress" – Added new "Post Created" Trigger
+
+= Version 1.1.15 - Tuesday, 16th December 2025 =
+* New: Added "FluentCart" Integration
+* Improvement: "SureDash" – Added new Triggers
+* Improvement: "WooCommerce" – Added new "Create Multi Product Order" Action
+* Improvement: "EDD" – Added new "Order Created for Specific Download" Trigger
+* Improvement: "FluentCRM" – Added new "List Contacts by List ID" Action
+
+= Version 1.1.14 - Tuesday, 2nd December 2025 =
+* New: Added "MailerPress" Integration
+* Improvement: "FluentCommunity" – Added new "Reply to Post/Feed" Action
+
+= Version 1.1.13 - Wednesday, 12th November 2025 =
+* Improvement: "MemberPress" - Added new "Membership Created" Trigger
+* Improvement: "EDD" - Added new Actions
+
+= Version 1.1.12 - Thursday, 6th November 2025 =
+* Improvement: "WordPress" - Added improvements for "Create / Update Post" Action
+* Improvement: Added improvements to unlock lifetime button functionality
+
+= Version 1.1.11 - Monday, 3rd November 2025 =
+* Improvement: "Groundhogg" - Added new fields to the "Create/Update Contact" Action
+
+= Version 1.1.10 - Friday, 31st October 2025 =
+* Improvement: "WPForms" - Added new "Form Submitted (Field ID Based)" Trigger
+* Improvement: "WooCommerce" - Added new Actions
+
+= Version 1.1.9 - Friday, 17th October 2025 =
+* New: Added "Pretty Links" Integration
+* New: Added "SureDash" Integration
+* Improvement: "FluentCRM" - Added new Triggers and Actions
+* Improvement: "WooCommerce Subscription" - Added sample responses for Triggers
+* Improvement: "Voxel" - Updated some Actions and Triggers to make them compatible with the latest Voxel version
+
 = Version 1.1.8 - Friday, 3rd October 2025 =
 * Improvement: "Fluent Booking" – Added new "Create Booking (Pro)" Action
 * Improvement: "Voxel" - Added new Trigger and Actions

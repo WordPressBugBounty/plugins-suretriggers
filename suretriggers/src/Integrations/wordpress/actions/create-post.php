@@ -205,19 +205,69 @@ class CreatePost extends AutomateAction {
 		// Set taxonomy terms for new post.
 		if ( isset( $selected_options['taxonomy'] ) && isset( $selected_options['taxonomy_term'] ) ) {
 
-			$terms    = [];
-			$taxonomy = $selected_options['taxonomy'];
+			$terms                = [];
+			$taxonomy             = $selected_options['taxonomy'];
+			$taxonomy_terms_input = $selected_options['taxonomy_term'];
 
-			foreach ( $selected_options['taxonomy_term'] as $term ) {
-				$terms[] = (int) $term['value']; 
+			// Handle different input formats.
+			if ( is_string( $taxonomy_terms_input ) ) {
+				$taxonomy_terms_input = array_map( 'trim', explode( ',', $taxonomy_terms_input ) );
+			} elseif ( ! is_array( $taxonomy_terms_input ) ) {
+				// Convert any other format to array.
+				$taxonomy_terms_input = [ $taxonomy_terms_input ];
 			}
-			if ( $is_post_update ) {
-				// If is post update then append the terms to the existing terms.
-				wp_set_object_terms( $post_id, $terms, $taxonomy, true );
-			} else {
-				// If is post create then set the terms.
-				wp_set_object_terms( $post_id, $terms, $taxonomy, false );
+
+			foreach ( $taxonomy_terms_input as $term ) {
+				if ( is_array( $term ) && isset( $term['value'] ) ) {
+					// If term value is numeric, it's an existing term ID.
+					if ( is_numeric( $term['value'] ) ) {
+						$terms[] = (int) $term['value'];
+					} else {
+						// If term value is text, check if term exists or create new one.
+						$term_name     = sanitize_text_field( $term['value'] );
+						$existing_term = get_term_by( 'name', $term_name, $taxonomy );
+						
+						if ( $existing_term ) {
+							// Term exists, use its ID.
+							$terms[] = (int) $existing_term->term_id;
+						} else {
+							// Term doesn't exist, create new term.
+							$new_term = wp_insert_term( $term_name, $taxonomy );
+							if ( ! is_wp_error( $new_term ) ) {
+								$terms[] = (int) $new_term['term_id'];
+							}
+						}
+					}
+				} elseif ( is_string( $term ) || is_numeric( $term ) ) {
+					// Handle direct string/numeric values.
+					if ( is_numeric( $term ) ) {
+						$terms[] = (int) $term;
+					} else {
+						$term_name     = sanitize_text_field( $term );
+						$existing_term = get_term_by( 'name', $term_name, $taxonomy );
+						
+						if ( $existing_term ) {
+							$terms[] = (int) $existing_term->term_id;
+						} else {
+							$new_term = wp_insert_term( $term_name, $taxonomy );
+							if ( ! is_wp_error( $new_term ) ) {
+								$terms[] = (int) $new_term['term_id'];
+							}
+						}
+					}
+				}
 			}
+			
+			if ( ! empty( $terms ) ) {
+				if ( $is_post_update ) {
+					// If is post update then append the terms to the existing terms.
+					wp_set_object_terms( $post_id, $terms, $taxonomy, true );
+				} else {
+					// If is post create then set the terms.
+					wp_set_object_terms( $post_id, $terms, $taxonomy, false );
+				}
+			}
+			
 			$response_taxonomy = get_object_taxonomies( (string) get_post_type( $post_id ) );
 			foreach ( $response_taxonomy as $taxonomy_name ) {
 				$terms = wp_get_post_terms( $post_id, $taxonomy_name );
@@ -229,7 +279,68 @@ class CreatePost extends AutomateAction {
 			}
 		}
 
+		// Handle multiple taxonomy terms mapping - enhanced map button functionality.
+		if ( isset( $selected_options['taxonomy_terms_map'] ) && is_array( $selected_options['taxonomy_terms_map'] ) ) {
+			foreach ( $selected_options['taxonomy_terms_map'] as $taxonomy_mapping ) {
+				if ( isset( $taxonomy_mapping['taxonomy'] ) && isset( $taxonomy_mapping['terms'] ) ) {
+					$taxonomy_name = $taxonomy_mapping['taxonomy'];
+					$mapped_terms  = [];
+					
+					// Process mapped terms - support creating new terms if they don't exist.
+					if ( is_array( $taxonomy_mapping['terms'] ) ) {
+						foreach ( $taxonomy_mapping['terms'] as $term_data ) {
+							if ( is_array( $term_data ) && isset( $term_data['value'] ) ) {
+								$term_value = $term_data['value'];
+							} elseif ( is_string( $term_data ) || is_numeric( $term_data ) ) {
+								$term_value = $term_data;
+							} else {
+								continue;
+							}
+							
+							if ( is_numeric( $term_value ) ) {
+								// Existing term ID.
+								$mapped_terms[] = (int) $term_value;
+							} else {
+								// Term name - check if exists or create new.
+								$term_name     = sanitize_text_field( $term_value );
+								$existing_term = get_term_by( 'name', $term_name, $taxonomy_name );
+								
+								if ( $existing_term ) {
+									$mapped_terms[] = (int) $existing_term->term_id;
+								} else {
+									// Create new term.
+									$new_term = wp_insert_term( $term_name, $taxonomy_name );
+									if ( ! is_wp_error( $new_term ) ) {
+										$mapped_terms[] = (int) $new_term['term_id'];
+									}
+								}
+							}
+						}
+					}
+					
+					if ( ! empty( $mapped_terms ) ) {
+						// Set or append terms based on configuration.
+						$append_terms = isset( $taxonomy_mapping['append'] ) ? $taxonomy_mapping['append'] : false;
+						if ( $is_post_update && $append_terms ) {
+							wp_set_object_terms( $post_id, $mapped_terms, $taxonomy_name, true );
+						} else {
+							wp_set_object_terms( $post_id, $mapped_terms, $taxonomy_name, false );
+						}
+					}
+				}
+			}
 			
+			// Update taxonomy terms response for mapped taxonomies.
+			$response_taxonomy = get_object_taxonomies( (string) get_post_type( $post_id ) );
+			foreach ( $response_taxonomy as $taxonomy_name ) {
+				$terms = wp_get_post_terms( $post_id, $taxonomy_name );
+				if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+					foreach ( $terms as $term ) {
+						$taxonomy_terms[] = $term;
+					}
+				}           
+			}
+		}
 
 		if ( ! empty( $selected_options['featured_image'] ) ) {
 			$image_url = $selected_options['featured_image'];

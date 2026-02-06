@@ -59,6 +59,7 @@ class Loader {
 		// Admin Menu.
 		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'admin_head', [ $this, 'add_admin_menu_styles' ] );
 		add_action( 'admin_init', [ $this, 'reset_plugin' ] );
 
 		add_filter( 'plugin_action_links_' . plugin_basename( SURE_TRIGGERS_FILE ), [ $this, 'add_settings_link' ] );
@@ -89,7 +90,7 @@ class Loader {
 
 		wp_add_dashboard_widget(
 			'suretriggers_dashboard_widget',
-			__( 'Please Connect OttoKit (Formerly SureTriggers)', 'suretriggers' ),
+			__( 'Stop Doing It Manually!', 'suretriggers' ),
 			[ $this, 'dashboard_widget_display' ],
 			null,
 			null,
@@ -105,9 +106,17 @@ class Loader {
 	 */
 	public function dashboard_widget_display() {            ?>
 		<div>
-			<p> <?php esc_html_e( 'Please connect to or create your OttoKit (Formerly SureTriggers) account.', 'suretriggers' ); ?></p>
-			<p> <?php esc_html_e( 'This will enable you to connect your various plugins, and apps together and automate repetitive tasks.', 'suretriggers' ); ?> </p>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Get Started', 'suretriggers' ); ?> </a>
+			<p> <?php esc_html_e( 'Automation That’s Easy Enough for Anyone.', 'suretriggers' ); ?></p>
+			<p> 
+			<?php
+			esc_html_e(
+				'OttoKit connects all your tools - WooCommerce, Forms, CRM, and more, so your website runs smoothly while you focus on your business.
+',
+				'suretriggers' 
+			);
+			?>
+				</p>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Start Automating', 'suretriggers' ); ?> </a>
 		</div>
 		<?php
 	}
@@ -196,14 +205,14 @@ class Loader {
 		<div class="notice notice-success" style="padding-bottom: 15px;">
 			<p>
 				<strong>
-					<?php esc_html_e( 'Connect your plugins and apps together with OttoKit (Formerly SureTriggers)', 'suretriggers' ); ?>
+					<?php esc_html_e( 'Automate Your WordPress Site. Save Hours. Earn More.', 'suretriggers' ); ?>
 					<span style="transform: rotate(-90deg); font-size: 15px;" class="dashicons dashicons-admin-plugins"></span>
 				</strong>
 			</p>
-			<p> <?php esc_html_e( 'Please connect to or create your OttoKit (Formerly SureTriggers) account. This will enable you to connect your various plugins and apps together and automate repetitive tasks.', 'suretriggers' ); ?> </p>
+			<p> <?php esc_html_e( 'OttoKit connects your plugins and favorite apps so your business runs on autopilot — while you focus on what matters most.', 'suretriggers' ); ?> </p>
 
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Get Started With OttoKit (Formerly SureTriggers)', 'suretriggers' ); ?> </a>
-			<a href="https://ottokit.com/" class="button button-secondary"> <?php esc_html_e( 'Learn More', 'suretriggers' ); ?> </a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="button button-primary"> <?php esc_html_e( 'Start Automating', 'suretriggers' ); ?> </a>
+			<a href="https://ottokit.com/?utm_source=wpplugin&utm_medium=dashboard&utm_campaign=top+bar" class="button button-secondary"> <?php esc_html_e( 'See How It Works', 'suretriggers' ); ?> </a>
 		</div>
 		<?php
 	}
@@ -289,6 +298,16 @@ class Loader {
 			$settings_link = '<a href="' . $url . '">' . __( 'Connect', 'suretriggers' ) . '</a>';
 		}
 		$links[] = $settings_link;
+		
+		// Add Get OttoKit Pro link for free and pro users.
+		$verification_data = get_option( 'suretriggers_lifetime_user_plan_data' );
+		$plan_id           = is_array( $verification_data ) && isset( $verification_data['plan_id'] ) ? $verification_data['plan_id'] : '';
+		if ( in_array( $plan_id, [ 'free', 'pro' ], true ) ) {
+			$button_text  = ( 'free' === $plan_id ) ? __( 'Get OttoKit Pro', 'suretriggers' ) : __( 'Upgrade', 'suretriggers' );
+			$upgrade_link = '<a href="https://ottokit.com/pricing/?utm_source=wpplugin&utm_medium=plugin+list&utm_campaign=plugin+list" target="_blank" style="color: #28a745; font-weight: bold;">' . $button_text . '</a>';
+			$links[]      = $upgrade_link;
+		}
+		
 		return $links;
 	}
 
@@ -306,8 +325,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.1.8' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.1.8' );
+		define( 'SURE_TRIGGERS_VER', '1.1.19' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.1.19' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -388,6 +407,21 @@ class Loader {
 				'suretriggers-status',
 				[ $this, 'suretriggers_status_menu_callback' ]
 			);
+
+			// Add Get OttoKit Pro menu for free and pro users.
+			$verification_data = get_option( 'suretriggers_lifetime_user_plan_data' );
+			$plan_id           = is_array( $verification_data ) && isset( $verification_data['plan_id'] ) ? $verification_data['plan_id'] : '';
+			if ( in_array( $plan_id, [ 'free', 'pro' ], true ) ) {
+				$button_text = ( 'free' === $plan_id ) ? __( 'Get OttoKit Pro', 'suretriggers' ) : __( 'Upgrade', 'suretriggers' );
+				add_submenu_page(
+					'suretriggers',
+					$button_text,
+					'<span class="ottokit-upgrade-btn">' . $button_text . '</span>',
+					'read',
+					'suretriggers-upgrade-plan',
+					[ $this, 'suretriggers_upgrade_plan_callback' ]
+				);
+			}
 		}
 
 		if ( isset( OptionController::$options['secret_key'] ) ) {
@@ -410,6 +444,9 @@ class Loader {
 	 * @return void
 	 */
 	public function enqueue_scripts( $hook = '' ) {
+		// Always enqueue admin CSS for upgrade button styling.
+		wp_enqueue_style( 'st-trigger-style', SURE_TRIGGERS_URL . 'assets/admin-css/st-admin-css.css', [], SURE_TRIGGERS_VER );
+		
 		if ( ! in_array( $hook, [ 'toplevel_page_suretriggers', 'ottokit_page_suretriggers-status', 'settings_page_ottokit-settings' ], true ) ) {
 			return;
 		}
@@ -444,7 +481,6 @@ class Loader {
 		// Set the script translations.
 		wp_set_script_translations( 'sure-trigger-admin', 'suretriggers', SURE_TRIGGERS_DIR . 'languages' );
 		wp_enqueue_style( 'sure-trigger-components', SURE_TRIGGERS_URL . 'app/build/style-main.css', [], SURE_TRIGGERS_VER );
-		wp_enqueue_style( 'st-trigger-style', SURE_TRIGGERS_URL . 'assets/admin-css/st-admin-css.css', [], SURE_TRIGGERS_VER );
 		wp_enqueue_style( 'sure-trigger-css', SURE_TRIGGERS_URL . 'app/build/main.css', [], SURE_TRIGGERS_VER );
 	}
 
@@ -644,9 +680,9 @@ class Loader {
 							<?php esc_html_e( 'OttoKit Not Connected.', 'suretriggers' ); ?>
 						</h2>
 						<p class="suretriggers-info-content">
-							<?php esc_html_e( 'Please connect your OttoKit (Formerly SureTriggers) account to access registered events and outgoing requests.', 'suretriggers' ); ?>
+							<?php esc_html_e( 'Please connect your OttoKit account to access registered events and outgoing requests.', 'suretriggers' ); ?>
 						</p>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="suretriggers-info-link"> <?php esc_html_e( 'Connect With OttoKit (Formerly SureTriggers)', 'suretriggers' ); ?> </a>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=suretriggers' ) ); ?>" class="suretriggers-info-link"> <?php esc_html_e( 'Connect With OttoKit', 'suretriggers' ); ?> </a>
 					</div>
 				</div>
 			</div>
@@ -700,6 +736,44 @@ class Loader {
 			}
 			?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Get OttoKit Pro Menu callback.
+	 *
+	 * @since x.x.x
+	 *
+	 * @return void
+	 */
+	public function suretriggers_upgrade_plan_callback() {
+		?>
+		<script type="text/javascript">
+			window.location.href = 'https://ottokit.com/pricing/?utm_source=wpplugin&utm_medium=menu&utm_campaign=left';
+		</script>
+		<?php
+		exit;
+	}
+
+	/**
+	 * Add admin menu styles.
+	 *
+	 * @since x.x.x
+	 *
+	 * @return void
+	 */
+	public function add_admin_menu_styles() {
+		?>
+		<script>
+		jQuery(document).ready(function($) {
+			// Direct redirect for admin menu upgrade button
+			$('a[href*="suretriggers-lifetime-access"]').on('click', function(e) {
+				e.preventDefault();
+				window.open('https://ottokit.com/pricing/?utm_source=wpplugin&utm_medium=menu&utm_campaign=left', '_blank');
+				return false;
+			});
+		});
+		</script>
 		<?php
 	}
 
@@ -766,6 +840,7 @@ class Loader {
 			$is_reset = sanitize_text_field( wp_unslash( isset( $_GET['st-reset'] ) ? $_GET['st-reset'] : false ) );
 			if ( $is_reset && current_user_can( 'manage_options' ) ) {
 				delete_option( 'suretrigger_options' );
+				self::clear_verification_cache();
 				wp_safe_redirect( admin_url( 'admin.php?page=suretriggers' ) );
 				exit();
 			}
@@ -824,5 +899,46 @@ class Loader {
 			$logged_in = true;
 		}
 		return $logged_in;
+	}
+
+	/**
+	 * Check if user has lifetime plan
+	 *
+	 * @return bool
+	 */
+	public function is_lifetime_plan() {
+		// Check if verification data is already stored in database.
+		$verification_data = get_option( 'suretriggers_lifetime_user_plan_data' );
+		// Return lifetime plan status from cached data.
+		if ( is_array( $verification_data ) && isset( $verification_data['is_lifetime_plan'] ) ) {
+			return (bool) $verification_data['is_lifetime_plan'];
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Check if user should see upgrade button (free or pro plan)
+	 *
+	 * @return bool
+	 */
+	public function should_show_upgrade_button() {
+		$verification_data = get_option( 'suretriggers_lifetime_user_plan_data' );
+		
+		if ( is_array( $verification_data ) && isset( $verification_data['plan_id'] ) ) {
+			$plan_id = $verification_data['plan_id'];
+			return in_array( $plan_id, [ 'free', 'pro' ], true );
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Clear cached user verification data when token changes
+	 *
+	 * @return void
+	 */
+	public static function clear_verification_cache() {
+		delete_option( 'suretriggers_lifetime_user_plan_data' );
 	}
 }

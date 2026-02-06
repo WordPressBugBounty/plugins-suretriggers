@@ -267,6 +267,196 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * Search sureemails data.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_pluggables_course_completed( $data ) {
+		$context = [];
+		$args    = [
+			'order'   => 'DESC',
+			'number'  => 1,
+			'orderby' => 'ID',
+		];
+
+		if ( isset( $data['filter']['suredash_course']['value'] ) ) {
+			$course_id = $data['filter']['suredash_course']['value'];
+		}
+
+		$users = get_users( $args );
+
+		if ( ! empty( $users ) ) {
+			$user         = $users[0];
+			$course_title = 'Sample Course';
+			if ( isset( $course_id ) ) {
+				$course = get_post( $course_id );
+				if ( $course ) {
+					$course_title = $course->post_title;
+				}
+			}
+
+			$first_name = get_user_meta( $user->ID, 'first_name', true );
+			$last_name  = get_user_meta( $user->ID, 'last_name', true );
+			
+			$pluggable_data            = [
+				'wp_user_id'      => $user->ID,
+				'user_login'      => $user->user_login,
+				'display_name'    => $user->display_name,
+				'user_firstname'  => $first_name ? $first_name : '--',
+				'user_lastname'   => $last_name ? $last_name : '--',
+				'user_email'      => $user->user_email,
+				'user_registered' => $user->user_registered,
+				'user_role'       => $user->roles,
+				'suredash_course' => isset( $course_id ) ? $course_id : 102,
+				'course_title'    => $course_title,
+			];
+			$context['pluggable_data'] = $pluggable_data;
+			$context['response_type']  = 'live';
+		} else {
+			$context['pluggable_data'] = [
+				'wp_user_id'      => 1,
+				'user_login'      => 'testuser',
+				'display_name'    => 'Test User',
+				'user_firstname'  => '--',
+				'user_lastname'   => '--',
+				'user_email'      => 'testuser@gmail.com',
+				'user_registered' => '2024-06-18 09:47:58',
+				'user_role'       => [ 'subscriber' ],
+				'suredash_course' => isset( $course_id ) ? $course_id : 102,
+				'course_title'    => 'Sample Course',
+			];
+			$context['response_type']  = 'sample';
+		}
+		return $context;
+	}
+
+	/**
+	 * Search Course.
+	 *
+	 * @param array $data quesry params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_suredash_course( $data ) {
+		if ( ! defined( 'SUREDASHBOARD_POST_TYPE' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+		
+		$courses = get_posts(
+			[
+				'post_type'   => SUREDASHBOARD_POST_TYPE,
+				'post_status' => 'publish',
+				'meta_query'  => [
+					[
+						'key'   => 'integration',
+						'value' => 'course',
+					],
+				],
+				'numberposts' => -1,
+			] 
+		);
+		
+		$options = [];
+		foreach ( $courses as $course ) {
+			$options[] = [
+				'label' => $course->post_title,
+				'value' => $course->ID,
+			];
+		}
+		
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Search SureDash Posts.
+	 *
+	 * @param array $data quesry params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_suredash_post( $data ) {
+		if ( ! defined( 'SUREDASHBOARD_FEED_POST_TYPE' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+		
+		$posts   = get_posts(
+			[
+				'post_type'   => SUREDASHBOARD_FEED_POST_TYPE,
+				'post_status' => 'publish',
+				'numberposts' => -1,
+			] 
+		);
+		$options = [];
+		foreach ( $posts as $post ) {
+			$options[] = [
+				'label' => $post->post_title,
+				'value' => $post->ID,
+			];
+		}
+		
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Search SureDash Discussion Spaces.
+	 *
+	 * @param array $data query params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_suredash_discussion_spaces( $data ) {
+		if ( ! defined( 'SUREDASHBOARD_POST_TYPE' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+		
+		$spaces = get_posts(
+			[
+				'post_type'   => SUREDASHBOARD_POST_TYPE,
+				'post_status' => 'publish',
+				'meta_query'  => [
+					[
+						'key'   => 'integration',
+						'value' => 'posts_discussion',
+					],
+				],
+				'numberposts' => -1,
+			] 
+		);
+		
+		$options = [];
+		foreach ( $spaces as $space ) {
+			$options[] = [
+				'label' => $space->post_title,
+				'value' => $space->ID,
+			];
+		}
+		
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
 	 * Search Course.
 	 *
 	 * @param array $data quesry params.
@@ -429,6 +619,71 @@ class GlobalSearchController {
 
 		return RestController::success_message( $response );
 	}
+
+	/**
+	 * Search pluggables post liked data.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_pluggables_post_liked( $data ) {
+		$context = [];
+		$args    = [
+			'order'   => 'DESC',
+			'number'  => 1,
+			'orderby' => 'ID',
+		];
+
+		if ( isset( $data['filter']['suredash_post']['value'] ) ) {
+			$post_id = $data['filter']['suredash_post']['value'];
+		}
+
+		$users = get_users( $args );
+
+		if ( ! empty( $users ) ) {
+			$user       = $users[0];
+			$post_title = 'Sample Post';
+			if ( isset( $post_id ) ) {
+				$post = get_post( $post_id );
+				if ( $post ) {
+					$post_title = $post->post_title;
+				}
+			}
+			
+			$pluggable_data            = [
+				'wp_user_id'      => $user->ID,
+				'user_login'      => $user->user_login,
+				'display_name'    => $user->display_name,
+				'user_firstname'  => get_user_meta( $user->ID, 'first_name', true ) ? get_user_meta( $user->ID, 'first_name', true ) : '--',
+				'user_lastname'   => get_user_meta( $user->ID, 'last_name', true ) ? get_user_meta( $user->ID, 'last_name', true ) : '--',
+				'user_email'      => $user->user_email,
+				'user_registered' => $user->user_registered,
+				'user_role'       => $user->roles,
+				'post_id'         => isset( $post_id ) ? $post_id : 123,
+				'post_title'      => $post_title,
+				'post_author'     => isset( $post_id ) ? get_post_field( 'post_author', $post_id ) : 1,
+			];
+			$context['pluggable_data'] = $pluggable_data;
+			$context['response_type']  = 'live';
+		} else {
+			$context['pluggable_data'] = [
+				'wp_user_id'      => 1,
+				'user_login'      => 'testuser',
+				'display_name'    => 'Test User',
+				'user_firstname'  => '--',
+				'user_lastname'   => '--',
+				'user_email'      => 'testuser@gmail.com',
+				'user_registered' => '2024-06-18 09:47:58',
+				'user_role'       => [ 'subscriber' ],
+				'post_id'         => isset( $post_id ) ? $post_id : 123,
+				'post_title'      => 'Sample Post',
+				'post_author'     => 1,
+			];
+			$context['response_type']  = 'sample';
+		}
+		return $context;
+	}
+
 
 	/**
 	 * Search Taxonomy Terms.
@@ -5622,6 +5877,77 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Get last data for MemberPress membership created trigger.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_mepr_event_member_signup_completed( $data ) {
+		global $wpdb;
+
+		$term = $data['search_term'] ? $data['search_term'] : '';
+	
+		$context                  = [];
+		$context['response_type'] = 'sample';
+
+		$user_data = WordPress::get_sample_user_context();
+
+		$membership_data = [
+			'membership_id'                 => '190',
+			'membership_title'              => 'Sample Membership',
+			'membership_url'                => site_url() . '/register/premium/',
+			'membership_featured_image_id'  => '521',
+			'membership_featured_image_url' => SURE_TRIGGERS_URL . 'assets/images/sample.svg',
+			'amount'                        => '12.00',
+			'total'                         => '12.00',
+			'tax_amount'                    => '0.00',
+			'tax_rate'                      => '0.00',
+			'trans_num'                     => 't_63a03f3334f44',
+			'status'                        => 'complete',
+			'subscription_id'               => '0',
+			'transaction_id'                => '123',
+			'signup_date'                   => '2023-12-19 10:30:00',
+		];
+
+		// Get last completed transaction for live data.
+		$transaction = $wpdb->get_row( 
+			"SELECT t.*, e.created_at as signup_date FROM {$wpdb->prefix}mepr_transactions t 
+			LEFT JOIN {$wpdb->prefix}mepr_events e ON e.evt_id = t.user_id AND e.event = 'member-signup-completed'
+			WHERE t.status = 'complete' 
+			ORDER BY t.id DESC LIMIT 1" 
+		);
+
+		if ( ! empty( $transaction ) ) {
+			// Get membership/product details.
+			$membership = get_post( $transaction->product_id );
+			if ( $membership ) {
+				$membership_data = [
+					'membership_id'                 => $transaction->product_id,
+					'membership_title'              => $membership->post_title,
+					'membership_url'                => get_permalink( $transaction->product_id ),
+					'membership_featured_image_id'  => get_post_meta( $transaction->product_id, '_thumbnail_id', true ),
+					'membership_featured_image_url' => get_the_post_thumbnail_url( $transaction->product_id ),
+					'amount'                        => $transaction->amount,
+					'total'                         => $transaction->total,
+					'tax_amount'                    => $transaction->tax_amount,
+					'tax_rate'                      => $transaction->tax_rate,
+					'trans_num'                     => $transaction->trans_num,
+					'status'                        => $transaction->status,
+					'subscription_id'               => $transaction->subscription_id,
+					'transaction_id'                => $transaction->id,
+					'signup_date'                   => $transaction->signup_date ? $transaction->signup_date : $transaction->created_at,
+				];
+				
+				$user_data                = WordPress::get_user_context( $transaction->user_id );
+				$context['response_type'] = 'live';
+			}
+		}
+
+		$context['pluggable_data'] = array_merge( $user_data, $membership_data );
+		return $context;
+	}
+
+	/**
 	 * Get last data for trigger.
 	 *
 	 * @param array $data data.
@@ -6734,14 +7060,35 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$order_id = $orders[0]->get_id();
 				$order    = wc_get_order( $order_id );
 				if ( $order instanceof \WC_Order ) {
-					$user_id                  = $order->get_customer_id();
-					$order_context            = WooCommerce::get_order_context( $order_id );
-					$order_sample_data        = array_merge(
-						isset( $order_context ) ? $order_context : [],
-						WordPress::get_user_context( $user_id )
-					);
-					$context['response_type'] = 'live';
+					$user_id                               = $order->get_customer_id();
+					$order_context                         = WooCommerce::get_order_context( $order_id );
+										$order_sample_data = array_merge(
+											isset( $order_context ) ? $order_context : [],
+											WordPress::get_user_context( $user_id )
+										);
+					$context['response_type']              = 'live';
 				}
+			}
+			
+			// Add dummy coupon details if no coupons exist in the order.
+			if ( ! isset( $order_sample_data ) ) {
+				$order_sample_data = [];
+			}
+			if ( ! isset( $order_sample_data['coupons'] ) || empty( $order_sample_data['coupons'] ) ) {
+				$order_sample_data['coupons'] = [
+					[
+						'code_name'     => 'SAMPLE10',
+						'discount_type' => 'percent',
+						'coupon_amount' => '10',
+						'meta_data'     => [],
+					],
+					[
+						'code_name'     => 'SAMPLE20',
+						'discount_type' => 'fixed_cart',
+						'coupon_amount' => '20',
+						'meta_data'     => [],
+					],
+				];
 			}
 			
 			$context['pluggable_data'] = $order_sample_data;
@@ -8948,6 +9295,49 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Get Amelia Package List.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_amelia_package_list( $data ) {
+		global $wpdb;
+
+		$page   = isset( $data['page'] ) ? $data['page'] : 1;
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+
+		$packages = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT SQL_CALC_FOUND_ROWS id, name FROM {$wpdb->prefix}amelia_packages 
+				WHERE status = %s 
+				ORDER BY name ASC LIMIT %d OFFSET %d",
+				[ 'visible', $limit, $offset ]
+			),
+			OBJECT
+		);
+
+		$packages_count = $wpdb->get_var( 'SELECT FOUND_ROWS();' );
+
+		$options = [];
+		if ( ! empty( $packages ) ) {
+			foreach ( $packages as $package ) {
+				$options[] = [
+					'label' => $package->name,
+					'value' => $package->id,
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => $packages_count > $limit && $packages_count > $offset,
+		];
+
+	}
+
+	/**
 	 * Get Amelia Events.
 	 *
 	 * @param array $data data.
@@ -9132,6 +9522,208 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		} else {
 
 			$context = json_decode( '{"response_type":"sample","pluggable_data":{"id":"1","status":"visible","bookingStart":"2023-02-28 13:00:00","bookingEnd":"2023-02-28 14:00:00","notifyParticipants":"1","serviceId":"4","packageId":null,"providerId":"2","locationId":null,"internalNotes":"","googleCalendarEventId":null,"googleMeetUrl":null,"outlookCalendarEventId":null,"zoomMeeting":null,"lessonSpace":null,"parentId":null,"appointmentId":"1","customerId":"1","price":"15","persons":"1","couponId":null,"token":"02cf0988c6","info":"{\"firstName\":\"John\",\"lastName\":\"Doe\",\"phone\":\"1 (234) 789\",\"locale\":\"en_US\",\"timeZone\":\"Asia\\\/Kolkata\",\"urlParams\":null}","utcOffset":null,"aggregatedPrice":"1","packageCustomerServiceId":null,"duration":"3600","created":"2023-02-08 11:16:03","actionsCompleted":"1","Do You Know Automation?":"Yes","When Are You Coming?":"2023-04-20","Upload Something":"","Tell Us About You!":"Hey there!","customerBookingId":"103","amount":"0","dateTime":"2023-02-28 13:00:00","gateway":"onSite","gatewayTitle":"","data":"","packageCustomerId":null,"entity":"appointment","wcOrderId":null,"type":"customer","externalId":"89","firstName":"John","lastName":"Doe","email":"johnd@gmail.com","birthday":null,"phone":"1 (234) 789","gender":null,"note":null,"description":null,"pictureFullPath":null,"pictureThumbPath":null,"password":null,"usedTokens":null,"zoomUserId":null,"countryPhoneIso":"us","translations":"{\"defaultLanguage\":\"en_US\"}","timeZone":null,"serviceName":"demo service","serviceDescription":"","categoryId":"2","categoryName":"New Category1"}}', true );
+		}
+
+		return $context;
+	}
+
+	/**
+	 * Get last data for package purchase triggers (both purchase and status updated).
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_amelia_package_purchase_triggers_last_data( $data ) {
+		global $wpdb;
+
+		$context        = [];
+		$term           = isset( $data['search_term'] ) ? $data['search_term'] : '';
+		$package_filter = isset( $data['filter']['amelia_package_list']['value'] ) ? $data['filter']['amelia_package_list']['value'] : -1;
+		
+
+		if ( -1 === $package_filter ) {
+			$result = $wpdb->get_row(
+				'SELECT packages.*, customer.*, pc.* FROM ' . $wpdb->prefix . 'amelia_packages_to_customers as pc 
+				INNER JOIN ' . $wpdb->prefix . 'amelia_packages as packages ON pc.packageId=packages.id 
+				INNER JOIN ' . $wpdb->prefix . 'amelia_users as customer ON pc.customerId=customer.id 
+				WHERE pc.id = ( SELECT max(id) FROM ' . $wpdb->prefix . 'amelia_packages_to_customers )',
+				ARRAY_A
+			);
+		} else {
+			$result = $wpdb->get_row(
+				$wpdb->prepare(
+					'SELECT packages.*, customer.*, pc.* FROM ' . $wpdb->prefix . 'amelia_packages_to_customers as pc 
+					INNER JOIN ' . $wpdb->prefix . 'amelia_packages as packages ON pc.packageId=packages.id 
+					INNER JOIN ' . $wpdb->prefix . 'amelia_users as customer ON pc.customerId=customer.id 
+					WHERE packages.id = %d AND pc.id = ( SELECT max(id) FROM ' . $wpdb->prefix . 'amelia_packages_to_customers WHERE packageId = %d )',
+					[ $package_filter, $package_filter ]
+				),
+				ARRAY_A
+			);
+		}
+
+		if ( ! empty( $result ) ) {
+			$payment_result = $wpdb->get_row(
+				$wpdb->prepare(
+					'SELECT * FROM ' . $wpdb->prefix . 'amelia_payments WHERE packageCustomerId = %d',
+					[ $result['id'] ]
+				),
+				ARRAY_A
+			);
+
+			if ( empty( $payment_result ) ) {
+				$payment_result = [];
+			}
+
+			if ( ! empty( $result['couponId'] ) ) {
+				$coupon_result = $wpdb->get_row(
+					$wpdb->prepare(
+						'SELECT code AS couponCode, expirationDate AS couponExpirationDate FROM ' . $wpdb->prefix . 'amelia_coupons WHERE id = %d',
+						[ $result['couponId'] ]
+					),
+					ARRAY_A
+				);
+			} else {
+				$coupon_result = [];
+			}
+
+			$fields_arr = [];
+			if ( ! empty( $result['customFields'] ) ) {
+				$custom_fields = json_decode( $result['customFields'], true );
+				if ( is_array( $custom_fields ) ) {
+					foreach ( $custom_fields as $fields ) {
+						if ( is_array( $fields ) && isset( $fields['label'], $fields['value'] ) ) {
+							$fields_arr[ $fields['label'] ] = $fields['value'];
+						}
+					}
+				}
+				unset( $result['customFields'] );
+			}
+
+			$json_fields = [ 'limitPerCustomer', 'settings', 'translations' ];
+			foreach ( $json_fields as $field ) {
+				if ( isset( $result[ $field ] ) && is_string( $result[ $field ] ) && ! empty( $result[ $field ] ) ) {
+					$decoded = json_decode( $result[ $field ], true );
+					if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded ) ) {
+						foreach ( $decoded as $key => $value ) {
+							if ( is_array( $value ) ) {
+								foreach ( $value as $subkey => $subvalue ) {
+									$result[ $field . '_' . $key . '_' . $subkey ] = $subvalue;
+								}
+							} else {
+								$result[ $field . '_' . $key ] = $value;
+							}
+						}
+						$result[ $field . '_original' ] = $decoded;
+						unset( $result[ $field ] );
+					}
+				}
+			}
+
+			$context['pluggable_data']                        = array_merge( $result, $fields_arr, $payment_result, $coupon_result );
+			$context['pluggable_data']['amelia_package_list'] = $result['packageId'];
+			
+			switch ( $term ) {
+				case 'amelia_package_purchase_status_updated':
+					$context['pluggable_data']['old_status'] = isset( $result['status'] ) ? $result['status'] : 'pending';
+					$context['pluggable_data']['new_status'] = 'approved';
+					break;
+			}
+			
+			$context['response_type'] = 'live';
+		} else {
+			$context = [
+				'response_type'  => 'sample',
+				'pluggable_data' => [
+					'id'                             => '1',
+					'name'                           => 'Premium Wellness Package',
+					'description'                    => 'Complete wellness package with multiple services',
+					'color'                          => '#1788FB',
+					'price'                          => '1800',
+					'status'                         => 'visible',
+					'pictureFullPath'                => '',
+					'pictureThumbPath'               => '',
+					'position'                       => '1',
+					'calculatedPrice'                => '1',
+					'discount'                       => '0',
+					'endDate'                        => '',
+					'durationType'                   => '',
+					'durationCount'                  => '',
+					'depositPayment'                 => 'disabled',
+					'deposit'                        => '0',
+					'fullPayment'                    => '0',
+					'sharedCapacity'                 => '0',
+					'quantity'                       => '1',
+					'type'                           => 'customer',
+					'externalId'                     => '',
+					'firstName'                      => 'John',
+					'lastName'                       => 'Doe',
+					'email'                          => 'john.doe@example.com',
+					'birthday'                       => '1990-05-15',
+					'phone'                          => '+1-234-567-8900',
+					'gender'                         => 'male',
+					'note'                           => 'Regular customer',
+					'password'                       => '',
+					'usedTokens'                     => '',
+					'zoomUserId'                     => '',
+					'stripeConnect'                  => '',
+					'countryPhoneIso'                => 'us',
+					'timeZone'                       => 'America/New_York',
+					'appleCalendarId'                => '',
+					'employeeAppleCalendar'          => '',
+					'badgeId'                        => '',
+					'error'                          => '',
+					'show'                           => '1',
+					'customerId'                     => '4',
+					'customer'                       => '',
+					'couponId'                       => '',
+					'coupon'                         => '',
+					'tax'                            => '',
+					'packageId'                      => '1',
+					'payments'                       => [],
+					'start'                          => '2025-12-15 08:39:52',
+					'end'                            => '2025-12-29 08:39:52',
+					'purchased'                      => '2025-12-15 08:39:52',
+					'bookingsCount'                  => '3',
+					'token'                          => 'abc123xyz',
+					'limitPerCustomer_enabled'       => '1',
+					'limitPerCustomer_numberOfApp'   => '15',
+					'limitPerCustomer_timeFrame'     => 'day',
+					'limitPerCustomer_period'        => '15',
+					'limitPerCustomer_original'      => [
+						'enabled'     => true,
+						'numberOfApp' => 15,
+						'timeFrame'   => 'day',
+						'period'      => 15,
+					],
+					'settings_payments_paymentLinks' => [
+						'enabled'             => '',
+						'changeBookingStatus' => '',
+						'redirectUrl'         => '',
+					],
+					'settings_original'              => [
+						'payments' => [
+							'paymentLinks' => [
+								'enabled'             => '',
+								'changeBookingStatus' => '',
+								'redirectUrl'         => '',
+							],
+						],
+					],
+					'translations_defaultLanguage'   => 'en_US',
+					'translations_original'          => [
+						'defaultLanguage' => 'en_US',
+					],
+					'amelia_package_list'            => '1',
+				],
+			];
+
+			switch ( $term ) {
+				case 'amelia_package_purchase_status_updated':
+					$context['pluggable_data']['old_status'] = 'pending';
+					$context['pluggable_data']['new_status'] = 'approved';
+					break;
+			}
 		}
 
 		return $context;
@@ -17603,7 +18195,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			foreach ( $variable_prices as $price_id => $price ) {
 				if ( isset( $price['name'] ) ) {
 					$options[] = [
-						'label' => $price['name'] . '(' . $price['amount'] . ')',
+						'label' => $price['name'] . ' (' . $price['amount'] . ')',
 						'value' => $price['index'],
 					];
 				}
@@ -19315,11 +19907,106 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		global $wpdb;
 		$context = [];
 		$term    = $data['search_term'];
-		if ( ! class_exists( 'Voxel\Stripe' ) ) {
-			return [];
+		
+		if ( ! class_exists( 'Voxel\User' ) ) {
+			// Return sample data when Voxel class is not available.
+			if ( 'plan_canceled' === $term ) {
+				$context['pluggable_data']            = WordPress::get_sample_user_context();
+				$context['pluggable_data']['details'] = [
+					'plan'          => 'premium-plus',
+					'type'          => 'order',
+					'order_id'      => 14,
+					'order_item_id' => 17,
+					'billing'       => [
+						'price_key'      => 'premium-plus_pz3xfk7z',
+						'amount'         => 20,
+						'currency'       => 'USD',
+						'interval'       => 'month',
+						'frequency'      => 1,
+						'current_period' => [
+							'start' => '2025-10-15 09:01:47',
+							'end'   => '2025-11-15 09:01:47',
+						],
+						'is_active'      => 0,
+						'is_canceled'    => 1,
+					],
+				];
+				$context['response_type']             = 'sample';
+			} elseif ( 'plan_activated' === $term ) {
+				$context['pluggable_data']            = WordPress::get_sample_user_context();
+				$context['pluggable_data']['details'] = [
+					'plan'          => 'premium-plus',
+					'type'          => 'order',
+					'order_id'      => 14,
+					'order_item_id' => 17,
+					'billing'       => [
+						'price_key'      => 'premium-plus_pz3xfk7z',
+						'amount'         => 20,
+						'currency'       => 'USD',
+						'interval'       => 'month',
+						'frequency'      => 1,
+						'current_period' => [
+							'start' => '2025-10-15 09:01:47',
+							'end'   => '2025-11-15 09:01:47',
+						],
+						'is_active'      => 1,
+						'is_canceled'    => '',
+					],
+				];
+				$context['response_type']             = 'sample';
+			} elseif ( 'plan_updated' === $term ) {
+				$context['pluggable_data']            = WordPress::get_sample_user_context();
+				$context['pluggable_data']['details'] = [
+					'plan'     => 'premium-plus',
+					'type'     => 'subscription',
+					'price_id' => 'premium-plus_pz3xfk7z',
+					'status'   => 'active',
+					'metadata' => [
+						'voxel:payment_for' => 'membership',
+						'voxel:plan'        => 'premium-plus',
+					],
+				];
+				$context['response_type']             = 'sample';
+			} elseif ( 'user_registered' === $term ) {
+				$context['pluggable_data'] = WordPress::get_sample_user_context();
+				$context['response_type']  = 'sample';
+			}
+			return $context;
 		}
-		if ( 'plan_activated' === $term || 'plan_canceled' === $term ) {
-			$meta_key = \Voxel\Stripe::is_test_mode() ? 'voxel:test_plan' : 'voxel:plan';
+		if ( 'plan_activated' === $term ) {
+			$meta_key = ( function_exists( '\Voxel\is_test_mode' ) && \Voxel\is_test_mode() ) ? 'voxel:test_plan' : 'voxel:plan';
+			$sql      = "SELECT
+				m.user_id AS id,
+				u.user_login AS title,
+				u.user_email AS email,
+				m.meta_value AS details,
+				JSON_UNQUOTE( JSON_EXTRACT( m.meta_value, '$.plan' ) ) AS plan,
+				CAST( JSON_UNQUOTE( JSON_EXTRACT( m.meta_value, '$.amount' ) ) AS SIGNED ) AS amount,
+				JSON_UNQUOTE( JSON_EXTRACT( m.meta_value, '$.status' ) ) AS status,
+				CAST( JSON_UNQUOTE( JSON_EXTRACT( m.meta_value, '$.created' ) ) AS DATETIME ) AS created
+			FROM {$wpdb->prefix}usermeta as m
+			LEFT JOIN {$wpdb->prefix}users AS u ON m.user_id = u.ID
+			WHERE m.meta_key = %s  AND JSON_UNQUOTE( JSON_EXTRACT( m.meta_value, '$.plan' ) ) != 'default'
+			ORDER BY m.user_id DESC
+			LIMIT 25 OFFSET 0";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, $meta_key ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'plan_canceled' === $term ) {
+			// Simple approach: Get the most recent user with membership plan and modify data to show as cancelled.
+			$meta_key = ( function_exists( '\Voxel\is_test_mode' ) && \Voxel\is_test_mode() ) ? 'voxel:test_plan' : 'voxel:plan';
+			$sql      = "SELECT
+				m.user_id AS id,
+				u.user_login AS title,
+				u.user_email AS email,
+				m.meta_value AS details,
+				JSON_UNQUOTE( JSON_EXTRACT( m.meta_value, '$.plan' ) ) AS plan
+			FROM {$wpdb->prefix}usermeta as m
+			LEFT JOIN {$wpdb->prefix}users AS u ON m.user_id = u.ID
+			WHERE m.meta_key = %s  AND JSON_UNQUOTE( JSON_EXTRACT( m.meta_value, '$.plan' ) ) != 'default'
+			ORDER BY m.user_id DESC
+			LIMIT 1";
+			$results      = $wpdb->get_results( $wpdb->prepare( $sql, $meta_key ), ARRAY_A );// @phpcs:ignore
+		} elseif ( 'plan_updated' === $term ) {
+			$meta_key = ( function_exists( '\Voxel\is_test_mode' ) && \Voxel\is_test_mode() ) ? 'voxel:test_plan' : 'voxel:plan';
 			$sql      = "SELECT
 				m.user_id AS id,
 				u.user_login AS title,
@@ -19345,23 +20032,133 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 		if ( 'plan_canceled' === $term ) {
 			if ( ! empty( $results ) ) {
-				if ( 'cancelled' == $results[0]['status'] ) {
-					$context['pluggable_data']            = WordPress::get_user_context( $results[0]['id'] );
-					$context['pluggable_data']['details'] = json_decode( $results[0]['details'], true );
-					$context['response_type']             = 'live';
+				$context['pluggable_data'] = WordPress::get_user_context( $results[0]['id'] );
+				$membership_details        = json_decode( $results[0]['details'], true );
+				$membership_details        = is_array( $membership_details ) ? $membership_details : [];
+				
+				if ( ! isset( $membership_details['billing'] ) && isset( $membership_details['type'] ) ) {
+					$membership_details = [
+						'plan'          => isset( $membership_details['plan'] ) ? $membership_details['plan'] : 'premium-plus',
+						'type'          => 'order',
+						'order_id'      => isset( $membership_details['order_id'] ) ? $membership_details['order_id'] : 14,
+						'order_item_id' => isset( $membership_details['order_item_id'] ) ? $membership_details['order_item_id'] : 17,
+						'billing'       => [
+							'price_key'      => isset( $membership_details['price_id'] ) ? $membership_details['price_id'] : 'premium-plus_pz3xfk7z',
+							'amount'         => isset( $membership_details['amount'] ) ? $membership_details['amount'] : 20,
+							'currency'       => isset( $membership_details['currency'] ) ? $membership_details['currency'] : 'USD',
+							'interval'       => isset( $membership_details['interval'] ) ? $membership_details['interval'] : 'month',
+							'frequency'      => isset( $membership_details['interval_count'] ) ? $membership_details['interval_count'] : 1,
+							'current_period' => [
+								'start' => gmdate( 'Y-m-d H:i:s' ),
+								'end'   => gmdate( 'Y-m-d H:i:s', strtotime( '+1 month' ) ),
+							],
+							'is_active'      => 0,
+							'is_canceled'    => 1,
+						],
+					];
 				} else {
-					$context = json_decode( '{"pluggable_data":{"wp_user_id": 101,"user_login": "benni","display_name": "John D","user_firstname": "johnd","user_lastname": "D","user_email": "johnd@gmail.com","user_role": ["subscriber"],"details": {"plan": "learningmembership","type": "subscription","subscription_id": "sub_1OwOMySHDFghoeM1sInxPrG7","price_id": "price_1OwOLJSHDFghoeM177Vf8kgt","status": "cancelled","trial_end": null,"current_period_end": 1711542948,"cancel_at_period_end": true,"amount": 800,"currency": "usd","interval": "week","interval_count": 1,"created": "2024-03-20 12:35:48","metadata": {"voxel:payment_for": "membership","voxel:plan": "learningmembership"}}},"response_type":"sample"}', true );// @phpcs:ignore
+					if ( isset( $membership_details['billing'] ) ) {
+						$membership_details['billing']['is_active']   = 0;
+						$membership_details['billing']['is_canceled'] = 1;
+					}
 				}
+				
+				$context['pluggable_data']['details'] = $membership_details;
+				$context['response_type']             = 'live';
 			} else {
-				$context = json_decode( '{"pluggable_data":{"wp_user_id": 101,"user_login": "benni","display_name": "John D","user_firstname": "johnd","user_lastname": "D","user_email": "johnd@gmail.com","user_role": ["subscriber"],"details": {"plan": "learningmembership","type": "subscription","subscription_id": "sub_1OwOMySHDFghoeM1sInxPrG7","price_id": "price_1OwOLJSHDFghoeM177Vf8kgt","status": "cancelled","trial_end": null,"current_period_end": 1711542948,"cancel_at_period_end": true,"amount": 800,"currency": "usd","interval": "week","interval_count": 1,"created": "2024-03-20 12:35:48","metadata": {"voxel:payment_for": "membership","voxel:plan": "learningmembership"}}},"response_type":"sample"}', true );// @phpcs:ignore
+				$context['pluggable_data']            = WordPress::get_sample_user_context();
+				$context['pluggable_data']['details'] = [
+					'plan'          => 'premium-plus',
+					'type'          => 'order',
+					'order_id'      => 14,
+					'order_item_id' => 17,
+					'billing'       => [
+						'price_key'      => 'premium-plus_pz3xfk7z',
+						'amount'         => 20,
+						'currency'       => 'USD',
+						'interval'       => 'month',
+						'frequency'      => 1,
+						'current_period' => [
+							'start' => '2025-10-15 09:01:47',
+							'end'   => '2025-11-15 09:01:47',
+						],
+						'is_active'      => 0,
+						'is_canceled'    => 1,
+					],
+				];
+				$context['response_type']             = 'sample';
 			}
 		} elseif ( 'plan_activated' === $term ) {
+			if ( ! empty( $results ) ) {
+				$context['pluggable_data'] = WordPress::get_user_context( $results[0]['id'] );
+				$membership_details        = json_decode( $results[0]['details'], true );
+				$membership_details        = is_array( $membership_details ) ? $membership_details : [];
+				
+				if ( ! isset( $membership_details['billing'] ) && isset( $membership_details['type'] ) ) {
+					$membership_details = [
+						'plan'          => isset( $membership_details['plan'] ) ? $membership_details['plan'] : 'premium-plus',
+						'type'          => 'order',
+						'order_id'      => isset( $membership_details['order_id'] ) ? $membership_details['order_id'] : 14,
+						'order_item_id' => isset( $membership_details['order_item_id'] ) ? $membership_details['order_item_id'] : 17,
+						'billing'       => [
+							'price_key'      => isset( $membership_details['price_id'] ) ? $membership_details['price_id'] : 'premium-plus_pz3xfk7z',
+							'amount'         => isset( $membership_details['amount'] ) ? $membership_details['amount'] : 20,
+							'currency'       => isset( $membership_details['currency'] ) ? $membership_details['currency'] : 'USD',
+							'interval'       => isset( $membership_details['interval'] ) ? $membership_details['interval'] : 'month',
+							'frequency'      => isset( $membership_details['interval_count'] ) ? $membership_details['interval_count'] : 1,
+							'current_period' => [
+								'start' => gmdate( 'Y-m-d H:i:s' ),
+								'end'   => gmdate( 'Y-m-d H:i:s', strtotime( '+1 month' ) ),
+							],
+							'is_active'      => 1,
+							'is_canceled'    => '',
+						],
+					];
+				}
+				
+				$context['pluggable_data']['details'] = $membership_details;
+				$context['response_type']             = 'live';
+			} else {
+				$context['pluggable_data']            = WordPress::get_sample_user_context();
+				$context['pluggable_data']['details'] = [
+					'plan'          => 'premium-plus',
+					'type'          => 'order',
+					'order_id'      => 14,
+					'order_item_id' => 17,
+					'billing'       => [
+						'price_key'      => 'premium-plus_pz3xfk7z',
+						'amount'         => 20,
+						'currency'       => 'USD',
+						'interval'       => 'month',
+						'frequency'      => 1,
+						'current_period' => [
+							'start' => '2025-10-15 09:01:47',
+							'end'   => '2025-11-15 09:01:47',
+						],
+						'is_active'      => 1,
+						'is_canceled'    => '',
+					],
+				];
+				$context['response_type']             = 'sample';
+			}
+		} elseif ( 'plan_updated' === $term ) {
 			if ( ! empty( $results ) ) {
 				$context['pluggable_data']            = WordPress::get_user_context( $results[0]['id'] );
 				$context['pluggable_data']['details'] = json_decode( $results[0]['details'], true );
 				$context['response_type']             = 'live';
 			} else {
-				$context = json_decode( '{"pluggable_data":{"wp_user_id": 101,"user_login": "benni","display_name": "John D","user_firstname": "johnd","user_lastname": "D","user_email": "johnd@gmail.com","user_role": ["subscriber"],"details": {"plan": "learningmembership","type": "subscription","subscription_id": "sub_1OwOMySHDFghoeM1sInxPrG7","price_id": "price_1OwOLJSHDFghoeM177Vf8kgt","status": "active","trial_end": null,"current_period_end": 1711542948,"cancel_at_period_end": true,"amount": 800,"currency": "usd","interval": "week","interval_count": 1,"created": "2024-03-20 12:35:48","metadata": {"voxel:payment_for": "membership","voxel:plan": "learningmembership"}}},"response_type":"sample"}', true );// @phpcs:ignore
+				$context['pluggable_data']            = WordPress::get_sample_user_context();
+				$context['pluggable_data']['details'] = [
+					'plan'     => 'premium-plus',
+					'type'     => 'subscription',
+					'price_id' => 'premium-plus_pz3xfk7z',
+					'status'   => 'active',
+					'metadata' => [
+						'voxel:payment_for' => 'membership',
+						'voxel:plan'        => 'premium-plus',
+					],
+				];
+				$context['response_type']             = 'sample';
 			}
 		} elseif ( 'user_registered' === $term ) {
 			if ( ! empty( $results ) ) {
@@ -21772,6 +22569,407 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	} 
 	
 	/**
+	 * Search Thrive Apprentice Courses List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_thrive_apprentice_courses_list( $data ) {
+		$page   = isset( $data['page'] ) ? $data['page'] : 1;
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+
+		if ( ! defined( 'TVA_IS_APPRENTICE' ) && ! class_exists( 'TVA_Const' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$courses = get_terms(
+			[
+				'taxonomy'   => 'tva_courses',
+				'hide_empty' => false,
+				'number'     => $limit,
+				'offset'     => $offset,
+			]
+		);
+
+		$options = [];
+
+		if ( ! empty( $courses ) && ! is_wp_error( $courses ) ) {
+			foreach ( $courses as $course ) {
+				$options[] = [
+					'label' => $course->name,
+					'value' => $course->term_id,
+				];
+			}
+		}
+
+		$all_courses_count = get_terms(
+			[
+				'taxonomy'   => 'tva_courses',
+				'hide_empty' => false,
+				'fields'     => 'count',
+			]
+		);
+
+		$has_more = ( $offset + $limit ) < $all_courses_count;
+
+		return [
+			'options' => $options,
+			'hasMore' => $has_more,
+		];
+	}
+	
+	/**
+	 * Search Thrive Apprentice Assessments List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_thrive_apprentice_assessments_list( $data ) {
+		$page      = isset( $data['page'] ) ? $data['page'] : 1;
+		$limit     = Utilities::get_search_page_limit();
+		$offset    = $limit * ( $page - 1 );
+		$course_id = isset( $data['dynamic']['course_id'] ) ? $data['dynamic']['course_id'] : '';
+
+		if ( ! defined( 'TVA_IS_APPRENTICE' ) && ! class_exists( 'TVA_Const' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		if ( ! empty( $course_id ) ) {
+			$course_post_ids = get_objects_in_term( intval( $course_id ), 'tva_courses' );
+			if ( empty( $course_post_ids ) || is_wp_error( $course_post_ids ) ) {
+				return [
+					'options' => [],
+					'hasMore' => false,
+				];
+			}
+			$args = [
+				'post_type'      => 'tva_assessment',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+				'fields'         => 'ids',
+				'post__in'       => array_map( 'intval', $course_post_ids ),
+			];
+		} else {
+			$args = [
+				'post_type'      => 'tva_assessment',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+				'fields'         => 'ids',
+			];
+		}
+
+		$assessments = get_posts( $args );
+		$options     = [];
+
+		if ( ! empty( $assessments ) ) {
+			foreach ( $assessments as $assessment_id ) {
+				$assessment = get_post( $assessment_id );
+				if ( $assessment ) {
+					$options[] = [
+						'label' => $assessment->post_title,
+						'value' => $assessment->ID,
+					];
+				}
+			}
+		}
+
+		$count_args                   = $args;
+		$count_args['posts_per_page'] = -1;
+		$count_args['offset']         = 0;
+		$all_assessments              = get_posts( $count_args );
+		$has_more                     = ( $offset + $limit ) < count( $all_assessments );
+
+		return [
+			'options' => $options,
+			'hasMore' => $has_more,
+		];
+	}
+	
+	/**
+	 * Search Thrive Apprentice Lessons List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_thrive_apprentice_lessons_list( $data ) {
+		$page      = isset( $data['page'] ) ? $data['page'] : 1;
+		$limit     = Utilities::get_search_page_limit();
+		$offset    = $limit * ( $page - 1 );
+		$course_id = isset( $data['dynamic']['course_id'] ) ? $data['dynamic']['course_id'] : '';
+
+		if ( ! defined( 'TVA_IS_APPRENTICE' ) && ! class_exists( 'TVA_Const' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		if ( ! empty( $course_id ) ) {
+			$course_post_ids = get_objects_in_term( intval( $course_id ), 'tva_courses' );
+			if ( empty( $course_post_ids ) || is_wp_error( $course_post_ids ) ) {
+				return [
+					'options' => [],
+					'hasMore' => false,
+				];
+			}
+			$args = [
+				'post_type'      => 'tva_lesson',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+				'fields'         => 'ids',
+				'post__in'       => array_map( 'intval', $course_post_ids ),
+			];
+		} else {
+			$args = [
+				'post_type'      => 'tva_lesson',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+				'fields'         => 'ids',
+			];
+		}
+
+		$lessons = get_posts( $args );
+		$options = [];
+
+		if ( ! empty( $lessons ) ) {
+			foreach ( $lessons as $lesson_id ) {
+				$lesson = get_post( $lesson_id );
+				if ( $lesson ) {
+					$options[] = [
+						'label' => $lesson->post_title,
+						'value' => $lesson->ID,
+					];
+				}
+			}
+		}
+
+		$count_args                   = $args;
+		$count_args['posts_per_page'] = -1;
+		$count_args['offset']         = 0;
+		$all_lessons                  = get_posts( $count_args );
+		$has_more                     = ( $offset + $limit ) < count( $all_lessons );
+
+		return [
+			'options' => $options,
+			'hasMore' => $has_more,
+		];
+	}
+	
+	/**
+	 * Search Thrive Apprentice Premium Courses List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_thrive_apprentice_premium_courses_list( $data ) {
+		$page   = isset( $data['page'] ) ? $data['page'] : 1;
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+
+		if ( ! defined( 'TVA_IS_APPRENTICE' ) && ! class_exists( 'TVA_Const' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$courses = get_terms(
+			[
+				'taxonomy'   => 'tva_courses',
+				'hide_empty' => false,
+				'number'     => $limit,
+				'offset'     => $offset,
+			]
+		);
+
+		$options = [];
+
+		if ( ! empty( $courses ) && ! is_wp_error( $courses ) ) {
+			foreach ( $courses as $course ) {
+				if ( class_exists( 'TVA_Course_V2' ) ) {
+					$course_obj = new \TVA_Course_V2( $course->term_id );
+					$product    = $course_obj->get_product();
+					if ( ! empty( $product ) ) {
+						$options[] = [
+							'label' => $course->name,
+							'value' => $course->term_id,
+						];
+					}
+				}
+			}
+		}
+		$all_courses = get_terms(
+			[
+				'taxonomy'   => 'tva_courses',
+				'hide_empty' => false,
+				'fields'     => 'all',
+			]
+		);
+
+		$premium_count = 0;
+		if ( ! empty( $all_courses ) && ! is_wp_error( $all_courses ) ) {
+			foreach ( $all_courses as $course ) {
+				if ( class_exists( 'TVA_Course_V2' ) ) {
+					$course_obj = new \TVA_Course_V2( $course->term_id );
+					$product    = $course_obj->get_product();
+					if ( ! empty( $product ) ) {
+						$premium_count++;
+					}
+				}
+			}
+		}
+
+		$has_more = ( $offset + $limit ) < $premium_count;
+
+		return [
+			'options' => $options,
+			'hasMore' => $has_more,
+		];
+	}
+	
+	/**
+	 * Search Thrive Apprentice Modules List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_thrive_apprentice_modules_list( $data ) {
+		$page      = isset( $data['page'] ) ? $data['page'] : 1;
+		$limit     = Utilities::get_search_page_limit();
+		$offset    = $limit * ( $page - 1 );
+		$course_id = isset( $data['dynamic']['course_id'] ) ? $data['dynamic']['course_id'] : '';
+
+		if ( ! defined( 'TVA_IS_APPRENTICE' ) && ! class_exists( 'TVA_Const' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		if ( ! empty( $course_id ) ) {
+			$course_post_ids = get_objects_in_term( intval( $course_id ), 'tva_courses' );
+			if ( empty( $course_post_ids ) || is_wp_error( $course_post_ids ) ) {
+				return [
+					'options' => [],
+					'hasMore' => false,
+				];
+			}
+			$args = [
+				'post_type'      => 'tva_module',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+				'fields'         => 'ids',
+				'post__in'       => array_map( 'intval', $course_post_ids ),
+			];
+		} else {
+			$args = [
+				'post_type'      => 'tva_module',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+				'fields'         => 'ids',
+			];
+		}
+
+		$modules = get_posts( $args );
+		$options = [];
+
+		if ( ! empty( $modules ) ) {
+			foreach ( $modules as $module_id ) {
+				$module = get_post( $module_id );
+				if ( $module ) {
+					$options[] = [
+						'label' => $module->post_title,
+						'value' => $module->ID,
+					];
+				}
+			}
+		}
+
+		if ( ! empty( $course_id ) ) {
+			$total_count = count( $course_post_ids );
+			$has_more    = ( $offset + $limit ) < $total_count;
+		} else {
+			$count_args                   = $args;
+			$count_args['posts_per_page'] = -1;
+			$count_args['offset']         = 0;
+			$all_modules                  = get_posts( $count_args );
+			$has_more                     = ( $offset + $limit ) < count( $all_modules );
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => $has_more,
+		];
+	}
+	
+	/**
+	 * Search Thrive Apprentice Products List.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_thrive_apprentice_products_list( $data ) {
+		$page   = isset( $data['page'] ) ? $data['page'] : 1;
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+
+		if ( ! defined( 'TVA_IS_APPRENTICE' ) && ! class_exists( 'TVA_Const' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$products = get_terms(
+			[
+				'taxonomy'   => 'tva_product',
+				'hide_empty' => false,
+				'number'     => $limit,
+				'offset'     => $offset,
+			]
+		);
+
+		$options = [];
+
+		if ( ! empty( $products ) && ! is_wp_error( $products ) ) {
+			foreach ( $products as $product ) {
+				$options[] = [
+					'label' => $product->name,
+					'value' => $product->term_id,
+				];
+			}
+		}
+
+		$all_products_count = get_terms(
+			[
+				'taxonomy'   => 'tva_product',
+				'hide_empty' => false,
+				'fields'     => 'count',
+			]
+		);
+
+		$has_more = ( $offset + $limit ) < $all_products_count;
+
+		return [
+			'options' => $options,
+			'hasMore' => $has_more,
+		];
+	}
+	
+	/**
 	 * Prepare FluentCommunity Spaces List.
 	 *
 	 * @param array $data Search Params.
@@ -21886,12 +23084,38 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 						$payment_gateway = get_post_meta( $booking_id, 'wp_travel_engine_booking_payment_gateway', true );
 						$payment_details = get_post_meta( $booking_id, 'wp_travel_engine_booking_payment_details', true );
 						
+						$coupon_details = [];
+						$cart_info      = get_post_meta( $booking_id, 'cart_info', true );
+						
+						if ( ! empty( $cart_info ) && is_array( $cart_info ) && isset( $cart_info['discounts'] ) ) {
+							foreach ( $cart_info['discounts'] as $discount ) {
+								if ( isset( $discount['name'] ) ) {
+									$coupon_details[] = [
+										'coupon_code'    => $discount['name'],
+										'discount_type'  => isset( $discount['type'] ) ? $discount['type'] : '',
+										'discount_value' => isset( $discount['value'] ) ? $discount['value'] : 0,
+									];
+								}
+							}
+						}
+						
+						if ( empty( $coupon_details ) ) {
+							$coupon_details = [
+								[
+									'coupon_code'    => 'SAVE20',
+									'discount_type'  => 'percentage',
+									'discount_value' => 20,
+								],
+							];
+						}
+						
 						$data = [
 							'booking_data'    => $booking_data,
 							'booking_meta'    => $booking_meta,
 							'payment_status'  => $payment_status,
 							'payment_gateway' => $payment_gateway,
 							'payment_details' => $payment_details,
+							'coupon_details'  => $coupon_details,
 						];
 					} else {
 						$data = [
@@ -22009,6 +23233,13 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 						'payment_status'  => 'check-waiting',
 						'payment_gateway' => 'Check Payment',
 						'payment_details' => '',
+						'coupon_details'  => [
+							[
+								'coupon_code'    => 'SAVE20',
+								'discount_type'  => 'percentage',
+								'discount_value' => 20,
+							],
+						],
 					];
 					$context['pluggable_data'] = $get_booking_sample_data( $sample_customer, $sample_trip, '', $payment_data );
 				} else {
@@ -22525,6 +23756,113 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Get Pretty Links Last Data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_pretty_links_triggers_last_data( $data ) {
+		global $wpdb;
+
+		$term    = isset( $data['search_term'] ) ? $data['search_term'] : '';
+		$context = [];
+
+		// Check if Pretty Links plugin is active.
+		if ( ! defined( 'PRLI_VERSION' ) ) {
+			return $context;
+		}
+
+		// Get latest pretty link.
+		$latest_link = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}prli_links ORDER BY id DESC LIMIT 1", ARRAY_A );
+
+		// Get latest click if available.
+		$latest_click = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}prli_clicks ORDER BY id DESC LIMIT 1", ARRAY_A );
+
+		$get_user_data = function( $user_id ) {
+			if ( class_exists( '\SureTriggers\Integrations\WordPress\WordPress' ) ) {
+				return WordPress::get_user_context( $user_id );
+			}
+			return [
+				'user_id'        => 0,
+				'user_login'     => 'guest',
+				'display_name'   => 'Guest User',
+				'user_firstname' => '',
+				'user_lastname'  => '',
+				'user_email'     => 'guest@example.com',
+				'user_role'      => [],
+			];
+		};
+		$format_link   = function( $link_data ) {
+			return [
+				'id'            => isset( $link_data['id'] ) ? $link_data['id'] : 17,
+				'name'          => isset( $link_data['name'] ) ? $link_data['name'] : 'Sample Pretty Link',
+				'url'           => isset( $link_data['url'] ) ? $link_data['url'] : 'https://example.com',
+				'slug'          => isset( $link_data['slug'] ) ? $link_data['slug'] : 'sample-link',
+				'pretty_url'    => home_url( '/' . ( isset( $link_data['slug'] ) ? $link_data['slug'] : 'sample-link' ) ),
+				'description'   => isset( $link_data['description'] ) ? $link_data['description'] : 'Sample description',
+				'redirect_type' => isset( $link_data['redirect_type'] ) ? $link_data['redirect_type'] : '307',
+				'clicks'        => isset( $link_data['clicks'] ) ? $link_data['clicks'] : '5',
+				'created_at'    => isset( $link_data['created_at'] ) ? $link_data['created_at'] : current_time( 'mysql' ),
+			];
+		};
+
+		$format_click = function( $click_data ) {
+			return [
+				'click_id'     => isset( $click_data['id'] ) ? $click_data['id'] : 42,
+				'url'          => isset( $click_data['url'] ) ? $click_data['url'] : 'https://example.com',
+				'timestamp'    => isset( $click_data['created_at'] ) ? $click_data['created_at'] : current_time( 'mysql' ),
+				'is_logged_in' => true,
+			];
+		};
+
+		switch ( $term ) {
+			case 'link_clicked':
+				$link_data  = ! empty( $latest_link ) ? $format_link( $latest_link ) : $format_link( [] );
+				$click_data = ! empty( $latest_click ) ? $format_click( $latest_click ) : $format_click( [] );
+				
+				// Get user context from latest click or sample data.
+				$user_id = 0;
+				if ( ! empty( $latest_click ) ) {
+					if ( isset( $latest_click['user'] ) && $latest_click['user'] > 0 ) {
+						$user_id = $latest_click['user'];
+					} elseif ( isset( $latest_click['user_id'] ) && $latest_click['user_id'] > 0 ) {
+						$user_id = $latest_click['user_id'];
+					} elseif ( isset( $latest_click['visitor'] ) && is_numeric( $latest_click['visitor'] ) && $latest_click['visitor'] > 0 ) {
+						$user_id = $latest_click['visitor'];
+					}
+				}
+				
+				if ( $user_id > 0 ) {
+					$user_data = $get_user_data( $user_id );
+				} else {
+					$user_data = [
+						'wp_user_id'      => 1,
+						'user_login'      => 'sampleuser',
+						'display_name'    => 'Sample User',
+						'user_firstname'  => 'John',
+						'user_lastname'   => 'Doe',
+						'user_email'      => 'sampleuser@example.com',
+						'user_registered' => current_time( 'mysql' ),
+						'user_role'       => [ 'subscriber' ],
+					];
+				}
+
+				$context['pluggable_data'] = array_merge(
+					$user_data,
+					[
+						'link'  => $link_data,
+						'click' => $click_data,
+					]
+				);
+				$context['response_type']  = ! empty( $latest_link ) ? 'live' : 'sample';
+				break;
+		}
+
+		return (array) $context;
+	}
+
+	/**
 	 * Get ProfilePress Payment Methods.
 	 *
 	 * @param array $data data.
@@ -22695,6 +24033,1518 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 		return $context;
 	}
+
+	/**
+	 * Search FluentCRM Company Data.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_pluggables_fluentcrm_company_created( $data ) {
+		global $wpdb;
+
+		$context        = [];
+		$pluggable_data = [];
+		$term           = ! empty( $data['search_term'] ) ? $data['search_term'] : '';
+
+		if ( ! class_exists( 'FluentCrm\App\Models\Company' ) ) {
+			return [];
+		}
+
+		$result = null;
+
+		// Fetch last record based on term.
+		switch ( $term ) {
+			case 'contact_deleted':
+				$result = $wpdb->get_row( "SELECT id FROM {$wpdb->prefix}fc_subscribers ORDER BY id DESC LIMIT 1", ARRAY_A );
+				break;
+
+			case 'campaign_sent':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fc_campaigns WHERE status = 'archived' ORDER BY updated_at DESC LIMIT 1", ARRAY_A );
+				break;
+
+			case 'company_updated':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fc_companies ORDER BY updated_at DESC LIMIT 1", ARRAY_A );
+				break;
+
+			case 'company_deleted':
+			case 'company_assigned':
+			case 'company_unassigned':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fc_companies ORDER BY id DESC LIMIT 1", ARRAY_A );
+				break;
+
+			default:
+				// Default to company_created.
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fc_companies ORDER BY created_at DESC LIMIT 1", ARRAY_A );
+				break;
+		}
+
+		if ( $result ) {
+			switch ( $term ) {
+				case 'contact_deleted':
+					$pluggable_data = [
+						'contact_id' => $result['id'],
+						'deleted_at' => current_time( 'mysql' ),
+					];
+					break;
+
+				case 'campaign_sent':
+					$campaign_data = $result;
+
+					if ( ! empty( $campaign_data['settings'] ) ) {
+						$settings = maybe_unserialize( $campaign_data['settings'] );
+						if ( is_array( $settings ) ) {
+							$campaign_data['settings'] = $settings;
+						}
+					}
+
+					$pluggable_data = [
+						'campaign'    => $campaign_data,
+						'status'      => 'archived',
+						'archived_at' => current_time( 'mysql' ),
+					];
+
+					if ( ! empty( $result['id'] ) ) {
+						$total_emails  = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}fc_campaign_emails WHERE campaign_id = %d", $result['id'] ) );
+						$sent_count    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}fc_campaign_emails WHERE campaign_id = %d AND status = 'sent'", $result['id'] ) );
+						$opened_count  = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}fc_campaign_emails WHERE campaign_id = %d AND is_open > 0", $result['id'] ) );
+						$clicked_count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}fc_campaign_emails WHERE campaign_id = %d AND click_counter > 0", $result['id'] ) );
+
+						$pluggable_data['total_emails_sent'] = $total_emails;
+						$pluggable_data['sent_count']        = $sent_count;
+						$pluggable_data['opened_count']      = $opened_count;
+						$pluggable_data['clicked_count']     = $clicked_count;
+						$pluggable_data['open_rate']         = $sent_count > 0 ? round( ( $opened_count / $sent_count ) * 100, 2 ) : 0;
+						$pluggable_data['click_rate']        = $sent_count > 0 ? round( ( $clicked_count / $sent_count ) * 100, 2 ) : 0;
+					}
+					break;
+
+				case 'company_deleted':
+					$pluggable_data = [
+						'company_id' => $result['id'],
+						'deleted_at' => current_time( 'mysql' ),
+					];
+					break;
+
+				case 'company_assigned':
+				case 'company_unassigned':
+					$contact_result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fc_subscribers ORDER BY id DESC LIMIT 1", ARRAY_A );
+					if ( $contact_result ) {
+						$pluggable_data['contact']   = [
+							'details' => $contact_result,
+							'custom'  => [],
+						];
+						$pluggable_data['companies'] = [ $result ];
+
+						if ( 'company_assigned' === $term ) {
+							$pluggable_data['assigned_company_ids'] = [ $result['id'] ];
+							$pluggable_data['assigned_at']          = current_time( 'mysql' );
+						} else {
+							$pluggable_data['unassigned_company_ids'] = [ $result['id'] ];
+							$pluggable_data['unassigned_at']          = current_time( 'mysql' );
+						}
+					}
+					break;
+
+				default:
+					$meta_data      = ! empty( $result['meta'] ) ? maybe_unserialize( $result['meta'] ) : [];
+					$company_result = array_intersect_key(
+						$result,
+						array_flip(
+							[
+								'id',
+								'hash',
+								'name',
+								'email',
+								'description',
+								'address_line_1',
+								'address_line_2',
+								'city',
+								'state',
+								'postal_code',
+								'country',
+								'phone',
+								'type',
+								'owner_id',
+								'employees_number',
+								'industry',
+								'website',
+								'linkedin_url',
+								'facebook_url',
+								'twitter_url',
+								'logo',
+								'timezone',
+								'date_of_start',
+								'created_at',
+								'updated_at',
+							] 
+						)
+					);
+
+					if ( is_array( $meta_data ) && isset( $meta_data['custom_values'] ) ) {
+						$company_result['custom_fields'] = $meta_data['custom_values'];
+					}
+
+					$pluggable_data['company'] = $company_result;
+					break;
+			}
+			$context['response_type'] = 'live';
+		} else {
+			// Sample data for different terms.
+			switch ( $term ) {
+				case 'contact_deleted':
+					$pluggable_data = [
+						'contact_id' => 1,
+						'deleted_at' => current_time( 'mysql' ),
+					];
+					break;
+
+				case 'campaign_sent':
+					$pluggable_data = [
+						'campaign'          => [
+							'id'            => 1,
+							'type'          => 'campaign',
+							'title'         => 'Sample Email Campaign',
+							'status'        => 'archived',
+							'template_id'   => 1,
+							'email_subject' => 'Welcome to Our Newsletter!',
+							'email_body'    => 'Sample campaign email content...',
+							'utm_status'    => 1,
+							'utm_source'    => 'fluentcrm',
+							'utm_medium'    => 'email',
+							'utm_campaign'  => 'sample-campaign',
+							'created_by'    => 1,
+							'created_at'    => current_time( 'mysql' ),
+							'updated_at'    => current_time( 'mysql' ),
+							'scheduled_at'  => current_time( 'mysql' ),
+						],
+						'status'            => 'archived',
+						'archived_at'       => current_time( 'mysql' ),
+						'total_emails_sent' => 1500,
+						'sent_count'        => 1450,
+						'opened_count'      => 725,
+						'clicked_count'     => 145,
+						'open_rate'         => 50.0,
+						'click_rate'        => 10.0,
+					];
+					break;
+
+				case 'company_deleted':
+					$pluggable_data = [
+						'company_id' => 1,
+						'deleted_at' => current_time( 'mysql' ),
+					];
+					break;
+
+				case 'company_assigned':
+				case 'company_unassigned':
+					$pluggable_data['contact']['details'] = [
+						'id'              => 1,
+						'user_id'         => 1,
+						'hash'            => 'sample_hash',
+						'contact_owner'   => 0,
+						'company_id'      => 0,
+						'prefix'          => 'Mr.',
+						'first_name'      => 'John',
+						'last_name'       => 'Doe',
+						'email'           => 'john@example.com',
+						'timezone'        => 'America/New_York',
+						'address_line_1'  => '123 Main Street',
+						'address_line_2'  => 'Apt 4B',
+						'postal_code'     => '10001',
+						'city'            => 'New York',
+						'state'           => 'NY',
+						'country'         => 'USA',
+						'phone'           => '+1-555-123-4567',
+						'status'          => 'subscribed',
+						'contact_type'    => 'customer',
+						'source'          => 'manual',
+						'lifecycle_stage' => 'customer',
+						'created_at'      => current_time( 'mysql' ),
+						'updated_at'      => current_time( 'mysql' ),
+					];
+					$pluggable_data['contact']['custom']  = [];
+					$pluggable_data['companies']          = [
+						[
+							'id'             => 1,
+							'hash'           => 'sample_hash',
+							'name'           => 'Sample Company Inc.',
+							'email'          => 'contact@samplecompany.com',
+							'description'    => 'This is a sample company',
+							'address_line_1' => '123 Business Street',
+							'address_line_2' => 'Suite 100',
+							'city'           => 'Business City',
+							'state'          => 'California',
+							'postal_code'    => '90210',
+							'country'        => 'USA',
+							'phone'          => '+1-555-123-4567',
+							'type'           => 'client',
+							'created_at'     => current_time( 'mysql' ),
+							'updated_at'     => current_time( 'mysql' ),
+						],
+					];
+					if ( 'company_assigned' === $term ) {
+						$pluggable_data['assigned_company_ids'] = [ 1 ];
+						$pluggable_data['assigned_at']          = current_time( 'mysql' );
+					} else {
+						$pluggable_data['unassigned_company_ids'] = [ 1 ];
+						$pluggable_data['unassigned_at']          = current_time( 'mysql' );
+					}
+					break;
+
+				case 'company_created':
+				case 'company_updated':
+				default:
+					$pluggable_data['company'] = [
+						'id'               => 1,
+						'hash'             => 'sample_hash',
+						'name'             => 'Sample Company Inc.',
+						'email'            => 'contact@samplecompany.com',
+						'description'      => 'This is a sample company',
+						'address_line_1'   => '123 Business Street',
+						'address_line_2'   => 'Suite 100',
+						'city'             => 'Business City',
+						'state'            => 'California',
+						'postal_code'      => '90210',
+						'country'          => 'USA',
+						'phone'            => '+1-555-123-4567',
+						'type'             => 'client',
+						'owner_id'         => 1,
+						'employees_number' => 50,
+						'industry'         => 'Technology',
+						'website'          => 'https://samplecompany.com',
+						'linkedin_url'     => 'https://linkedin.com/company/samplecompany',
+						'facebook_url'     => 'https://facebook.com/samplecompany',
+						'twitter_url'      => 'https://twitter.com/samplecompany',
+						'logo'             => '',
+						'timezone'         => 'America/Los_Angeles',
+						'date_of_start'    => '2024-01-01',
+						'created_at'       => '2024-01-01 10:00:00',
+						'updated_at'       => '2024-01-01 10:00:00',
+						'custom_fields'    => [
+							'annual_revenue'  => '$1,000,000',
+							'primary_contact' => 'John Doe',
+						],
+					];
+					break;
+			}
+
+			$context['response_type'] = 'sample';
+		}
+
+		$context['pluggable_data'] = $pluggable_data;
+		return $context;
+	}
+
+	/**
+	 * Get FluentCRM email trigger details.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_pluggables_fluentcrm_email_triggers( $data ) {
+		$context        = [];
+		$pluggable_data = [];
+		global $wpdb;
+		$term = $data['search_term'] ? $data['search_term'] : '';
+
+		// Helper function to build email data structure.
+		$build_email_data = function( $email_result, $subscriber_result = null, $subscriber_status = null ) {
+			$email_data = [
+				'id'            => $email_result['id'],
+				'status'        => $email_result['status'],
+				'is_open'       => $email_result['is_open'],
+				'is_parsed'     => $email_result['is_parsed'],
+				'created_at'    => $email_result['created_at'],
+				'updated_at'    => isset( $email_result['updated_at'] ) ? $email_result['updated_at'] : $email_result['created_at'],
+				'campaign_id'   => isset( $email_result['campaign_id'] ) ? $email_result['campaign_id'] : null,
+				'scheduled_at'  => isset( $email_result['scheduled_at'] ) ? $email_result['scheduled_at'] : $email_result['created_at'],
+				'email_address' => isset( $email_result['email_address'] ) ? $email_result['email_address'] : ( isset( $subscriber_result['email'] ) ? $subscriber_result['email'] : '' ),
+				'email_headers' => isset( $email_result['email_headers'] ) ? $email_result['email_headers'] : '',
+				'email_subject' => isset( $email_result['email_subject'] ) ? $email_result['email_subject'] : '',
+				'email_body'    => $email_result['email_body'],
+				'email_hash'    => $email_result['email_hash'],
+				'email_type'    => $email_result['email_type'],
+				'subscriber_id' => $email_result['subscriber_id'],
+			];
+
+			if ( $subscriber_result ) {
+				$subscriber_fields = [
+					'hash',
+					'email',
+					'phone',
+					'photo',
+					'prefix',
+					'status',
+					'full_name',
+					'last_name',
+					'created_at',
+					'first_name',
+					'updated_at',
+				];
+				foreach ( $subscriber_fields as $field ) {
+					$email_data[ 'subscriber_' . $field ] = $subscriber_result[ $field ];
+				}
+				if ( $subscriber_status ) {
+					$email_data['subscriber_status'] = $subscriber_status;
+				}
+			}
+
+			return $email_data;
+		};
+
+		// Helper function to get sample email data.
+		$get_sample_email_data = function( $status = 'subscribed' ) {
+			return [
+				'id'                    => 1,
+				'status'                => 'sent',
+				'is_open'               => 0,
+				'is_parsed'             => 1,
+				'created_at'            => current_time( 'mysql' ),
+				'updated_at'            => current_time( 'mysql' ),
+				'campaign_id'           => 83,
+				'scheduled_at'          => current_time( 'mysql' ),
+				'email_address'         => 'john@example.com',
+				'email_headers'         => 'From: noreply@example.com',
+				'email_subject'         => 'Sample Email Subject',
+				'email_body'            => 'Sample email content here...',
+				'email_hash'            => 'sample-email-hash-123',
+				'email_type'            => 'campaign',
+				'subscriber_id'         => 1,
+				'subscriber_hash'       => 'sample_hash',
+				'subscriber_email'      => 'john@example.com',
+				'subscriber_phone'      => '9876654423',
+				'subscriber_photo'      => 'http://example.com/avatar.png',
+				'subscriber_prefix'     => 'Mr.',
+				'subscriber_status'     => $status,
+				'subscriber_full_name'  => 'John Doe',
+				'subscriber_last_name'  => 'Doe',
+				'subscriber_created_at' => current_time( 'mysql' ),
+				'subscriber_first_name' => 'John',
+				'subscriber_updated_at' => current_time( 'mysql' ),
+			];
+		};
+
+		// Get result based on term.
+		$result = null;
+		if ( 'email_opened' === $term ) {
+			$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}fc_campaign_emails ORDER BY id DESC LIMIT %d", 1 ), ARRAY_A );
+		} elseif ( 'email_clicked' === $term ) {
+			$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}fc_campaign_emails WHERE click_counter > %d ORDER BY id DESC LIMIT %d", 0, 1 ), ARRAY_A );
+		} elseif ( 'email_unsubscribed' === $term ) {
+			$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}fc_subscribers WHERE status = 'unsubscribed' ORDER BY updated_at DESC LIMIT %d", 1 ), ARRAY_A );
+		} elseif ( 'email_bounced' === $term ) {
+			$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}fc_subscribers WHERE status = 'bounced' ORDER BY updated_at DESC LIMIT %d", 1 ), ARRAY_A );
+		}
+
+		if ( $result ) {
+			if ( 'email_opened' === $term || 'email_clicked' === $term ) {
+				// Get subscriber details.
+				$subscriber_result = null;
+				if ( ! empty( $result['subscriber_id'] ) ) {
+					$subscriber_result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}fc_subscribers WHERE id = %d", $result['subscriber_id'] ), ARRAY_A );
+				}
+
+				$pluggable_data['email'] = $build_email_data( $result, $subscriber_result );
+				$pluggable_data[ 'email_opened' === $term ? 'opened_at' : 'clicked_at' ] = current_time( 'mysql' );
+
+			} elseif ( 'email_unsubscribed' === $term ) {
+				// Get email data for subscriber.
+				$email_result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}fc_campaign_emails WHERE subscriber_id = %d ORDER BY id DESC LIMIT %d", $result['id'], 1 ), ARRAY_A );
+				
+				if ( $email_result ) {
+					$pluggable_data['email'] = $build_email_data( $email_result, $result );
+				}
+
+				$pluggable_data['source']          = 'from_header';
+				$pluggable_data['unsubscribed_at'] = current_time( 'mysql' );
+			} elseif ( 'email_bounced' === $term ) {
+				// For bounced emails, we only need subscriber object and bounce-specific fields.
+				$subscriber_data   = [];
+				$subscriber_fields = [
+					'id',
+					'hash',
+					'email',
+					'phone',
+					'photo',
+					'prefix',
+					'status',
+					'full_name',
+					'last_name',
+					'created_at',
+					'first_name',
+					'updated_at',
+					'contact_type',
+					'total_points',
+					'last_activity',
+					'life_time_value',
+					'ip',
+				];
+				
+				foreach ( $subscriber_fields as $field ) {
+					if ( isset( $result[ $field ] ) ) {
+						$subscriber_data[ $field ] = $result[ $field ];
+					}
+				}
+				
+				$pluggable_data['subscriber'] = $subscriber_data;
+				
+				// Add bounce-specific data.
+				$pluggable_data['old_status'] = 'subscribed';
+				$pluggable_data['new_status'] = 'bounced';
+				$pluggable_data['bounced_at'] = $result['updated_at'];
+			}
+			$context['response_type'] = 'live';
+		} else {
+			// Sample data for different email terms.
+			if ( 'email_opened' === $term || 'email_clicked' === $term ) {
+				$pluggable_data['email'] = $get_sample_email_data();
+				
+				if ( 'email_opened' === $term ) {
+					$pluggable_data['opened_at'] = current_time( 'mysql' );
+				} else {
+					$pluggable_data['url']        = [
+						'id'         => 1,
+						'url'        => 'https://example.com/sample-link',
+						'short_url'  => 'https://example.com/r/abc123',
+						'title'      => 'Sample Link',
+						'created_at' => current_time( 'mysql' ),
+					];
+					$pluggable_data['clicked_at'] = current_time( 'mysql' );
+				}
+			} elseif ( 'email_unsubscribed' === $term ) {
+				$pluggable_data['email']           = $get_sample_email_data( 'unsubscribed' );
+				$pluggable_data['source']          = 'from_header';
+				$pluggable_data['unsubscribed_at'] = current_time( 'mysql' );
+			} elseif ( 'email_bounced' === $term ) {
+				// Sample subscriber object for bounced email (no email object).
+				$pluggable_data['subscriber'] = [
+					'id'              => 8,
+					'ip'              => '::1',
+					'hash'            => '6b2c0a83138a7e42ef12e6f87e8c58aa',
+					'email'           => 'mrunalis@bsf.io',
+					'phone'           => '9876654423',
+					'photo'           => 'http://ottokit.local/wp-content/plugins/fluent-crm/assets/images/avatar.png',
+					'prefix'          => 'Ms',
+					'status'          => 'bounced',
+					'full_name'       => 'Mrunali Salunke',
+					'last_name'       => 'Salunke',
+					'created_at'      => '2025-09-18 04:51:26',
+					'first_name'      => 'Mrunali',
+					'updated_at'      => current_time( 'mysql' ),
+					'contact_type'    => 'lead',
+					'total_points'    => 0,
+					'last_activity'   => '2025-09-25 05:47:45',
+					'life_time_value' => 0,
+				];
+				$pluggable_data['old_status'] = 'subscribed';
+				$pluggable_data['new_status'] = 'bounced';
+				$pluggable_data['bounced_at'] = current_time( 'mysql' );
+			}
+			$context['response_type'] = 'sample';
+		}
+
+		$context['pluggable_data'] = $pluggable_data;
+		return $context;
+	}
+
+	/**
+	 * Get WooCommerce Subscription triggers last data.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_woocommerce_subscription_triggers_last_data( $data ) {
+		$context = [];
+		$term    = isset( $data['search_term'] ) ? $data['search_term'] : '';
+
+		if ( ! class_exists( 'WC_Subscription' ) || ! function_exists( 'wcs_get_subscription' ) ) {
+			return $context;
+		}
+
+		$needs_subscription = in_array(
+			$term,
+			[
+				'wc_subscription_updated',
+				'wc_cancels_subscription_product',
+				'wc_subscribes_product',
+				'wc_purchases_variable_subscription',
+				'wc_renews_subscription_product',
+				'wc_subscription_product_expires',
+			],
+			true
+		);
+
+		if ( ! $needs_subscription ) {
+			return $context;
+		}
+
+		$subscription     = null;
+		$subscription_obj = null;
+
+		if ( function_exists( 'wcs_get_subscriptions' ) ) {
+			$subscriptions = wcs_get_subscriptions(
+				[
+					'subscriptions_per_page' => 1,
+					'orderby'                => 'date',
+					'order'                  => 'DESC',
+				] 
+			);
+			
+			if ( ! empty( $subscriptions ) ) {
+				$subscription_obj = reset( $subscriptions );
+				$subscription     = (object) [ 'ID' => $subscription_obj->get_id() ];
+			}
+		}
+
+		if ( $subscription && ! $subscription_obj ) {
+			$subscription_obj = wcs_get_subscription( $subscription->ID );
+		}
+
+		if ( $subscription_obj ) {
+			$user_id        = $subscription_obj->get_user_id();
+			$items          = $subscription_obj->get_items();
+			$product_id     = 0;
+			$variation_id   = 0;
+			$product_name   = '';
+			$variation_name = '';
+
+			foreach ( $items as $item ) {
+				$product_id     = $item->get_product_id();
+				$variation_id   = $item->get_variation_id();
+				$product_name   = $item->get_name();
+				$variation_name = $item->get_name();
+				break;
+			}
+
+			$user_billing_data = [
+				'billing_first_name' => $subscription_obj->get_billing_first_name(),
+				'billing_last_name'  => $subscription_obj->get_billing_last_name(),
+				'billing_country'    => $subscription_obj->get_billing_country(),
+				'billing_address_1'  => $subscription_obj->get_billing_address_1(),
+				'billing_address_2'  => $subscription_obj->get_billing_address_2(),
+				'billing_city'       => $subscription_obj->get_billing_city(),
+				'billing_state'      => $subscription_obj->get_billing_state(),
+				'billing_postcode'   => $subscription_obj->get_billing_postcode(),
+				'billing_phone'      => $subscription_obj->get_billing_phone(),
+				'billing_email'      => $subscription_obj->get_billing_email(),
+			];
+
+			if ( 'wc_subscription_updated' === $term ) {
+				$subscription_data = [
+					'start_date'        => $subscription_obj->get_date_created(),
+					'next_payment_date' => $subscription_obj->get_date( 'next_payment' ) ? $subscription_obj->get_date( 'next_payment' ) : 0,
+				];
+
+				$context['variation_id']      = $variation_id;
+				$context['product_id']        = $product_id;
+				$context['subscription']      = $product_id;
+				$context['variation_name']    = $variation_name;
+				$context['product_name']      = $product_name;
+				$context['subscription_data'] = $subscription_data;
+				$context['subscription_id']   = $subscription_obj->get_id();
+				$context['user']              = WordPress::get_user_context( $user_id );
+				$context['user_billing_data'] = $user_billing_data;
+				$context['new_status']        = $subscription_obj->get_status();
+				$context['old_status']        = 'pending-cancel';
+				$context['status']            = 'wc-' . $subscription_obj->get_status();
+			} elseif ( 'wc_cancels_subscription_product' === $term ) {
+				$subscription_data = [
+					'status'     => $subscription_obj->get_status(),
+					'start_date' => $subscription_obj->get_date_created(),
+				];
+
+				$context['subscription_data'] = $subscription_data;
+				$context['user']              = WordPress::get_user_context( $user_id );
+				$context['user_billing_data'] = $user_billing_data;
+				$context['subscription_id']   = $subscription_obj->get_id();
+			} elseif ( 'wc_subscribes_product' === $term ) {
+				$subscription_data = [
+					'status'            => $subscription_obj->get_status(),
+					'start_date'        => $subscription_obj->get_date_created(),
+					'next_payment_date' => $subscription_obj->get_date( 'next_payment' ) ? $subscription_obj->get_date( 'next_payment' ) : 0,
+				];
+
+				$context['subscription_data'] = $subscription_data;
+				$context['subscription_id']   = $subscription_obj->get_id();
+				$context['user']              = WordPress::get_user_context( $user_id );
+				$context['user_billing_data'] = $user_billing_data;
+				$context['subscription']      = $subscription_obj->get_id();
+				$context['subscription_name'] = get_the_title( $product_id );
+			} elseif ( 'wc_purchases_variable_subscription' === $term ) {
+				$subscription_data = [
+					'status'            => $subscription_obj->get_status(),
+					'start_date'        => $subscription_obj->get_date_created(),
+					'next_payment_date' => $subscription_obj->get_date( 'next_payment' ) ? $subscription_obj->get_date( 'next_payment' ) : 0,
+				];
+
+				$context['subscription_data']            = $subscription_data;
+				$context['user']                         = WordPress::get_user_context( $user_id );
+				$context['user_billing_data']            = $user_billing_data;
+				$context['variable_subscription_option'] = $variation_id;
+				$context['variable_subscription']        = $product_id;
+				$context['subscription_name']            = $variation_name;
+				$context['subscription_id']              = $subscription_obj->get_id();
+			} elseif ( 'wc_renews_subscription_product' === $term ) {
+				$subscription_data = [
+					'status'            => $subscription_obj->get_status(),
+					'start_date'        => $subscription_obj->get_date_created(),
+					'next_payment_date' => $subscription_obj->get_date( 'next_payment' ) ? $subscription_obj->get_date( 'next_payment' ) : 0,
+				];
+
+				$context['subscription']      = $product_id;
+				$context['subscription_name'] = get_the_title( $product_id );
+				$context['last_order']        = $subscription_obj->get_last_order();
+				$context['subscription_data'] = $subscription_data;
+				$context['subscription_id']   = $subscription_obj->get_id();
+				$context['user']              = WordPress::get_user_context( $user_id );
+				$context['user_billing_data'] = $user_billing_data;
+			} elseif ( 'wc_subscription_product_expires' === $term ) {
+				$subscription_data = [
+					'status'            => $subscription_obj->get_status(),
+					'start_date'        => $subscription_obj->get_date_created(),
+					'next_payment_date' => $subscription_obj->get_date( 'next_payment' ) ? $subscription_obj->get_date( 'next_payment' ) : 0,
+				];
+
+				$context['subscription_data'] = $subscription_data;
+				$context['subscription_id']   = $subscription_obj->get_id();
+				$context['user']              = WordPress::get_user_context( $user_id );
+				$context['user_billing_data'] = $user_billing_data;
+				$context['subscription']      = $product_id;
+				$context['subscription_name'] = get_the_title( $product_id );
+			}
+
+			$context['pluggable_data'] = $context;
+			$context['response_type']  = 'live';
+		} else {
+			$sample_user = [
+				'wp_user_id'      => 1,
+				'user_login'      => 'johndoe',
+				'display_name'    => 'John Doe',
+				'user_firstname'  => 'John',
+				'user_lastname'   => 'Doe',
+				'user_email'      => 'john.doe@example.com',
+				'user_registered' => '2024-01-15 10:30:25',
+				'user_role'       => [
+					'customer',
+					'subscriber',
+				],
+			];
+
+			$sample_billing_data = [
+				'billing_first_name' => 'John',
+				'billing_last_name'  => 'Doe',
+				'billing_country'    => 'US',
+				'billing_address_1'  => '123 Main Street',
+				'billing_address_2'  => 'Apt 4B',
+				'billing_city'       => 'New York',
+				'billing_state'      => 'NY',
+				'billing_postcode'   => '10001',
+				'billing_phone'      => '+1-555-123-4567',
+				'billing_email'      => 'john.doe@example.com',
+			];
+
+			$sample_start_date = [
+				'utc_offset'    => 0,
+				'date'          => '2024-01-15 08:30:25.000000',
+				'timezone_type' => 1,
+				'timezone'      => '+00:00',
+			];
+
+			if ( 'wc_subscription_updated' === $term ) {
+				$context = [
+					'variation_id'      => 0,
+					'product_id'        => 73,
+					'subscription'      => 73,
+					'variation_name'    => 'Hi-Fi Headphones',
+					'product_name'      => 'Hi-Fi Headphones',
+					'subscription_data' => [
+						'start_date'        => $sample_start_date,
+						'next_payment_date' => '2024-12-15 08:30:25',
+					],
+					'subscription_id'   => 1234,
+					'user'              => $sample_user,
+					'user_billing_data' => $sample_billing_data,
+					'new_status'        => 'active',
+					'old_status'        => 'pending-cancel',
+					'status'            => 'wc-active',
+				];
+			} elseif ( 'wc_cancels_subscription_product' === $term ) {
+				$context = [
+					'subscription_data' => [
+						'status'     => 'cancelled',
+						'start_date' => $sample_start_date,
+					],
+					'user'              => $sample_user,
+					'user_billing_data' => $sample_billing_data,
+					'subscription_id'   => 1567,
+				];
+			} elseif ( 'wc_subscribes_product' === $term ) {
+				$context = [
+					'subscription_data' => [
+						'status'            => 'active',
+						'start_date'        => $sample_start_date,
+						'next_payment_date' => '2025-10-07 08:38:53',
+					],
+					'subscription_id'   => 1798,
+					'user'              => $sample_user,
+					'user_billing_data' => $sample_billing_data,
+					'subscription'      => 1795,
+					'subscription_name' => 'Subscription Product',
+				];
+			} elseif ( 'wc_purchases_variable_subscription' === $term ) {
+				$context = [
+					'subscription_data'            => [
+						'status'            => 'active',
+						'start_date'        => $sample_start_date,
+						'next_payment_date' => '2025-11-06 05:25:01',
+					],
+					'user'                         => $sample_user,
+					'user_billing_data'            => $sample_billing_data,
+					'variable_subscription_option' => 1803,
+					'variable_subscription'        => 1802,
+					'subscription_name'            => 'Variation test product – 1200, 10',
+					'subscription_id'              => 1836,
+				];
+			} elseif ( 'wc_renews_subscription_product' === $term ) {
+				$context = [
+					'subscription'      => 1234,
+					'subscription_name' => 'Monthly Subscription Product',
+					'last_order'        => 5678,
+					'subscription_data' => [
+						'status'            => 'active',
+						'start_date'        => $sample_start_date,
+						'next_payment_date' => '2025-11-06 08:30:25',
+					],
+					'subscription_id'   => 1567,
+					'user'              => $sample_user,
+					'user_billing_data' => $sample_billing_data,
+				];
+			} elseif ( 'wc_subscription_product_expires' === $term ) {
+				$context = [
+					'subscription_data' => [
+						'status'            => 'expired',
+						'start_date'        => $sample_start_date,
+						'next_payment_date' => '2025-01-15 08:30:25',
+					],
+					'subscription_id'   => 1890,
+					'user'              => $sample_user,
+					'user_billing_data' => $sample_billing_data,
+					'subscription'      => 1567,
+					'subscription_name' => 'Premium Subscription Product',
+				];
+			}
+			$context['pluggable_data'] = $context;
+			$context['response_type']  = 'sample';
+		}
+
+		return $context;
+	}
+
+	/**
+	 * Prepare FluentCart Product list.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_fluentcart_product_list( $data ) {
+		$options = [];
+
+		if ( ! class_exists( '\FluentCart\App\Models\Product' ) ) {
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		}
+
+		$page   = isset( $data['page'] ) ? max( 1, intval( $data['page'] ) ) : 1;
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+		
+		$search_term = isset( $data['search_term'] ) ? $data['search_term'] : '';
+		
+		// Start with a basic query.
+		$query = \FluentCart\App\Models\Product::where( 'post_status', 'publish' );
+
+		if ( ! empty( $search_term ) ) {
+			$query->where( 'post_title', 'LIKE', '%' . $search_term . '%' );
+		}
+
+		$products = $query->select( [ 'ID', 'post_title' ] )
+			->offset( $offset )
+			->limit( $limit )
+			->get();
+
+		if ( ! empty( $products ) ) {
+			foreach ( $products as $product ) {
+				$options[] = [
+					'label' => $product->post_title,
+					'value' => $product->ID,
+				];
+			}
+		}
+
+		// Get total count for pagination.
+		$total_query = \FluentCart\App\Models\Product::where( 'post_status', 'publish' );
+			
+		if ( ! empty( $search_term ) ) {
+			$total_query->where( 'post_title', 'LIKE', '%' . $search_term . '%' );
+		}
+		
+		$posts_count = $total_query->count();
+
+		return [
+			'options' => $options,
+			'hasMore' => $posts_count > ( $offset + $limit ),
+		];
+	}
+
+	/**
+	 * Search SureDash triggers last data.
+	 *
+	 * @param array $data query params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_suredash_triggers_last_data( $data ) {
+		$context = [];
+		$term    = isset( $data['search_term'] ) ? $data['search_term'] : '';
+		
+		global $wpdb;
+		
+		// Sample user data reused across all cases.
+		$sample_user = [
+			'user_id'       => 789,
+			'user_login'    => 'john_doe',
+			'user_email'    => 'john@example.com',
+			'user_nicename' => 'John Doe',
+			'display_name'  => 'John Doe',
+		];
+		
+		switch ( $term ) {
+			case 'suredash_comments_data':
+				$recent_comments = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT c.*, p.post_title, p.post_content, p.post_author, p.post_type, p.post_status 
+					FROM {$wpdb->comments} c 
+					LEFT JOIN {$wpdb->posts} p ON c.comment_post_ID = p.ID 
+					WHERE c.comment_approved = 1 
+					ORDER BY c.comment_date DESC 
+					LIMIT %d",
+						1
+					)
+				);
+
+				if ( ! empty( $recent_comments ) ) {
+					$comment      = $recent_comments[0];
+					$user_context = [];
+					if ( $comment->user_id ) {
+						$user_context = WordPress::get_user_context( $comment->user_id );
+					}
+
+					$context                   = array_merge(
+						[
+							'comment_id'           => $comment->comment_ID,
+							'comment_content'      => $comment->comment_content,
+							'comment_author'       => $comment->comment_author,
+							'comment_author_email' => $comment->comment_author_email,
+							'comment_date'         => $comment->comment_date,
+							'comment_approved'     => $comment->comment_approved,
+							'comment_type'         => $comment->comment_type,
+							'comment_parent'       => $comment->comment_parent,
+							'post_id'              => $comment->comment_post_ID,
+							'post_title'           => $comment->post_title,
+							'post_content'         => $comment->post_content,
+							'post_author'          => $comment->post_author,
+							'post_type'            => $comment->post_type,
+							'post_status'          => $comment->post_status,
+							'post_permalink'       => get_permalink( $comment->comment_post_ID ),
+							'suredash_post'        => $comment->comment_post_ID,
+						],
+						$user_context
+					);
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'live';
+				} else {
+					$context = [
+						'comment_id'           => 123,
+						'comment_content'      => 'This is a sample comment submission',
+						'comment_author'       => 'John Doe',
+						'comment_author_email' => 'john@example.com',
+						'comment_date'         => '2024-01-15 10:30:00',
+						'comment_approved'     => 1,
+						'comment_type'         => 'comment',
+						'comment_parent'       => 0,
+						'post_id'              => 456,
+						'post_title'           => 'Sample Course Title',
+						'post_content'         => 'Course content here...',
+						'post_author'          => 1,
+						'post_type'            => 'suredash_course',
+						'post_status'          => 'publish',
+						'post_permalink'       => 'https://example.com/course/sample-course',
+						'suredash_post'        => 456,
+					];
+					$context = array_merge( $context, $sample_user );
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'sample';
+				}
+
+				return $context;
+				
+			case 'suredash_comment_deleted_data':
+				$recent_comments = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT c.comment_ID, c.user_id 
+					FROM {$wpdb->comments} c 
+					ORDER BY c.comment_date DESC 
+					LIMIT %d",
+						1
+					)
+				);
+
+				if ( ! empty( $recent_comments ) ) {
+					$comment      = $recent_comments[0];
+					$user_context = WordPress::get_user_context( $comment->user_id );
+
+					$context = array_merge(
+						[
+							'comment_id' => $comment->comment_ID,
+						],
+						$user_context
+					);
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'live';
+				} else {
+					$context = array_merge( [ 'comment_id' => 123 ], $sample_user );
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'sample';
+				}
+
+				return $context;
+			
+			case 'suredash_post_deleted_data':
+				$recent_posts = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT ID, post_author 
+					FROM {$wpdb->posts} 
+					ORDER BY post_date DESC 
+					LIMIT %d",
+						1
+					)
+				);
+
+				if ( ! empty( $recent_posts ) ) {
+					$post         = $recent_posts[0];
+					$user_context = WordPress::get_user_context( $post->post_author );
+
+					$context = array_merge(
+						[
+							'post_id'         => $post->ID,
+							'deleter_user_id' => $post->post_author,
+						],
+						$user_context
+					);
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'live';
+				} else {
+					$context = array_merge(
+						[
+							'post_id'         => 456,
+							'deleter_user_id' => 789,
+						],
+						$sample_user 
+					);
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'sample';
+				}
+
+				return $context;
+			
+			case 'suredash_post_data':
+				$recent_posts = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT * FROM {$wpdb->posts} 
+					WHERE post_status = 'publish' 
+					AND post_type NOT IN ('revision', 'nav_menu_item', 'attachment') 
+					ORDER BY post_date DESC 
+					LIMIT %d",
+						1
+					)
+				);
+
+				if ( ! empty( $recent_posts ) ) {
+					$post         = $recent_posts[0];
+					$user_context = WordPress::get_user_context( $post->post_author );
+
+					$context = array_merge(
+						[
+							'post_id'        => $post->ID,
+							'post_title'     => $post->post_title,
+							'post_content'   => $post->post_content,
+							'post_excerpt'   => $post->post_excerpt,
+							'post_status'    => $post->post_status,
+							'post_author'    => $post->post_author,
+							'post_date'      => $post->post_date,
+							'post_modified'  => $post->post_modified,
+							'post_type'      => $post->post_type,
+							'post_name'      => $post->post_name,
+							'post_permalink' => get_permalink( $post->ID ),
+							'suredash_post'  => $post->ID,
+							'form_data'      => [],
+						],
+						$user_context
+					);
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'live';
+				} else {
+					$context = [
+						'post_id'        => 456,
+						'post_title'     => 'Sample Post Title',
+						'post_content'   => 'This is sample post content for SureDash...',
+						'post_excerpt'   => 'Sample excerpt',
+						'post_status'    => 'publish',
+						'post_author'    => 1,
+						'post_date'      => '2024-01-15 10:30:00',
+						'post_modified'  => '2024-01-15 10:35:00',
+						'post_type'      => 'post',
+						'post_name'      => 'sample-post-title',
+						'post_permalink' => 'https://example.com/sample-post-title',
+						'suredash_post'  => 456,
+						'form_data'      => [
+							'post_title'   => 'Sample Post Title',
+							'post_content' => 'Sample content',
+						],
+					];
+					$context = array_merge( $context, $sample_user );
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'sample';
+				}
+
+				return $context;
+				
+			case 'suredash_item_bookmarked':
+				$recent_posts = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT * FROM {$wpdb->posts} 
+					WHERE post_status = 'publish' 
+					AND post_type NOT IN ('revision', 'nav_menu_item', 'attachment') 
+					ORDER BY post_date DESC 
+					LIMIT %d",
+						1
+					)
+				);
+
+				if ( ! empty( $recent_posts ) ) {
+					$post         = $recent_posts[0];
+					$user_context = WordPress::get_user_context( $post->post_author );
+
+					$context = array_merge(
+						[
+							'item_id'         => $post->ID,
+							'item_type'       => $post->post_type,
+							'bookmark_status' => 'bookmarked',
+							'is_bookmarked'   => true,
+							'is_unbookmarked' => false,
+							'item_title'      => $post->post_title,
+							'item_content'    => $post->post_content,
+							'item_excerpt'    => $post->post_excerpt,
+							'item_author'     => $post->post_author,
+							'item_date'       => $post->post_date,
+							'item_status'     => $post->post_status,
+							'item_permalink'  => get_permalink( $post->ID ),
+						],
+						$user_context
+					);
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'live';
+				} else {
+					$context = [
+						'item_id'         => 456,
+						'item_type'       => 'post',
+						'bookmark_status' => 'bookmarked',
+						'is_bookmarked'   => true,
+						'is_unbookmarked' => false,
+						'item_title'      => 'Sample Item Title',
+						'item_content'    => 'This is sample item content for bookmarking...',
+						'item_excerpt'    => 'Sample item excerpt',
+						'item_author'     => 1,
+						'item_date'       => '2024-01-15 10:30:00',
+						'item_status'     => 'publish',
+						'item_permalink'  => 'https://example.com/sample-item-title',
+					];
+					$context = array_merge( $context, $sample_user );
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'sample';
+				}
+
+				return $context;
+				
+			case 'suredash_space_data':
+				$recent_posts = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT * FROM {$wpdb->posts} 
+					WHERE post_status = 'publish' 
+					AND post_type NOT IN ('revision', 'nav_menu_item', 'attachment') 
+					ORDER BY post_date DESC 
+					LIMIT %d",
+						1
+					)
+				);
+
+				if ( ! empty( $recent_posts ) ) {
+					$post = $recent_posts[0];
+
+					$context = [
+						'space_id'     => $post->ID,
+						'space_status' => 'deleted',
+					];
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'live';
+				} else {
+					$context = [
+						'space_id'     => 456,
+						'space_status' => 'deleted',
+					];
+				
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'sample';
+				}
+
+				return $context;
+				
+			default:
+				return $context;
+		}
+	}
+	/**
+	 * Get MailerPress contact lists
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_mailerpress_contact_lists( $data ) {
+		global $wpdb;   
+
+		$lists   = $wpdb->get_results( "SELECT name, list_id FROM {$wpdb->prefix}mailerpress_lists ORDER BY name ASC" );
+		$options = [];
+		
+		if ( ! empty( $lists ) ) {
+			foreach ( $lists as $list ) {
+				$options[] = [
+					'label' => $list->name,
+					'value' => $list->list_id,
+				];
+			}
+		}
+		
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+	
+	/**
+	 * Get MailerPress contact tags
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_mailerpress_contact_tags( $data ) {
+
+		global $wpdb;   
+
+		$tags    = $wpdb->get_results( "SELECT name, tag_id FROM {$wpdb->prefix}mailerpress_tags ORDER BY name ASC" );
+		$options = [];
+		
+		if ( ! empty( $tags ) ) {
+			foreach ( $tags as $tag ) {
+				$options[] = [
+					'label' => $tag->name,
+					'value' => $tag->tag_id,
+				];
+			}
+		}
+		
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Get MailerPress last data
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_mailerpress_last_data( $data ) {
+		$context = [];
+		$term    = isset( $data['search_term'] ) ? $data['search_term'] : '';
+		
+		global $wpdb;
+		
+		switch ( $term ) {
+			case 'mailerpress_contact_data':
+				$recent_contact = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}mailerpress_contact ORDER BY created_at DESC LIMIT 1" );
+				
+				if ( $recent_contact ) {
+					$context                   = [
+						'contact_id'          => $recent_contact->contact_id,
+						'email'               => $recent_contact->email,
+						'first_name'          => $recent_contact->first_name,
+						'last_name'           => $recent_contact->last_name,
+						'subscription_status' => $recent_contact->subscription_status,
+						'opt_in_source'       => $recent_contact->opt_in_source,
+						'opt_in_details'      => $recent_contact->opt_in_details,
+						'created_at'          => $recent_contact->created_at,
+						'updated_at'          => $recent_contact->updated_at,
+					];
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'live';
+				} else {
+					$context                   = [
+						'contact_id'          => 15,
+						'email'               => 'sarah.johnson@example.com',
+						'first_name'          => 'Sarah',
+						'last_name'           => 'Johnson',
+						'subscription_status' => 'subscribed',
+						'opt_in_source'       => 'signup_form',
+						'opt_in_details'      => 'Newsletter signup - Homepage',
+						'created_at'          => '2025-12-01 14:23:17',
+						'updated_at'          => '2025-12-01 14:23:17',
+					];
+					$context['pluggable_data'] = $context;
+					$context['response_type']  = 'sample';
+				}
+				break;
+				
+			case 'list_created':
+				$recent_list = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}mailerpress_lists ORDER BY created_at DESC LIMIT 1" );
+				
+				if ( $recent_list ) {
+					$user_data = get_userdata( 1 );
+					
+					$context['pluggable_data'] = [
+						'wp_user_id'      => $user_data ? $user_data->ID : 1,
+						'user_login'      => $user_data ? $user_data->user_login : 'root',
+						'display_name'    => $user_data ? $user_data->display_name : 'Arian',
+						'user_firstname'  => get_user_meta( $user_data ? $user_data->ID : 1, 'first_name', true ) ? get_user_meta( $user_data ? $user_data->ID : 1, 'first_name', true ) : '',
+						'user_lastname'   => get_user_meta( $user_data ? $user_data->ID : 1, 'last_name', true ) ? get_user_meta( $user_data ? $user_data->ID : 1, 'last_name', true ) : '',
+						'user_email'      => $user_data ? $user_data->user_email : 'dev-email@wpengine.local',
+						'user_registered' => $user_data ? $user_data->user_registered : '2025-07-02 10:50:38',
+						'user_role'       => $user_data ? $user_data->roles : [ 'administrator' ],
+						'list'            => [
+							'id'          => $recent_list->list_id,
+							'name'        => $recent_list->name,
+							'description' => $recent_list->description,
+							'created_at'  => $recent_list->created_at,
+							'updated_at'  => $recent_list->updated_at,
+						],
+					];
+					$context['response_type']  = 'live';
+				} else {
+					$context['pluggable_data'] = [
+						'wp_user_id'      => 1,
+						'user_login'      => 'root',
+						'display_name'    => 'Arian',
+						'user_firstname'  => '',
+						'user_lastname'   => '',
+						'user_email'      => 'dev-email@wpengine.local',
+						'user_registered' => '2025-07-02 10:50:38',
+						'user_role'       => [ 'administrator' ],
+						'list'            => [
+							'id'          => 7,
+							'name'        => 'Weekly Newsletter Subscribers',
+							'description' => 'Subscribers who opted in for weekly newsletter updates',
+							'created_at'  => '2025-12-01 10:15:23',
+							'updated_at'  => '2025-12-01 15:30:45',
+						],
+					];
+					$context['response_type']  = 'sample';
+				}
+				break;
+				
+			case 'contact_added_to_list':
+				$recent_list    = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}mailerpress_lists ORDER BY created_at DESC LIMIT 1" );
+				$recent_contact = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}mailerpress_contact ORDER BY created_at DESC LIMIT 1" );
+				
+				if ( $recent_contact && $recent_list ) {
+					$context['pluggable_data'] = [
+						'contact' => [
+							'id'                  => $recent_contact->contact_id,
+							'email'               => $recent_contact->email,
+							'first_name'          => $recent_contact->first_name,
+							'last_name'           => $recent_contact->last_name,
+							'subscription_status' => $recent_contact->subscription_status,
+							'created_at'          => $recent_contact->created_at,
+							'updated_at'          => $recent_contact->updated_at,
+						],
+						'list'    => [
+							'id'          => $recent_list->list_id,
+							'name'        => $recent_list->name,
+							'description' => $recent_list->description,
+							'created_at'  => $recent_list->created_at,
+							'updated_at'  => $recent_list->updated_at,
+						],
+					];
+					$context['response_type']  = 'live';
+				} else {
+					$context['pluggable_data'] = [
+						'contact' => [
+							'id'                  => 12,
+							'email'               => 'michael.chen@company.com',
+							'first_name'          => 'Michael',
+							'last_name'           => 'Chen',
+							'subscription_status' => 'subscribed',
+							'created_at'          => '2025-12-01 09:15:33',
+							'updated_at'          => '2025-12-01 11:22:47',
+						],
+						'list'    => [
+							'id'          => 7,
+							'name'        => 'Weekly Newsletter Subscribers',
+							'description' => 'Subscribers who opted in for weekly newsletter updates',
+							'created_at'  => '2025-12-01 10:15:23',
+							'updated_at'  => '2025-12-01 15:30:45',
+						],
+					];
+					$context['response_type']  = 'sample';
+				}
+				break;
+				
+			case 'tag_created':
+				$recent_tag = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}mailerpress_tags LIMIT 1" );
+				
+				if ( $recent_tag ) {
+					$context['pluggable_data'] = [
+						'tag_id' => $recent_tag->tag_id,
+						'name'   => $recent_tag->name,
+					];
+					$context['response_type']  = 'live';
+				} else {
+					$context['pluggable_data'] = [
+						'tag_id' => 8,
+						'name'   => 'VIP Customers',
+					];
+					$context['response_type']  = 'sample';
+				}
+				break;
+
+			case 'mailerpress_tag_added_to_contact_data':
+				$recent_contact = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}mailerpress_contact ORDER BY created_at DESC LIMIT 1" );
+				$recent_tag     = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}mailerpress_tags LIMIT 1" );
+				
+				if ( $recent_contact && $recent_tag ) {
+					$user_data = get_userdata( 1 );
+					
+					$context['pluggable_data'] = [
+						'contact' => [
+							'id'                  => $recent_contact->contact_id,
+							'email'               => $recent_contact->email,
+							'first_name'          => $recent_contact->first_name,
+							'last_name'           => $recent_contact->last_name,
+							'subscription_status' => $recent_contact->subscription_status,
+							'created_at'          => $recent_contact->created_at,
+							'updated_at'          => $recent_contact->updated_at,
+						],
+						'tag'     => [
+							'id'   => $recent_tag->tag_id,
+							'name' => $recent_tag->name,
+						],
+					];
+					$context['response_type']  = 'live';
+				} else {
+					$context['pluggable_data'] = [
+						'contact' => [
+							'id'                  => 18,
+							'email'               => 'emma.wilson@startup.io',
+							'first_name'          => 'Emma',
+							'last_name'           => 'Wilson',
+							'subscription_status' => 'subscribed',
+							'created_at'          => '2025-12-01 13:45:12',
+							'updated_at'          => '2025-12-01 16:18:35',
+						],
+						'tag'     => [
+							'id'   => 5,
+							'name' => 'Premium Member',
+						],
+					];
+					$context['response_type']  = 'sample';
+				}
+				break;
+				
+			case 'campaign_created':
+				$recent_campaign = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}mailerpress_campaigns ORDER BY created_at DESC LIMIT 1" );
+				
+				if ( $recent_campaign ) {
+					$user_data = get_userdata( 1 );
+					
+					$context['pluggable_data'] = [
+						'wp_user_id'      => $user_data ? $user_data->ID : 1,
+						'user_login'      => $user_data ? $user_data->user_login : 'root',
+						'display_name'    => $user_data ? $user_data->display_name : 'Arian',
+						'user_firstname'  => get_user_meta( $user_data ? $user_data->ID : 1, 'first_name', true ) ? get_user_meta( $user_data ? $user_data->ID : 1, 'first_name', true ) : '',
+						'user_lastname'   => get_user_meta( $user_data ? $user_data->ID : 1, 'last_name', true ) ? get_user_meta( $user_data ? $user_data->ID : 1, 'last_name', true ) : '',
+						'user_email'      => $user_data ? $user_data->user_email : 'dev-email@wpengine.local',
+						'user_registered' => $user_data ? $user_data->user_registered : '2025-07-02 10:50:38',
+						'user_role'       => $user_data ? $user_data->roles : [ 'administrator' ],
+						'campaign'        => [
+							'campaign_id' => $recent_campaign->campaign_id,
+							'name'        => $recent_campaign->name,
+							'subject'     => $recent_campaign->subject,
+							'status'      => $recent_campaign->status,
+							'type'        => $recent_campaign->type,
+							'created_at'  => $recent_campaign->created_at,
+							'updated_at'  => $recent_campaign->updated_at,
+						],
+					];
+					$context['response_type']  = 'live';
+				} else {
+					$user_data = get_userdata( 1 );
+					
+					$context['pluggable_data'] = [
+						'wp_user_id'      => $user_data ? $user_data->ID : 1,
+						'user_login'      => $user_data ? $user_data->user_login : 'root',
+						'display_name'    => $user_data ? $user_data->display_name : 'Arian',
+						'user_firstname'  => get_user_meta( $user_data ? $user_data->ID : 1, 'first_name', true ) ? get_user_meta( $user_data ? $user_data->ID : 1, 'first_name', true ) : '',
+						'user_lastname'   => get_user_meta( $user_data ? $user_data->ID : 1, 'last_name', true ) ? get_user_meta( $user_data ? $user_data->ID : 1, 'last_name', true ) : '',
+						'user_email'      => $user_data ? $user_data->user_email : 'dev-email@wpengine.local',
+						'user_registered' => $user_data ? $user_data->user_registered : '2025-07-02 10:50:38',
+						'user_role'       => $user_data ? $user_data->roles : [ 'administrator' ],
+						'campaign'        => [
+							'campaign_id' => 23,
+							'name'        => 'Holiday Special Offer 2025',
+							'subject'     => 'Exclusive 30% OFF - Limited Time Holiday Deal!',
+							'status'      => 'draft',
+							'type'        => 'newsletter',
+							'created_at'  => '2025-12-01 16:45:22',
+							'updated_at'  => '2025-12-01 17:12:38',
+						],
+					];
+					$context['response_type']  = 'sample';
+				}
+				break;
+
+		}
+		return $context;
+	}
+	
 
 }
 

@@ -86,17 +86,26 @@ if ( ! class_exists( 'MembershipPlanUpdated' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $user, $old_plan, $new_plan ) {
-			if ( ! class_exists( 'Voxel\Stripe' ) ) {
-				return;
-			}
 			
 			$user_id = method_exists( $user, 'get_id' ) ? $user->get_id() : ( isset( $user->ID ) ? $user->ID : 0 );
 			
+			if ( 0 === $user_id ) {
+				return;
+			}
+			
 			global $wpdb;
 			$context  = WordPress::get_user_context( $user_id );
-			$meta_key = \Voxel\Stripe::is_test_mode() ? 'voxel:test_plan' : 'voxel:plan';
+			$meta_key = ( function_exists( '\Voxel\is_test_mode' ) && \Voxel\is_test_mode() ) ? 'voxel:test_plan' : 'voxel:plan';
 			
-			$results = $wpdb->get_results( $wpdb->prepare( "SELECT m.meta_value AS details FROM {$wpdb->usermeta} as m WHERE m.meta_key = %s AND m.user_id = %d LIMIT 1", $meta_key, $user_id ), ARRAY_A );
+			$sql     = "SELECT
+				m.user_id AS id,
+				m.meta_value AS details
+			FROM wp_usermeta as m
+			LEFT JOIN wp_users AS u ON m.user_id = u.ID
+			WHERE m.meta_key = %s AND m.user_id = %d AND JSON_UNQUOTE( JSON_EXTRACT( m.meta_value, '$.plan' ) ) != 'default'
+			ORDER BY m.user_id DESC
+			LIMIT 25 OFFSET 0";
+			$results = $wpdb->get_results( $wpdb->prepare( $sql, $meta_key, $user_id ), ARRAY_A );// @phpcs:ignore
 			
 			if ( ! empty( $results[0]['details'] ) ) {
 				$context['details'] = json_decode( $results[0]['details'], true );

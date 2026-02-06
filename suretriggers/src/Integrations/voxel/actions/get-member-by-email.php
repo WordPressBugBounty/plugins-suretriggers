@@ -102,7 +102,7 @@ class GetMemberByEmail extends AutomateAction {
 
 		// Get the membership details.
 		$membership = $member->get_membership();
-		$membership = $membership ? $membership->get_details_for_app_event() : [];
+		$membership = $membership ? $membership->to_array() : [];
 
 		// Get the member fields.
 		$member_fields = [];
@@ -126,7 +126,10 @@ class GetMemberByEmail extends AutomateAction {
 		$member_fields['profile_id'] = $profile_id;
 
 		// Get the post fields.
-		$wp_post = \Voxel\Post::force_get( $profile_id );
+		$wp_post = null;
+		if ( $profile_id ) {
+			$wp_post = \Voxel\Post::force_get( $profile_id );
+		}
 
 		// If WP post is available, then get the fields.
 		if ( $wp_post ) {

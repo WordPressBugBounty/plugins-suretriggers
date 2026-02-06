@@ -174,6 +174,7 @@ class RestController {
 				403
 			);
 		}
+		
 		SaasApiToken::save( $access_key );
 		OptionController::set_option( 'connected_email_key', $connected_email_id );
 
@@ -206,7 +207,19 @@ class RestController {
 			'timeout' => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		$response = wp_remote_post( SURE_TRIGGERS_API_SERVER_URL . '/token/verify', $args );
-
+		if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+			$response_body = wp_remote_retrieve_body( $response );
+			$data          = json_decode( $response_body, true );
+			if ( is_array( $data ) && isset( $data['plan_id'] ) ) {
+				// Save plan_id to database.
+				$plan_data = [
+					'plan_id' => sanitize_text_field( $data['plan_id'] ),
+				];
+				
+				update_option( 'suretriggers_lifetime_user_plan_data', $plan_data );
+			}
+		}
+		
 		return $response;
 	}
 

@@ -14,8 +14,8 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: suretriggers.php
-msgid "OttoKit (Formerly SureTriggers)"
-msgstr "OttoKit (anciennement SureTriggers)"
+msgid "OttoKit"
+msgstr "OttoKit"
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
@@ -5019,12 +5019,12 @@ msgid "WS Form LITE is a powerful contact form builder plugin for WordPress."
 msgstr "WS Form LITE est un puissant plugin de création de formulaires de contact pour WordPress."
 
 #: src/Loader.php:92
-msgid "Please Connect OttoKit (Formerly SureTriggers)"
-msgstr "Veuillez connecter OttoKit (anciennement SureTriggers)"
+msgid "Please Connect OttoKit"
+msgstr "Veuillez connecter OttoKit "
 
 #: src/Loader.php:108
-msgid "Please connect to or create your OttoKit (Formerly SureTriggers) account."
-msgstr "Veuillez vous connecter ou créer votre compte OttoKit (anciennement SureTriggers)."
+msgid "Please connect to or create your OttoKit account."
+msgstr "Veuillez vous connecter ou créer votre compte OttoKit ."
 
 #: src/Loader.php:109
 msgid "This will enable you to connect your various plugins, and apps together and automate repetitive tasks."
@@ -5035,16 +5035,16 @@ msgid "Get Started"
 msgstr "Commencer"
 
 #: src/Loader.php:185
-msgid "Connect your plugins and apps together with OttoKit (Formerly SureTriggers)"
-msgstr "Connectez vos plugins et applications ensemble avec OttoKit (anciennement SureTriggers)"
+msgid "Connect your plugins and apps together with OttoKit"
+msgstr "Connectez vos plugins et applications ensemble avec OttoKit "
 
 #: src/Loader.php:189
-msgid "Please connect to or create your OttoKit (Formerly SureTriggers) account. This will enable you to connect your various plugins and apps together and automate repetitive tasks."
-msgstr "Veuillez vous connecter ou créer votre compte OttoKit (anciennement SureTriggers). Cela vous permettra de connecter vos différents plugins et applications ensemble et d'automatiser les tâches répétitives."
+msgid "Please connect to or create your OttoKit account. This will enable you to connect your various plugins and apps together and automate repetitive tasks."
+msgstr "Veuillez vous connecter ou créer votre compte OttoKit . Cela vous permettra de connecter vos différents plugins et applications ensemble et d'automatiser les tâches répétitives."
 
 #: src/Loader.php:191
-msgid "Get Started With OttoKit (Formerly SureTriggers)"
-msgstr "Commencer avec OttoKit (anciennement SureTriggers)"
+msgid "Get Started With OttoKit"
+msgstr "Commencer avec OttoKit "
 
 #: src/Loader.php:192
 msgid "Learn More"
@@ -5105,12 +5105,12 @@ msgid "Disconnect OttoKit"
 msgstr "Déconnecter OttoKit"
 
 #: src/Loader.php:607
-msgid "Please connect your OttoKit (Formerly SureTriggers) account to access registered events and outgoing requests."
-msgstr "Veuillez connecter votre compte OttoKit (anciennement SureTriggers) pour accéder aux événements enregistrés et aux demandes sortantes."
+msgid "Please connect your OttoKit account to access registered events and outgoing requests."
+msgstr "Veuillez connecter votre compte OttoKit  pour accéder aux événements enregistrés et aux demandes sortantes."
 
 #: src/Loader.php:609
-msgid "Connect With OttoKit (Formerly SureTriggers)"
-msgstr "Connecter avec OttoKit (anciennement SureTriggers)"
+msgid "Connect With OttoKit"
+msgstr "Connecter avec OttoKit "
 
 #: src/Loader.php:621
 msgid "Outgoing Requests"

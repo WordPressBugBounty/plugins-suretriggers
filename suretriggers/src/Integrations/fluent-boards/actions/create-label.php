@@ -98,18 +98,19 @@ class CreateLabel extends AutomateAction {
 				'color'    => $color,
 				'bg_color' => $bg_color,
 			],
-			fn( $value ) => '' !== $value
+			function( $value ) {
+				return '' !== $value; }
 		);
 		
 			$label_service = new LabelService();
 			$label         = $label_service->createLabel( $label_data, $board_id );
 		
-			if ( empty( $label ) ) {
-				return [
-					'status'  => 'error',
-					'message' => 'There was an error while creating the label.',
-				];
-			}
+		if ( empty( $label ) ) {
+			return [
+				'status'  => 'error',
+				'message' => 'There was an error while creating the label.',
+			];
+		}
 
 			return $label;
 	}

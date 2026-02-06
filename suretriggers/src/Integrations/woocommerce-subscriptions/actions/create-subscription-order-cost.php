@@ -166,10 +166,37 @@ class CreateSubscriptionOrderCost extends AutomateAction {
 			
 		}
 		if ( isset( $selected_options['product_id'] ) ) {
+			$product          = wc_get_product( intval( $selected_options['product_id'] ) );
+			$billing_period   = WC_Subscriptions_Product::get_period( intval( $selected_options['product_id'] ) );
+			$billing_interval = WC_Subscriptions_Product::get_interval( intval( $selected_options['product_id'] ) );
+			
+			// Handle bundle products - check if it contains subscription products.
+			if ( empty( $billing_period ) && $product && method_exists( $product, 'get_bundled_items' ) ) {
+				$bundled_items = $product->get_bundled_items();
+				foreach ( $bundled_items as $bundled_item ) {
+					$bundled_product_id = $bundled_item->get_product_id();
+					$bundled_period     = WC_Subscriptions_Product::get_period( $bundled_product_id );
+					if ( ! empty( $bundled_period ) ) {
+						$billing_period   = $bundled_period;
+						$billing_interval = WC_Subscriptions_Product::get_interval( $bundled_product_id );
+						break; // Use first subscription product's period.
+					}
+				}
+			}
+			
+			// Fallback for non-subscription products.
+			if ( empty( $billing_period ) ) {
+				$billing_period = 'month';
+			}
+			
+			if ( empty( $billing_interval ) || $billing_interval <= 0 ) {
+				$billing_interval = 1;
+			}
+			
 			$sub_args = [
 				'customer_id'      => $user_id,
-				'billing_period'   => WC_Subscriptions_Product::get_period( intval( $selected_options['product_id'] ) ),
-				'billing_interval' => WC_Subscriptions_Product::get_interval( intval( $selected_options['product_id'] ) ),
+				'billing_period'   => $billing_period,
+				'billing_interval' => $billing_interval,
 			];
 			if ( 'yes' == $selected_options['create_parent_order'] ) {
 				if ( ! empty( $order ) ) {
@@ -189,7 +216,11 @@ class CreateSubscriptionOrderCost extends AutomateAction {
 			}
 
 			$sub->add_product( wc_get_product( intval( $selected_options['product_id'] ) ), intval( $quantity ) );
-			$sub->apply_coupon( $selected_options['coupon_code'] );
+			
+			if ( ! empty( $selected_options['coupon_code'] ) ) {
+				$sub->apply_coupon( $selected_options['coupon_code'] );
+			}
+			
 			$start_date = gmdate( 'Y-m-d H:i:s' );
 
 			$trial_end_days = $selected_options['trial_end_days'];

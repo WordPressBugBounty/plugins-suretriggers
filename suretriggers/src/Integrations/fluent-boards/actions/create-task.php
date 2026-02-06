@@ -106,64 +106,65 @@ class CreateTask extends AutomateAction {
 				'crm_contact_id' => $crm_contact_id,
 				'created_by'     => $created_by,
 			],
-			fn( $value) => '' !== $value
+			function( $value ) {
+				return '' !== $value; }
 		);
-			if ( ! function_exists( 'FluentBoardsApi' ) ) {
-				return [
-					'status'  => 'error',
-					'message' => __( 'FluentBoardsApi function not found.', 'suretriggers' ), 
+		if ( ! function_exists( 'FluentBoardsApi' ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'FluentBoardsApi function not found.', 'suretriggers' ), 
 					
-				];
-			}
+			];
+		}
 			
 			$task = FluentBoardsApi( 'tasks' )->create( $task_data );
-			if ( empty( $task ) ) {
-				return [
-					'status'  => 'error',
-					'message' => 'There is error while creating a Task.',
-				];
-			}
+		if ( empty( $task ) ) {
+			return [
+				'status'  => 'error',
+				'message' => 'There is error while creating a Task.',
+			];
+		}
 			
-			if ( ! empty( $assignees ) ) {
-				if ( ! class_exists( 'FluentBoards\\App\\Services\\TaskService' ) ) {
-					throw new Exception( __( 'FluentBoards TaskService not found.', 'suretriggers' ) );
-				}
-				
-				$assignee_ids = array_map( 'intval', explode( ',', $assignees ) );
-				$task_service = new \FluentBoards\App\Services\TaskService();
-				
-				foreach ( $assignee_ids as $assignee_id ) {
-					$task_service->updateAssignee( $assignee_id, $task );
-				}
-				
-				$task->load( 'assignees' );
+		if ( ! empty( $assignees ) ) {
+			if ( ! class_exists( 'FluentBoards\\App\\Services\\TaskService' ) ) {
+				throw new Exception( __( 'FluentBoards TaskService not found.', 'suretriggers' ) );
 			}
+				
+			$assignee_ids = array_map( 'intval', explode( ',', $assignees ) );
+			$task_service = new \FluentBoards\App\Services\TaskService();
+				
+			foreach ( $assignee_ids as $assignee_id ) {
+				$task_service->updateAssignee( $assignee_id, $task );
+			}
+				
+			$task->load( 'assignees' );
+		}
 	
-			if ( ! empty( $attachment_url ) ) {
-				if ( ! class_exists( '\FluentBoardsPro\App\Services\AttachmentService' ) ) {
-					return [ 'error' => 'AttachmentService class is not available.' ];
-				}
+		if ( ! empty( $attachment_url ) ) {
+			if ( ! class_exists( '\FluentBoardsPro\App\Services\AttachmentService' ) ) {
+				return [ 'error' => 'AttachmentService class is not available.' ];
+			}
 			
-				$urls  = array_map( 'trim', explode( ',', $attachment_url ) );
-				$names = array_map( 'trim', explode( ',', $attachment_name ) );
+			$urls  = array_map( 'trim', explode( ',', $attachment_url ) );
+			$names = array_map( 'trim', explode( ',', $attachment_name ) );
 			
-				$attachment_service = new \FluentBoardsPro\App\Services\AttachmentService();
+			$attachment_service = new \FluentBoardsPro\App\Services\AttachmentService();
 			
-				foreach ( $urls as $index => $url ) {
-					if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
-						$title = ! empty( $names[ $index ] ) ? $names[ $index ] : 'Attachment ' . ( $index + 1 );
+			foreach ( $urls as $index => $url ) {
+				if ( filter_var( $url, FILTER_VALIDATE_URL ) ) {
+					$title = ! empty( $names[ $index ] ) ? $names[ $index ] : 'Attachment ' . ( $index + 1 );
 			
-						$attachment_service->handleAttachment(
-							$task->id,
-							[
-								'type'  => 'url',
-								'url'   => $url,
-								'title' => $title,
-							]
-						);
-					}
+					$attachment_service->handleAttachment(
+						$task->id,
+						[
+							'type'  => 'url',
+							'url'   => $url,
+							'title' => $title,
+						]
+					);
 				}
 			}
+		}
 			
 			return $task;
 	}

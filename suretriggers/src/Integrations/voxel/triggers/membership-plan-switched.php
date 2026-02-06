@@ -72,7 +72,7 @@ if ( ! class_exists( 'MembershipPlanSwitched' ) ) :
 			$triggers[ $this->integration ][ $this->trigger ] = [
 				'label'         => __( 'Membership Plan Switched', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => 'voxel/app-events/membership/plan:switched',
+				'common_action' => 'voxel/app-events/paid_members/plan:switched',
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
 				'accepted_args' => 1,
@@ -88,12 +88,12 @@ if ( ! class_exists( 'MembershipPlanSwitched' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $event ) {
-			if ( ! property_exists( $event, 'user' ) || ! class_exists( 'Voxel\Stripe' ) ) {
+			if ( ! property_exists( $event, 'user' ) ) {
 				return;
 			}
 			global $wpdb;
 			$context            = WordPress::get_user_context( $event->user->get_id() );
-			$meta_key           = \Voxel\Stripe::is_test_mode() ? 'voxel:test_plan' : 'voxel:plan';
+			$meta_key           = ( function_exists( '\Voxel\is_test_mode' ) && \Voxel\is_test_mode() ) ? 'voxel:test_plan' : 'voxel:plan';
 			$sql                = "SELECT
 				m.user_id AS id,
 				m.meta_value AS details

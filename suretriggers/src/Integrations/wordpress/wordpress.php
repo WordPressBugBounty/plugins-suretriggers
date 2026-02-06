@@ -81,7 +81,14 @@ class WordPress extends Integrations {
 	 * @return array
 	 */
 	public static function get_post_context( $id ) {
-		return (array) get_post( $id );
+		$post_data = (array) get_post( $id );
+		
+		// Add permalink to post context.
+		if ( ! empty( $post_data ) && isset( $post_data['ID'] ) ) {
+			$post_data['permalink'] = get_permalink( $post_data['ID'] );
+		}
+		
+		return $post_data;
 	}
 
 	/**

@@ -99,6 +99,11 @@ class CreateTrip extends AutomateAction {
 		$trip_excludes       = isset( $selected_options['trip_excludes'] ) ? sanitize_textarea_field( $selected_options['trip_excludes'] ) : '';
 		$featured_image_url  = isset( $selected_options['featured_image_url'] ) ? esc_url_raw( $selected_options['featured_image_url'] ) : '';
 		$status              = ( isset( $selected_options['status'] ) && in_array( $selected_options['status'], [ 'publish', 'draft' ] ) ) ? $selected_options['status'] : 'publish';
+		$trip_code           = isset( $selected_options['trip_code'] ) ? sanitize_text_field( $selected_options['trip_code'] ) : '';
+		$total_seats         = isset( $selected_options['total_seats'] ) ? intval( $selected_options['total_seats'] ) : 0;
+		$trip_expiry_date    = isset( $selected_options['trip_expiry_date'] ) ? sanitize_text_field( $selected_options['trip_expiry_date'] ) : '';
+		$trip_tags           = isset( $selected_options['trip_tag'] ) ? array_filter( array_map( 'sanitize_text_field', explode( ',', $selected_options['trip_tag'] ) ) ) : [];
+		$itinerary_input     = isset( $selected_options['itinerary'] ) ? $selected_options['itinerary'] : '';
 
 		if ( empty( $trip_name ) ) {
 			return [
@@ -135,7 +140,11 @@ class CreateTrip extends AutomateAction {
 						'overview_section_title' => 'Overview',
 						'tab_content'            => [ '1_wpeditor' => $trip_description ],
 						'trip_highlights_title'  => 'Trip Highlights',
-						'trip_highlights'        => array_map( fn( $h ) => [ 'highlight_text' => $h ], $trip_highlights ),
+						'trip_highlights'        => array_map(
+							function( $h ) {
+								return [ 'highlight_text' => $h ]; },
+							$trip_highlights 
+						),
 						'cost_tab_sec_title'     => 'Includes/Excludes',
 						'cost'                   => [
 							'includes_title' => 'Cost Includes',
@@ -143,6 +152,8 @@ class CreateTrip extends AutomateAction {
 							'excludes_title' => 'Cost Excludes',
 							'cost_excludes'  => $trip_excludes,
 						],
+						'trip_code'              => $trip_code,
+						'trip_expiry_date'       => $trip_expiry_date,
 					],
 				],
 			] 
@@ -151,9 +162,40 @@ class CreateTrip extends AutomateAction {
 		if ( empty( $post_id ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'Failed to create trip.', 'suretriggers' ), 
-				
+				'message' => __( 'Failed to create trip.', 'suretriggers' ),
+
 			];
+		}
+
+		// Update settings with total seats and itinerary if provided.
+		if ( ! empty( $total_seats ) || ! empty( $itinerary_input ) ) {
+			$settings = get_post_meta( $post_id, 'wp_travel_engine_setting', true );
+			if ( ! is_array( $settings ) ) {
+				$settings = [];
+			}
+
+			if ( ! empty( $total_seats ) ) {
+				$settings['trip_maximum_pax']  = $total_seats;
+				$settings['minmax_pax_enable'] = true;
+			}
+
+			if ( ! empty( $itinerary_input ) ) {
+				$itinerary_data = json_decode( $itinerary_input, true );
+				if ( is_array( $itinerary_data ) ) {
+					$itinerary_titles  = [];
+					$itinerary_content = [];
+					foreach ( $itinerary_data as $index => $item ) {
+						$itinerary_titles[ $index ]  = isset( $item['title'] ) ? sanitize_text_field( $item['title'] ) : '';
+						$itinerary_content[ $index ] = isset( $item['content'] ) ? sanitize_textarea_field( $item['content'] ) : '';
+					}
+					$settings['itinerary'] = [
+						'itinerary_title'   => $itinerary_titles,
+						'itinerary_content' => $itinerary_content,
+					];
+				}
+			}
+
+			update_post_meta( $post_id, 'wp_travel_engine_setting', $settings );
 		}
 
 		if ( ! empty( $destination ) ) {
@@ -190,6 +232,24 @@ class CreateTrip extends AutomateAction {
 			}
 		}
 		
+		if ( ! empty( $trip_tags ) ) {
+			foreach ( $trip_tags as $tag ) {
+				$term = term_exists( trim( $tag ), 'trip_tag' );
+				if ( ! $term ) {
+					$term = wp_insert_term( trim( $tag ), 'trip_tag' );
+				}
+				if ( ! is_wp_error( $term ) ) {
+					$term_id = 0;
+					if ( is_array( $term ) && isset( $term['term_id'] ) ) {
+						$term_id = intval( $term['term_id'] );
+					}
+					if ( $term_id ) {
+						wp_set_object_terms( $post_id, $term_id, 'trip_tag', true );
+					}
+				}
+			}
+		}
+
 		if ( ! empty( $featured_image_url ) ) {
 			$this->set_featured_image_from_url( $post_id, $featured_image_url );
 		}

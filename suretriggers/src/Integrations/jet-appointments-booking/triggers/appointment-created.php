@@ -15,7 +15,7 @@ namespace SureTriggers\Integrations\JetAppointmentsBooking\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Traits\SingletonLoader;
-use SureTriggers\Integrations\JetAppointmentsBooking\Traits\JetAppointmentsMetaTrait;
+use SureTriggers\Integrations\JetAppointmentsBooking\JetAppointmentsBooking;
 use JET_APB\Plugin;
 
 if ( ! class_exists( 'AppointmentCreated' ) ) :
@@ -49,7 +49,6 @@ if ( ! class_exists( 'AppointmentCreated' ) ) :
 		public $trigger = 'jet_appointment_created';
 
 		use SingletonLoader;
-		use JetAppointmentsMetaTrait;
 
 		/**
 		 * Constructor
@@ -98,7 +97,7 @@ if ( ! class_exists( 'AppointmentCreated' ) ) :
 				return;
 			}
 
-			$context = $this->get_appointment_context( $appointment_id );
+			$context = JetAppointmentsBooking::get_appointment_context( $appointment_id );
 
 			AutomationController::sure_trigger_handle_trigger(
 				[

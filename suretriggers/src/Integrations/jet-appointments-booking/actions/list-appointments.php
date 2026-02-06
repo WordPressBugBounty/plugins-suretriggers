@@ -15,7 +15,7 @@ namespace SureTriggers\Integrations\JetAppointmentsBooking\Actions;
 
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Traits\SingletonLoader;
-use SureTriggers\Integrations\JetAppointmentsBooking\Traits\JetAppointmentsMetaTrait;
+use SureTriggers\Integrations\JetAppointmentsBooking\JetAppointmentsBooking;
 use JET_APB\Plugin;
 
 /**
@@ -45,7 +45,6 @@ class ListAppointments extends AutomateAction {
 	public $action = 'jet_list_appointments';
 
 	use SingletonLoader;
-	use JetAppointmentsMetaTrait;
 
 	/**
 	 * Register a action.
@@ -98,7 +97,7 @@ class ListAppointments extends AutomateAction {
 			$processed_appointments = [];
 
 			foreach ( $appointments as $appointment ) {
-				$appointment_meta = $this->get_appointment_meta( $appointment['ID'] );
+				$appointment_meta = JetAppointmentsBooking::get_appointment_meta( $appointment['ID'] );
 				$context          = array_merge( $appointment, $appointment_meta );
 
 				if ( ! empty( $context['service'] ) ) {

@@ -190,16 +190,16 @@ class LearnDash extends Integrations {
 	 * @return array Group Data.
 	 */
 	public static function get_group_pluggable_data( $group_id ) {
-		$group = get_post( (int) $group_id, ARRAY_A );
+		$group = get_post( (int) $group_id );
 		if ( ! $group instanceof \WP_Post ) {
 			return [];
 		}
 		return [
-			'ID'      => $group['ID'],
-			'title'   => $group['post_title'],
-			'content' => $group['post_content'],
-			'status'  => $group['post_status'],
-			'GUID'    => $group['guid'],
+			'ID'      => $group->ID,
+			'title'   => $group->post_title,
+			'content' => $group->post_content,
+			'status'  => $group->post_status,
+			'GUID'    => $group->guid,
 		];
 	}
 
@@ -210,17 +210,17 @@ class LearnDash extends Integrations {
 	 * @return array Course Data.
 	 */
 	public static function get_course_pluggable_data( $course_id ) {
-		$course = get_post( (int) $course_id, ARRAY_A );
+		$course = get_post( (int) $course_id );
 		if ( ! $course instanceof \WP_Post ) {
 			return [];
 		}
 		return [
-			'ID'                 => $course['ID'],
-			'title'              => $course['post_title'],
-			'URL'                => get_permalink( $course['ID'] ),
-			'status'             => $course['post_status'],
-			'featured_image_id'  => get_post_meta( $course['ID'], '_thumbnail_id', true ),
-			'featured_image_url' => get_the_post_thumbnail_url( $course['ID'] ),
+			'ID'                 => $course->ID,
+			'title'              => $course->post_title,
+			'URL'                => get_permalink( $course->ID ),
+			'status'             => $course->post_status,
+			'featured_image_id'  => get_post_meta( $course->ID, '_thumbnail_id', true ),
+			'featured_image_url' => get_the_post_thumbnail_url( $course->ID ),
 		];
 	}
 

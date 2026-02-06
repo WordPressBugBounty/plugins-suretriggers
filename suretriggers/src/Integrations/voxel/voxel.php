@@ -196,26 +196,54 @@ class Voxel extends Integrations {
 			// Update event-date field.
 			if ( 'recurring-date' === $field_type || 'event-date' === $field_type ) {
 				$event_date_value = [];
-				$field_value      = [];
 
-				if ( isset( $fields[ $field_key . '_event_start_date' ] ) ) {
-					$event_date_value['start'] = $fields[ $field_key . '_event_start_date' ];
+				if ( isset( $fields[ $field_key ] ) ) {
+					$json_value = $fields[ $field_key ];
+					if ( is_string( $json_value ) && ( strpos( $json_value, '[{' ) === 0 || strpos( $json_value, '{"' ) === 0 ) ) {
+						$decoded_data = json_decode( $json_value, true );
+						if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded_data ) ) {
+							if ( isset( $decoded_data[0] ) ) {
+								$event = $decoded_data[0];
+							} else {
+								$event = $decoded_data;
+							}
+							
+							if ( isset( $event['start'] ) ) {
+								$event_date_value['start'] = $event['start'];
+							}
+							if ( isset( $event['end'] ) ) {
+								$event_date_value['end'] = $event['end'];
+							}
+							if ( isset( $event['multiday'] ) ) {
+								$event_date_value['multiday'] = $event['multiday'];
+							}
+							if ( isset( $event['allday'] ) ) {
+								$event_date_value['allday'] = $event['allday'];
+							}
+						}
+					}
 				}
 
-				if ( isset( $fields[ $field_key . '_event_end_date' ] ) ) {
-					$event_date_value['end'] = $fields[ $field_key . '_event_end_date' ];
-				}
+				if ( empty( $event_date_value ) ) {
+					if ( isset( $fields[ $field_key . '_event_start_date' ] ) ) {
+						$event_date_value['start'] = $fields[ $field_key . '_event_start_date' ];
+					}
 
-				if ( isset( $fields[ $field_key . '_event_frequency' ] ) ) {
-					$event_date_value['frequency'] = $fields[ $field_key . '_event_frequency' ];
-				}
+					if ( isset( $fields[ $field_key . '_event_end_date' ] ) ) {
+						$event_date_value['end'] = $fields[ $field_key . '_event_end_date' ];
+					}
 
-				if ( isset( $fields[ $field_key . '_repeat_every' ] ) ) {
-					$event_date_value['unit'] = $fields[ $field_key . '_repeat_every' ];
-				}
+					if ( isset( $fields[ $field_key . '_event_frequency' ] ) ) {
+						$event_date_value['frequency'] = $fields[ $field_key . '_event_frequency' ];
+					}
 
-				if ( isset( $fields[ $field_key . '_event_until' ] ) ) {
-					$event_date_value['until'] = $fields[ $field_key . '_event_until' ];
+					if ( isset( $fields[ $field_key . '_repeat_every' ] ) ) {
+						$event_date_value['unit'] = $fields[ $field_key . '_repeat_every' ];
+					}
+
+					if ( isset( $fields[ $field_key . '_event_until' ] ) ) {
+						$event_date_value['until'] = $fields[ $field_key . '_event_until' ];
+					}
 				}
 
 				if ( ! empty( $event_date_value ) ) {

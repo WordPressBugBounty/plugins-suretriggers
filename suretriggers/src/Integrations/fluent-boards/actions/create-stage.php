@@ -96,17 +96,18 @@ class CreateStage extends AutomateAction {
 				'board_id' => $board_id,
 				'status'   => $status,    
 			],
-			fn( $value) => '' !== $value
+			function( $value ) {
+				return '' !== $value; }
 		);
 			$stage_service = new StageService();
 			$stage         = $stage_service->createStage( $stage_data, $board_id );
 			
-			if ( empty( $stage ) ) {
-				return [
-					'status'  => 'error',
-					'message' => 'There is error while creating a Stage.',
-				];
-			}
+		if ( empty( $stage ) ) {
+			return [
+				'status'  => 'error',
+				'message' => 'There is error while creating a Stage.',
+			];
+		}
 			return $stage;
 	}
 }

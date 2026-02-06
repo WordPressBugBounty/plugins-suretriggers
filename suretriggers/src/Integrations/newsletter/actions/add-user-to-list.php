@@ -93,7 +93,7 @@ class AddUserToList extends AutomateAction {
 				$user_id    = $user->ID;
 				$newsletter = Newsletter::instance();
 				
-				$subscriber_user = $newsletter->get_user( $user_email );
+				$subscriber_user = (array) $newsletter->get_user( $user_email );
 				if ( empty( $subscriber_user ) ) {
 				
 					$subscriber_user = [

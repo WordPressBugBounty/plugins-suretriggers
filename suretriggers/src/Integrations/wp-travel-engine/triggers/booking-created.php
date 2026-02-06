@@ -95,12 +95,31 @@ if ( ! class_exists( 'BookingCreated' ) ) :
 			$payment_gateway = get_post_meta( $booking_id, 'wp_travel_engine_booking_payment_gateway', true );
 			$payment_details = get_post_meta( $booking_id, 'wp_travel_engine_booking_payment_details', true );
 			
+	
+			$coupon_details = [];
+			
+			$cart_info = get_post_meta( $booking_id, 'cart_info', true );
+			
+			// Check cart_info for discounts.
+			if ( ! empty( $cart_info ) && is_array( $cart_info ) && isset( $cart_info['discounts'] ) ) {
+				foreach ( $cart_info['discounts'] as $discount ) {
+					if ( isset( $discount['name'] ) ) {
+						$coupon_details[] = [
+							'coupon_code'    => $discount['name'],
+							'discount_type'  => isset( $discount['type'] ) ? $discount['type'] : '',
+							'discount_value' => isset( $discount['value'] ) ? $discount['value'] : 0,
+						];
+					}
+				}
+			}
+			
 			$context = [
 				'booking_data'    => $booking_data,
 				'booking_meta'    => $booking_meta,
 				'payment_status'  => $payment_status,
 				'payment_gateway' => $payment_gateway,
 				'payment_details' => $payment_details,
+				'coupon_details'  => $coupon_details,
 			];
 			AutomationController::sure_trigger_handle_trigger(
 				[

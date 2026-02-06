@@ -293,9 +293,24 @@ class WooCommerce extends Integrations {
 				}
 			}
 
+			// Get order data and filter out membership access granted meta.
+			$order_data = $order->get_data();
+			if ( isset( $order_data['meta_data'] ) ) {
+				$filtered_meta_data = [];
+				foreach ( $order_data['meta_data'] as $meta ) {
+					if ( $meta instanceof \WC_Meta_Data ) {
+						$meta_key = $meta->get_data()['key'];
+						if ( '_wc_memberships_access_granted' !== $meta_key ) {
+							$filtered_meta_data[] = $meta;
+						}
+					}
+				}
+				$order_data['meta_data'] = $filtered_meta_data;
+			}
+
 			return array_merge(
 				[ 'product_id' => $product_ids[0] ],
-				$order->get_data(),
+				$order_data,
 				self::get_order_metadata_array( $order ),
 				[
 					'billing_state_fullname'    => $billing_state,
@@ -329,7 +344,12 @@ class WooCommerce extends Integrations {
 		}
 		$meta_data = $order->get_meta_data();
 		foreach ( $meta_data as $meta ) {
-			$metadata[ $meta->get_data()['key'] ] = $meta->get_data()['value'];
+			$meta_key = $meta->get_data()['key'];
+			// Skip WooCommerce Memberships access granted meta.
+			if ( '_wc_memberships_access_granted' === $meta_key ) {
+				continue;
+			}
+			$metadata[ $meta_key ] = $meta->get_data()['value'];
 		}
 		return $metadata;
 	}

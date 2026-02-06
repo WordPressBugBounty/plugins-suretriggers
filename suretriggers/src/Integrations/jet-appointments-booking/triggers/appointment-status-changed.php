@@ -15,7 +15,7 @@ namespace SureTriggers\Integrations\JetAppointmentsBooking\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Traits\SingletonLoader;
-use SureTriggers\Integrations\JetAppointmentsBooking\Traits\JetAppointmentsMetaTrait;
+use SureTriggers\Integrations\JetAppointmentsBooking\JetAppointmentsBooking;
 use JET_APB\Plugin;
 
 if ( ! class_exists( 'AppointmentStatusChanged' ) ) :
@@ -49,7 +49,6 @@ if ( ! class_exists( 'AppointmentStatusChanged' ) ) :
 		public $trigger = 'jet_appointment_status_changed';
 
 		use SingletonLoader;
-		use JetAppointmentsMetaTrait;
 
 		/**
 		 * Constructor
@@ -106,7 +105,7 @@ if ( ! class_exists( 'AppointmentStatusChanged' ) ) :
 				return;
 			}
 
-			$context           = $this->get_appointment_context( $appointment_id, $new_status, $old_status );
+			$context           = JetAppointmentsBooking::get_appointment_context( $appointment_id, $new_status, $old_status );
 			$context['status'] = $new_status;
 
 			AutomationController::sure_trigger_handle_trigger(

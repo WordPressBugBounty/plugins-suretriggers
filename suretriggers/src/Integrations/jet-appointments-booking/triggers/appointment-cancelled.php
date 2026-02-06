@@ -15,7 +15,7 @@ namespace SureTriggers\Integrations\JetAppointmentsBooking\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Traits\SingletonLoader;
-use SureTriggers\Integrations\JetAppointmentsBooking\Traits\JetAppointmentsMetaTrait;
+use SureTriggers\Integrations\JetAppointmentsBooking\JetAppointmentsBooking;
 use JET_APB\Plugin;
 
 if ( ! class_exists( 'AppointmentCancelled' ) ) :
@@ -49,7 +49,6 @@ if ( ! class_exists( 'AppointmentCancelled' ) ) :
 		public $trigger = 'jet_appointment_cancelled';
 
 		use SingletonLoader;
-		use JetAppointmentsMetaTrait;
 
 		/**
 		 * Constructor
@@ -106,7 +105,7 @@ if ( ! class_exists( 'AppointmentCancelled' ) ) :
 				return;
 			}
 
-			$context = $this->get_appointment_context( $appointment_id, $new_status, $old_status );
+			$context = JetAppointmentsBooking::get_appointment_context( $appointment_id, $new_status, $old_status );
 
 			AutomationController::sure_trigger_handle_trigger(
 				[

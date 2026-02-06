@@ -41,7 +41,7 @@ class AddProductAttributes extends AutomateAction {
 	 *
 	 * @var string
 	 */
-	public $action = 'wc_add_product_attribute';
+	public $action = 'wc_add_product_attributes';
 
 	use SingletonLoader;
 
@@ -68,54 +68,380 @@ class AddProductAttributes extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
 	 *
-	 * @return object|array|void
-	 * @throws Exception Exception.
+	 * @return void|array|bool
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$product_id         = $selected_options['product_id'];
-		$attributes         = isset( $selected_options['product_attributes'] ) ? $selected_options['product_attributes'] : '';
-		$variation_enabled  = isset( $selected_options['variation_enabled'] ) && ! empty( $selected_options['variation_enabled'] ) ? 1 : 0;
-		$product_attributes = [];
-
-		$product = wc_get_product( $product_id );
-
-		if ( ! $product instanceof \WC_Product ) {
+		if ( ! function_exists( 'WC' ) || ! function_exists( 'wc_get_product' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => 'The provided ID is not a valid Product ID.',
+				'message' => __( 'WooCommerce not available', 'suretriggers' ),
 			];
 		}
 
-		$product_attribute_data = $product->get_attributes();
-
-		foreach ( $attributes as $attribute => $value ) {
-			if ( isset( $product_attribute_data[ $attribute ] ) ) {
-				$attribute_item = $product_attribute_data[ $attribute ];
-				$attribute_item->set_variation( true );
+		// Validate required fields.
+		foreach ( $fields as $field ) {
+			if ( array_key_exists( 'validationProps', $field ) && empty( $selected_options[ $field['name'] ] ) ) {
+				return [
+					'status'  => 'error',
+					'message' => __( 'Required field is missing: ', 'suretriggers' ) . $field['name'],
+				];
 			}
-			wp_set_object_terms( $product_id, $value['attribute_value'], $value['attribute'], true );
-			$attribute_data = [
-				'name'         => $value['attribute'],
-				'value'        => $value['attribute_value'],
-				'is_visible'   => 1,
-				'is_taxonomy'  => 1,
-				'is_variation' => $variation_enabled,
+		}
+
+		// Get parameters.
+		$product_id = ! empty( $selected_options['product_id'] ) ? intval( $selected_options['product_id'] ) : 0;
+		$attributes = ! empty( $selected_options['attributes'] ) ? $selected_options['attributes'] : '';
+		
+		// Legacy support.
+		if ( empty( $attributes ) && ! empty( $selected_options['product_attributes'] ) ) {
+			$attributes = $selected_options['product_attributes'];
+		}
+
+		if ( empty( $product_id ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Product ID is required', 'suretriggers' ),
+			];
+		}
+
+		if ( empty( $attributes ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Attributes are required', 'suretriggers' ),
+			];
+		}
+
+		try {
+			// Get the product.
+			$product = wc_get_product( $product_id );
+
+			if ( ! $product instanceof \WC_Product ) {
+				return [
+					'status'  => 'error',
+					'message' => __( 'Invalid product ID provided', 'suretriggers' ),
+				];
+			}
+
+			// Get existing product attributes.
+			$existing_attributes = $product->get_attributes();
+			$updated_attributes  = $existing_attributes;
+			$added_attributes    = [];
+			$updated_existing    = [];
+			$failed_attributes   = [];
+
+			// Parse attributes input.
+			if ( is_string( $attributes ) ) {
+				// Try to decode JSON if it's a string.
+				$decoded = json_decode( $attributes, true );
+				if ( json_last_error() === JSON_ERROR_NONE ) {
+					$attributes = $decoded;
+				} else {
+					return [
+						'status'  => 'error',
+						'message' => __( 'Invalid attributes format. Expected JSON array or object.', 'suretriggers' ),
+					];
+				}
+			}
+
+			if ( ! is_array( $attributes ) ) {
+				return [
+					'status'  => 'error',
+					'message' => __( 'Attributes must be an array', 'suretriggers' ),
+				];
+			}
+
+			foreach ( $attributes as $index => $attribute_data ) {
+				// Validate attribute data structure.
+				if ( ! is_array( $attribute_data ) ) {
+					$failed_attributes[] = [
+						'data'  => $attribute_data,
+						'error' => __( 'Invalid attribute data format', 'suretriggers' ),
+					];
+					continue;
+				}
+
+				// Extract attribute information.
+				$attribute_name   = ! empty( $attribute_data['name'] ) ? sanitize_text_field( $attribute_data['name'] ) : '';
+				$attribute_slug   = ! empty( $attribute_data['slug'] ) ? sanitize_text_field( $attribute_data['slug'] ) : '';
+				$attribute_values = ! empty( $attribute_data['values'] ) ? $attribute_data['values'] : '';
+				$is_visible       = isset( $attribute_data['visible'] ) ? (bool) $attribute_data['visible'] : false;
+				$is_variation     = isset( $attribute_data['variation'] ) ? (bool) $attribute_data['variation'] : false;
+				$is_taxonomy      = isset( $attribute_data['taxonomy'] ) ? (bool) $attribute_data['taxonomy'] : false;
+
+				// Legacy field support - check all possible field name variations.
+				if ( empty( $attribute_name ) && ! empty( $attribute_data['attribute'] ) ) {
+					$attribute_name = sanitize_text_field( $attribute_data['attribute'] );
+				}
+				if ( empty( $attribute_name ) && ! empty( $attribute_data['attribute_name'] ) ) {
+					$attribute_name = sanitize_text_field( $attribute_data['attribute_name'] );
+				}
+				
+				if ( empty( $attribute_slug ) && ! empty( $attribute_data['attribute_slug'] ) ) {
+					$attribute_slug = sanitize_text_field( $attribute_data['attribute_slug'] );
+				}
+				
+				if ( empty( $attribute_values ) && ! empty( $attribute_data['attribute_value'] ) ) {
+					$attribute_values = $attribute_data['attribute_value'];
+				}
+				if ( empty( $attribute_values ) && ! empty( $attribute_data['attribute_values'] ) ) {
+					$attribute_values = $attribute_data['attribute_values'];
+				}
+				
+				// Check for other visibility field variations.
+				if ( ! isset( $attribute_data['visible'] ) && isset( $attribute_data['is_visible'] ) ) {
+					$is_visible = (bool) $attribute_data['is_visible'];
+				}
+				
+				// Check for other variation field variations.
+				if ( ! isset( $attribute_data['variation'] ) && isset( $attribute_data['is_variation'] ) ) {
+					$is_variation = (bool) $attribute_data['is_variation'];
+				}
+				
+				// Check for other taxonomy field variations.
+				if ( ! isset( $attribute_data['taxonomy'] ) && isset( $attribute_data['is_taxonomy'] ) ) {
+					$is_taxonomy = (bool) $attribute_data['is_taxonomy'];
+				}
+
+				if ( empty( $attribute_name ) ) {
+					$failed_attributes[] = [
+						'data'  => $attribute_data,
+						'error' => __( 'Attribute name is required', 'suretriggers' ),
+					];
+					continue;
+				}
+
+				if ( empty( $attribute_values ) ) {
+					$failed_attributes[] = [
+						'data'  => $attribute_data,
+						'error' => __( 'Attribute values are required', 'suretriggers' ),
+					];
+					continue;
+				}
+
+				// Generate slug if not provided.
+				if ( empty( $attribute_slug ) ) {
+					$attribute_slug = sanitize_title( $attribute_name );
+				}
+
+				// Prepare values array.
+				if ( is_string( $attribute_values ) ) {
+					// Try multiple separators - pipe, comma, semicolon.
+					if ( strpos( $attribute_values, '|' ) !== false ) {
+						$values_array = array_map( 'trim', explode( '|', $attribute_values ) );
+					} elseif ( strpos( $attribute_values, ',' ) !== false ) {
+						$values_array = array_map( 'trim', explode( ',', $attribute_values ) );
+					} elseif ( strpos( $attribute_values, ';' ) !== false ) {
+						$values_array = array_map( 'trim', explode( ';', $attribute_values ) );
+					} else {
+						$values_array = [ trim( $attribute_values ) ];
+					}
+				} elseif ( is_array( $attribute_values ) ) {
+					$values_array = array_map( 'trim', $attribute_values );
+				} else {
+					$values_array = [ trim( $attribute_values ) ];
+				}
+
+				// Remove empty values.
+				$values_array = array_filter(
+					$values_array,
+					function( $value ) {
+						return ! empty( $value );
+					}
+				);
+
+				if ( empty( $values_array ) ) {
+					$failed_attributes[] = [
+						'data'  => $attribute_data,
+						'error' => __( 'No valid attribute values provided', 'suretriggers' ),
+					];
+					continue;
+				}
+
+				try {
+					$attribute_key = sanitize_title( $attribute_name );
+					$taxonomy_name = '';
+					if ( $is_taxonomy ) {
+						// Handle taxonomy-based attributes.
+						
+						// Check if it's a global attribute.
+						if ( strpos( $attribute_slug, 'pa_' ) === 0 ) {
+							$taxonomy_name = $attribute_slug;
+						} else {
+							$taxonomy_name = 'pa_' . $attribute_slug;
+						}
+
+						// Ensure taxonomy exists - create if it doesn't exist.
+						if ( ! taxonomy_exists( $taxonomy_name ) ) {
+							
+							// First create the attribute in WooCommerce.
+							$attribute_args = [
+								'name'         => $attribute_name,
+								'slug'         => str_replace( 'pa_', '', $taxonomy_name ),
+								'type'         => 'select',
+								'order_by'     => 'menu_order',
+								'has_archives' => false,
+							];
+							
+							$attribute_id = wc_create_attribute( $attribute_args );
+							
+							if ( is_wp_error( $attribute_id ) ) {
+								$failed_attributes[] = [
+									'data'  => $attribute_data,
+									'error' => sprintf( __( 'Failed to create attribute: %s', 'suretriggers' ), $attribute_id->get_error_message() ),
+								];
+								continue;
+							}
+							
+							// Register the taxonomy.
+							register_taxonomy(
+								$taxonomy_name,
+								'product',
+								[
+									'labels'       => [
+										'name' => $attribute_name,
+									],
+									'hierarchical' => false,
+									'public'       => false,
+									'show_ui'      => false,
+									'query_var'    => true,
+									'rewrite'      => false,
+								]
+							);
+						}
+
+						// Set terms for the product.
+						$term_ids = [];
+						foreach ( $values_array as $value ) {
+							$term = get_term_by( 'name', $value, $taxonomy_name );
+							if ( ! $term ) {
+								// Try to create the term if it doesn't exist.
+								$term_result = wp_insert_term( $value, $taxonomy_name );
+								if ( ! is_wp_error( $term_result ) ) {
+									$term_ids[] = $term_result['term_id'];
+								}
+							} else {
+								$term_ids[] = $term->term_id;
+							}
+						}
+
+						if ( ! empty( $term_ids ) ) {
+							wp_set_object_terms( $product_id, $term_ids, $taxonomy_name );
+						}
+
+						// Create WC_Product_Attribute object.
+						$attribute_object = new \WC_Product_Attribute();
+						$attribute_object->set_name( $taxonomy_name );
+						$attribute_object->set_options( $term_ids );
+						$attribute_object->set_visible( $is_visible );
+						$attribute_object->set_variation( $is_variation );
+
+						$updated_attributes[ $taxonomy_name ] = $attribute_object;
+
+					} else {
+						// Handle custom (non-taxonomy) attributes.
+
+						// Create WC_Product_Attribute object.
+						$attribute_object = new \WC_Product_Attribute();
+						$attribute_object->set_name( $attribute_name );
+						$attribute_object->set_options( $values_array );
+						$attribute_object->set_visible( $is_visible );
+						$attribute_object->set_variation( $is_variation );
+
+						$updated_attributes[ $attribute_key ] = $attribute_object;
+					}
+
+					// Track what was added/updated.
+					if ( isset( $existing_attributes[ $is_taxonomy ? $taxonomy_name : $attribute_key ] ) ) {
+						$updated_existing[] = [
+							'name'        => $attribute_name,
+							'slug'        => $is_taxonomy ? $taxonomy_name : $attribute_key,
+							'values'      => $values_array,
+							'is_taxonomy' => $is_taxonomy,
+							'visible'     => $is_visible,
+							'variation'   => $is_variation,
+						];
+					} else {
+						$added_attributes[] = [
+							'name'        => $attribute_name,
+							'slug'        => $is_taxonomy ? $taxonomy_name : $attribute_key,
+							'values'      => $values_array,
+							'is_taxonomy' => $is_taxonomy,
+							'visible'     => $is_visible,
+							'variation'   => $is_variation,
+						];
+					}               
+				} catch ( Exception $e ) {
+					$failed_attributes[] = [
+						'data'  => $attribute_data,
+						'error' => $e->getMessage(),
+					];
+				}
+			}
+
+			// Update product attributes.
+			$product->set_attributes( $updated_attributes );
+			$product->save();
+
+			// Clear caches.
+			wc_delete_product_transients( $product_id );
+			wp_cache_delete( 'wc_product_' . $product_id, 'products' );
+
+			// Get updated product data.
+			$product = wc_get_product( $product_id ); // Refresh product data.
+			if ( ! $product ) {
+				return [
+					'status'  => 'error',
+					'message' => __( 'Failed to retrieve updated product', 'suretriggers' ),
+				];
+			}
+			$final_attributes = $product->get_attributes();
+
+			$formatted_attributes = [];
+			foreach ( $final_attributes as $key => $attribute ) {
+				if ( $attribute instanceof \WC_Product_Attribute ) {
+					$formatted_attributes[] = [
+						'name'        => $attribute->get_name(),
+						'slug'        => $key,
+						'values'      => $attribute->get_options(),
+						'is_taxonomy' => $attribute->is_taxonomy(),
+						'visible'     => $attribute->get_visible(),
+						'variation'   => $attribute->get_variation(),
+					];
+				}
+			}
+
+			$response = [
+				'status'             => 'success',
+				'message'            => sprintf(
+					__( 'Processed %1$d attributes: %2$d added, %3$d updated, %4$d failed', 'suretriggers' ),
+					count( $attributes ),
+					count( $added_attributes ),
+					count( $updated_existing ),
+					count( $failed_attributes )
+				),
+				'product_id'         => $product_id,
+				'product_name'       => $product->get_name(),
+				'product_type'       => $product->get_type(),
+				'added_attributes'   => $added_attributes,
+				'updated_attributes' => $updated_existing,
+				'failed_attributes'  => $failed_attributes,
+				'all_attributes'     => $formatted_attributes,
+				'attributes_count'   => count( $formatted_attributes ),
+				'summary'            => [
+					'total_processed' => count( $attributes ),
+					'added'           => count( $added_attributes ),
+					'updated'         => count( $updated_existing ),
+					'failed'          => count( $failed_attributes ),
+					'final_count'     => count( $formatted_attributes ),
+				],
 			];
 
-			$product_attributes[ $value['attribute'] ] = $attribute_data;
-		}
-		$product->set_attributes( $product_attribute_data );
+			return $response;
 
-		$product_attributes = get_post_meta( $product_id, '_product_attributes', false );
-		if ( is_array( $product_attributes ) ) {
-			$product_attributes = ( ! empty( $product_attributes[0] ) ) ? array_merge( $product_attributes[0], $product_attributes ) : $product_attributes;
-
-			update_post_meta( $product_id, '_product_attributes', $product_attributes );
-	
+		} catch ( Exception $e ) {
 			return [
-				'status'  => 'success',
-				'message' => esc_html__( 'Attributes added succcessfully.', 'suretriggers' ), 
-				
+				'status'  => 'error',
+				'message' => __( 'Error adding product attributes: ', 'suretriggers' ) . $e->getMessage(),
 			];
 		}
 	}
