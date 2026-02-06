@@ -457,6 +457,41 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * Search SureDash Badges.
+	 *
+	 * @param array $data query params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_suredash_badges( $data ) {
+		if ( ! defined( 'SUREDASHBOARD_VER' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$portal_settings = get_option( defined( 'SUREDASHBOARD_SETTINGS' ) ? SUREDASHBOARD_SETTINGS : 'portal_admin_settings', [] );
+		$all_badges      = is_array( $portal_settings ) && isset( $portal_settings['user_badges'] ) && is_array( $portal_settings['user_badges'] ) ? $portal_settings['user_badges'] : [];
+
+		$options = [];
+		foreach ( $all_badges as $badge ) {
+			if ( is_array( $badge ) && isset( $badge['id'], $badge['name'] ) ) {
+				$options[] = [
+					'label' => (string) $badge['name'],
+					'value' => (string) $badge['id'],
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
 	 * Search Course.
 	 *
 	 * @param array $data quesry params.
@@ -25544,7 +25579,41 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		}
 		return $context;
 	}
-	
+
+	/**
+	 * Get WPCafe Branch List.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_wpcafe_branch_list( $data ) {
+		$options = [];
+
+		if ( ! class_exists( 'WpCafe\Models\Location_Model' ) ) {
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		}
+
+		$locations = \WpCafe\Models\Location_Model::all();
+
+		if ( ! empty( $locations ) ) {
+			foreach ( $locations as $location ) {
+				$options[] = [
+					'label' => $location->restaurant_name,
+					'value' => $location->term_id,
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
 
 }
 

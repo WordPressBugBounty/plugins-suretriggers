@@ -1,3 +1,10 @@
+Version 1.1.20 - Friday, 6th February 2026
+- New: Added "WPCafe" Integration
+- New: Added "New User Approve" Integration
+- Improvement: "Tutor LMS" – Added new "Quiz Submitted" Trigger
+- Improvement: "SureDash" – Added new Actions
+- Improvement: "Voxel" – Added new "Assign Listing Plan to User" Action
+
 Version 1.1.19 - Tuesday, 27th January 2026
 - New: Added "FluentAffiliate" Integration
 - Improvement: "Advanced Coupons" – Added new "Create Coupon" Action

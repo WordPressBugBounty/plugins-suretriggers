@@ -114,9 +114,12 @@ class AddNote extends AutomateAction {
 
 		$contact_id = $contact->id;
 
+
+		$description = preg_replace( '/<span\s+data-lexical-tag="true"\s+class="tag">(.*?)<\/span>/', '$1', $selected_options['description'] );
+
 		$note = [
 			'title'         => $selected_options['title'],
-			'description'   => $selected_options['description'],
+			'description'   => $description,
 			'type'          => $selected_options['type'],
 			'created_at'    => isset( $selected_options['created_at'] ) ? $selected_options['created_at'] : current_time( 'mysql' ),
 			'subscriber_id' => $contact_id,

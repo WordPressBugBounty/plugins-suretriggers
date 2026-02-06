@@ -3,12 +3,12 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.9
-Stable tag: 1.1.19
+Stable tag: 1.1.20
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Experience the power of automation within WordPress: Connect 1,200+ apps, automate manual tasks, and unlock your full potential. Get started now!
+Experience the power of automation within WordPress: Connect 1,300+ apps, automate manual tasks, and unlock your full potential. Get started now!
 
 == Description ==
 
@@ -334,6 +334,13 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.20 - Friday, 6th February 2026 =
+* New: Added "WPCafe" Integration
+* New: Added "New User Approve" Integration
+* Improvement: "Tutor LMS" – Added new "Quiz Submitted" Trigger
+* Improvement: "SureDash" – Added new Actions
+* Improvement: "Voxel" – Added new "Assign Listing Plan to User" Action
+
 = Version 1.1.19 - Tuesday, 27th January 2026 =
 * New: Added "FluentAffiliate" Integration
 * Improvement: "Advanced Coupons" – Added new "Create Coupon" Action

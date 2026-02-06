@@ -242,9 +242,20 @@ class UpdateTrip extends AutomateAction {
 		// Update itinerary.
 		if ( isset( $selected_options['itinerary'] ) && '' !== $selected_options['itinerary'] ) {
 			$itinerary_input = $selected_options['itinerary'];
-			$itinerary_data  = json_decode( $itinerary_input, true );
 
-			if ( is_array( $itinerary_data ) ) {
+			// Handle both array and JSON string input.
+			if ( is_array( $itinerary_input ) ) {
+				$itinerary_data = $itinerary_input;
+			} else {
+				$itinerary_data = json_decode( $itinerary_input, true );
+
+				// If json_decode fails, try with stripslashes (handles escaped quotes like \").
+				if ( null === $itinerary_data ) {
+					$itinerary_data = json_decode( stripslashes( $itinerary_input ), true );
+				}
+			}
+
+			if ( is_array( $itinerary_data ) && ! empty( $itinerary_data ) ) {
 				$itinerary_titles  = [];
 				$itinerary_content = [];
 
