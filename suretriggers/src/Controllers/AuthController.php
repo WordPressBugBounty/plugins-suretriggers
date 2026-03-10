@@ -73,7 +73,7 @@ class AuthController {
 			return;
 		}
 
-		if ( $this->secret_key !== $secret_key ) {
+		if ( ! is_string( $this->secret_key ) || ! hash_equals( $this->secret_key, $secret_key ) ) {
 			return RestController::error_message( 'Invalid secret key.' );
 		}
 

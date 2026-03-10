@@ -1,3 +1,10 @@
+Version 1.1.21 - Tuesday, 10th March 2026
+- Improvement: "Kadence Forms" – Added new "Form Submitted (Specific Form)" Trigger
+- Improvement: "WooCommerce" – Added new Actions
+- Improvement: "LearnDash" – Added new "Find User's Group Leader Groups" Action
+- Improvement: "SureForms" – Updated the "Form Submitted" trigger to support the Generate PDF feature
+- Improvement: "SureDash" – Added new "Create Space" Action
+
 Version 1.1.20 - Friday, 6th February 2026
 - New: Added "WPCafe" Integration
 - New: Added "New User Approve" Integration

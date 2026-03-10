@@ -171,22 +171,37 @@ class SureTriggersWebhookRequestsTable extends WP_List_Table {
 			}
 		}
 
-		$status_filter = isset( $_REQUEST['status_filter'] ) ? sanitize_text_field( $_REQUEST['status_filter'] ) : '';
-		$orderby       = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
-		$order         = isset( $_REQUEST['order'] ) ? sanitize_text_field( $_REQUEST['order'] ) : 'ASC';
-		$per_page      = $this->get_items_per_page( 'webhook_requests_per_page', 10 );
-		$current_page  = $this->get_pagenum();
-
-		$where = '';
-		if ( ! empty( $status_filter ) ) {
-			$where = $wpdb->prepare( 'WHERE status = %s', $status_filter );
-		}
+		$status_filter   = isset( $_REQUEST['status_filter'] ) ? sanitize_text_field( $_REQUEST['status_filter'] ) : '';
+		$allowed_orderby = [ 'id', 'response_code', 'status', 'error_info', 'created_at' ];
+		$orderby_input   = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
+		$orderby         = in_array( $orderby_input, $allowed_orderby, true ) ? $orderby_input : 'id';
+		$order           = isset( $_REQUEST['order'] ) && 'DESC' === strtoupper( sanitize_text_field( $_REQUEST['order'] ) ) ? 'DESC' : 'ASC';
+		$per_page        = $this->get_items_per_page( 'webhook_requests_per_page', 10 );
+		$current_page    = $this->get_pagenum();
 
 		$offset = ( $current_page - 1 ) * $per_page;
 
-		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT id, response_code, request_data, status, error_info, created_at FROM $this->table_name $where ORDER BY %s %s LIMIT %d OFFSET %d", $orderby, $order, $per_page, $offset ), ARRAY_A );  //phpcs:ignore
-
-		$total_items = $wpdb->get_var( "SELECT COUNT(*) FROM {$this->table_name} $where" );  //phpcs:ignore
+		$total_items = $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COUNT(*) FROM ' . esc_sql( $this->table_name ) . " WHERE (%s = '' OR status = %s)",
+				$status_filter,
+				$status_filter
+			)
+		);
+		$this->items = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT id, response_code, request_data, status, error_info, created_at FROM '
+				. esc_sql( $this->table_name )
+				. " WHERE (%s = '' OR status = %s) ORDER BY "
+				. esc_sql( $orderby ) . ' ' . esc_sql( $order )
+				. ' LIMIT %d OFFSET %d',
+				$status_filter,
+				$status_filter,
+				$per_page,
+				$offset
+			),
+			ARRAY_A
+		);
 
 		$this->set_pagination_args(
 			[

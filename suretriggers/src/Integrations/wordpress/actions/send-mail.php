@@ -89,7 +89,7 @@ class SendMail extends AutomateAction {
 		$cc_email   = isset( $selected_options['cc_email'] ) ? sanitize_email( $selected_options['cc_email'] ) : '';
 		$bcc_email  = isset( $selected_options['bcc_email'] ) ? sanitize_email( $selected_options['bcc_email'] ) : '';
 		$from_email = isset( $selected_options['from_email'] ) ? sanitize_email( $selected_options['from_email'] ) : '';
-		$from_name  = isset( $selected_options['from_name'] ) ? $selected_options['from_name'] : '';
+		$from_name  = isset( $selected_options['from_name'] ) ? sanitize_text_field( $selected_options['from_name'] ) : '';
 
 		$to_email = $result_arr['to_email'];
 		$is_valid = WordPress::validate_email( $to_email );

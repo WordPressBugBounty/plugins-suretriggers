@@ -77,11 +77,7 @@ class RestController {
 			return false;
 		}
 
-		if ( $this->secret_key !== $secret_key ) {
-			return false;
-		}
-
-		return hash_equals( $this->secret_key, $secret_key );
+		return ! empty( $this->secret_key ) && is_string( $this->secret_key ) && hash_equals( $this->secret_key, $secret_key );
 	}
 
 	/**
@@ -549,7 +545,7 @@ class RestController {
 	 * When test trigger is initiated on Sass then execute this endpoint to create a transient for identifying trigger event.
 	 *
 	 * @param WP_REST_Request $request Request data.
-	 * @return void
+	 * @return WP_REST_Response
 	 */
 	public function test_triggers( $request ) {
 		$test_triggers = (array) OptionController::get_option( 'test_triggers' );
@@ -568,7 +564,7 @@ class RestController {
 			);
 			OptionController::set_option( 'test_triggers', $test_triggers );
 
-			return;
+			return new WP_REST_Response( [ 'success' => true ], 200 );
 		}
 
 		$test_triggers[]   = $event;
@@ -582,6 +578,8 @@ class RestController {
 		}
 
 		OptionController::set_option( 'test_triggers', $tmp_test_triggers );
+
+		return new WP_REST_Response( [ 'success' => true ], 200 );
 	}
 
 	/**

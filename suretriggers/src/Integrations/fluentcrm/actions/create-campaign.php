@@ -98,10 +98,74 @@ class CreateCampaign extends AutomateAction {
 			];
 		}
 
-		// Create campaign with minimal data.
+		// Optional email fields.
+		$email_subject    = isset( $selected_options['email_subject'] ) ? sanitize_text_field( $selected_options['email_subject'] ) : '';
+		$email_pre_header = isset( $selected_options['email_pre_header'] ) ? sanitize_text_field( $selected_options['email_pre_header'] ) : '';
+		$html_content     = isset( $selected_options['html_content'] ) ? wp_kses_post( $selected_options['html_content'] ) : '';
+
+		// Recipient lists/tags — paired by index, matching the send-email actions' convention.
+		$selected_list = isset( $selected_options['recipient_lists'] ) ? $selected_options['recipient_lists'] : 'all';
+		$selected_tag  = isset( $selected_options['recipient_tags'] ) ? $selected_options['recipient_tags'] : 'all';
+
+		$subscribers[] = [
+			'list' => is_numeric( $selected_list ) ? (string) $selected_list : $selected_list,
+			'tag'  => is_numeric( $selected_tag ) ? (string) $selected_tag : $selected_tag,
+		];
+
+		if ( is_array( $selected_list ) && is_array( $selected_tag ) ) {
+			$max_count   = max( count( $selected_list ), count( $selected_tag ) );
+			$subscribers = [];
+			for ( $i = 0; $i < $max_count; $i++ ) {
+				$raw_list      = isset( $selected_list[ $i ]['value'] ) ? $selected_list[ $i ]['value'] : '';
+				$raw_tag       = isset( $selected_tag[ $i ]['value'] ) ? $selected_tag[ $i ]['value'] : '';
+				$subscribers[] = [
+					'list' => is_numeric( $raw_list ) ? (string) $raw_list : $raw_list,
+					'tag'  => is_numeric( $raw_tag ) ? (string) $raw_tag : $raw_tag,
+				];
+			}
+		}
+
+		// Excluded lists/tags — same pairing convention.
+		$excluded_list = isset( $selected_options['excluded_lists'] ) ? $selected_options['excluded_lists'] : '';
+		$excluded_tag  = isset( $selected_options['excluded_tags'] ) ? $selected_options['excluded_tags'] : '';
+
+		$excluded_subscribers = null;
+		if ( ! empty( $excluded_list ) || ! empty( $excluded_tag ) ) {
+			$excluded_subscribers[] = [
+				'list' => is_numeric( $excluded_list ) ? (string) $excluded_list : $excluded_list,
+				'tag'  => is_numeric( $excluded_tag ) ? (string) $excluded_tag : $excluded_tag,
+			];
+
+			if ( is_array( $excluded_list ) && is_array( $excluded_tag ) ) {
+				$max_count            = max( count( $excluded_list ), count( $excluded_tag ) );
+				$excluded_subscribers = [];
+				for ( $i = 0; $i < $max_count; $i++ ) {
+					$raw_list               = isset( $excluded_list[ $i ]['value'] ) ? $excluded_list[ $i ]['value'] : '';
+					$raw_tag                = isset( $excluded_tag[ $i ]['value'] ) ? $excluded_tag[ $i ]['value'] : '';
+					$excluded_subscribers[] = [
+						'list' => is_numeric( $raw_list ) ? (string) $raw_list : $raw_list,
+						'tag'  => is_numeric( $raw_tag ) ? (string) $raw_tag : $raw_tag,
+					];
+				}
+			}
+		}
+
+		// Build base campaign data — no settings here so boot() applies all FluentCRM defaults.
 		$campaign_data = [
 			'title' => $campaign_name,
 		];
+
+		if ( ! empty( $email_subject ) ) {
+			$campaign_data['email_subject'] = $email_subject;
+		}
+
+		if ( ! empty( $email_pre_header ) ) {
+			$campaign_data['email_pre_header'] = $email_pre_header;
+		}
+
+		if ( ! empty( $html_content ) ) {
+			$campaign_data['email_body'] = $html_content;
+		}
 
 		try {
 			$campaign = Campaign::create( $campaign_data );
@@ -112,6 +176,16 @@ class CreateCampaign extends AutomateAction {
 					'message' => __( 'Failed to create campaign.', 'suretriggers' ),
 				];
 			}
+
+			// Merge subscriber settings into boot() defaults (mailer_settings, template_config etc.)
+			// using the same wp_parse_args pattern as FluentCRM's own draftRecipients().
+			$subscriber_settings = [
+				'subscribers'         => $subscribers,
+				'excludedSubscribers' => $excluded_subscribers,
+				'sending_filter'      => 'list_tag',
+			];
+			$campaign->settings  = wp_parse_args( $subscriber_settings, is_array( $campaign->settings ) ? $campaign->settings : [] );
+			$campaign->save();
 
 			return [
 				'status'          => 'success',

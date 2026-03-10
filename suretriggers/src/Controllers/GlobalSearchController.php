@@ -492,6 +492,50 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * Search SureDash Space Groups.
+	 *
+	 * @param array $data query params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_suredash_space_groups( $data ) {
+		if ( ! defined( 'SUREDASHBOARD_TAXONOMY' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$term_args = [
+			'taxonomy'   => SUREDASHBOARD_TAXONOMY,
+			'hide_empty' => false,
+			'number'     => 100,
+		];
+
+		if ( ! empty( $data['search'] ) ) {
+			$term_args['search'] = sanitize_text_field( $data['search'] );
+		}
+
+		$terms = get_terms( $term_args );
+
+		$options = [];
+		if ( ! is_wp_error( $terms ) && is_array( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$options[] = [
+					'label' => $term->name,
+					'value' => $term->term_id,
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
 	 * Search Course.
 	 *
 	 * @param array $data quesry params.
@@ -12491,27 +12535,30 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		}
 		if ( is_array( $sections ) && count( $sections ) > 0 ) {
 			foreach ( $sections as $section ) {
-				$post_types_string = \memberpress\courses\models\Lesson::lesson_cpts();
-				$post_types_string = implode( "','", $post_types_string );
+				$post_types   = \memberpress\courses\models\Lesson::lesson_cpts();
+				$placeholders = implode( ', ', array_fill( 0, count( $post_types ), '%s' ) );
 
-				$query = $wpdb->prepare(
-					"SELECT * FROM {$wpdb->posts} AS p
-					JOIN {$wpdb->postmeta} AS pm
-						ON p.ID = pm.post_id
-						AND pm.meta_key = %s
-						AND pm.meta_value = %s
-					JOIN {$wpdb->postmeta} AS pm_order
-						ON p.ID = pm_order.post_id
-						AND pm_order.meta_key = %s
-					WHERE p.post_type in ( %s ) AND p.post_status <> 'trash'
-					ORDER BY pm_order.meta_value * 1",
-					models\Lesson::$section_id_str,
-					$section['id'],
-					models\Lesson::$lesson_order_str,
-					stripcslashes( $post_types_string )
+				$sql  = "SELECT * FROM {$wpdb->posts} AS p
+						JOIN {$wpdb->postmeta} AS pm
+							ON p.ID = pm.post_id
+							AND pm.meta_key = %s
+							AND pm.meta_value = %s
+						JOIN {$wpdb->postmeta} AS pm_order
+							ON p.ID = pm_order.post_id
+							AND pm_order.meta_key = %s
+						WHERE p.post_type in ( {$placeholders} ) AND p.post_status <> 'trash'
+						ORDER BY pm_order.meta_value * 1";
+				$args = array_merge(
+					[
+						models\Lesson::$section_id_str,
+						$section['id'],
+						models\Lesson::$lesson_order_str,
+					],
+					$post_types
 				);
 
-				$db_lessons = $wpdb->get_results( stripcslashes( $query ) ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$query      = $wpdb->prepare( $sql, $args ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$db_lessons = $wpdb->get_results( $query ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 				foreach ( $db_lessons as $lesson ) {
 					$options[] = [
 						'label' => $section['title'] . '->' . $lesson->post_title,
@@ -15845,22 +15892,22 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'action_name'               => 'Visit us on Instagram',
 		];
 
-		$giveaway_id = isset( $data['filter']['giveaway_id'] ) ? $data['filter']['giveaway_id']['value'] : null;
-		$action_id   = isset( $data['filter']['action_id'] ) ? $data['filter']['action_id']['value'] : null;
+		$giveaway_id = isset( $data['filter']['giveaway_id'] ) ? absint( $data['filter']['giveaway_id']['value'] ) : 0;
+		$action_id   = isset( $data['filter']['action_id'] ) ? sanitize_text_field( (string) $data['filter']['action_id']['value'] ) : '';
 
 		$query = "SELECT contestant_id, giveaway_id, action_id, meta FROM {$wpdb->prefix}rafflepress_entries";
 
-		if ( $giveaway_id && -1 != $giveaway_id ) {
-			$query .= ' WHERE giveaway_id = ' . $giveaway_id;
+		if ( $giveaway_id && -1 !== $giveaway_id ) {
+			$query .= $wpdb->prepare( ' WHERE giveaway_id = %d', $giveaway_id );
 
-			if ( $action_id ) {
-				$query .= " AND action_id = '" . $action_id . "'";
+			if ( '' !== $action_id ) {
+				$query .= $wpdb->prepare( ' AND action_id = %s', $action_id );
 			}
 		}
 
 		$query .= ' ORDER BY created_at DESC LIMIT 1';
 
-		$giveaway_data = $wpdb->get_row( $query, ARRAY_A ); // @phpcs:ignore
+		$giveaway_data = $wpdb->get_row( $query, ARRAY_A ); // @phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		if ( ! empty( $giveaway_data ) ) {
 			$pluggable_data = array_merge(
@@ -19249,8 +19296,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	 * @return bool
 	 */
 	public static function is_serialized( $data ) {
-		$unserialized = unserialize( $data );
-		if ( 'b:0;' === $data || false !== $unserialized ) {
+		if ( is_serialized( $data ) ) {
 			return true;
 		} else {
 			return false;
@@ -25608,6 +25654,38 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			}
 		}
 
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Search Kadence Forms.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_kadence_forms( $data ) {
+		$options = [];
+
+		$args = [
+			'post_type'   => 'kadence_form',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+		];
+
+		$forms = get_posts( $args );
+
+		if ( ! empty( $forms ) ) {
+			foreach ( $forms as $form ) {
+				$options[] = [
+					'label' => $form->post_title,
+					'value' => $form->ID,
+				];
+			}
+		}
+		
 		return [
 			'options' => $options,
 			'hasMore' => false,

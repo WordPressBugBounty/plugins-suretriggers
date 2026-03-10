@@ -238,10 +238,14 @@ class SendEmailToListContacts extends AutomateAction {
 			]
 		);
 		if ( is_array( $response_context ) ) {
+			// Remove backslash escaping from email body to prevent image URLs
+			// from being wrapped with %5C%22 (URL-encoded \") in the campaign.
+			$email_body = isset( $selected_options['email_body'] ) ? wp_unslash( $selected_options['email_body'] ) : '';
+
 			$args['body'] = wp_json_encode(
 				[
 					'title'         => $response_context['title'],
-					'email_body'    => $selected_options['email_body'],
+					'email_body'    => $email_body,
 					'email_subject' => $selected_options['email_subject'],
 					'settings'      => [
 						'mailer_settings'     => [

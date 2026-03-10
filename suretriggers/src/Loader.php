@@ -26,6 +26,7 @@ use SureTriggers\Controllers\WebhookRequestsController;
 use SureTriggers\Controllers\SettingsController;
 use SureTriggers\Traits\SingletonLoader;
 use SureTriggers\Models\SaasApiToken;
+use SureTriggers\Abilities\AbilitiesController;
 use function add_menu_page;
 use function add_submenu_page;
 
@@ -325,8 +326,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.1.20' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.1.20' );
+		define( 'SURE_TRIGGERS_VER', '1.1.21' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.1.21' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -815,6 +816,7 @@ class Loader {
 		RoutesController::get_instance();
 		WebhookRequestsController::get_instance();
 		SettingsController::get_instance();
+		AbilitiesController::get_instance();
 
 		// SureTriggers Custom Filter data.
 		add_filter( 'suretriggers_get_iframe_url', [ $this, 'suretriggers_iframe_data' ] );

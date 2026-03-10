@@ -44,6 +44,13 @@ class FindPosts extends AutomateAction {
 	public $action = 'find_post_by_criteria';
 
 	/**
+	 * Search term for the posts_where filter.
+	 *
+	 * @var string
+	 */
+	private $search_term_for_filter = '';
+
+	/**
 	 * Register action.
 	 *
 	 * @param array $actions Action data.
@@ -84,7 +91,8 @@ class FindPosts extends AutomateAction {
 		];
 
 		if ( ! empty( $search_term ) ) {
-			$args['s'] = $search_term;
+			$this->search_term_for_filter = $search_term;
+			add_filter( 'posts_where', [ $this, 'add_slug_to_search_where' ], 10, 2 );
 		}
 
 		if ( ! empty( $status ) ) {
@@ -105,6 +113,9 @@ class FindPosts extends AutomateAction {
 
 		$query = new WP_Query( $args );
 
+		remove_filter( 'posts_where', [ $this, 'add_slug_to_search_where' ], 10 );
+		$this->search_term_for_filter = '';
+
 		if ( ! $query->have_posts() ) {
 			return [
 				'status'  => 'error',
@@ -121,11 +132,12 @@ class FindPosts extends AutomateAction {
 			$post_details = [
 				'ID'               => $post_id,
 				'Title'            => html_entity_decode( get_the_title(), ENT_QUOTES, 'UTF-8' ),
+				'Slug'             => get_post_field( 'post_name', (int) $post_id ),
 				'Content'          => html_entity_decode( get_the_content(), ENT_QUOTES, 'UTF-8' ),
 				'Excerpt'          => html_entity_decode( get_the_excerpt(), ENT_QUOTES, 'UTF-8' ),
 				'Author'           => get_the_author(),
 				'Publication Date' => get_the_date(),
-				'Status'           => get_post_status( (int) $post_id ), 
+				'Status'           => get_post_status( (int) $post_id ),
 				'Permalink'        => get_permalink( (int) $post_id ),
 			];
 
@@ -145,6 +157,35 @@ class FindPosts extends AutomateAction {
 			'status' => 'success',
 			'posts'  => $posts_data,
 		];
+	}
+
+	/**
+	 * Add post_name (slug) matching to the WHERE clause alongside title and content search.
+	 *
+	 * @param string   $where WHERE clause.
+	 * @param WP_Query $query WP_Query instance.
+	 *
+	 * @return string
+	 */
+	public function add_slug_to_search_where( $where, $query ) {
+		global $wpdb;
+
+		if ( empty( $this->search_term_for_filter ) ) {
+			return $where;
+		}
+
+		$term = $wpdb->esc_like( $this->search_term_for_filter );
+		$like = '%' . $term . '%';
+
+		$where .= $wpdb->prepare(
+			" AND ({$wpdb->posts}.post_title LIKE %s OR {$wpdb->posts}.post_content LIKE %s OR {$wpdb->posts}.post_excerpt LIKE %s OR {$wpdb->posts}.post_name LIKE %s)",
+			$like,
+			$like,
+			$like,
+			$like
+		);
+
+		return $where;
 	}
 }
 

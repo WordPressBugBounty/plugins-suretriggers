@@ -68,7 +68,6 @@ class UpdateUser extends AutomateAction {
 	 * @param array $fields fields.
 	 * @param array $selected_options selectedOptions.
 	 * @return array
-	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 		global $wpdb;
@@ -90,12 +89,16 @@ class UpdateUser extends AutomateAction {
 			if ( 'user_login' === $meta_key ) {
 				if ( ! empty( $meta_value ) ) {
 					if ( ! validate_username( $meta_value ) ) {
-						wp_send_json_error( __( 'Invalid username: %1$s.', 'suretriggers' ), $meta_value );
+						return [
+							'message' => sprintf( __( 'Invalid username: %1$s.', 'suretriggers' ), $meta_value ),
+						];
 					} else {
 						$user_id_has_this_id = username_exists( $meta_value );
 
 						if ( $user_id_has_this_id && $user_id_has_this_id !== $user_id ) {
-							wp_send_json_error( __( 'Username "%1$s" already exists.', 'suretriggers' ), $meta_value );
+							return [
+								'message' => sprintf( __( 'Username "%1$s" already exists.', 'suretriggers' ), $meta_value ),
+							];
 						} else {
 							$wpdb->update( $wpdb->users, [ 'user_login' => $meta_value ], [ 'ID' => $user_id ] ); //phpcs:ignore
 						}
@@ -104,13 +107,17 @@ class UpdateUser extends AutomateAction {
 			} elseif ( 'user_email' === $meta_key ) {
 				if ( ! empty( $meta_value ) ) {
 					if ( ! is_email( $meta_value ) ) {
-						wp_send_json_error( __( 'Invalid email address: %1$s.', 'suretriggers' ), $meta_value );
+						return [
+							'message' => sprintf( __( 'Invalid email address: %1$s.', 'suretriggers' ), $meta_value ),
+						];
 					} else {
 
 						$user_id_has_email = email_exists( $meta_value );
 
 						if ( $user_id_has_email && $user_id_has_email !== $user_id ) {
-							wp_send_json_error( __( 'Email address "%1$s" already exists.', 'suretriggers' ), $meta_value );
+							return [
+								'message' => sprintf( __( 'Email address "%1$s" already exists.', 'suretriggers' ), $meta_value ),
+							];
 						} else {
 							$wpdb->update( $wpdb->users, [ 'user_email' => $meta_value ], [ 'ID' => $user_id ] ); //phpcs:ignore
 						}

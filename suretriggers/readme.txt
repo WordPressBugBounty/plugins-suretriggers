@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.9
-Stable tag: 1.1.20
+Stable tag: 1.1.21
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,13 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.21 - Tuesday, 10th March 2026 =
+* Improvement: "Kadence Forms" – Added new "Form Submitted (Specific Form)" Trigger
+* Improvement: "WooCommerce" – Added new Actions
+* Improvement: "LearnDash" – Added new "Find User's Group Leader Groups" Action
+* Improvement: "SureForms" – Updated the "Form Submitted" trigger to support the Generate PDF feature
+* Improvement: "SureDash" – Added new "Create Space" Action
+
 = Version 1.1.20 - Friday, 6th February 2026 =
 * New: Added "WPCafe" Integration
 * New: Added "New User Approve" Integration

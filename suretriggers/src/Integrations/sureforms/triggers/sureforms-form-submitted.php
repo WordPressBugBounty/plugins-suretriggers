@@ -94,6 +94,14 @@ if ( ! class_exists( 'SureFormsFormSubmitted' ) ) :
 				return;
 			}
 
+			// If entry_id exists, fetch PDF links from the entry extras.
+			if ( ! empty( $response['entry_id'] ) && class_exists( '\SRFM\Inc\Database\Tables\Entries' ) ) {
+				$entry = \SRFM\Inc\Database\Tables\Entries::get( intval( $response['entry_id'] ) );
+				if ( ! empty( $entry['extras']['pdf_links'] ) && is_array( $entry['extras']['pdf_links'] ) ) {
+					$response['pdf_links'] = $entry['extras']['pdf_links'];
+				}
+			}
+
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger'    => $this->trigger,
