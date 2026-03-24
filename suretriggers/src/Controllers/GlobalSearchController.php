@@ -4661,6 +4661,135 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Prepare Event Calendar venues.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_event_calendar_venues( $data ) {
+		$page   = $data['page'];
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+
+		$posts = get_posts(
+			[
+				'post_type'      => 'tribe_venue',
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+			]
+		);
+
+		$options = [];
+		if ( ! empty( $posts ) ) {
+			foreach ( $posts as $post ) {
+				$options[] = [
+					'label' => $post->post_title,
+					'value' => $post->ID,
+				];
+			}
+		}
+
+		$count = wp_count_posts( 'tribe_venue' )->publish;
+
+		return [
+			'options' => $options,
+			'hasMore' => $count > $limit && $count > $offset,
+		];
+	}
+
+	/**
+	 * Prepare Event Calendar organizers.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_event_calendar_organizers( $data ) {
+		$page   = $data['page'];
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+
+		$posts = get_posts(
+			[
+				'post_type'      => 'tribe_organizer',
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+				'post_status'    => 'publish',
+				'posts_per_page' => $limit,
+				'offset'         => $offset,
+			]
+		);
+
+		$options = [];
+		if ( ! empty( $posts ) ) {
+			foreach ( $posts as $post ) {
+				$options[] = [
+					'label' => $post->post_title,
+					'value' => $post->ID,
+				];
+			}
+		}
+
+		$count = wp_count_posts( 'tribe_organizer' )->publish;
+
+		return [
+			'options' => $options,
+			'hasMore' => $count > $limit && $count > $offset,
+		];
+	}
+
+	/**
+	 * Prepare Event Calendar categories.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_event_calendar_categories( $data ) {
+		$page   = $data['page'];
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+
+		$terms = get_terms(
+			[
+				'taxonomy'   => 'tribe_events_cat',
+				'hide_empty' => false,
+				'orderby'    => 'name',
+				'order'      => 'ASC',
+				'number'     => $limit,
+				'offset'     => $offset,
+			]
+		);
+
+		$options = [];
+		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$options[] = [
+					'label' => $term->name,
+					'value' => $term->term_id,
+				];
+			}
+		}
+
+		$total = wp_count_terms(
+			[
+				'taxonomy'   => 'tribe_events_cat',
+				'hide_empty' => false,
+			]
+		);
+		$count = is_wp_error( $total ) ? 0 : (int) $total;
+
+		return [
+			'options' => $options,
+			'hasMore' => $count > $limit && $count > $offset,
+		];
+	}
+
+	/**
 	 * Prepare Restrict Content Membership Level.
 	 *
 	 * @param array $data Search Params.
@@ -21862,7 +21991,16 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			case 'stage_changed':
 					$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_tasks ORDER BY id DESC LIMIT 1", ARRAY_A );
 				break;
-				
+			case 'task_updated':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_tasks ORDER BY updated_at DESC LIMIT 1", ARRAY_A );
+				break;
+			case 'stage_updated':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_board_terms ORDER BY updated_at DESC LIMIT 1", ARRAY_A );
+				break;
+			case 'assignees_updated':
+				$result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fbs_tasks ORDER BY updated_at DESC LIMIT 1", ARRAY_A );
+				break;
+
 		}
 		
 		if ( ! empty( $result ) ) {
@@ -21961,12 +22099,151 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					];
 					$context['response_type']  = 'live';
 					break;
-			}                   
+				case 'task_updated':
+					$stage_data = Stage::where( 'board_id', $result['board_id'] )->whereNull( 'archived_at' )->first();
+
+					$context['pluggable_data'] = [
+						'task'     => [
+							'id'          => $result['id'],
+							'parent_id'   => $result['parent_id'],
+							'board_id'    => $result['board_id'],
+							'title'       => $result['title'],
+							'slug'        => $result['slug'],
+							'type'        => $result['type'],
+							'status'      => $result['status'],
+							'stage_id'    => $result['stage_id'],
+							'source'      => $result['source'],
+							'priority'    => $result['priority'],
+							'description' => $result['description'],
+							'position'    => $result['position'],
+							'created_by'  => $result['created_by'],
+							'created_at'  => $result['created_at'],
+							'updated_at'  => $result['updated_at'],
+							'due_at'      => $result['due_at'],
+							'started_at'  => $result['started_at'],
+							'settings'    => maybe_unserialize( $result['settings'] ),
+							'stage'       => $stage_data ? [
+								'id'       => $stage_data->id,
+								'slug'     => $stage_data->slug,
+								'title'    => $stage_data->title,
+								'type'     => $stage_data->type,
+								'board_id' => $stage_data->board_id,
+								'position' => $stage_data->position,
+								'settings' => $stage_data->settings,
+							] : null,
+						],
+						'column'   => 'description',
+						'old_task' => [
+							'id'          => $result['id'],
+							'parent_id'   => $result['parent_id'],
+							'board_id'    => $result['board_id'],
+							'title'       => $result['title'],
+							'slug'        => $result['slug'],
+							'type'        => $result['type'],
+							'status'      => $result['status'],
+							'stage_id'    => $result['stage_id'],
+							'source'      => $result['source'],
+							'priority'    => $result['priority'],
+							'description' => $result['description'],
+							'position'    => $result['position'],
+							'created_by'  => $result['created_by'],
+							'created_at'  => $result['created_at'],
+							'updated_at'  => $result['updated_at'],
+							'due_at'      => $result['due_at'],
+							'started_at'  => $result['started_at'],
+							'settings'    => maybe_unserialize( $result['settings'] ),
+						],
+					];
+					$context['response_type']  = 'live';
+					break;
+				case 'stage_updated':
+					$context['pluggable_data'] = [
+						'board_id'            => $result['board_id'],
+						'updated_stage'       => [
+							'title'    => $result['title'],
+							'cover_bg' => $result['bg_color'],
+						],
+						'stage_before_update' => [
+							'id'          => $result['id'],
+							'board_id'    => $result['board_id'],
+							'title'       => $result['title'],
+							'slug'        => $result['slug'],
+							'type'        => $result['type'],
+							'position'    => $result['position'],
+							'color'       => $result['color'],
+							'bg_color'    => $result['bg_color'],
+							'settings'    => maybe_unserialize( $result['settings'] ),
+							'archived_at' => $result['archived_at'],
+							'created_at'  => $result['created_at'],
+							'updated_at'  => $result['updated_at'],
+						],
+					];
+					$context['response_type']  = 'live';
+					break;
+				case 'assignees_updated':
+					$stage_data    = Stage::where( 'board_id', $result['board_id'] )->whereNull( 'archived_at' )->first();
+					$assignee_rel  = $wpdb->get_row(
+						$wpdb->prepare(
+							"SELECT * FROM {$wpdb->prefix}fbs_relations WHERE object_id = %d AND object_type = 'task_assignee' ORDER BY id DESC LIMIT 1",
+							$result['id']
+						),
+						ARRAY_A
+					);
+					$assignee_id   = ! empty( $assignee_rel ) ? $assignee_rel['foreign_id'] : 0;
+					$assignee_user = $assignee_id ? $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}users WHERE ID = %d", $assignee_id ), ARRAY_A ) : null;
+
+					$context['pluggable_data'] = [
+						'task'        => [
+							'id'          => $result['id'],
+							'parent_id'   => $result['parent_id'],
+							'board_id'    => $result['board_id'],
+							'title'       => $result['title'],
+							'slug'        => $result['slug'],
+							'type'        => $result['type'],
+							'status'      => $result['status'],
+							'stage_id'    => $result['stage_id'],
+							'source'      => $result['source'],
+							'priority'    => $result['priority'],
+							'description' => $result['description'],
+							'position'    => $result['position'],
+							'created_by'  => $result['created_by'],
+							'created_at'  => $result['created_at'],
+							'updated_at'  => $result['updated_at'],
+							'due_at'      => $result['due_at'],
+							'started_at'  => $result['started_at'],
+							'settings'    => maybe_unserialize( $result['settings'] ),
+							'stage'       => $stage_data ? [
+								'id'       => $stage_data->id,
+								'slug'     => $stage_data->slug,
+								'title'    => $stage_data->title,
+								'type'     => $stage_data->type,
+								'board_id' => $stage_data->board_id,
+								'position' => $stage_data->position,
+								'settings' => $stage_data->settings,
+							] : null,
+							'assignees'   => $assignee_user ? [
+								[
+									'ID'              => $assignee_user['ID'],
+									'user_login'      => $assignee_user['user_login'],
+									'user_nicename'   => $assignee_user['user_nicename'],
+									'user_email'      => $assignee_user['user_email'],
+									'user_url'        => $assignee_user['user_url'],
+									'user_registered' => $assignee_user['user_registered'],
+									'user_status'     => $assignee_user['user_status'],
+									'display_name'    => $assignee_user['display_name'],
+								],
+							] : [],
+						],
+						'assignee_id' => $assignee_id,
+					];
+					$context['response_type']  = 'live';
+					break;
+			}
 		} else {
 			switch ( $term ) {
 				case 'board_created':
 					$context = json_decode( '{"pluggable_data":{"id":2,"title":"testing","description":"This is a sample board.","type":"to-do","currency":"USD","background":{"color":"#d1d8e0","id":"solid_10"},"created_by":"1","isUserOnlyViewer":0},"response_type":"sample"}', true );
-					break;              
+					break;
 				case 'board_member_added':
 					$context = json_decode( '{"pluggable_data":{"board_id":"2","board_member":{"ID":1,"user_login":"johnd","display_name":"johnd"}},"response_type":"sample"}', true );
 					break;
@@ -21976,7 +22253,16 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				case 'stage_changed':
 					$context = json_decode( '{"pluggable_data":{"id":"1002","slug":"changed-task","title":"Changed Task","description":"This task changed stages.","type":"task","board_id":"10","stage_id":"4","position":"2","priority":"high","created_at":"2024-04-01 10:00:00","created_by":"1","updated_at":"2024-04-01 12:00:00","settings":[],"stage":{"id":"4","slug":"new-stage","title":"New Stage","type":"default","board_id":"10","position":"2","settings":[],"created_at":"","updated_at":""},"old_stage_id":"3","watchers":[{"ID":71,"photo":"https://www.gravatar.com/avatar/e361de3380a6b977abf350619468ce4f?s=128&d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJohn+Doe/128","user_url":"","user_email":"john@gmail.com","user_login":"john","user_status":0,"display_name":"John Doe","user_nicename":"john","user_registered":"2025-05-28 12:07:48","pivot":{"object_id":1002,"created_at":"2025-06-05T10:11:31+00:00","foreign_id":71,"user_id":71}}]},"response_type":"sample"}', true );
 					break;
-						
+				case 'task_updated':
+					$context = json_decode( '{"pluggable_data":{"task":{"id":"1001","parent_id":null,"board_id":"10","title":"Sample Task","slug":"sample-task","type":"task","status":"open","stage_id":"3","source":"web","priority":"medium","description":"<p>Updated task description</p>","position":"1","created_by":"1","created_at":"2024-03-20 12:00:00","updated_at":"2024-03-20 12:30:00","due_at":"2024-03-25 23:45:00","started_at":null,"settings":[],"stage":{"id":"3","slug":"sample-stage","title":"Sample Stage","type":"default","board_id":"10","position":"1","settings":[]}},"column":"description","old_task":{"id":"1001","parent_id":null,"board_id":"10","title":"Sample Task","slug":"sample-task","type":"task","status":"open","stage_id":"3","source":"web","priority":"medium","description":"<p>Original task description</p>","position":"1","created_by":"1","created_at":"2024-03-20 12:00:00","updated_at":"2024-03-20 12:00:00","due_at":"2024-03-25 23:45:00","started_at":null,"settings":[]}},"response_type":"sample"}', true );
+					break;
+				case 'stage_updated':
+					$context = json_decode( '{"pluggable_data":{"board_id":"1","updated_stage":{"title":"New Stage","cover_bg":"#4bce97"},"stage_before_update":{"id":"9","board_id":"1","title":"New Stage","slug":"","type":"stage","position":"4.00","color":"","bg_color":"","settings":{"default_task_status":"open","default_task_assignees":[]},"archived_at":null,"created_at":"2024-03-18 13:36:57","updated_at":"2024-03-18 13:36:57"}},"response_type":"sample"}', true );
+					break;
+				case 'assignees_updated':
+					$context = json_decode( '{"pluggable_data":{"task":{"id":"1","parent_id":null,"board_id":"1","title":"Sample Task","slug":"sample-task","type":"task","status":"open","stage_id":"7","source":"web","priority":"low","description":"<p>Sample task description</p>","position":"1.00","created_by":"1","created_at":"2024-03-18 13:19:31","updated_at":"2024-03-18 13:50:59","due_at":"2024-03-19 23:45:00","started_at":null,"settings":{"cover":{"backgroundColor":""},"subtask_count":0,"attachment_count":0,"subtask_completed_count":0},"stage":{"id":"7","slug":"sample-stage","title":"Sample Stage","type":"stage","board_id":"1","position":"1","settings":{}},"assignees":[{"ID":88,"user_login":"active","user_nicename":"active","user_email":"active@gmail.com","user_url":"","user_registered":"2025-11-10 04:09:05","user_status":"0","display_name":"active"}]},"assignee_id":88},"response_type":"sample"}', true );
+					break;
+
 			}
 		}
 		

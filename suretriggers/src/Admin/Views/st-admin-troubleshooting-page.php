@@ -13,7 +13,7 @@
 $clear_cache_url = wp_nonce_url( admin_url( 'admin.php?st-reset=true' ), 'st-reset-action' );
 ?>
 <div class="wrap">
-	<div style="font-size: 18px;">
+	<div dir="auto" style="font-size: 18px;">
 		<?php
 		printf(
 			/* translators: %s: HTML link to clear cache. */
