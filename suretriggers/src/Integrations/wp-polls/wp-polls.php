@@ -51,6 +51,9 @@ class WpPolls extends Integrations {
 		$context            = [];
 		$context['poll_id'] = $poll_id;
 
+		// Sanitize answer IDs — cast each to integer to prevent SQL injection.
+		$selected_answers_ids = implode( ',', array_map( 'intval', explode( ',', $selected_answers_ids ) ) );
+
 		global $wpdb;
 		$poll_data = $wpdb->get_row(
         // phpcs:disable

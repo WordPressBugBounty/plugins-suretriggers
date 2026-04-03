@@ -253,6 +253,7 @@ class LatePoint extends Integrations {
 			do_action( 'latepoint_order_created', $order );
 		}
 		$return_data                    = $booking->get_data_vars();
+		$return_data['service_id']      = ! empty( $booking->service_id ) ? $booking->service_id : ( ! empty( $booking_params['service_id'] ) ? $booking_params['service_id'] : null );
 		$return_data['order']           = $order->get_data_vars();
 		$return_data['total_attendees'] = $selected_options['total_attendees'];
 		return $return_data;
