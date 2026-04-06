@@ -326,8 +326,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.1.23' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.1.23' );
+		define( 'SURE_TRIGGERS_VER', '1.1.24' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.1.24' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -399,6 +399,53 @@ class Loader {
 				$logo ? 'data:image/svg+xml;base64,' . base64_encode( $logo ) : '',
 				30.6002
 			);
+
+			// Replace the auto-created first submenu item (which duplicates the parent title)
+			// with an explicit "Dashboard" item using the same slug.
+			add_submenu_page(
+				'suretriggers',
+				__( 'Dashboard', 'suretriggers' ),
+				__( 'Dashboard', 'suretriggers' ),
+				'read',
+				'suretriggers',
+				[ $this, 'menu_callback' ]
+			);
+
+			// Add quick-access submenu items that deep-link into the SaaS dashboard.
+			// The React app reads redirect_url from the URL and forwards it to the iframe.
+			// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Standard pattern for adding direct-link submenu items.
+			global $submenu;
+			$deep_link_items = [
+				'workflows'       => __( 'Workflows', 'suretriggers' ),
+				'tables'          => __( 'Tables', 'suretriggers' ),
+				'forms'           => __( 'Forms', 'suretriggers' ),
+				'mcp'             => __( 'MCP', 'suretriggers' ),
+				'recipes'         => __( 'Recipes', 'suretriggers' ),
+				'folders'         => __( 'Folders', 'suretriggers' ),
+				'email-templates' => __( 'Email Templates', 'suretriggers' ),
+				'variables'       => __( 'Variables', 'suretriggers' ),
+				'history'         => __( 'History', 'suretriggers' ),
+				'apps'            => __( 'Apps', 'suretriggers' ),
+				'members'         => __( 'Members', 'suretriggers' ),
+				'settings'        => __( 'Settings', 'suretriggers' ),
+			];
+
+			// Items restricted to internal BSF users only (checked against SaaS connected email).
+			$bsf_only_items  = [ 'tables', 'forms', 'variables' ];
+			$connected_email = OptionController::get_option( 'connected_email_key' );
+			$is_bsf_user     = is_string( $connected_email ) && ! empty( $connected_email ) && '@bsf.io' === substr( $connected_email, -7 );
+
+			foreach ( $deep_link_items as $path => $label ) {
+				if ( in_array( $path, $bsf_only_items, true ) && ! $is_bsf_user ) {
+					continue;
+				}
+				// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+				$submenu['suretriggers'][] = [
+					$label,
+					'read',
+					admin_url( 'admin.php?page=suretriggers&redirect_url=/' . $path ),
+				];
+			}
 
 			add_submenu_page(
 				'suretriggers',
@@ -764,10 +811,47 @@ class Loader {
 	 * @return void
 	 */
 	public function add_admin_menu_styles() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only check for menu highlighting.
+		$redirect_url_raw = isset( $_GET['redirect_url'] ) ? sanitize_text_field( wp_unslash( $_GET['redirect_url'] ) ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+
+		// Validate redirect_url against known deep-link paths to prevent CSS injection.
+		$allowed_paths = [ '/workflows', '/tables', '/forms', '/mcp', '/recipes', '/folders', '/email-templates', '/variables', '/history', '/apps', '/members', '/settings' ];
+		$redirect_url  = in_array( $redirect_url_raw, $allowed_paths, true ) ? $redirect_url_raw : '';
 		?>
+		<style>
+			<?php if ( 'suretriggers' === $current_page && '' === $redirect_url ) : ?>
+			/* Left border indicator for Dashboard when it's the active page */
+			#toplevel_page_suretriggers .wp-submenu li.wp-first-item.current a {
+				border-left: 3px solid #fff !important;
+				padding-left: 9px !important;
+			}
+			<?php endif; ?>
+			<?php if ( 'suretriggers' === $current_page && '' !== $redirect_url ) : ?>
+			/* Remove default highlight from Dashboard when a deep-link item is active */
+			#toplevel_page_suretriggers .wp-submenu li.wp-first-item.current a {
+				color: #b4b9be !important;
+				font-weight: 400 !important;
+			}
+			#toplevel_page_suretriggers .wp-submenu li.wp-first-item.current {
+				/* Keep class for WP internals but override visual */
+			}
+			/* Left border indicator for the active deep-link submenu item */
+			<?php // phpcs:disable WordPressVIPMinimum.Security.ProperEscapingFunction.hrefSrcEscUrl -- CSS attribute selector, not HTML href. Value is allowlisted. ?>
+			#toplevel_page_suretriggers .wp-submenu li a[href*="redirect_url=<?php echo esc_attr( rawurlencode( $redirect_url ) ); ?>"],
+			#toplevel_page_suretriggers .wp-submenu li a[href*="redirect_url=<?php echo esc_attr( $redirect_url ); ?>"] {
+			<?php // phpcs:enable WordPressVIPMinimum.Security.ProperEscapingFunction.hrefSrcEscUrl ?>
+				color: #fff !important;
+				font-weight: 600 !important;
+				border-left: 3px solid #fff !important;
+				padding-left: 9px !important;
+			}
+			<?php endif; ?>
+		</style>
 		<script>
 		jQuery(document).ready(function($) {
-			// Direct redirect for admin menu upgrade button
+			// Direct redirect for admin menu upgrade button.
 			$('a[href*="suretriggers-lifetime-access"]').on('click', function(e) {
 				e.preventDefault();
 				window.open('https://ottokit.com/pricing/?utm_source=wpplugin&utm_medium=menu&utm_campaign=left', '_blank');

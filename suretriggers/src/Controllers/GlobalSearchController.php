@@ -625,6 +625,31 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * Search WP Adverts Categories.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_wp_adverts_categories( $data ) {
+		$term   = $data['search_term'];
+		$result = [];
+		$terms  = Utilities::get_terms( $term, $data['page'], [ 'advert_category' ] );
+		foreach ( $terms['result'] as $tax_term ) {
+			$result[] = [
+				'label' => $tax_term->name,
+				'value' => $tax_term->term_id,
+			];
+		}
+
+		return [
+			'options' => $result,
+			'hasMore' => $terms['has_more'],
+		];
+	}
+
+	/**
 	 * Search Product Tags.
 	 *
 	 * @param array $data Search Params.
@@ -2286,7 +2311,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				);
 			}
 		} elseif ( 'donation_specific_amount' == $data['search_term'] ) {
-			$condition_compare = $data['filter']['condition_compare']['value'];
+			$condition_compare = isset( $data['filter']['condition_compare']['value'] ) ? $data['filter']['condition_compare']['value'] : '=';
+			$allowed_operators = [ '=', '!=', '>', '<', '>=', '<=' ];
+			$condition_compare = in_array( $condition_compare, $allowed_operators, true ) ? $condition_compare : '=';
 			$donation_amount   = $data['filter']['donation_amount']['value'];
 
 			$donation_meta = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}give_donationmeta WHERE meta_key LIKE %s AND meta_value $condition_compare %d ORDER BY donation_id DESC LIMIT 1", '_give_payment_total',$donation_amount ) ); //phpcs:ignore
@@ -15672,9 +15699,17 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$list = $data['filter']['list_id']['value'];
 
 		if ( -1 == $list ) {
-			$log = $wpdb->get_results( 'SELECT * from ' . $wpdb->prefix . "newsletter where status='C' ORDER BY id DESC LIMIT 1" );
+			$log = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . "newsletter WHERE status='C' ORDER BY id DESC LIMIT 1" ) ); //phpcs:ignore
 		} else {
-			$num      = $list;
+			// Validate column name against allowlist to prevent SQL injection.
+			$allowed_lists = [];
+			for ( $i = 1; $i <= 40; $i++ ) {
+				$allowed_lists[] = 'list_' . $i;
+			}
+			$num = $list;
+			if ( ! in_array( $num, $allowed_lists, true ) ) {
+				return $context;
+			}
 			$location = 1;
 			$sql      = 'SELECT * FROM ' . $wpdb->prefix . "newsletter WHERE $num = %d AND status = 'C' ORDER BY id DESC LIMIT 1";
 			$log      = $wpdb->get_results( $wpdb->prepare( $sql, $location ), ARRAY_A );// @phpcs:ignore
@@ -19480,7 +19515,9 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}tutor_quiz_attempts as quiz JOIN {$wpdb->prefix}posts as posts ON posts.ID=quiz.quiz_id WHERE quiz.quiz_id = %s AND quiz.attempt_status='attempt_ended' AND quiz.earned_marks < quiz.total_marks AND posts.post_type=%s order by quiz.attempt_id DESC LIMIT 1", $post_id, $post_type ) );
 			}
 		} elseif ( 'quiz_attempt_percentage' == $trigger ) {
-			$condition_compare = $data['filter']['condition_compare']['value'];
+			$condition_compare = isset( $data['filter']['condition_compare']['value'] ) ? $data['filter']['condition_compare']['value'] : '=';
+			$allowed_operators = [ '=', '!=', '>', '<', '>=', '<=' ];
+			$condition_compare = in_array( $condition_compare, $allowed_operators, true ) ? $condition_compare : '=';
 			$percentage        = $data['filter']['percentage']['value'];
 			if ( -1 === $post_id ) {
 				$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}tutor_quiz_attempts as quiz JOIN {$wpdb->prefix}posts as posts ON posts.ID=quiz.quiz_id WHERE earned_marks $condition_compare %d AND quiz.attempt_status='attempt_ended' AND posts.post_type=%s order by quiz.attempt_id DESC LIMIT 1", $percentage, $post_type ) ); //phpcs:ignore
@@ -21686,12 +21723,14 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		} elseif ( 'quiz_completion' == $term ) {
 			$quiz_id           = $data['filter']['sensei_quiz']['value'];
 			$comment_type      = 'sensei_lesson_status';
-			$condition_compare = $data['filter']['condition_compare']['value'];
+			$condition_compare = isset( $data['filter']['condition_compare']['value'] ) ? $data['filter']['condition_compare']['value'] : '=';
+			$allowed_operators = [ '=', '!=', '>', '<', '>=', '<=' ];
+			$condition_compare = in_array( $condition_compare, $allowed_operators, true ) ? $condition_compare : '=';
 			$percentage        = $data['filter']['percentage']['value'];
 			if ( -1 === $quiz_id ) {
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT comments.*, meta.meta_key, meta.meta_value FROM wp_comments AS comments JOIN  wp_commentmeta AS meta ON comments.comment_ID = meta.comment_id WHERE meta.meta_key LIKE %s AND meta.meta_value $condition_compare %d ORDER BY comments.comment_ID DESC LIMIT 1", 'grade', $percentage ), ARRAY_A ); //phpcs:ignore
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT comments.*, meta.meta_key, meta.meta_value FROM {$wpdb->comments} AS comments JOIN {$wpdb->commentmeta} AS meta ON comments.comment_ID = meta.comment_id WHERE meta.meta_key LIKE %s AND meta.meta_value $condition_compare %d ORDER BY comments.comment_ID DESC LIMIT 1", 'grade', $percentage ), ARRAY_A ); //phpcs:ignore
 			} else {
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT comments.*, meta.meta_key, meta.meta_value FROM wp_comments AS comments JOIN  wp_commentmeta AS meta ON comments.comment_ID = meta.comment_id WHERE comments.comment_post_ID = %d AND meta.meta_key LIKE %s AND meta.meta_value $condition_compare %d ORDER BY comments.comment_ID DESC LIMIT 1", $quiz_id, 'grade', $percentage ), ARRAY_A ); //phpcs:ignore
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT comments.*, meta.meta_key, meta.meta_value FROM {$wpdb->comments} AS comments JOIN {$wpdb->commentmeta} AS meta ON comments.comment_ID = meta.comment_id WHERE comments.comment_post_ID = %d AND meta.meta_key LIKE %s AND meta.meta_value $condition_compare %d ORDER BY comments.comment_ID DESC LIMIT 1", $quiz_id, 'grade', $percentage ), ARRAY_A ); //phpcs:ignore
 			}
 		}   
 

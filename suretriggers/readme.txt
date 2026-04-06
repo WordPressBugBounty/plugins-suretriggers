@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.9
-Stable tag: 1.1.23
+Stable tag: 1.1.24
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,15 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.24 - Monday, 6th April 2026 =
+* New: Added "WP Adverts" Integration
+* New: Added "JetEngine CCT (Custom Content Types)" Integration
+* New: Added "WPFunnels" Integration
+* Improvement: "Fluent Forms" – Added new "Set Custom Response" and "Redirect to Custom URL" Actions
+* Improvement: "FluentCRM" – Added new "Contact's Birthday" Trigger
+* Improvement: Added quick access submenu links under WP admin menu
+* Improvement: Status Page – Added Outgoing Requests filters, Rerun, Response Viewer and Troubleshooting
+
 = Version 1.1.23 - Friday, 3rd April 2026 =
 * Fix: This update addressed a security bug. Props to Marc Montpas from WPScan for reporting it responsibly to our team. Please make sure you are using the latest version on your website.
 * Improvement: "LatePoint" - Added missing service_id in the Create Booking action response

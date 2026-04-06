@@ -240,9 +240,19 @@ class WebhookRequestsController {
 		$data = json_decode( $failed_requests['request_data'], true );
 		if ( is_array( $data ) ) {
 			$data['headers']['Authorization'] = 'Bearer ' . SaasApiToken::get();
-			$response                         = wp_remote_post( $failed_requests['request_url'], $data );
-			$response_code                    = wp_remote_retrieve_response_code( $response );
-			$error_info                       = wp_remote_retrieve_body( $response );
+
+			// Generate a new UUID so the SaaS server doesn't deduplicate this as a replay.
+			if ( isset( $data['body']['wordpress_webhook_uuid'] ) ) {
+				$new_uuid                               = str_replace( '-', '', wp_generate_uuid4() );
+				$site_url                               = esc_url_raw( str_replace( '/wp-json/', '', get_site_url() ) );
+				$site_url                               = preg_replace( '/^https?:\/\//', '', $site_url );
+				$encoded_site_url                       = urlencode( (string) $site_url );
+				$data['body']['wordpress_webhook_uuid'] = $new_uuid . '_' . $encoded_site_url;
+			}
+
+			$response      = wp_remote_post( $failed_requests['request_url'], $data );
+			$response_code = wp_remote_retrieve_response_code( $response );
+			$error_info    = wp_remote_retrieve_body( $response );
 			if ( 405 === wp_remote_retrieve_response_code( $response ) ) {
 				$error_info = wp_remote_retrieve_response_message( $response );
 			}
@@ -254,7 +264,7 @@ class WebhookRequestsController {
 				[
 					'request_method' => $failed_requests['request_method'],
 					'request_url'    => $failed_requests['request_url'],
-					'request_data'   => $failed_requests['request_data'],
+					'request_data'   => (string) wp_json_encode( $data ),
 					'response_code'  => $response_code,
 					'status'         => ( 200 === $response_code ) ? 'success' : 'failed',
 					'error_info'     => $error_info,

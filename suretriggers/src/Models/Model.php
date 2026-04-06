@@ -194,7 +194,10 @@ abstract class Model {
 	 */
 	public function where( $data ) {
 		foreach ( $data as $key => $value ) {
-			$this->where[] = "AND {$key} = '{$value}'";
+			if ( ! is_string( $key ) || ! is_string( $value ) ) {
+				continue;
+			}
+			$this->where[] = 'AND `' . esc_sql( $key ) . "` = '" . esc_sql( $value ) . "'";
 		}
 		return $this;
 	}

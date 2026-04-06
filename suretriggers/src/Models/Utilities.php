@@ -74,11 +74,12 @@ class Utilities extends Model {
 
 		$sql_query = "SELECT p.ID, p.post_parent, p.post_type, p.post_title FROM {$model->table} p";
 
-		if ( in_array( $post_type, [ 'sfwd-lessons', 'sfwd-topic' ], true ) && ! empty( $dynamic ) && $dynamic > 0 ) {
+		$dynamic_int = is_numeric( $dynamic ) ? absint( $dynamic ) : 0;
+		if ( in_array( $post_type, [ 'sfwd-lessons', 'sfwd-topic' ], true ) && $dynamic_int > 0 ) {
 			$meta_key = 'sfwd-lessons' === $post_type ? 'course_id' : 'lesson_id';
 
 			$sql_query .= " LEFT JOIN $wpdb->postmeta pm ON pm.post_id = p.ID";
-			$where     .= " AND pm.meta_key = '{$meta_key}' AND pm.meta_value = {$dynamic}";
+			$where     .= $wpdb->prepare( ' AND pm.meta_key = %s AND pm.meta_value = %d', $meta_key, $dynamic_int );
 		}
 
 		$sql_query .= " WHERE {$where}";

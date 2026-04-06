@@ -71,8 +71,14 @@ class MemberPressCourse extends Integrations {
 			return;
 		}
 		global $wpdb;
-		$post_types_string = models\Lesson::lesson_cpts();
-		$post_types_string = implode( "','", $post_types_string );
+		$post_types = models\Lesson::lesson_cpts();
+
+		$prepare_args = [
+			models\Lesson::$section_id_str,
+			$section_id,
+			models\Lesson::$lesson_order_str,
+		];
+		$prepare_args = array_merge( $prepare_args, $post_types );
 
 		$query = $wpdb->prepare(
 			"SELECT ID, post_type FROM {$wpdb->posts} AS p
@@ -83,15 +89,12 @@ class MemberPressCourse extends Integrations {
 	        JOIN {$wpdb->postmeta} AS pm_order
 	          ON p.ID = pm_order.post_id
 	         AND pm_order.meta_key = %s
-	       WHERE p.post_type in ( %s ) AND p.post_status <> 'trash'
+	       WHERE p.post_type IN ( " . implode( ',', array_fill( 0, count( $post_types ), '%s' ) ) . " ) AND p.post_status <> 'trash'
 	       ORDER BY pm_order.meta_value * 1",
-			models\Lesson::$section_id_str,
-			$section_id,
-			models\Lesson::$lesson_order_str,
-			stripcslashes( $post_types_string )
+			$prepare_args
 		);
 
-		$db_lessons = $wpdb->get_results( stripcslashes( $query ) ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$db_lessons = $wpdb->get_results( $query ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$lessons    = [];
 
 		foreach ( $db_lessons as $lesson ) {
