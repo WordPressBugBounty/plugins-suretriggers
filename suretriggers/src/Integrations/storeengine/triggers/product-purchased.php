@@ -184,6 +184,7 @@ if ( ! class_exists( 'ProductPurchased' ) ) :
 					}
 				}
 				
+				$context['product_id']   = $product_id;
 				$context['custom_metas'] = $custom_metas;
 				
 				// Check if product has membership integration using StoreEngine helper.

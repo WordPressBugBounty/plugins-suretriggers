@@ -2998,6 +2998,53 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Get Everest Forms.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_everest_forms( $data ) {
+
+		if ( ! class_exists( 'EverestForms' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$args = [
+			'post_type'      => 'everest_form',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		];
+
+		if ( ! empty( $data['searchTerm'] ) ) {
+			$args['s'] = $data['searchTerm'];
+		}
+
+		$forms   = get_posts( $args );
+		$options = [];
+
+		if ( ! empty( $forms ) ) {
+			foreach ( $forms as $form ) {
+				$options[] = [
+					'label' => $form->post_title,
+					'value' => $form->ID,
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+
+	}
+
+	/**
 	 * Get Fluent Forms.
 	 *
 	 * @param array $data data.
@@ -26011,6 +26058,49 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			}
 		}
 		
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Search Code Snippets list.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_code_snippets_list( $data ) {
+		$options = [];
+
+		if ( ! function_exists( 'Code_Snippets\get_snippets' ) ) {
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		}
+
+		$all_snippets = \Code_Snippets\get_snippets();
+		$search_term  = isset( $data['search_term'] ) ? strtolower( $data['search_term'] ) : '';
+
+		foreach ( $all_snippets as $snippet ) {
+			if ( ! is_object( $snippet ) || empty( $snippet->id ) ) {
+				continue;
+			}
+
+			$name = isset( $snippet->name ) ? $snippet->name : '';
+
+			if ( ! empty( $search_term ) && false === strpos( strtolower( $name ), $search_term ) ) {
+				continue;
+			}
+
+			$options[] = [
+				'label' => $name,
+				'value' => (string) $snippet->id,
+			];
+		}
+
 		return [
 			'options' => $options,
 			'hasMore' => false,

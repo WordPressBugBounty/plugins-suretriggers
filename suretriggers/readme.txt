@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.9
-Stable tag: 1.1.24
+Stable tag: 1.1.25
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,15 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.25 - Wednesday, 15th April 2026 =
+* New: Added "EventPrime" Integration
+* New: Added "Redirection" Integration
+* New: Added "Teams for WooCommerce Memberships" Integration
+* New: Added "Code Snippets" Integration
+* New: Added "Everest Forms" Integration
+* Improvement: "SureDash" – Added new Actions
+* Improvement: "StoreEngine" – Added product selection support to the "Product Purchased" Trigger
+
 = Version 1.1.24 - Monday, 6th April 2026 =
 * New: Added "WP Adverts" Integration
 * New: Added "JetEngine CCT (Custom Content Types)" Integration
