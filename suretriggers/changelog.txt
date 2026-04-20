@@ -1,3 +1,8 @@
+Version 1.1.26 - Monday, 20th April 2026
+- New: Added "OttoKit Tables" feature
+- New: Added "OttoKit Forms" feature
+- Improvement: "Events Manager" – Added new "Event Times" Trigger
+
 Version 1.1.25 - Wednesday, 15th April 2026
 - New: Added "EventPrime" Integration
 - New: Added "Redirection" Integration

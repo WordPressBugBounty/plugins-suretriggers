@@ -326,8 +326,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.1.25' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.1.25' );
+		define( 'SURE_TRIGGERS_VER', '1.1.26' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.1.26' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -430,15 +430,7 @@ class Loader {
 				'settings'        => __( 'Settings', 'suretriggers' ),
 			];
 
-			// Items restricted to internal BSF users only (checked against SaaS connected email).
-			$bsf_only_items  = [ 'tables', 'forms', 'variables' ];
-			$connected_email = OptionController::get_option( 'connected_email_key' );
-			$is_bsf_user     = is_string( $connected_email ) && ! empty( $connected_email ) && '@bsf.io' === substr( $connected_email, -7 );
-
 			foreach ( $deep_link_items as $path => $label ) {
-				if ( in_array( $path, $bsf_only_items, true ) && ! $is_bsf_user ) {
-					continue;
-				}
 				// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 				$submenu['suretriggers'][] = [
 					$label,

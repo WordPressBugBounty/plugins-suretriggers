@@ -13420,7 +13420,52 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					}
 					$context['response_type'] = 'live';
 				}
-			}       
+			}
+		} elseif ( 'em_event_times_saved' === $trigger ) {
+			if ( $post_id > 0 ) {
+				$event_id = get_post_meta( $post_id, '_event_id', true );
+				$event    = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}em_events WHERE event_id = %d AND event_status = 1 ORDER BY event_id DESC LIMIT 1", $event_id ) );
+			} else {
+				$event = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}em_events WHERE event_status = 1 ORDER BY event_id DESC LIMIT 1" );
+			}
+
+			if ( ! empty( $event ) ) {
+				$event_data                = json_decode( (string) wp_json_encode( $event ), true );
+				$context['pluggable_data'] = is_array( $event_data ) ? $event_data : [];
+
+				if ( ! empty( $event->location_id ) ) {
+					$location = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}em_locations WHERE location_id = %d", $event->location_id ) );
+					if ( ! empty( $location ) ) {
+						$location_data             = json_decode( (string) wp_json_encode( $location ), true );
+						$context['pluggable_data'] = array_merge(
+							$context['pluggable_data'],
+							is_array( $location_data ) ? $location_data : []
+						);
+					}
+				}
+
+				$context['pluggable_data']['post_id'] = $event->post_id;
+
+				if ( ! empty( $event->event_owner ) ) {
+					$context['pluggable_data'] = array_merge(
+						WordPress::get_user_context( (int) $event->event_owner ),
+						$context['pluggable_data']
+					);
+				}
+
+				$timeranges = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}em_timeranges WHERE timerange_group_id = %s ORDER BY timerange_start ASC", 'event_' . $event->event_id ) );
+				if ( ! empty( $timeranges ) ) {
+					$context['pluggable_data']['timeranges_count'] = count( $timeranges );
+					foreach ( $timeranges as $index => $timerange ) {
+						$num = $index + 1;
+						$context['pluggable_data'][ 'timerange_' . $num . '_start' ]   = $timerange->timerange_start;
+						$context['pluggable_data'][ 'timerange_' . $num . '_end' ]     = $timerange->timerange_end;
+						$context['pluggable_data'][ 'timerange_' . $num . '_all_day' ] = $timerange->timerange_all_day;
+					}
+				}
+
+				$context['response_type'] = 'live';
+			}
 		}
 		return $context;
 	}
