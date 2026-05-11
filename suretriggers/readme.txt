@@ -3,12 +3,12 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.9
-Stable tag: 1.1.26
+Stable tag: 1.1.27
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Experience the power of automation within WordPress: Connect 1,300+ apps, automate manual tasks, and unlock your full potential. Get started now!
+Experience the power of automation within WordPress: Connect 1,400+ apps, automate manual tasks, and unlock your full potential. Get started now!
 
 == Description ==
 
@@ -334,6 +334,16 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.27 - Monday, 11th May 2026 =
+* New: Added "Event Espresso" Integration
+* New: Added "Support Genix" Integration
+* New: Added "Bookly" Integration
+* New: Added "EventOn" Integration
+* Improvement: "MemberPress" – Added custom fields support to the "Membership Created" Trigger
+* Improvement: "SureMembers" – Added new "Update Membership Expiration" Action
+* Improvement: "LatePoint" – Added new "Update Customer" Action
+* Improvement: "Ninja Tables" - Added new "Clear Ninja Tables Cache" Action
+
 = Version 1.1.26 - Monday, 20th April 2026 =
 * New: Added "OttoKit Tables" feature
 * New: Added "OttoKit Forms" feature

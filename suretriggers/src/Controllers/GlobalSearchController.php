@@ -6191,12 +6191,25 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'signup_date'                   => '2023-12-19 10:30:00',
 		];
 
+		// Append sample custom field values.
+		$custom_fields_data = [];
+		if ( class_exists( 'MeprOptions' ) ) {
+			$mepr_options = \MeprOptions::fetch();
+			if ( ! empty( $mepr_options->custom_fields ) && is_array( $mepr_options->custom_fields ) ) {
+				foreach ( $mepr_options->custom_fields as $field ) {
+					if ( isset( $field->field_key ) ) {
+						$custom_fields_data[ sanitize_key( $field->field_key ) ] = '';
+					}
+				}
+			}
+		}
+
 		// Get last completed transaction for live data.
-		$transaction = $wpdb->get_row( 
-			"SELECT t.*, e.created_at as signup_date FROM {$wpdb->prefix}mepr_transactions t 
+		$transaction = $wpdb->get_row(
+			"SELECT t.*, e.created_at as signup_date FROM {$wpdb->prefix}mepr_transactions t
 			LEFT JOIN {$wpdb->prefix}mepr_events e ON e.evt_id = t.user_id AND e.event = 'member-signup-completed'
-			WHERE t.status = 'complete' 
-			ORDER BY t.id DESC LIMIT 1" 
+			WHERE t.status = 'complete'
+			ORDER BY t.id DESC LIMIT 1"
 		);
 
 		if ( ! empty( $transaction ) ) {
@@ -6219,13 +6232,27 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					'transaction_id'                => $transaction->id,
 					'signup_date'                   => $transaction->signup_date ? $transaction->signup_date : $transaction->created_at,
 				];
-				
+
+				// Fetch live custom field values for this user.
+				$custom_fields_data = [];
+				if ( class_exists( 'MeprUser' ) ) {
+					$mepr_user = new \MeprUser( (int) $transaction->user_id );
+					if ( method_exists( $mepr_user, 'custom_profile_values' ) ) {
+						$raw_custom = $mepr_user->custom_profile_values( true );
+						if ( is_array( $raw_custom ) ) {
+							foreach ( $raw_custom as $field_key => $field_value ) {
+								$custom_fields_data[ sanitize_key( $field_key ) ] = $field_value;
+							}
+						}
+					}
+				}
+
 				$user_data                = WordPress::get_user_context( $transaction->user_id );
 				$context['response_type'] = 'live';
 			}
 		}
 
-		$context['pluggable_data'] = array_merge( $user_data, $membership_data );
+		$context['pluggable_data'] = array_merge( $user_data, $membership_data, $custom_fields_data );
 		return $context;
 	}
 

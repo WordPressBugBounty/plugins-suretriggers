@@ -221,6 +221,13 @@ class AddContact extends AutomateAction {
 
 		$contact = $contact_api->createOrUpdate( $data, $forced_update );
 
+		if ( ! $contact ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Failed to create or update contact.', 'suretriggers' ),
+			];
+		}
+
 		if ( 'pending' === $contact->status ) {
 			$contact->sendDoubleOptinEmail();
 		}
@@ -275,14 +282,6 @@ class AddContact extends AutomateAction {
 			}
 
 			$contact->attachLists( $list_ids );
-		}
-
-		if ( ! $contact ) {
-			return [
-				'status'  => 'error',
-				'message' => __( 'Invalid contact.', 'suretriggers' ), 
-				
-			];
 		}
 
 		$custom_data = $contact->custom_fields();

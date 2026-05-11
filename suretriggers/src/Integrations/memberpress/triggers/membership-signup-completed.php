@@ -142,12 +142,27 @@ if ( ! class_exists( 'MembershipCreated' ) ) :
 				'subscription_id'               => $completed_transaction->subscription_id,
 				'transaction_id'                => $completed_transaction->id,
 			];
-			
+
+			// Collect MemberPress custom/account field values for this user.
+			$custom_fields_context = [];
+			if ( class_exists( 'MeprUser' ) ) {
+				$mepr_user = new \MeprUser( $user_id );
+				if ( method_exists( $mepr_user, 'custom_profile_values' ) ) {
+					$custom_field_values = $mepr_user->custom_profile_values( true );
+					if ( is_array( $custom_field_values ) ) {
+						foreach ( $custom_field_values as $field_key => $field_value ) {
+							$custom_fields_context[ sanitize_key( $field_key ) ] = $field_value;
+						}
+					}
+				}
+			}
+
 			$membership_id = $completed_transaction->product_id;
-		   
+
 			$context                  = array_merge(
 				WordPress::get_user_context( $user_id ),
 				$membership_context,
+				$custom_fields_context,
 				[
 					'signup_date' => $event->created_at,
 				]

@@ -95,31 +95,32 @@ if ( ! class_exists( 'ContactStatusSetToSpecificStatusFluentCRM' ) ) :
 		 * @return void
 		 */
 		public function trigger_listener( $contact, $old_status ) {
-			if ( empty( $contact ) ) {
+			if ( empty( $contact ) || ! is_object( $contact ) ) {
 				return;
 			}
-			
+
 			$context['old_status'] = $old_status;
-			if ( method_exists( $contact, 'custom_fields' ) ) {
-				$custom_data = $contact->custom_fields();
-			}
-			$context['contact']['details'] = $contact;
-			/**
-			 *
-			 * Ignore line
-			 *
-			 * @phpstan-ignore-next-line
-			 */
-			$context['status'] = $contact->status;
-			if ( ! empty( $custom_data ) ) {
-				foreach ( $custom_data as $key => $field ) {
-					if ( is_array( $field ) ) {
-						$context['contact']['custom'][ $key ] = implode( ',', $field );
-					} else {
-						$context['contact']['custom'][ $key ] = $field;
+
+			if ( class_exists( 'FluentCrm\App\Models\Subscriber' ) && method_exists( $contact, 'getKey' ) ) {
+				$subscriber      = \FluentCrm\App\Models\Subscriber::with( [ 'tags', 'lists' ] )->find( $contact->getKey() );
+				$customer_fields = [];
+
+				if ( is_object( $subscriber ) && method_exists( $subscriber, 'custom_fields' ) ) {
+					foreach ( (array) $subscriber->custom_fields() as $key => $field ) {
+						$customer_fields[ $key ] = is_array( $field ) ? implode( ',', $field ) : $field;
 					}
 				}
+
+				$context['contact']['details'] = is_object( $subscriber ) ? $subscriber : $contact;
+				$context['contact']['custom']  = $customer_fields;
+			} else {
+				$context['contact']['details'] = $contact;
+				$context['contact']['custom']  = [];
 			}
+
+			$raw_status        = method_exists( $contact, 'getAttribute' ) ? $contact->getAttribute( 'status' ) : '';
+			$context['status'] = is_string( $raw_status ) ? $raw_status : '';
+
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger' => $this->trigger,

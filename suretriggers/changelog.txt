@@ -1,3 +1,13 @@
+Version 1.1.27 - Monday, 11th May 2026
+- New: Added "Event Espresso" Integration
+- New: Added "Support Genix" Integration
+- New: Added "Bookly" Integration
+- New: Added "EventOn" Integration
+- Improvement: "MemberPress" – Added custom fields support to the "Membership Created" Trigger
+- Improvement: "SureMembers" – Added new "Update Membership Expiration" Action
+- Improvement: "LatePoint" – Added new "Update Customer" Action
+- Improvement: "Ninja Tables" - Added new "Clear Ninja Tables Cache" Action
+
 Version 1.1.26 - Monday, 20th April 2026
 - New: Added "OttoKit Tables" feature
 - New: Added "OttoKit Forms" feature
