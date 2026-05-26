@@ -1,9 +1,9 @@
 <?php
 /**
- * BookingStatusUpdated.
+ * SpaceUpdated.
  * php version 5.6
  *
- * @category BookingStatusUpdated
+ * @category SpaceUpdated
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -11,18 +11,18 @@
  * @since    1.0.0
  */
 
-namespace SureTriggers\Integrations\AppointmentHourBooking\Triggers;
+namespace SureTriggers\Integrations\SpacesEngine\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
 use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
 
-if ( ! class_exists( 'BookingStatusUpdated' ) ) :
+if ( ! class_exists( 'SpaceUpdated' ) ) :
 
 	/**
-	 * BookingStatusUpdated
+	 * SpaceUpdated
 	 *
-	 * @category BookingStatusUpdated
+	 * @category SpaceUpdated
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -31,28 +31,28 @@ if ( ! class_exists( 'BookingStatusUpdated' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class BookingStatusUpdated {
+	class SpaceUpdated {
 
 		/**
 		 * Integration type.
 		 *
 		 * @var string
 		 */
-		public $integration = 'AppointmentHourBooking';
+		public $integration = 'SpacesEngine';
 
 		/**
 		 * Trigger name.
 		 *
 		 * @var string
 		 */
-		public $trigger = 'ahb_booking_status_updated';
+		public $trigger = 'spaces_engine_space_updated';
 
 		use SingletonLoader;
 
 		/**
 		 * Constructor
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 */
 		public function __construct() {
 			add_filter( 'sure_trigger_register_trigger', [ $this, 'register' ] );
@@ -65,43 +65,43 @@ if ( ! class_exists( 'BookingStatusUpdated' ) ) :
 		 * @return array
 		 */
 		public function register( $triggers ) {
+
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'Booking Status Updated', 'suretriggers' ),
+				'label'         => __( 'Space updated', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => 'cpappb_update_status',
+				'common_action' => 'post_updated',
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
-				'accepted_args' => 2,
+				'accepted_args' => 3,
 			];
+
 			return $triggers;
 		}
 
 		/**
 		 * Trigger listener
 		 *
-		 * @param int    $id Appointment ID.
-		 * @param string $status Appointment Status.
-		 * @since 1.0.0
-		 *
+		 * @param int      $post_id     Post ID.
+		 * @param \WP_Post $post_after  Post object after update.
+		 * @param \WP_Post $post_before Post object before update.
 		 * @return void
 		 */
-		public function trigger_listener( $id, $status ) {
-			
-			global $wpdb;
-			$events      = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT * FROM {$wpdb->prefix}cpappbk_messages 
-            WHERE id=%d",
-					$id
-				) 
-			); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$posted_data = st_safe_unserialize( $events[0]->posted_data );
-
-			if ( ! is_array( $posted_data ) ) {
+		public function trigger_listener( $post_id, $post_after, $post_before ) {
+			if ( 'wpe_wpspace' !== $post_after->post_type ) {
 				return;
 			}
 
-			$context = $posted_data;
+			if ( 'publish' !== $post_after->post_status || 'publish' !== $post_before->post_status ) {
+				return;
+			}
+
+			$user_id = (int) $post_after->post_author;
+			$context = WordPress::get_post_context( $post_id );
+			$terms   = get_the_terms( $post_id, 'wp_space_category' );
+
+			$context['categories'] = ( empty( $terms ) || is_wp_error( $terms ) ) ? [] : wp_list_pluck( $terms, 'name' );
+
+			$context = array_merge( $context, WordPress::get_user_context( $user_id ) );
 
 			AutomationController::sure_trigger_handle_trigger(
 				[
@@ -117,6 +117,6 @@ if ( ! class_exists( 'BookingStatusUpdated' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	BookingStatusUpdated::get_instance();
+	SpaceUpdated::get_instance();
 
 endif;

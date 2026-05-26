@@ -1,9 +1,9 @@
 <?php
 /**
- * UserUpdatesEntryInForm.
+ * SpaceDeleted.
  * php version 5.6
  *
- * @category UserUpdatesEntryInForm
+ * @category SpaceDeleted
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -11,18 +11,18 @@
  * @since    1.0.0
  */
 
-namespace SureTriggers\Integrations\FormidableForms\Triggers;
+namespace SureTriggers\Integrations\SpacesEngine\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
+use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
-use FrmEntryMeta;
 
-if ( ! class_exists( 'UserUpdatesEntryInForm' ) ) :
+if ( ! class_exists( 'SpaceDeleted' ) ) :
 
 	/**
-	 * UserUpdatesEntryInForm
+	 * SpaceDeleted
 	 *
-	 * @category UserUpdatesEntryInForm
+	 * @category SpaceDeleted
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -31,26 +31,23 @@ if ( ! class_exists( 'UserUpdatesEntryInForm' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class UserUpdatesEntryInForm {
-
+	class SpaceDeleted {
 
 		/**
 		 * Integration type.
 		 *
 		 * @var string
 		 */
-		public $integration = 'FormidableForms';
-
+		public $integration = 'SpacesEngine';
 
 		/**
 		 * Trigger name.
 		 *
 		 * @var string
 		 */
-		public $trigger = 'ff_user_updates_entry_form';
+		public $trigger = 'spaces_engine_space_deleted';
 
 		use SingletonLoader;
-
 
 		/**
 		 * Constructor
@@ -70,56 +67,32 @@ if ( ! class_exists( 'UserUpdatesEntryInForm' ) ) :
 		public function register( $triggers ) {
 
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'Form Entry Updated', 'suretriggers' ),
+				'label'         => __( 'Space deleted', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => 'frm_after_update_entry',
+				'common_action' => 'before_delete_post',
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
 				'accepted_args' => 2,
 			];
-			return $triggers;
 
+			return $triggers;
 		}
 
 		/**
 		 * Trigger listener
 		 *
-		 * @param int $entry_id Response Data.
-		 * @param int $form_id Post Data.
-		 * @since 1.0.0
-		 *
+		 * @param int      $post_id Post ID.
+		 * @param \WP_Post $post    Post object.
 		 * @return void
 		 */
-		public function trigger_listener( $entry_id, $form_id ) {
-			global $wpdb;
-			if ( empty( $entry_id ) ) {
+		public function trigger_listener( $post_id, $post ) {
+			if ( 'wpe_wpspace' !== $post->post_type ) {
 				return;
 			}
 
-			if ( class_exists( '\FrmEntryMeta' ) ) {
-				$metas = FrmEntryMeta::get_entry_meta_info( $entry_id );
-
-				$data = [];
-				
-				foreach ( $metas as $meta ) {
-					$field_id   = $meta->field_id;
-					$field_name = $wpdb->get_var( $wpdb->prepare( 'SELECT name FROM ' . $wpdb->prefix . 'frm_fields WHERE id=%d', $field_id ) );
-					$data_val   = st_safe_unserialize( $meta->meta_value );
-					if ( is_array( $data_val ) ) {
-						foreach ( $data_val as $key => $val ) {
-							$data[ $key ] = $val;
-						}
-					} else {
-						$data[ $field_name ] = $data_val;
-					}               
-				}
-			} else {
-				$data = [];
-			}
-
-			$context['entry_id']        = $entry_id;
-			$context['entry']           = $data;
-			$context['formidable_form'] = (int) $form_id;
+			$user_id = (int) $post->post_author;
+			$context = WordPress::get_post_context( $post_id );
+			$context = array_merge( $context, WordPress::get_user_context( $user_id ) );
 
 			AutomationController::sure_trigger_handle_trigger(
 				[
@@ -135,6 +108,6 @@ if ( ! class_exists( 'UserUpdatesEntryInForm' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	UserUpdatesEntryInForm::get_instance();
+	SpaceDeleted::get_instance();
 
 endif;

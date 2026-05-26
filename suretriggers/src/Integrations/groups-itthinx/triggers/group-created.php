@@ -1,9 +1,9 @@
 <?php
 /**
- * BookingStatusUpdated.
+ * GroupCreatedItthinx.
  * php version 5.6
  *
- * @category BookingStatusUpdated
+ * @category GroupCreatedItthinx
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -11,18 +11,17 @@
  * @since    1.0.0
  */
 
-namespace SureTriggers\Integrations\AppointmentHourBooking\Triggers;
+namespace SureTriggers\Integrations\GroupsItthinx\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
-use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
 
-if ( ! class_exists( 'BookingStatusUpdated' ) ) :
+if ( ! class_exists( 'GroupCreatedItthinx' ) ) :
 
 	/**
-	 * BookingStatusUpdated
+	 * GroupCreatedItthinx
 	 *
-	 * @category BookingStatusUpdated
+	 * @category GroupCreatedItthinx
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -31,77 +30,76 @@ if ( ! class_exists( 'BookingStatusUpdated' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class BookingStatusUpdated {
+	class GroupCreatedItthinx {
 
 		/**
 		 * Integration type.
 		 *
 		 * @var string
 		 */
-		public $integration = 'AppointmentHourBooking';
+		public $integration = 'GroupsItthinx';
 
 		/**
 		 * Trigger name.
 		 *
 		 * @var string
 		 */
-		public $trigger = 'ahb_booking_status_updated';
+		public $trigger = 'groups_itthinx_group_created';
 
 		use SingletonLoader;
 
 		/**
 		 * Constructor
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 */
 		public function __construct() {
 			add_filter( 'sure_trigger_register_trigger', [ $this, 'register' ] );
 		}
 
 		/**
-		 * Register action.
+		 * Register trigger.
 		 *
-		 * @param array $triggers trigger data.
+		 * @param array $triggers triggers.
 		 * @return array
 		 */
 		public function register( $triggers ) {
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'Booking Status Updated', 'suretriggers' ),
+				'label'         => __( 'Group Created', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => 'cpappb_update_status',
+				'common_action' => 'groups_created_group',
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
-				'accepted_args' => 2,
+				'accepted_args' => 1,
 			];
+
 			return $triggers;
 		}
 
 		/**
 		 * Trigger listener
 		 *
-		 * @param int    $id Appointment ID.
-		 * @param string $status Appointment Status.
-		 * @since 1.0.0
-		 *
+		 * @param mixed $group_id Group ID.
 		 * @return void
 		 */
-		public function trigger_listener( $id, $status ) {
-			
-			global $wpdb;
-			$events      = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT * FROM {$wpdb->prefix}cpappbk_messages 
-            WHERE id=%d",
-					$id
-				) 
-			); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$posted_data = st_safe_unserialize( $events[0]->posted_data );
-
-			if ( ! is_array( $posted_data ) ) {
+		public function trigger_listener( $group_id ) {
+			if ( empty( $group_id ) || ! is_numeric( $group_id ) ) {
 				return;
 			}
 
-			$context = $posted_data;
+			$group_id = (int) $group_id;
+			$context  = [
+				'group_id' => $group_id,
+			];
+
+			if ( class_exists( 'Groups_Group' ) ) {
+				$group = \Groups_Group::read( $group_id );
+				if ( $group ) {
+					$context['group_name']        = isset( $group->name ) ? $group->name : '';
+					$context['group_description'] = isset( $group->description ) ? $group->description : '';
+					$context['group_datetime']    = isset( $group->datetime ) ? $group->datetime : '';
+				}
+			}
 
 			AutomationController::sure_trigger_handle_trigger(
 				[
@@ -117,6 +115,6 @@ if ( ! class_exists( 'BookingStatusUpdated' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	BookingStatusUpdated::get_instance();
+	GroupCreatedItthinx::get_instance();
 
 endif;

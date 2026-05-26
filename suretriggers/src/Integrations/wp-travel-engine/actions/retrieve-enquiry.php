@@ -91,7 +91,7 @@ class RetrieveEnquiry extends AutomateAction {
 		$form_data_raw = get_post_meta( $enquiry_id, 'wp_travel_engine_enquiry_formdata', true );
 
 		if ( is_string( $form_data_raw ) ) {
-			$form_data = maybe_unserialize( $form_data_raw );
+			$form_data = st_safe_unserialize( $form_data_raw );
 
 			if ( ! is_array( $form_data ) ) {
 				$form_data = [];

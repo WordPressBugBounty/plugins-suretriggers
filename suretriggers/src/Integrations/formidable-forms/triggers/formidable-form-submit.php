@@ -105,12 +105,7 @@ if ( ! class_exists( 'FormidableFormSubmit' ) ) :
 				foreach ( $metas as $meta ) {
 					$field_id   = $meta->field_id;
 					$field_name = $wpdb->get_var( $wpdb->prepare( 'SELECT name FROM ' . $wpdb->prefix . 'frm_fields WHERE id=%d', $field_id ) );
-					$meta_data  = unserialize( $meta->meta_value );
-					if ( false !== $meta_data ) {
-						$data_val = unserialize( $meta->meta_value );
-					} else {
-						$data_val = $meta->meta_value;
-					}
+					$data_val   = st_safe_unserialize( $meta->meta_value );
 					if ( is_array( $data_val ) ) {
 						foreach ( $data_val as $key => $val ) {
 							$data[ $key ] = $val;

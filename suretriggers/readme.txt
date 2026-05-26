@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.9
-Stable tag: 1.1.27
+Stable tag: 1.1.28
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,15 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.28 - Tuesday, 26th May 2026 =
+* New: Added "Secure Custom Fields" Integration
+* New: Added "Groups by Itthinx" Integration
+* New: Added "Spaces Engine" Integration
+* New: Added "Cluevo LMS" Integration
+* New: Added "Advanced Forms" Integration
+* Improvement: "FluentBoards" – Improved "Stage Changed" Trigger
+* Fix: This update addressed a security bug. Props to Darius from Patchstack for privately reporting it to our team. Please make sure you are using the latest version on your website.
+
 = Version 1.1.27 - Monday, 11th May 2026 =
 * New: Added "Event Espresso" Integration
 * New: Added "Support Genix" Integration

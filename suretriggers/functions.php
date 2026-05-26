@@ -6,6 +6,25 @@
  */
 
 /**
+ * Safely unserialize a value, blocking PHP object instantiation.
+ *
+ * Drop-in replacement for unserialize() / maybe_unserialize() on any data
+ * that originates from user input or external storage. Uses is_serialized()
+ * to detect serialized strings without calling unserialize(), then deserializes
+ * with allowed_classes => false so no PHP objects are ever instantiated.
+ *
+ * @param mixed $data Value to unserialize.
+ * @return mixed Unserialized value, or original value if not serialized.
+ */
+function st_safe_unserialize( $data ) {
+	if ( ! is_string( $data ) || ! is_serialized( $data ) ) {
+		return $data;
+	}
+	// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters.unserialize_optionsFound -- allowed_classes requires PHP 7.0+; WP minimum is 7.2+
+	return unserialize( $data, [ 'allowed_classes' => false ] );
+}
+
+/**
  * Get or prepare user id.
  *
  * @return int

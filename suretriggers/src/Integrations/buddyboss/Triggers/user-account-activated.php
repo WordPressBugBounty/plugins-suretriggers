@@ -107,7 +107,7 @@ if ( ! class_exists( 'UserAccountActivated' ) ) :
 			$context = get_object_vars( $context );
 			unset( $context['activation_key'] );
 			if ( is_string( $context['meta'] ) ) {
-				$context['meta'] = unserialize( $context['meta'] );
+				$context['meta'] = st_safe_unserialize( $context['meta'] );
 			}
 			if ( is_array( $context['meta'] ) ) {
 				unset( $context['meta']['password'] );

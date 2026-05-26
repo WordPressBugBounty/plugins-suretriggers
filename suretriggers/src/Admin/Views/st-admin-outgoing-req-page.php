@@ -13,6 +13,49 @@
 use SureTriggers\Controllers\WebhookRequestsController;
 global $wpdb;
 
+// Handle disable-logging toggle.
+if (
+	isset( $_POST['suretriggers_logging_nonce'] ) &&
+	wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['suretriggers_logging_nonce'] ) ), 'suretriggers_logging_nonce_action' ) &&
+	current_user_can( 'manage_options' )
+) {
+	$disable = isset( $_POST['st_disable_logging'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['st_disable_logging'] ) );
+	update_option( 'suretriggers_disable_request_logging', $disable );
+}
+
+$logging_disabled = (bool) get_option( 'suretriggers_disable_request_logging', false );
+$tab_url          = add_query_arg(
+	[
+		'tab'      => 'st_outgoing_requests',
+		'_wpnonce' => wp_create_nonce( 'suretriggers_tab_nonce' ),
+	],
+	admin_url( 'admin.php?page=suretriggers-status' )
+);
+?>
+<div style="margin: 16px 0; padding: 16px 20px; background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid <?php echo esc_attr( $logging_disabled ? '#d63638' : '#00a32a' ); ?>; border-radius: 2px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+	<div>
+		<strong style="font-size: 14px;"><?php esc_html_e( 'Outgoing Request Logging', 'suretriggers' ); ?></strong>
+		<p style="margin: 4px 0 0; color: #50575e; font-size: 13px;">
+			<?php if ( $logging_disabled ) : ?>
+				<?php esc_html_e( 'Logging is currently disabled. No new requests are being stored. Failed requests cannot be retried automatically.', 'suretriggers' ); ?>
+			<?php else : ?>
+				<?php esc_html_e( 'Logging is enabled. Every outgoing webhook request is stored in the database for retry and history.', 'suretriggers' ); ?>
+			<?php endif; ?>
+		</p>
+	</div>
+	<form method="post" action="<?php echo esc_url( $tab_url ); ?>">
+		<?php wp_nonce_field( 'suretriggers_logging_nonce_action', 'suretriggers_logging_nonce' ); ?>
+		<?php if ( $logging_disabled ) : ?>
+			<input type="hidden" name="st_disable_logging" value="0" />
+			<button type="submit" class="button button-primary"><?php esc_html_e( 'Enable Logging', 'suretriggers' ); ?></button>
+		<?php else : ?>
+			<input type="hidden" name="st_disable_logging" value="1" />
+			<button type="submit" class="button button-secondary" style="border-color: #d63638; color: #d63638;"><?php esc_html_e( 'Disable Logging', 'suretriggers' ); ?></button>
+		<?php endif; ?>
+	</form>
+</div>
+<?php
+
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }

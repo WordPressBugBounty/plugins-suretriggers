@@ -1,9 +1,9 @@
 <?php
 /**
- * BookingStatusUpdated.
+ * UserScfFieldUpdated.
  * php version 5.6
  *
- * @category BookingStatusUpdated
+ * @category UserScfFieldUpdated
  * @package  SureTriggers
  * @author   BSF <username@example.com>
  * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -11,18 +11,18 @@
  * @since    1.0.0
  */
 
-namespace SureTriggers\Integrations\AppointmentHourBooking\Triggers;
+namespace SureTriggers\Integrations\SecureCustomFields\Triggers;
 
 use SureTriggers\Controllers\AutomationController;
-use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
+use SureTriggers\Integrations\WordPress\WordPress;
 
-if ( ! class_exists( 'BookingStatusUpdated' ) ) :
+if ( ! class_exists( 'UserScfFieldUpdated' ) ) :
 
 	/**
-	 * BookingStatusUpdated
+	 * UserScfFieldUpdated
 	 *
-	 * @category BookingStatusUpdated
+	 * @category UserScfFieldUpdated
 	 * @package  SureTriggers
 	 * @author   BSF <username@example.com>
 	 * @license  https://www.gnu.org/licenses/gpl-3.0.html GPLv3
@@ -31,28 +31,31 @@ if ( ! class_exists( 'BookingStatusUpdated' ) ) :
 	 *
 	 * @psalm-suppress UndefinedTrait
 	 */
-	class BookingStatusUpdated {
+	class UserScfFieldUpdated {
+
 
 		/**
 		 * Integration type.
 		 *
 		 * @var string
 		 */
-		public $integration = 'AppointmentHourBooking';
+		public $integration = 'SecureCustomFields';
+
 
 		/**
 		 * Trigger name.
 		 *
 		 * @var string
 		 */
-		public $trigger = 'ahb_booking_status_updated';
+		public $trigger = 'user_scf_field_updated';
 
 		use SingletonLoader;
+
 
 		/**
 		 * Constructor
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 */
 		public function __construct() {
 			add_filter( 'sure_trigger_register_trigger', [ $this, 'register' ] );
@@ -65,43 +68,39 @@ if ( ! class_exists( 'BookingStatusUpdated' ) ) :
 		 * @return array
 		 */
 		public function register( $triggers ) {
+
 			$triggers[ $this->integration ][ $this->trigger ] = [
-				'label'         => __( 'Booking Status Updated', 'suretriggers' ),
+				'label'         => __( 'Field Updated On User Profile', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => 'cpappb_update_status',
+				'common_action' => [ 'updated_user_meta', 'added_user_meta' ],
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
-				'accepted_args' => 2,
+				'accepted_args' => 4,
 			];
+
 			return $triggers;
 		}
 
 		/**
 		 * Trigger listener
 		 *
-		 * @param int    $id Appointment ID.
-		 * @param string $status Appointment Status.
-		 * @since 1.0.0
-		 *
-		 * @return void
+		 * @param int $meta_id   Meta ID.
+		 * @param int $object_id Object ID.
+		 * @param int $meta_key  Meta Key.
+		 * @param int $meta_value Meta Value.
+		 * @return void|bool
 		 */
-		public function trigger_listener( $id, $status ) {
-			
-			global $wpdb;
-			$events      = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT * FROM {$wpdb->prefix}cpappbk_messages 
-            WHERE id=%d",
-					$id
-				) 
-			); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$posted_data = st_safe_unserialize( $events[0]->posted_data );
+		public function trigger_listener( $meta_id, $object_id, $meta_key, $meta_value ) {
 
-			if ( ! is_array( $posted_data ) ) {
+			if ( ! function_exists( 'acf_get_field' ) || ! acf_get_field( $meta_key ) ) {
 				return;
 			}
 
-			$context = $posted_data;
+			$context = [
+				'field_id' => $meta_key,
+				$meta_key  => $meta_value,
+				'user'     => WordPress::get_user_context( $object_id ),
+			];
 
 			AutomationController::sure_trigger_handle_trigger(
 				[
@@ -117,6 +116,6 @@ if ( ! class_exists( 'BookingStatusUpdated' ) ) :
 	 *
 	 * @psalm-suppress UndefinedMethod
 	 */
-	BookingStatusUpdated::get_instance();
+	UserScfFieldUpdated::get_instance();
 
 endif;

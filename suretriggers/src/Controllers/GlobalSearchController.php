@@ -8543,7 +8543,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$pluggable_data = get_object_vars( $pluggable_data );
 			unset( $pluggable_data['activation_key'] );
 			if ( is_string( $pluggable_data['meta'] ) ) {
-				$pluggable_data['meta'] = unserialize( $pluggable_data['meta'] );
+				$pluggable_data['meta'] = st_safe_unserialize( $pluggable_data['meta'] );
 			}
 			if ( is_array( $pluggable_data['meta'] ) ) {
 				unset( $pluggable_data['meta']['password'] );
@@ -14725,6 +14725,482 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Get SCF Custom fields list for posts.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_scf_post_field_list( $data ) {
+
+		$post_id            = $data['dynamic']['wp_post'];
+		$selected_post_type = $data['dynamic']['wp_post_type'];
+
+		if ( -1 === $post_id ) {
+			$args    = [
+				'numberposts' => 1,
+				'fields'      => 'ids',
+				'orderby'     => 'rand',
+				'post_type'   => $selected_post_type,
+			];
+			$posts   = get_posts( $args );
+			$post_id = $posts[0];
+		}
+
+		$args = [
+			'post_id' => $post_id,
+		];
+		if ( ! is_numeric( $post_id ) ) {
+			$args = [
+				'post_type' => $post_id,
+			];
+		}
+		$options = [];
+		if ( function_exists( 'acf_get_field_groups' ) ) {
+			$field_groups_collection = acf_get_field_groups( $args );
+			foreach ( $field_groups_collection as $field_group ) {
+				if ( function_exists( 'acf_get_fields' ) ) {
+					$field_groups[] = acf_get_fields( $field_group['key'] );
+				}
+			}
+
+			if ( ! empty( $field_groups ) && is_array( $field_groups ) ) {
+				foreach ( $field_groups as $group_fields_set ) {
+					foreach ( $group_fields_set as $field_group ) {
+						$options[] = [
+							'value' => $field_group['name'],
+							'label' => ! empty( $field_group['label'] ) ? $field_group['label'] : $field_group['name'],
+						];
+					}
+				}
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Get SCF Custom fields list for users.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_scf_user_field_list( $data ) {
+
+		if ( ! function_exists( 'acf_get_fields' ) ) {
+			return [];
+		}
+		if ( ! function_exists( 'acf_get_field_groups' ) ) {
+			return [];
+		}
+		$groups_user_form = [];
+		$options          = [];
+		if ( function_exists( 'acf_get_field_groups' ) ) {
+			$field_groups = acf_get_field_groups();
+			foreach ( $field_groups as $group ) {
+				if ( ! empty( $group['location'] ) ) {
+					foreach ( $group['location'] as $locations ) {
+						foreach ( $locations as $location ) {
+							if ( 'user_form' === $location['param'] || 'user_role' === $location['param'] || 'current_user' === $location['param'] || 'current_user_role' === $location['param'] ) {
+								$groups_user_form[] = $group;
+							}
+						}
+					}
+				}
+			}
+
+			if ( empty( $groups_user_form ) ) {
+				return [];
+			}
+
+			$key_values   = array_map(
+				function ( $item ) {
+					return $item['key'];
+				},
+				$groups_user_form
+			);
+			$unique_keys  = array_unique( $key_values );
+			$unique_array = array_intersect_key( $groups_user_form, $unique_keys );
+
+			foreach ( $unique_array as $group ) {
+				if ( function_exists( 'acf_get_fields' ) ) {
+					$group_fields = acf_get_fields( $group['key'] );
+				}
+				if ( ! empty( $group_fields ) ) {
+					foreach ( $group_fields as $field ) {
+						$options[] = [
+							'value' => $field['name'],
+							'label' => $field['label'],
+						];
+					}
+				}
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Get SCF Custom fields list for options page.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_scf_options_field_list( $data ) {
+
+		if ( ! function_exists( 'acf_get_fields' ) ) {
+			return [];
+		}
+		if ( ! function_exists( 'acf_get_field_groups' ) ) {
+			return [];
+		}
+		$groups_options_form = [];
+		$options             = [];
+		if ( function_exists( 'acf_get_field_groups' ) ) {
+			$field_groups = acf_get_field_groups();
+			foreach ( $field_groups as $group ) {
+				if ( ! empty( $group['location'] ) ) {
+					foreach ( $group['location'] as $locations ) {
+						foreach ( $locations as $location ) {
+							if ( 'options_page' === $location['param'] ) {
+								$groups_options_form[] = $group;
+							}
+						}
+					}
+				}
+			}
+			if ( empty( $groups_options_form ) ) {
+				return [];
+			}
+			$key_values   = array_map(
+				function ( $item ) {
+					return $item['key'];
+				},
+				$groups_options_form
+			);
+			$unique_keys  = array_unique( $key_values );
+			$unique_array = array_intersect_key( $groups_options_form, $unique_keys );
+			foreach ( $unique_array as $group ) {
+				if ( function_exists( 'acf_get_fields' ) ) {
+					$group_fields = acf_get_fields( $group['key'] );
+				}
+				if ( ! empty( $group_fields ) ) {
+					foreach ( $group_fields as $field ) {
+						$options[] = [
+							'value' => $field['name'],
+							'label' => $field['label'],
+						];
+					}
+				}
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Search Last Updated Field Data for SCF post fields.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_scf_post_field_data( $data ) {
+		$context  = [];
+		$response = [];
+
+		$field = ( isset( $data['filter']['field_id']['value'] ) ? $data['filter']['field_id']['value'] : -1 );
+
+		$post_type = $data['filter']['wp_post_type']['value'];
+		$post      = $data['filter']['wp_post']['value'];
+
+		if ( -1 === $post ) {
+			$args  = [
+				'numberposts' => 1,
+				'fields'      => 'ids',
+				'orderby'     => 'rand',
+				'post_type'   => $post_type,
+			];
+			$posts = get_posts( $args );
+			$post  = $posts[0];
+		}
+		if ( -1 === $field ) {
+			$args = [
+				'post_id' => $post,
+			];
+			if ( function_exists( 'acf_get_field_groups' ) ) {
+				$field_groups_collection = acf_get_field_groups( $args );
+			}
+			if ( ! empty( $field_groups_collection ) ) {
+				foreach ( $field_groups_collection as $field_group ) {
+					if ( function_exists( 'acf_get_fields' ) ) {
+						$field_groups[] = acf_get_fields( $field_group['key'] );
+					}
+				}
+			}
+			$fields = [];
+			if ( ! empty( $field_groups ) && is_array( $field_groups ) ) {
+				foreach ( $field_groups as $group_fields_set ) {
+					$fields[] = $group_fields_set;
+				}
+			}
+			if ( ! empty( $fields ) ) {
+				$random_key = array_rand( $fields[0] );
+				$field_key  = $fields[0][ $random_key ];
+				$field      = $field_key['name'];
+			} else {
+				$result = '';
+			}
+		} else {
+			$field = $data['filter']['field_id']['value'];
+		}
+		if ( function_exists( ( 'get_field' ) ) ) {
+			$result = get_field( $field, $post );
+		}
+
+		$response = [];
+		if ( ! empty( $result ) ) {
+			$post_fields = [];
+			if ( function_exists( 'get_fields' ) ) {
+				$post_fields = get_fields( $post );
+			}
+			$response['pluggable_data'] = array_merge( [ $field => $result ], [ 'field_id' => $field ], [ 'post_fields' => $post_fields ], [ 'post' => WordPress::get_post_context( $post ) ], [ 'wp_post' => $post ], [ 'wp_post_type' => get_post_type( $post ) ] );
+			$response['response_type']  = 'live';
+		} else {
+			$response = json_decode( '{"response_type":"sample","pluggable_data":{"custom_description": "custom message", "ID": 1, "post_author": "1", "post_date": "2023-05-31 13:26:24", "post_date_gmt": "2023-05-31 13:26:24", "post_content": "", "post_title": "Test", "post_excerpt": "", "post_status": "publish", "comment_status": "open", "ping_status": "open", "post_password": "", "post_name": "test", "to_ping": "", "pinged": "", "post_modified": "2023-08-17 09:15:56", "post_modified_gmt": "2023-08-17 09:15:56", "post_content_filtered": "", "post_parent": 0, "guid": "https:\/\/example.com\/?p=1", "menu_order": 0, "post_type": "post", "post_mime_type": "", "comment_count": "2", "filter": "raw"}}', true );
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Search Last Updated User Field Data SCF.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_scf_user_field_data( $data ) {
+		global $wpdb;
+
+		$context = [];
+
+		$field = (int) ( isset( $data['filter']['field_id']['value'] ) ? $data['filter']['field_id']['value'] : -1 );
+
+		if ( -1 === $field ) {
+			$groups_user_form = [];
+			if ( function_exists( 'acf_get_field_groups' ) ) {
+				$field_groups = acf_get_field_groups();
+			}
+			if ( ! empty( $field_groups ) ) {
+				foreach ( $field_groups as $group ) {
+					if ( ! empty( $group['location'] ) ) {
+						foreach ( $group['location'] as $locations ) {
+							foreach ( $locations as $location ) {
+								if ( 'user_form' === $location['param'] || 'user_role' === $location['param'] || 'current_user' === $location['param'] || 'current_user_role' === $location['param'] ) {
+									$groups_user_form[] = $group;
+								}
+							}
+						}
+					}
+				}
+				$field_groups = $groups_user_form;
+			}
+			if ( empty( $field_groups ) ) {
+				$result = '';
+			}
+			$fields = [];
+			if ( ! empty( $field_groups ) ) {
+				foreach ( $field_groups as $group ) {
+					if ( function_exists( 'acf_get_fields' ) ) {
+						$group_fields = acf_get_fields( $group['key'] );
+					}
+					if ( ! empty( $group_fields ) ) {
+						foreach ( $group_fields as $scf_field ) {
+							$fields[] = $scf_field;
+						}
+					}
+				}
+			}
+			if ( ! empty( $fields ) ) {
+				$random_key = array_rand( $fields );
+				$field      = $fields[ $random_key ]['name'];
+			} else {
+				$result = '';
+			}
+		} else {
+			$field = $data['filter']['field_id']['value'];
+		}
+		$users = get_users(
+			[
+				'fields'   => 'ID',
+				'meta_key' => $field,
+			]
+		);
+
+		if ( ! empty( $users ) ) {
+			$user_random_key  = array_rand( $users );
+			$selected_user_id = $users[ $user_random_key ];
+			if ( function_exists( 'get_field' ) ) {
+				$result = get_field( $field, 'user_' . $selected_user_id );
+			}
+			$response = [];
+			if ( ! empty( $result ) ) {
+				$context                    = [
+					'field_id' => $field,
+					$field     => $result,
+					'user'     => WordPress::get_user_context( $selected_user_id ),
+				];
+				$response['pluggable_data'] = $context;
+				$response['response_type']  = 'live';
+			} else {
+				$response = json_decode(
+					'{
+					"response_type": "sample",
+					"pluggable_data": {
+						"field_id": "gender",
+						"user": {
+							"wp_user_id": 114,
+							"user_login": "test",
+							"display_name": "test",
+							"user_firstname": "test",
+							"user_lastname": "test",
+							"user_email": "test@test.com",
+							"user_role": [ "subscriber" ]
+						}
+					}
+				}',
+					true
+				);
+			}
+		} else {
+			$response = json_decode(
+				'{
+				"response_type": "sample",
+				"pluggable_data": {
+					"field_id": "gender",
+					"user": {
+						"wp_user_id": 114,
+						"user_login": "test",
+						"display_name": "test",
+						"user_firstname": "test",
+						"user_lastname": "test",
+						"user_email": "test@test.com",
+						"user_role": [ "subscriber" ]
+					}
+				}
+			}',
+				true
+			);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Search Last Updated Options Field Data SCF.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_scf_options_field_data( $data ) {
+		global $wpdb;
+		$context  = [];
+		$response = [];
+		$field    = (int) ( isset( $data['filter']['field_id']['value'] ) ? $data['filter']['field_id']['value'] : -1 );
+
+		if ( -1 === $field ) {
+			$groups_options_form = [];
+			if ( function_exists( 'acf_get_field_groups' ) ) {
+				$field_groups = acf_get_field_groups();
+			}
+			if ( ! empty( $field_groups ) ) {
+				foreach ( $field_groups as $group ) {
+					if ( ! empty( $group['location'] ) ) {
+						foreach ( $group['location'] as $locations ) {
+							foreach ( $locations as $location ) {
+								if ( 'options_page' === $location['param'] ) {
+									$groups_options_form[] = $group;
+								}
+							}
+						}
+					}
+				}
+			}
+			if ( empty( $groups_options_form ) ) {
+				$result = '';
+			}
+			$key_values   = array_map(
+				function ( $item ) {
+					return $item['key'];
+				},
+				$groups_options_form
+			);
+			$unique_keys  = array_unique( $key_values );
+			$unique_array = array_intersect_key( $groups_options_form, $unique_keys );
+			$fields       = [];
+			if ( ! empty( $unique_array ) ) {
+				foreach ( $unique_array as $group ) {
+					if ( function_exists( 'acf_get_fields' ) ) {
+						$group_fields = acf_get_fields( $group['key'] );
+					}
+					if ( ! empty( $group_fields ) ) {
+						foreach ( $group_fields as $scf_field ) {
+							$fields[] = $scf_field;
+						}
+					}
+				}
+			}
+			if ( ! empty( $fields ) ) {
+				$random_key = array_rand( $fields );
+				$field      = $fields[ $random_key ]['name'];
+			} else {
+				$result = '';
+			}
+		} else {
+			$field = $data['filter']['field_id']['value'];
+		}
+		if ( function_exists( 'get_field' ) ) {
+			$option_value = get_field( $field, 'option' );
+		}
+		if ( ! empty( $option_value ) ) {
+			if ( function_exists( 'acf_get_field' ) ) {
+				$options_fields = acf_get_field( $field );
+				if ( function_exists( 'acf_maybe_get' ) ) {
+					$options_page = acf_maybe_get( $options_fields, 'parent' );
+				}
+			}
+			$context                    = [
+				'field_id' => $field,
+				$field     => $option_value,
+			];
+			$response['pluggable_data'] = $context;
+			$response['response_type']  = 'live';
+		} else {
+			$response = json_decode(
+				'{
+				"response_type": "sample",
+				"pluggable_data": {
+					"field_id": "optionpage",
+					"optionpage": "newoption"
+				}
+			}',
+				true
+			);
+		}
+		return $response;
+	}
+
+	/**
 	 * Get WP Fusion Tags list.
 	 *
 	 * @param array $data data.
@@ -19564,7 +20040,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			}
 			return $data;
 		} elseif ( is_string( $data ) && self::is_serialized( strval( $data ) ) ) {
-			return unserialize( $data );
+			return st_safe_unserialize( $data );
 		} else {
 			return $data;
 		}
@@ -21452,7 +21928,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$results      = $wpdb->get_results( $sql, ARRAY_A );// @phpcs:ignore
 		
 		if ( ! empty( $results ) ) {
-			$context['pluggable_data'] = unserialize( $results[0]['posted_data'] );
+			$context['pluggable_data'] = st_safe_unserialize( $results[0]['posted_data'] );
 			$context['response_type']  = 'live';
 		} else {
 			$context = json_decode( '{"pluggable_data":{"final_price": "1.00","final_price_short": "1","request_timestamp": "04\/10\/2024 06:56:33","apps": [{"id": 1,"cancelled": "Pending","serviceindex": 0,"service": "Service 1","duration": 60,"price": 1,"date": "2024-04-13","slot": "10:00\/11:00","military": 0,"field": "fieldname1","quant": 1,"sid": ""}],"app_service_1": "Service 1","app_status_1": "Pending","app_duration_1": 60,"app_price_1": 1,"app_date_1": "04\/13\/2024","app_slot_1": "10:00\/11:00","app_starttime_1": "10:00 AM","app_endtime_1": "11:00 AM","app_quantity_1": 1,"formid": 1,"formname": "Form 1","referrer": "https:\/\/example.com\/wp-admin\/admin.php?page=cp_apphourbooking&amp;addbk=1&amp;cal=1&amp;r=0.7819147291131667","fieldname1": " - 04\/13\/2024 10:00 AM - 11:00 AM (Service 1)\n","email": "johnd@yopmail.com","username": "admin","itemnumber": 1},"response_type":"sample"}', true );// @phpcs:ignore
@@ -22206,9 +22682,40 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				case 'stage_changed':
 					$stage_data  = Stage::where( 'board_id', $result['board_id'] )->whereNull( 'archived_at' )->first();
 					$user_result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}users ORDER BY id DESC LIMIT 1", ARRAY_A );
-					
+
+					$raw_custom_fields = $wpdb->get_results( //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+						$wpdb->prepare(
+							"SELECT bt.id, bt.title, bt.slug, bt.settings AS field_settings, r.settings AS pivot_settings
+							FROM {$wpdb->prefix}fbs_board_terms bt
+							LEFT JOIN {$wpdb->prefix}fbs_relations r
+								ON r.foreign_id = bt.id
+								AND r.object_id = %d
+								AND r.object_type = 'task_custom_field'
+							WHERE bt.board_id = %d AND bt.type = 'custom-field'
+							ORDER BY bt.position ASC",
+							$result['id'],
+							$result['board_id']
+						),
+						ARRAY_A
+					);
+
+					$custom_fields = [];
+					if ( ! empty( $raw_custom_fields ) ) {
+						foreach ( $raw_custom_fields as $cf ) {
+							$field_settings  = is_array( st_safe_unserialize( $cf['field_settings'] ) ) ? st_safe_unserialize( $cf['field_settings'] ) : [];
+							$pivot_settings  = is_array( st_safe_unserialize( $cf['pivot_settings'] ) ) ? st_safe_unserialize( $cf['pivot_settings'] ) : [];
+							$custom_fields[] = [
+								'id'    => $cf['id'],
+								'title' => $cf['title'],
+								'slug'  => $cf['slug'],
+								'type'  => isset( $field_settings['custom_field_type'] ) ? $field_settings['custom_field_type'] : '',
+								'value' => isset( $pivot_settings['value'] ) ? $pivot_settings['value'] : '',
+							];
+						}
+					}
+
 					$context['pluggable_data'] = [
-						'task'         => [
+						'task'          => [
 							'id'          => $result['id'],
 							'slug'        => $result['slug'],
 							'title'       => $result['title'],
@@ -22253,7 +22760,8 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 								],
 							],
 						],
-						'old_stage_id' => $stage_data->id,
+						'old_stage_id'  => $stage_data->id,
+						'custom_fields' => $custom_fields,
 					];
 					$context['response_type']  = 'live';
 					break;
@@ -22409,7 +22917,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					$context = json_decode( '{"pluggable_data":{"id":"1001","slug":"sample-task","title":"Sample Task","description":"This is a sample task.","type":"task","board_id":"10","stage_id":"3","position":"1","priority":"medium","created_at":"2024-03-20 12:00:00","created_by":"1","updated_at":"2024-03-20 12:30:00","settings":[],"stage":{"id":"3","slug":"sample-stage","title":"Sample Stage","type":"default","board_id":"10","position":"1","settings":[],"created_at":"2024-03-19 10:00:00","updated_at":"2024-03-20 11:00:00"}},"response_type":"sample"}', true ); 
 					break;
 				case 'stage_changed':
-					$context = json_decode( '{"pluggable_data":{"id":"1002","slug":"changed-task","title":"Changed Task","description":"This task changed stages.","type":"task","board_id":"10","stage_id":"4","position":"2","priority":"high","created_at":"2024-04-01 10:00:00","created_by":"1","updated_at":"2024-04-01 12:00:00","settings":[],"stage":{"id":"4","slug":"new-stage","title":"New Stage","type":"default","board_id":"10","position":"2","settings":[],"created_at":"","updated_at":""},"old_stage_id":"3","watchers":[{"ID":71,"photo":"https://www.gravatar.com/avatar/e361de3380a6b977abf350619468ce4f?s=128&d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJohn+Doe/128","user_url":"","user_email":"john@gmail.com","user_login":"john","user_status":0,"display_name":"John Doe","user_nicename":"john","user_registered":"2025-05-28 12:07:48","pivot":{"object_id":1002,"created_at":"2025-06-05T10:11:31+00:00","foreign_id":71,"user_id":71}}]},"response_type":"sample"}', true );
+					$context = json_decode( '{"pluggable_data":{"id":"1002","slug":"changed-task","title":"Changed Task","description":"This task changed stages.","type":"task","board_id":"10","stage_id":"4","position":"2","priority":"high","created_at":"2024-04-01 10:00:00","created_by":"1","updated_at":"2024-04-01 12:00:00","settings":[],"stage":{"id":"4","slug":"new-stage","title":"New Stage","type":"default","board_id":"10","position":"2","settings":[],"created_at":"","updated_at":""},"old_stage_id":"3","watchers":[{"ID":71,"photo":"https://www.gravatar.com/avatar/e361de3380a6b977abf350619468ce4f?s=128&d=https%3A%2F%2Fui-avatars.com%2Fapi%2FJohn+Doe/128","user_url":"","user_email":"john@gmail.com","user_login":"john","user_status":0,"display_name":"John Doe","user_nicename":"john","user_registered":"2025-05-28 12:07:48","pivot":{"object_id":1002,"created_at":"2025-06-05T10:11:31+00:00","foreign_id":71,"user_id":71}}],"custom_fields":[{"id":"1","title":"Priority Score","slug":"priority-score","type":"number","value":"8"},{"id":"2","title":"Client Approved","slug":"client-approved","type":"checkbox","value":true}]},"response_type":"sample"}', true );
 					break;
 				case 'task_updated':
 					$context = json_decode( '{"pluggable_data":{"task":{"id":"1001","parent_id":null,"board_id":"10","title":"Sample Task","slug":"sample-task","type":"task","status":"open","stage_id":"3","source":"web","priority":"medium","description":"<p>Updated task description</p>","position":"1","created_by":"1","created_at":"2024-03-20 12:00:00","updated_at":"2024-03-20 12:30:00","due_at":"2024-03-25 23:45:00","started_at":null,"settings":[],"stage":{"id":"3","slug":"sample-stage","title":"Sample Stage","type":"default","board_id":"10","position":"1","settings":[]}},"column":"description","old_task":{"id":"1001","parent_id":null,"board_id":"10","title":"Sample Task","slug":"sample-task","type":"task","status":"open","stage_id":"3","source":"web","priority":"medium","description":"<p>Original task description</p>","position":"1","created_by":"1","created_at":"2024-03-20 12:00:00","updated_at":"2024-03-20 12:00:00","due_at":"2024-03-25 23:45:00","started_at":null,"settings":[]}},"response_type":"sample"}', true );
@@ -26137,6 +26645,48 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Search Advanced Forms for ACF forms.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_advanced_forms( $data ) {
+		if ( ! function_exists( 'af' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$forms = get_posts(
+			[
+				'post_type'   => 'af_form',
+				'post_status' => 'publish',
+				'numberposts' => -1,
+				'orderby'     => 'title',
+				'order'       => 'ASC',
+			]
+		);
+
+		$options = [];
+
+		if ( ! empty( $forms ) ) {
+			foreach ( $forms as $form ) {
+				$options[] = [
+					'label' => $form->post_title,
+					'value' => $form->post_name,
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
 	 * Search Code Snippets list.
 	 *
 	 * @param array $data data.
@@ -26179,7 +26729,115 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		];
 	}
 
+	/**
+	 * Get CLUEVO LMS learning structure items list.
+	 *
+	 * Returns all items from the CLUEVO tree table (courses, chapters, modules)
+	 * with pagination and optional name/path filtering. Item IDs from this list
+	 * are used by the Assign User to Course action.
+	 *
+	 * @param array $data Search params: page, term.
+	 * @return array
+	 */
+	public function search_cluevo_lms_items( $data ) {
+		if ( ! function_exists( 'cluevo_get_lms_item_list' ) ) {
+			return [];
+		}
 
+		$page   = $data['page'];
+		$limit  = Utilities::get_search_page_limit();
+		$offset = $limit * ( $page - 1 );
+		$term   = isset( $data['term'] ) ? strtolower( trim( (string) $data['term'] ) ) : '';
+
+		$all_items = cluevo_get_lms_item_list();
+
+		if ( empty( $all_items ) || ! is_array( $all_items ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		if ( ! empty( $term ) ) {
+			$all_items = array_values(
+				array_filter(
+					$all_items,
+					function ( $item ) use ( $term ) {
+						return strpos( strtolower( (string) $item->name ), $term ) !== false
+							|| strpos( strtolower( (string) $item->path ), $term ) !== false;
+					}
+				)
+			);
+		}
+
+		$total      = count( $all_items );
+		$page_items = array_slice( $all_items, $offset, $limit );
+
+		$options = [];
+		foreach ( $page_items as $item ) {
+			$label     = ! empty( $item->path ) ? rtrim( (string) $item->path, '/' ) : (string) $item->name;
+			$options[] = [
+				'label' => $label,
+				'value' => $item->item_id,
+			];
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => $total > ( $offset + $limit ),
+		];
+	}
+
+
+	/**
+	 * Get Groups by itthinx — list groups from the custom groups table.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_groups_itthinx_groups( $data ) {
+		global $wpdb;
+
+		if ( ! class_exists( 'Groups_Group' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$page        = $data['page'];
+		$limit       = Utilities::get_search_page_limit();
+		$offset      = $limit * ( $page - 1 );
+		$search_term = isset( $data['search_term'] ) ? sanitize_text_field( $data['search_term'] ) : '';
+
+		$group_table = $wpdb->prefix . 'groups_group'; //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		if ( ! empty( $search_term ) ) {
+			$like    = '%' . $wpdb->esc_like( $search_term ) . '%';
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT group_id, name FROM {$group_table} WHERE name LIKE %s ORDER BY name ASC LIMIT %d OFFSET %d", $like, $limit, $offset ) ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$total   = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$group_table} WHERE name LIKE %s", $like ) ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		} else {
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT group_id, name FROM {$group_table} ORDER BY name ASC LIMIT %d OFFSET %d", $limit, $offset ) ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$total   = $wpdb->get_var( "SELECT COUNT(*) FROM {$group_table}" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+
+		$options = [];
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $group ) {
+				$options[] = [
+					'label' => is_string( $group->name ) ? $group->name : '',
+					'value' => $group->group_id,
+				];
+			}
+		}
+
+		$total = is_numeric( $total ) ? (int) $total : 0;
+
+		return [
+			'options' => $options,
+			'hasMore' => $total > ( $offset + $limit ),
+		];
+	}
 }
 
 

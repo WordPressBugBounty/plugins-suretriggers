@@ -144,10 +144,32 @@ class WebhookRequestsController {
 	 * @param string $data Request data.
 	 * @param int    $response_code Response Code.
 	 * @param string $error_info Error Info.
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function suretriggers_log_request( $data, $response_code, $error_info ) {
+		// Allow disabling logging via constant in wp-config.php.
+		if ( defined( 'SURETRIGGERS_DISABLE_LOGGING' ) && SURETRIGGERS_DISABLE_LOGGING ) {
+			return;
+		}
+
+		// Allow disabling logging via the Settings UI option.
+		if ( get_option( 'suretriggers_disable_request_logging', false ) ) {
+			return;
+		}
+
+		/**
+		 * Filter to disable webhook request logging programmatically.
+		 * Return false to stop logging.
+		 *
+		 * @param bool   $enable        Whether to log. Default true.
+		 * @param int    $response_code HTTP response code.
+		 * @param string $error_info    Error message if any.
+		 */
+		if ( ! apply_filters( 'suretriggers_enable_request_logging', true, $response_code, $error_info ) ) {
+			return;
+		}
+
 		global $wpdb;
 		// Store the data in request logs.
 		$wpdb->insert(
