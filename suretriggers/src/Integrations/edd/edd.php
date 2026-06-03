@@ -84,6 +84,7 @@ class EDD extends Integrations {
 		}
 		$context                        = [];
 		$context['order_id']            = $payment->ID;
+		$context['purchase_id']         = $payment->ID;
 		$context['customer_email']      = $payment->email;
 		$context['customer_id']         = $payment->customer_id;
 		$context['user_id']             = $payment->user_info['id'];

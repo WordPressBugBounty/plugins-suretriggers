@@ -3,12 +3,12 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.9
-Stable tag: 1.1.28
+Stable tag: 1.1.29
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Experience the power of automation within WordPress: Connect 1,400+ apps, automate manual tasks, and unlock your full potential. Get started now!
+Experience the power of automation within WordPress: Connect 1,500+ apps, automate manual tasks, and unlock your full potential. Get started now!
 
 == Description ==
 
@@ -334,6 +334,12 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.29 - Wednesday, 3rd June 2026 =
+* New: Added "BookingPress" Integration
+* New: Added "Bricksforge" Integration
+* Improvement: "SureDash" – Added new "Lesson Completed" Trigger
+* Improvement: "BuddyBoss" – Added new "Unsubscribe User from Email Notifications" Action
+
 = Version 1.1.28 - Tuesday, 26th May 2026 =
 * New: Added "Secure Custom Fields" Integration
 * New: Added "Groups by Itthinx" Integration

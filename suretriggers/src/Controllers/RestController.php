@@ -225,16 +225,43 @@ class RestController {
 	 * @return  array|WP_Error $response Response.
 	 */
 	public static function suretriggers_verify_wp_connection() {
+		$current_token = SaasApiToken::get();
+		$body          = [
+			'saas-token'     => $current_token,
+			'base_url'       => str_replace( '/wp-json/', '', get_rest_url() ),
+			'plugin_version' => SURE_TRIGGERS_VER,
+		];
+
+		$sent_token = get_option( 'suretriggers_plugins_snapshot_sent', '' );
+
+		if ( $sent_token !== $current_token ) {
+			$body['active_plugins'] = wp_json_encode( array_values( array_keys( self::get_installed_plugins() ) ) );
+		}
+
 		$args     = [
-			'body'    => [
-				'saas-token'     => SaasApiToken::get(),
-				'base_url'       => str_replace( '/wp-json/', '', get_rest_url() ),
-				'plugin_version' => SURE_TRIGGERS_VER,
-			],
+			'body'    => $body,
 			'timeout' => 60, //phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 		];
 		$response = wp_remote_post( SURE_TRIGGERS_API_SERVER_URL . '/connection/wordpress/ping', $args );
+
+		if ( isset( $body['active_plugins'] ) && ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+			update_option( 'suretriggers_plugins_snapshot_sent', $current_token );
+		}
+
 		return $response;
+	}
+
+	/**
+	 * Get all installed plugins (active + inactive).
+	 * get_plugins() is admin-only, so load the file if needed.
+	 *
+	 * @return array<string, mixed>
+	 */
+	private static function get_installed_plugins() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		return get_plugins();
 	}
 
 	/**

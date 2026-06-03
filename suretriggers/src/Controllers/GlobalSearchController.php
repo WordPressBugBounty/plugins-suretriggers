@@ -332,6 +332,81 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * Search Lesson Completed pluggable data.
+	 *
+	 * @param array $data query params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_pluggables_lesson_completed( $data ) {
+		$context = [];
+		$args    = [
+			'order'   => 'DESC',
+			'number'  => 1,
+			'orderby' => 'ID',
+		];
+
+		if ( isset( $data['filter']['suredash_course']['value'] ) ) {
+			$course_id = $data['filter']['suredash_course']['value'];
+		}
+
+		$users = get_users( $args );
+
+		if ( ! empty( $users ) ) {
+			$user         = $users[0];
+			$course_title = 'Sample Course';
+			$lesson_title = 'Sample Lesson';
+
+			if ( isset( $course_id ) ) {
+				$course = get_post( $course_id );
+				if ( $course ) {
+					$course_title = $course->post_title;
+				}
+			}
+
+			$first_name = get_user_meta( $user->ID, 'first_name', true );
+			$last_name  = get_user_meta( $user->ID, 'last_name', true );
+
+			$pluggable_data            = [
+				'wp_user_id'       => $user->ID,
+				'user_login'       => $user->user_login,
+				'display_name'     => $user->display_name,
+				'user_firstname'   => $first_name ? $first_name : '--',
+				'user_lastname'    => $last_name ? $last_name : '--',
+				'user_email'       => $user->user_email,
+				'user_registered'  => $user->user_registered,
+				'user_role'        => $user->roles,
+				'lesson_id'        => 1,
+				'lesson_title'     => $lesson_title,
+				'course_id'        => isset( $course_id ) ? $course_id : 102,
+				'suredash_courses' => isset( $course_id ) ? $course_id : 102,
+				'course_title'     => $course_title,
+			];
+			$context['pluggable_data'] = $pluggable_data;
+			$context['response_type']  = 'live';
+		} else {
+			$context['pluggable_data'] = [
+				'wp_user_id'       => 1,
+				'user_login'       => 'testuser',
+				'display_name'     => 'Test User',
+				'user_firstname'   => '--',
+				'user_lastname'    => '--',
+				'user_email'       => 'testuser@gmail.com',
+				'user_registered'  => '2024-06-18 09:47:58',
+				'user_role'        => [ 'subscriber' ],
+				'lesson_id'        => 1,
+				'lesson_title'     => 'Sample Lesson',
+				'course_id'        => isset( $course_id ) ? $course_id : 102,
+				'suredash_courses' => isset( $course_id ) ? $course_id : 102,
+				'course_title'     => 'Sample Course',
+			];
+			$context['response_type']  = 'sample';
+		}
+		return $context;
+	}
+
+	/**
 	 * Search Course.
 	 *
 	 * @param array $data quesry params.
@@ -26836,6 +26911,75 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		return [
 			'options' => $options,
 			'hasMore' => $total > ( $offset + $limit ),
+		];
+	}
+
+	/**
+	 * Search Bricksforge Pro Forms.
+	 *
+	 * Scans all Bricks-built posts/templates for Pro Forms elements
+	 * (name: brf-pro-forms) and returns each form's element ID as the value.
+	 * The element ID is the formId sent by the frontend on submission.
+	 *
+	 * @param array $data data.
+	 * @return array
+	 */
+	public function search_bricksforge_pro_forms( $data ) {
+		$options = [];
+
+		if ( ! class_exists( 'Bricksforge\BricksForge' ) ) {
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		}
+
+		if ( ! defined( 'BRICKS_DB_PAGE_CONTENT' ) || ! defined( 'BRICKS_DB_GLOBAL_SETTINGS' ) ) {
+			return [
+				'options' => $options,
+				'hasMore' => false,
+			];
+		}
+
+		// Respect the post types configured for Bricks.
+		$bricks_settings = (array) get_option( BRICKS_DB_GLOBAL_SETTINGS );
+		if ( array_key_exists( 'postTypes', $bricks_settings ) && is_array( $bricks_settings['postTypes'] ) ) {
+			$post_types = $bricks_settings['postTypes'];
+		} else {
+			$post_types = [];
+		}
+		$post_types[] = 'bricks_template';
+
+		$args = [
+			'post_type'      => $post_types,
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+		];
+
+		$posts = get_posts( $args );
+
+		foreach ( $posts as $post ) {
+			$elements = get_post_meta( $post->ID, BRICKS_DB_PAGE_CONTENT, true );
+			if ( ! is_array( $elements ) ) {
+				continue;
+			}
+			foreach ( $elements as $element ) {
+				if ( ! is_array( $element ) || ! isset( $element['name'] ) || ! isset( $element['id'] ) ) {
+					continue;
+				}
+				if ( 'brf-pro-forms' === $element['name'] ) {
+					$form_label = $post->post_title . ' - Pro Form (ID: ' . $element['id'] . ')';
+					$options[]  = [
+						'label' => $form_label,
+						'value' => $element['id'],
+					];
+				}
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
 		];
 	}
 }

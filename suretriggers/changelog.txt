@@ -1,3 +1,9 @@
+Version 1.1.29 - Wednesday, 3rd June 2026
+- New: Added "BookingPress" Integration
+- New: Added "Bricksforge" Integration
+- Improvement: "SureDash" – Added new "Lesson Completed" Trigger
+- Improvement: "BuddyBoss" – Added new "Unsubscribe User from Email Notifications" Action
+
 Version 1.1.28 - Tuesday, 26th May 2026
 - New: Added "Secure Custom Fields" Integration
 - New: Added "Groups by Itthinx" Integration
