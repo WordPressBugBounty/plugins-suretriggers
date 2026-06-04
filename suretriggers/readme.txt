@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 6.9
-Stable tag: 1.1.29
+Stable tag: 1.1.30
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,9 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.30 - Thursday, 4th June 2026 =
+* Fix: "SureMembers" – Fixed compatibility with the new SureMembers Core plugin
+
 = Version 1.1.29 - Wednesday, 3rd June 2026 =
 * New: Added "BookingPress" Integration
 * New: Added "Bricksforge" Integration

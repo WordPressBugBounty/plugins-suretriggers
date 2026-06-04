@@ -1,3 +1,6 @@
+Version 1.1.30 - Thursday, 4th June 2026
+- Fix: "SureMembers" – Fixed compatibility with the new SureMembers Core plugin
+
 Version 1.1.29 - Wednesday, 3rd June 2026
 - New: Added "BookingPress" Integration
 - New: Added "Bricksforge" Integration

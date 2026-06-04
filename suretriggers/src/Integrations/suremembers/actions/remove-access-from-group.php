@@ -13,7 +13,6 @@
 
 namespace SureTriggers\Integrations\SureMembers\Actions;
 
-use SureMembers\Inc\Helper;
 use SureTriggers\Integrations\AutomateAction;
 use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
@@ -73,18 +72,10 @@ class RemoveAccessFromGroup extends AutomateAction {
 	 * @return array|bool|void
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		if ( ! class_exists( 'SureMembers\Inc\Helper' ) ) {
-			return [
-				'status'  => 'error',
-				'message' => __( 'SureMembers Helper class not found.', 'suretriggers' ), 
-				
-			];
-		}
 		if ( ! $user_id ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'User Not found', 'suretriggers' ), 
-				
+				'message' => __( 'User Not found', 'suretriggers' ),
 			];
 		}
 
@@ -94,8 +85,18 @@ class RemoveAccessFromGroup extends AutomateAction {
 			return;
 		}
 
-		$helper = new Helper();
-		$helper->revoke_access( $user_id, $access_group_id );
+		if ( class_exists( 'SureMembersCore\Inc\Helper' ) ) {
+			$helper = new \SureMembersCore\Inc\Helper();
+			$helper->revoke_access( $user_id, $access_group_id );
+		} elseif ( class_exists( 'SureMembers\Inc\Helper' ) ) {
+			$helper = new \SureMembers\Inc\Helper();
+			$helper->revoke_access( $user_id, $access_group_id );
+		} else {
+			return [
+				'status'  => 'error',
+				'message' => __( 'SureMembers Helper class not found.', 'suretriggers' ),
+			];
+		}
 
 		$context['group'] = WordPress::get_post_context( $access_group_id );
 		return $context;

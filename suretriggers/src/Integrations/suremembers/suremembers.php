@@ -8,7 +8,6 @@
 
 namespace SureTriggers\Integrations\SureMembers;
 
-use SureMembers\Plugin_Loader;
 use SureTriggers\Controllers\IntegrationsController;
 use SureTriggers\Integrations\Integrations;
 use SureTriggers\Traits\SingletonLoader;
@@ -47,7 +46,7 @@ class SureMembers extends Integrations {
 	 * @return bool
 	 */
 	public function is_plugin_installed() {
-		return class_exists( Plugin_Loader::class );
+		return class_exists( 'SureMembersCore\Plugin_Loader' ) || class_exists( 'SureMembers\Plugin_Loader' );
 	}
 
 }
