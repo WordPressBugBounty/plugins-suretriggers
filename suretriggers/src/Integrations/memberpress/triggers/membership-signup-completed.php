@@ -99,49 +99,79 @@ if ( ! class_exists( 'MembershipCreated' ) ) :
 				return;
 			}
 
-			// Get the user's transactions to find the related membership.
 			$user = get_user_by( 'ID', $user_id );
 			if ( ! $user ) {
 				return;
 			}
 
-			// Get the most recent completed transaction for this user.
 			if ( ! class_exists( 'MeprTransaction' ) ) {
 				return;
 			}
-			
-			$transactions          = \MeprTransaction::get_all_by_user_id( $user_id, false, true );
-			$completed_transaction = null;
-			foreach ( $transactions as $txn ) {
-				if ( \MeprTransaction::$complete_str === $txn->status ) {
-					$completed_transaction = $txn;
-					break;
+
+			$membership_id      = 0;
+			$membership_context = null;
+			$transaction_id     = 0;
+
+			// MemberPress records the triggering transaction as JSON in $event->args.
+			// For offline/free/lifetime one-time payments the txn has status='complete'.
+			// For Stripe subscriptions, record_create_sub() fires this event BEFORE
+			// record_sub_payment() runs, so the event's txn is a subscription_confirmation
+			// (status='confirmed'). In that case we pull financial data from the subscription.
+			$txn_args = ! empty( $event->args ) ? json_decode( $event->args ) : null;
+			$txn_id   = ( $txn_args instanceof \stdClass && isset( $txn_args->id ) && is_numeric( $txn_args->id ) )
+				? absint( $txn_args->id )
+				: 0;
+
+			if ( $txn_id ) {
+				$txn = new \MeprTransaction( $txn_id );
+
+				if ( $txn->id ) {
+					if ( \MeprTransaction::$complete_str === $txn->status ) {
+						// One-time / offline / free payment: transaction is already complete.
+						$membership_id      = (int) $txn->product_id;
+						$membership_context = MemberPress::get_membership_context( $txn );
+						$transaction_id     = (int) $txn->id;
+					} elseif (
+						\MeprTransaction::$confirmed_str === $txn->status
+						&& ! empty( $txn->subscription_id )
+						&& class_exists( 'MeprSubscription' )
+					) {
+						// Stripe subscription: the confirmation txn exists but the payment
+						// txn is created later. Pull financial data from the subscription.
+						$sub = new \MeprSubscription( (int) $txn->subscription_id );
+						if ( $sub instanceof \MeprSubscription && $sub->id ) {
+							$membership_id             = (int) $txn->product_id;
+							$sub_ctx                   = MemberPress::get_subscription_context( $sub );
+							$sub_ctx['trans_num']      = $txn->trans_num;
+							$sub_ctx['transaction_id'] = $txn->id;
+							$membership_context        = $sub_ctx;
+							$transaction_id            = (int) $txn->id;
+						}
+					}
 				}
 			}
 
-			if ( ! $completed_transaction ) {
+			// Fallback for any other payment flow: scan all user transactions.
+			if ( null === $membership_context ) {
+				$all_txns = \MeprTransaction::get_all_by_user_id( $user_id );
+				foreach ( (array) $all_txns as $raw_txn ) {
+					if ( \MeprTransaction::$complete_str === $raw_txn->status ) {
+						$txn_obj            = new \MeprTransaction( (int) $raw_txn->id );
+						$membership_id      = (int) $txn_obj->product_id;
+						$membership_context = MemberPress::get_membership_context( $txn_obj );
+						$transaction_id     = (int) $txn_obj->id;
+						break;
+					}
+				}
+			}
+
+			if ( null === $membership_context || empty( $membership_id ) ) {
 				return;
 			}
 
-			// Get membership/product details.
-			$membership = get_post( $completed_transaction->product_id );
-			if ( ! $membership ) {
+			if ( ! get_post( $membership_id ) ) {
 				return;
 			}
-			$membership_context = [
-				'membership_title'              => $membership->post_title,
-				'membership_url'                => get_permalink( $completed_transaction->product_id ),
-				'membership_featured_image_id'  => get_post_meta( $completed_transaction->product_id, '_thumbnail_id', true ),
-				'membership_featured_image_url' => get_the_post_thumbnail_url( $completed_transaction->product_id ),
-				'amount'                        => $completed_transaction->amount,
-				'total'                         => $completed_transaction->total,
-				'tax_amount'                    => $completed_transaction->tax_amount,
-				'tax_rate'                      => $completed_transaction->tax_rate,
-				'trans_num'                     => $completed_transaction->trans_num,
-				'status'                        => $completed_transaction->status,
-				'subscription_id'               => $completed_transaction->subscription_id,
-				'transaction_id'                => $completed_transaction->id,
-			];
 
 			// Collect MemberPress custom/account field values for this user.
 			$custom_fields_context = [];
@@ -157,17 +187,16 @@ if ( ! class_exists( 'MembershipCreated' ) ) :
 				}
 			}
 
-			$membership_id = $completed_transaction->product_id;
+			$membership_context['transaction_id'] = $transaction_id;
 
 			$context                  = array_merge(
 				WordPress::get_user_context( $user_id ),
 				$membership_context,
 				$custom_fields_context,
-				[
-					'signup_date' => $event->created_at,
-				]
+				[ 'signup_date' => $event->created_at ]
 			);
 			$context['membership_id'] = $membership_id;
+
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger' => $this->trigger,

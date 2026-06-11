@@ -1,0 +1,5554 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OttoKit\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/suretriggers\n"
+"Last-Translator: gpt-po v1.2.3\n"
+"Language-Team: Hebrew\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: suretriggers\n"
+
+#: suretriggers.php
+#: src/Controllers/RestController.php:625
+#: src/Loader.php:353
+#. Plugin Name of the plugin
+#. Author of the plugin
+msgid "OttoKit"
+msgstr "אוטוקיט"
+
+#: suretriggers.php
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://ottokit.com/"
+msgstr "https://ottokit.com/"
+
+#: suretriggers.php
+#. Description of the plugin
+msgid ""
+"OttoKit helps people automate their work by integrating multiple apps and plugins, allowing them to share data and "
+"perform tasks automatically."
+msgstr ""
+"אוטוקיט עוזר לאנשים לאוטומט את העבודה שלהם על ידי שילוב של מספר אפליקציות ותוספים, ומאפשר להם לשתף נתונים ולבצע משימות "
+"באופן אוטומטי."
+
+#: functions.php:95
+msgid "Click here"
+msgstr "לחץ כאן"
+
+#: functions.php:100
+msgid "Clicking..."
+msgstr "לוחץ..."
+
+#: functions.php:101
+msgid "Clicked!!"
+msgstr "נלחץ!!"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:96
+msgid "ID"
+msgstr "מזהה"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:97
+msgid "Response Code"
+msgstr "קוד תגובה"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:98
+#: src/Controllers/GlobalSearchController.php:4369
+#: src/Loader.php:375
+#: src/Loader.php:620
+msgid "Status"
+msgstr "סטטוס"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:99
+msgid "Trigger Event"
+msgstr "אירוע הפעלה"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:100
+msgid "Error Info"
+msgstr "מידע על שגיאה"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:101
+msgid "Created At"
+msgstr "נוצר בתאריך"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:102
+#: src/Admin/Views/st-admin-outgoing-req-page.php:129
+msgid "Retry"
+msgstr "נסה שוב"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:225
+msgid "All Requests"
+msgstr "כל הבקשות"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:227
+msgid "Success Requests"
+msgstr "בקשות הצלחה"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:230
+msgid "Failed Requests"
+msgstr "בקשות נכשלות"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:233
+msgid "Filter"
+msgstr "סנן"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:258
+msgid ""
+"Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be "
+"automatically deleted after 60 days."
+msgstr "הערה: בקשות יוצאות מוצלחות יימחקו אוטומטית לאחר 30 יום, בעוד שבקשות יוצאות נכשלות יימחקו אוטומטית לאחר 60 יום."
+
+#: src/Admin/Views/st-admin-system-page.php:15
+msgid "Registered Events"
+msgstr "אירועים רשומים"
+
+#: src/Admin/Views/st-admin-system-page.php:57
+msgid "No Trigger registered yet."
+msgstr "עדיין לא נרשם אירוע הפעלה."
+
+#: src/Controllers/GlobalSearchController.php:2157
+msgid "No title"
+msgstr "אין כותרת"
+
+#: src/Controllers/GlobalSearchController.php:3068
+msgid "Subscribed"
+msgstr "מנוי"
+
+#: src/Controllers/GlobalSearchController.php:3072
+msgid "Pending"
+msgstr "ממתין"
+
+#: src/Controllers/GlobalSearchController.php:3076
+msgid "Unsubscribed"
+msgstr "לא מנוי"
+
+#: src/Controllers/GlobalSearchController.php:3080
+msgid "Bounced"
+msgstr "חזר"
+
+#: src/Controllers/GlobalSearchController.php:3084
+msgid "Complained"
+msgstr "התלונן"
+
+#: src/Controllers/GlobalSearchController.php:3106
+msgid "Yes"
+msgstr "כן"
+
+#: src/Controllers/GlobalSearchController.php:3110
+msgid "No"
+msgstr "לא"
+
+#: src/Controllers/GlobalSearchController.php:3258
+msgid "Lead"
+msgstr "ליד"
+
+#: src/Controllers/GlobalSearchController.php:3262
+msgid "Customer"
+msgstr "לקוח"
+
+#: src/Controllers/GlobalSearchController.php:3266
+msgid "Refused"
+msgstr "סירב"
+
+#: src/Controllers/GlobalSearchController.php:3270
+msgid "Blacklisted"
+msgstr "ברשימה השחורה"
+
+#: src/Controllers/GlobalSearchController.php:3274
+msgid "Cancelled by Customer"
+msgstr "בוטל על ידי הלקוח"
+
+#: src/Controllers/GlobalSearchController.php:3278
+msgid "Cancelled by Us (Pre-Quote)"
+msgstr "בוטל על ידינו (לפני הצעת מחיר)"
+
+#: src/Controllers/GlobalSearchController.php:3282
+msgid "Cancelled by Us (Post-Quote)"
+msgstr "בוטל על ידינו (אחרי הצעת מחיר)"
+
+#: src/Controllers/GlobalSearchController.php:4322
+msgid "User Name"
+msgstr "שם משתמש"
+
+#: src/Controllers/GlobalSearchController.php:4326
+msgid "User Email"
+msgstr "אימייל משתמש"
+
+#: src/Controllers/GlobalSearchController.php:4330
+msgid "Display Name"
+msgstr "שם תצוגה"
+
+#: src/Controllers/GlobalSearchController.php:4334
+msgid "User Password"
+msgstr "סיסמת משתמש"
+
+#: src/Controllers/GlobalSearchController.php:4338
+#: src/Controllers/GlobalSearchController.php:9834
+#: src/Controllers/GlobalSearchController.php:9905
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:127
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:116
+msgid "Website"
+msgstr "אתר אינטרנט"
+
+#: src/Controllers/GlobalSearchController.php:4361
+msgid "Type"
+msgstr "סוג"
+
+#: src/Controllers/GlobalSearchController.php:4377
+msgid "Author"
+msgstr "מחבר"
+
+#: src/Controllers/GlobalSearchController.php:4385
+#: src/Integrations/voxel/voxel.php:275
+msgid "Title"
+msgstr "כותרת"
+
+#: src/Controllers/GlobalSearchController.php:4392
+msgid "Slug"
+msgstr "סלאג"
+
+#: src/Controllers/GlobalSearchController.php:4399
+msgid "Content"
+msgstr "תוכן"
+
+#: src/Controllers/GlobalSearchController.php:9834
+#: src/Controllers/GlobalSearchController.php:9905
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:127
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:116
+msgid "Mockup"
+msgstr "דגם"
+
+#: src/Controllers/GlobalSearchController.php:9835
+#: src/Controllers/GlobalSearchController.php:9906
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:128
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:117
+msgid "Resolved"
+msgstr "נפתר"
+
+#: src/Controllers/GlobalSearchController.php:9835
+#: src/Controllers/GlobalSearchController.php:9906
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:128
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:117
+msgid "Unresolved"
+msgstr "לא נפתר"
+
+#: src/Controllers/GlobalSearchController.php:14340
+msgid "Level"
+msgstr "רמה"
+
+#: src/Controllers/RestController.php:511
+#: src/Controllers/WebhookRequestsController.php:200
+#: src/Controllers/WebhookRequestsController.php:250
+msgid "Service not available"
+msgstr "שירות לא זמין"
+
+#: src/Controllers/RestController.php:585
+msgid "Connection Successfully Set"
+msgstr "חיבור הוקם בהצלחה"
+
+#: src/Controllers/RestController.php:587
+msgid "Error in Connection"
+msgstr "שגיאה בחיבור"
+
+#: src/Controllers/RestController.php:592
+#: src/Loader.php:374
+msgid "OttoKit Status"
+msgstr "סטטוס אוטוקיט"
+
+#: src/Controllers/RestController.php:597
+msgid "Rest URL"
+msgstr "כתובת URL של REST"
+
+#: src/Controllers/RestController.php:602
+msgid "OttoKit Version"
+msgstr "גרסת אוטוקיט"
+
+#: src/Controllers/RestController.php:610
+msgid "Encryption Key"
+msgstr "מפתח הצפנה"
+
+#: src/Controllers/RestController.php:611
+#: src/Controllers/RestController.php:619
+msgid "Defined"
+msgstr "מוגדר"
+
+#: src/Controllers/RestController.php:618
+msgid "Encryption Salt"
+msgstr "מלח הצפנה"
+
+#: src/Controllers/WebhookRequestsController.php:72
+msgid "Every 30 minutes"
+msgstr "כל 30 דקות"
+
+#: src/Controllers/WebhookRequestsController.php:76
+msgid "Every 6 hours"
+msgstr "כל 6 שעות"
+
+#: src/Integrations/academylms/academylms.php:35
+msgid "Academy LMS"
+msgstr "אקדמיה LMS"
+
+#: src/Integrations/academylms/academylms.php:36
+#: src/Integrations/advanced-ads/advanced-ads.php:36
+msgid "A Powerful WordPress Ad Management Plugin. Advanced Ads is a great plugin that makes it easier to manage your ads."
+msgstr "תוסף ניהול מודעות וורדפרס חזק. Advanced Ads הוא תוסף נהדר שמקל על ניהול המודעות שלך."
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:54
+#: src/Integrations/learnpress/actions/lp-enroll-user-course.php:55
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:54
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:59
+#: src/Integrations/wp-courseware/actions/wpcw-enroll-user-to-course.php:54
+msgid "Enroll User To Course"
+msgstr "הרשמת משתמש לקורס"
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:108
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:115
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:122
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:129
+#: src/Integrations/asgaros/actions/subscribeuserinforum.php:85
+#: src/Integrations/bbpress/actions/addreplyintopic.php:87
+#: src/Integrations/bbpress/actions/addtopicinforum.php:89
+#: src/Integrations/bbpress/actions/subscribeuserinforum.php:82
+#: src/Integrations/learndash-achievements/actions/award-achievement-to-user.php:126
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:104
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:111
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:108
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:212
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:137
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:211
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:85
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:92
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:104
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:235
+#: src/Integrations/metabox/actions/get-object-fields.php:90
+#: src/Integrations/metabox/actions/set-metavalue.php:95
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:84
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:94
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:145
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:97
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:122
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:138
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:145
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:86
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:93
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:86
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:93
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:87
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:105
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:115
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:122
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:87
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:100
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:111
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:125
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:135
+#: src/Integrations/wordpress/actions/remove-user.php:107
+#: src/Integrations/wordpress/actions/remove-user.php:113
+#: src/Integrations/wp-courseware/actions/wpcw-enroll-user-to-course.php:112
+#: src/Integrations/wp-courseware/actions/wpcw-remove-user-from-course.php:114
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:108
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:114
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:155
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:161
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:110
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:117
+#: src/Integrations/wpforo/actions/add-user-to-group.php:99
+#: src/Integrations/wpforo/actions/remove-user-from-group.php:124
+#: src/Integrations/wpforo/actions/set-user-reputation.php:103
+#: src/Integrations/wpforo/actions/wf-create-topic.php:158
+msgid "Error"
+msgstr "שגיאה"
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:109
+msgid "Something went wrong."
+msgstr "משהו השתבש."
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:116
+msgid "User is already enrolled to course."
+msgstr "המשתמש כבר רשום לקורס."
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:123
+msgid "User not exists."
+msgstr "המשתמש לא קיים."
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:130
+#: src/Integrations/asgaros/actions/subscribeuserinforum.php:86
+#: src/Integrations/bbpress/actions/addreplyintopic.php:88
+#: src/Integrations/bbpress/actions/addtopicinforum.php:90
+#: src/Integrations/bbpress/actions/subscribeuserinforum.php:83
+#: src/Integrations/learndash-achievements/actions/award-achievement-to-user.php:127
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:112
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:109
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:93
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:94
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:94
+#: src/Integrations/wp-courseware/actions/wpcw-enroll-user-to-course.php:113
+#: src/Integrations/wp-courseware/actions/wpcw-remove-user-from-course.php:115
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:162
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:118
+#: src/Integrations/wpforo/actions/add-user-to-group.php:100
+#: src/Integrations/wpforo/actions/remove-user-from-group.php:125
+#: src/Integrations/wpforo/actions/set-user-reputation.php:104
+#: src/Integrations/wpforo/actions/wf-create-topic.php:159
+msgid "Please enter valid email address."
+msgstr "אנא הזן כתובת אימייל תקפה."
+
+#: src/Integrations/academylms/triggers/course-completed.php:73
+#: src/Integrations/learndash/triggers/user-completes-course.php:72
+#: src/Integrations/masteriyo/triggers/ma-course-completed.php:73
+#: src/Integrations/masterstudy-lms/triggers/course-completed.php:73
+#: src/Integrations/memberpress-course/triggers/course-completed.php:68
+msgid "Course Completed"
+msgstr "הקורס הושלם"
+
+#: src/Integrations/academylms/triggers/enrolled-course.php:73
+msgid "Enrolled Course"
+msgstr "קורס נרשם"
+
+#: src/Integrations/academylms/triggers/lesson-completed.php:73
+#: src/Integrations/learndash/triggers/user-completes-lesson.php:72
+#: src/Integrations/masteriyo/triggers/ma-lesson-completed.php:73
+#: src/Integrations/masterstudy-lms/triggers/lesson-passed.php:73
+#: src/Integrations/memberpress-course/triggers/lesson-completed.php:68
+msgid "Lesson Completed"
+msgstr "שיעור הושלם"
+
+#: src/Integrations/academylms/triggers/quiz-completed.php:73
+msgid "Quiz Completed"
+msgstr "מבחן הושלם"
+
+#: src/Integrations/academylms/triggers/quiz-failed.php:73
+#: src/Integrations/masteriyo/triggers/ma-quiz-failed.php:73
+#: src/Integrations/masterstudy-lms/triggers/quiz-failed.php:73
+msgid "Quiz Failed"
+msgstr "המבחן נכשל"
+
+#: src/Integrations/advanced-ads/actions/set-ad-status.php:58
+msgid "Set Ad Status"
+msgstr "קבע את סטטוס המודעות"
+
+#: src/Integrations/advanced-ads/advanced-ads.php:35
+msgid "Advanced Ads"
+msgstr "מודעות מתקדמות"
+
+#: src/Integrations/advanced-ads/triggers/ad-status-change.php:73
+msgid "Ad Status Changed"
+msgstr "סטטוס המודעות שונה"
+
+#: src/Integrations/advanced-ads/triggers/ad-status-set-to-specific-type.php:73
+msgid "Ad Status Set to Specific Type"
+msgstr "סטטוס המודעות הוגדר לסוג ספציפי"
+
+#: src/Integrations/advanced-coupons/actions/add-store-credit-to-user.php:59
+msgid "Add Store Credit to User"
+msgstr "הוסף אשראי חנות למשתמש"
+
+#: src/Integrations/advanced-coupons/actions/remove-store-credit-from-user.php:59
+msgid "Remove Store Credit from User"
+msgstr "הסר אשראי חנות מהמשתמש"
+
+#: src/Integrations/advanced-coupons/advanced-coupons.php:35
+msgid "Advanced Coupons"
+msgstr "קופונים מתקדמים"
+
+#: src/Integrations/advanced-coupons/advanced-coupons.php:36
+msgid "Advanced coupons for Woocommerce"
+msgstr "קופונים מתקדמים עבור ווקומרס"
+
+#: src/Integrations/advanced-coupons/triggers/user-credit-exceeds-specific-amount.php:73
+#: src/Integrations/advanced-coupons/triggers/user-receives-store-credit.php:74
+msgid "User Store Credit Exceeds Specific Amount"
+msgstr "אשראי החנות של המשתמש חורג מסכום ספציפי"
+
+#: src/Integrations/advanced-coupons/triggers/user-lifetime-credit-exceeds-specific-amount.php:73
+msgid "User Lifetime Credit Exceeds Specific Amount"
+msgstr "אשראי חיי המשתמש חורג מסכום ספציפי"
+
+#: src/Integrations/advanced-coupons/triggers/user-spends-store-credit.php:74
+msgid "User Spends Store Credit"
+msgstr "המשתמש מוציא אשראי חנות"
+
+#: src/Integrations/advanced-custom-fields/actions/get-option-acf-value.php:54
+msgid "Get Option Value"
+msgstr "קבל ערך אפשרות"
+
+#: src/Integrations/advanced-custom-fields/actions/get-post-acf-value.php:54
+msgid "Get Post Value"
+msgstr "קבל ערך פוסט"
+
+#: src/Integrations/advanced-custom-fields/actions/get-user-acf-value.php:54
+msgid "Get User Value"
+msgstr "קבל ערך משתמש"
+
+#: src/Integrations/advanced-custom-fields/actions/update-group-field-value.php:53
+msgid "Add Sub Field Value in Group"
+msgstr "הוסף ערך תת שדה בקבוצה"
+
+#: src/Integrations/advanced-custom-fields/actions/update-option-acf-value.php:54
+msgid "Update Option Value"
+msgstr "עדכן ערך אפשרות"
+
+#: src/Integrations/advanced-custom-fields/actions/update-post-acf-value.php:54
+msgid "Update Post Value"
+msgstr "עדכן ערך פוסט"
+
+#: src/Integrations/advanced-custom-fields/actions/update-repeater-field-value.php:54
+msgid "Update Repeater Field Value"
+msgstr "עדכן ערך שדה חזר"
+
+#: src/Integrations/advanced-custom-fields/actions/update-user-acf-value.php:54
+msgid "Update User Value"
+msgstr "עדכן ערך משתמש"
+
+#: src/Integrations/advanced-custom-fields/advanced-custom-fields.php:35
+msgid "AdvancedCustomFields"
+msgstr "שדות מותאמים מתקדמים"
+
+#: src/Integrations/advanced-custom-fields/advanced-custom-fields.php:36
+msgid "Advanced Custom Fields (ACF) helps you easily customize WordPress with powerful, professional and intuitive fields."
+msgstr "שדות מותאמים מתקדמים (ACF) עוזרים לך להתאים אישית את וורדפרס בקלות עם שדות חזקים, מקצועיים ואינטואיטיביים."
+
+#: src/Integrations/advanced-custom-fields/triggers/options-acf-field-updated.php:73
+msgid "Field Updated On Options Page"
+msgstr "שדה עודכן בדף אפשרויות"
+
+#: src/Integrations/advanced-custom-fields/triggers/post-acf-field-updated.php:73
+msgid "Field Updated On Post"
+msgstr "שדה עודכן בפוסט"
+
+#: src/Integrations/advanced-custom-fields/triggers/user-acf-field-updated.php:73
+msgid "Field Updated On User Profile"
+msgstr "שדה עודכן בפרופיל המשתמש"
+
+#: src/Integrations/affiliatewp/actions/affiliate-create-affiliate.php:53
+#: src/Integrations/slice-wp/actions/slicewp-create-affiliate.php:56
+msgid "Create Affiliate"
+msgstr "צור שותף"
+
+#: src/Integrations/affiliatewp/actions/affiliate-create-referral-user.php:53
+msgid "Create Referral for User"
+msgstr "צור הפניה למשתמש"
+
+#: src/Integrations/affiliatewp/actions/affiliate-create-referral.php:53
+msgid "Create Referral for specific Affiliate"
+msgstr "צור הפניה לשותף ספציפי"
+
+#: src/Integrations/affiliatewp/actions/affiliate-link-customer.php:53
+msgid "Link Customer to an Affiliate for Lifetime Commissions"
+msgstr "קשר לקוח לשותף עבור עמלות לכל החיים"
+
+#: src/Integrations/affiliatewp/affiliatewp.php:36
+msgid "AffiliateWP"
+msgstr "AffiliateWP"
+
+#: src/Integrations/affiliatewp/affiliatewp.php:37
+#: src/Integrations/slice-wp/slice-wp.php:36
+msgid "Affiliate Plugin for WordPress."
+msgstr "תוסף שותפים עבור WordPress."
+
+#: src/Integrations/affiliatewp/triggers/affiliate-approved.php:72
+#: src/Integrations/affiliatewp/triggers/affiliate-makes-specific-type-referral.php:71
+msgid "Affiliate Approved"
+msgstr "שותף מאושר"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-await-approval.php:70
+msgid "Affiliate Awaiting Approval"
+msgstr "שותף ממתין לאישור"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-edd-product-purchased.php:73
+msgid "Affiliate Refers a sale of Easy Digital Downloads Product"
+msgstr "שותף מפנה מכירה של מוצר Easy Digital Downloads"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-mb-product-purchased.php:72
+msgid "MemberPress Product Purchased using Affiliate Referral"
+msgstr "מוצר MemberPress נרכש באמצעות הפניית שותף"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-specific-type-referral-paid.php:71
+msgid "Affiliate Referral of Specific Type Paid"
+msgstr "הפניית שותף מסוג ספציפי שולמה"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-specific-type-referral-rejected.php:71
+msgid "Affiliate Referral of Specific Type Rejected"
+msgstr "הפניית שותף מסוג ספציפי נדחתה"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-wc-product-purchased.php:72
+msgid "WooCommerce Product Purchased using Affiliate Referral"
+msgstr "מוצר WooCommerce נרכש באמצעות הפניית שותף"
+
+#: src/Integrations/affiliatewp/triggers/refer-sale-of-product.php:70
+msgid "New Referral/Referral Status Updated"
+msgstr "הפניה חדשה/סטטוס הפניה עודכן"
+
+#: src/Integrations/amelia/amelia.php:36
+msgid "Amelia"
+msgstr "אמליה"
+
+#: src/Integrations/amelia/amelia.php:37
+msgid "A WordPress plugin that allows you to easily schedule and manage appointments and bookings on your website."
+msgstr "תוסף WordPress המאפשר לך לתכנן ולנהל בקלות פגישות והזמנות באתר שלך."
+
+#: src/Integrations/amelia/triggers/appointment-booked.php:69
+#: src/Integrations/appointment-hour-booking/triggers/new-appointment.php:69
+#: src/Integrations/fluent-booking/triggers/appointment-booked.php:69
+#: src/Integrations/simply-schedule-appointments/triggers/appointment-booked.php:69
+#: src/Integrations/simply-schedule-appointments/triggers/ssa-aapointment-canceled.php:69
+msgid "New Appointment Booked"
+msgstr "פגישה חדשה הוזמנה"
+
+#: src/Integrations/amelia/triggers/appointment-booking-status-changed.php:69
+msgid "Appointment Booking Status Changed"
+msgstr "סטטוס הזמנת פגישה השתנה"
+
+#: src/Integrations/amelia/triggers/appointment-cancelled.php:69
+#: src/Integrations/fluent-booking/triggers/appointment-cancelled.php:69
+msgid "Appointment Cancelled"
+msgstr "פגישה בוטלה"
+
+#: src/Integrations/amelia/triggers/appointment-rescheduled.php:69
+#: src/Integrations/simply-schedule-appointments/triggers/appointment-rescheduled.php:69
+msgid "Appointment Rescheduled"
+msgstr "פגישה נדחתה"
+
+#: src/Integrations/amelia/triggers/event-attendee.php:69
+msgid "New Event Attendee"
+msgstr "משתתף חדש באירוע"
+
+#: src/Integrations/amelia/triggers/event-booking-status-changed.php:69
+msgid "Event Booking Status Changed"
+msgstr "סטטוס הזמנת אירוע השתנה"
+
+#: src/Integrations/amelia/triggers/event-cancelled.php:69
+msgid "Event Cancelled"
+msgstr "האירוע בוטל"
+
+#: src/Integrations/amelia/triggers/event-rescheduled.php:69
+msgid "Event Rescheduled"
+msgstr "האירוע נדחה"
+
+#: src/Integrations/appointment-hour-booking/appointment-hour-booking.php:35
+msgid "Appointment Hour Booking"
+msgstr "הזמנת שעה לפגישה"
+
+#: src/Integrations/appointment-hour-booking/appointment-hour-booking.php:36
+msgid "A WordPress Booking plugin."
+msgstr "תוסף הזמנות עבור WordPress."
+
+#: src/Integrations/appointment-hour-booking/triggers/booking-status-updated.php:69
+msgid "Booking Status Updated"
+msgstr "סטטוס ההזמנה עודכן"
+
+#: src/Integrations/asgaros/actions/create-forum.php:59
+#: src/Integrations/buddypress/actions/create-group.php:57
+msgid "Create a group"
+msgstr "צור קבוצה"
+
+#: src/Integrations/asgaros/actions/create-topic.php:59
+msgid "Create a topic"
+msgstr "צור נושא"
+
+#: src/Integrations/asgaros/actions/post-reply-in-topic.php:59
+msgid "Post Reply in Topic"
+msgstr "פרסם תגובה בנושא"
+
+#: src/Integrations/asgaros/actions/subscribeuserinforum.php:54
+#: src/Integrations/bbpress/actions/subscribeuserinforum.php:53
+msgid "Subscribe User In Forum"
+msgstr "מנוי משתמש בפורום"
+
+#: src/Integrations/asgaros/asgaros.php:35
+msgid "Asgaros"
+msgstr "אסגרוס"
+
+#: src/Integrations/asgaros/asgaros.php:36
+#: src/Integrations/wpforo/wpforo.php:36
+msgid ""
+"The best WordPress forum plugin, full-fledged yet easy and light forum solution for your WordPress website. The only "
+"forum software with multiple forum layouts."
+msgstr ""
+"התוסף הטוב ביותר לפורומים של WordPress, פתרון פורום מלא אך קל וקליל לאתר WordPress שלך. התוכנה היחידה לפורומים עם מספר "
+"תבניות פורום."
+
+#: src/Integrations/asgaros/triggers/user-creates-new-topic-forum.php:74
+#: src/Integrations/wpforo/triggers/user-creates-new-topic-forum.php:73
+msgid "User Creates New Topic in Forum"
+msgstr "משתמש יוצר נושא חדש בפורום"
+
+#: src/Integrations/asgaros/triggers/user-replies-topic-forum.php:74
+#: src/Integrations/wpforo/triggers/user-replies-topic-forum.php:73
+msgid "User Replies to Topic in Forum"
+msgstr "משתמש מגיב לנושא בפורום"
+
+#: src/Integrations/AutomateAction.php:150
+#: src/Integrations/woocommerce/actions/create-coupon-code.php:86
+msgid "Required field is missing: "
+msgstr "שדה חובה חסר:"
+
+#: src/Integrations/badgeos/actions/award-achievement-to-user.php:56
+msgid "Award a Achievement to the user"
+msgstr "הענק הישג למשתמש"
+
+#: src/Integrations/badgeos/badgeos.php:35
+msgid "BadgeOS"
+msgstr "BadgeOS"
+
+#: src/Integrations/badgeos/badgeos.php:36
+msgid "BadgeOS lets your site’s users complete tasks and earn badges that recognize their achievement."
+msgstr "BadgeOS מאפשר למשתמשי האתר שלך להשלים משימות ולהרוויח תגיות המוכרות את הישגיהם."
+
+#: src/Integrations/bbpress/actions/addreplyintopic.php:53
+msgid "Add Reply In Topic"
+msgstr "הוסף תגובה בנושא"
+
+#: src/Integrations/bbpress/actions/addtopicinforum.php:54
+msgid "Add Topic to Forum"
+msgstr "הוסף נושא לפורום"
+
+#: src/Integrations/bbpress/bbpress.php:35
+msgid "bbPress"
+msgstr "bbPress"
+
+#: src/Integrations/bbpress/bbpress.php:36
+msgid "Discussion forums for WordPress."
+msgstr "פורומים לדון עבור WordPress."
+
+#: src/Integrations/bbpress/Triggers/reply-to-topic.php:71
+msgid "Reply To Topic."
+msgstr "ענה לנושא."
+
+#: src/Integrations/bbpress/Triggers/topic-added.php:71
+msgid "Topic Created."
+msgstr "נושא נוצר."
+
+#: src/Integrations/beaver-builder/triggers/user-submit-contact-form.php:66
+msgid "User Submits Contact/Subscribe Form"
+msgstr "משתמש מגיש טופס יצירת קשר/מנוי"
+
+#: src/Integrations/better-messages/actions/bm-post-message-to-chatroom.php:57
+msgid "Post Message to Chatroom"
+msgstr "פרסם הודעה בחדר צ'אט"
+
+#: src/Integrations/better-messages/actions/bm-private-message-to-user.php:57
+msgid "Send Private Message"
+msgstr "שלח הודעה פרטית"
+
+#: src/Integrations/better-messages/better-messages.php:36
+msgid "Better Messages"
+msgstr "הודעות טובות יותר"
+
+#: src/Integrations/better-messages/better-messages.php:37
+msgid ""
+"Better Messages – is realtime private messaging system for WordPress, BuddyPress, BuddyBoss Platform, Ultimate Member, "
+"PeepSo and any other WordPress powered websites."
+msgstr ""
+"הודעות טובות יותר – מערכת הודעות פרטיות בזמן אמת עבור WordPress, BuddyPress, BuddyBoss Platform, Ultimate Member, "
+"PeepSo וכל אתרי WordPress אחרים."
+
+#: src/Integrations/better-messages/triggers/bm-new-message-received.php:67
+msgid "New Message Received"
+msgstr "הודעה חדשה התקבלה"
+
+#: src/Integrations/bricks-builder/bricks-builder.php:35
+msgid "Bricks"
+msgstr "בלוקים"
+
+#: src/Integrations/bricks-builder/bricks-builder.php:36
+msgid "Visual Site Builder for WordPress"
+msgstr "בונה אתרים חזותי עבור WordPress"
+
+#: src/Integrations/bricks-builder/triggers/bricksbuilder-submit-form.php:67
+#: src/Integrations/contact-form7/triggers/form-submit.php:72
+#: src/Integrations/convertpro/triggers/form-submit.php:72
+#: src/Integrations/divi-builder/triggers/user-submits-form.php:68
+#: src/Integrations/formidable-forms/triggers/formidable-form-submit.php:74
+#: src/Integrations/gravity-form/triggers/user-submits-form.php:72
+#: src/Integrations/happyforms/triggers/happyforms-form-submit.php:73
+#: src/Integrations/jetformbuilder/triggers/jet-form-submit.php:73
+#: src/Integrations/kadence-forms/triggers/kadence-form-submit.php:72
+#: src/Integrations/mailpoet/triggers/form-submitted.php:71
+#: src/Integrations/pie-forms/triggers/user-submit-form.php:68
+#: src/Integrations/sureforms/triggers/sureforms-form-submitted.php:72
+#: src/Integrations/thrive-leads/triggers/form-submitted.php:68
+#: src/Integrations/wpforms/triggers/user-submits-form.php:68
+#: src/Integrations/ws-form/triggers/user-submits-ws-form.php:68
+msgid "Form Submitted"
+msgstr "הטופס הוגש"
+
+#: src/Integrations/buddyboss/Actions/add-post-to-activity-feed.php:58
+msgid "Add post to activity feed"
+msgstr "הוסף פוסט לפיד פעילות"
+
+#: src/Integrations/buddyboss/Actions/add-post-to-group.php:58
+msgid "Add post to activity stream of group"
+msgstr "הוסף פוסט לזרם הפעילות של הקבוצה"
+
+#: src/Integrations/buddyboss/Actions/add-post-to-group.php:87
+msgid "BuddyBoss Groups activity functions not found."
+msgstr "פונקציות פעילות קבוצות BuddyBoss לא נמצאו."
+
+#: src/Integrations/buddyboss/Actions/add-post-to-user-activity-feed.php:58
+msgid "Add Post to User Activity Feed"
+msgstr "הוסף פוסט לפיד פעילות של משתמש"
+
+#: src/Integrations/buddyboss/Actions/add-user-to-group.php:58
+#: src/Integrations/wpforo/actions/add-user-to-group.php:58
+msgid "Add User to Group"
+msgstr "הוסף משתמש לקבוצה"
+
+#: src/Integrations/buddyboss/Actions/add-user-to-group.php:81
+msgid "BuddyBoss Groups join function not found."
+msgstr "פונקציית הצטרפות לקבוצות BuddyBoss לא נמצאה."
+
+#: src/Integrations/buddyboss/Actions/change-user-member-type.php:58
+msgid "Change Member Profile Type"
+msgstr "שנה את סוג פרופיל החבר"
+
+#: src/Integrations/buddyboss/Actions/create-group.php:57
+msgid "Create Group"
+msgstr "צור קבוצה"
+
+#: src/Integrations/buddyboss/Actions/end-friendship-with-user.php:57
+msgid "End friendship with user"
+msgstr "סיים ידידות עם משתמש"
+
+#: src/Integrations/buddyboss/Actions/follow-user.php:57
+#: src/Integrations/peepso/actions/follow-user.php:59
+msgid "Follow User"
+msgstr "עקוב אחרי משתמש"
+
+#: src/Integrations/buddyboss/Actions/get-forum-subscribers.php:56
+msgid "Get Forum Subscribers"
+msgstr "קבל מנויים לפורום"
+
+#: src/Integrations/buddyboss/Actions/post-reply-topic-forum.php:57
+msgid "Post Reply Topic In Forum"
+msgstr "פרסם תגובה בנושא בפורום"
+
+#: src/Integrations/buddyboss/Actions/post-topic-in-forum.php:57
+msgid "Post Topic In Forum"
+msgstr "פרסם נושא בפורום"
+
+#: src/Integrations/buddyboss/Actions/remove-user-from-group.php:58
+#: src/Integrations/suremembers/actions/remove-access-from-group.php:57
+#: src/Integrations/wpforo/actions/remove-user-from-group.php:58
+msgid "Remove User from Group"
+msgstr "הסר משתמש מקבוצה"
+
+#: src/Integrations/buddyboss/Actions/remove-user-from-group.php:81
+msgid "BuddyBoss Groups functions not found."
+msgstr "פונקציות BuddyBoss לא נמצאו."
+
+#: src/Integrations/buddyboss/Actions/send-friend-request-user.php:57
+#: src/Integrations/buddypress/actions/send-friendship-request-user.php:57
+msgid "Send a friendship request to a user"
+msgstr "שלח בקשת חברות למשתמש"
+
+#: src/Integrations/buddyboss/Actions/send-message-to-group-members.php:58
+msgid "Send Message to Group Members"
+msgstr "שלח הודעה לחברי הקבוצה"
+
+#: src/Integrations/buddyboss/Actions/send-message-to-user.php:57
+msgid "Send Message"
+msgstr "שלח הודעה"
+
+#: src/Integrations/buddyboss/Actions/send-notification-to-all-members-of-group.php:123
+msgid "Send Notification To All Members Of Group"
+msgstr "שלח הודעה לכל חברי הקבוצה"
+
+#: src/Integrations/buddyboss/Actions/send-notification-to-all-members-of-group.php:145
+msgid "BuddyBoss core functions not found."
+msgstr "פונקציות הליבה של BuddyBoss לא נמצאו."
+
+#: src/Integrations/buddyboss/Actions/set-user-extended-profile.php:58
+msgid "Set User Extended Profile"
+msgstr "הגדר פרופיל מורחב למשתמש"
+
+#: src/Integrations/buddyboss/Actions/set-user-status.php:57
+msgid "Set User Status"
+msgstr "הגדר מצב משתמש"
+
+#: src/Integrations/buddyboss/Actions/stop-following-user.php:58
+msgid "Stop Following User"
+msgstr "הפסיק לעקוב אחרי משתמש"
+
+#: src/Integrations/buddyboss/Actions/subscribe-user-to-forum.php:57
+msgid "Subscribe User to Forum"
+msgstr "מנוי משתמש לפורום"
+
+#: src/Integrations/buddyboss/buddyboss.php:35
+msgid "BuddyBoss"
+msgstr "BuddyBoss"
+
+#: src/Integrations/buddyboss/Triggers/user-accepts-friendship-request.php:71
+msgid "User Accepts Request"
+msgstr "המשתמש מקבל את הבקשה"
+
+#: src/Integrations/buddyboss/Triggers/user-account-activated.php:71
+msgid "User Account Activated"
+msgstr "חשבון המשתמש הופעל"
+
+#: src/Integrations/buddyboss/Triggers/user-creates-group.php:71
+msgid "User Creates Group"
+msgstr "המשתמש יוצר קבוצה"
+
+#: src/Integrations/buddyboss/Triggers/user-gains-follower.php:71
+#: src/Integrations/peepso/triggers/user-gains-follower.php:67
+msgid "User Gains Follower"
+msgstr "המשתמש מקבל עוקב"
+
+#: src/Integrations/buddyboss/Triggers/user-joins-private-group.php:71
+msgid "User Joins Private Group."
+msgstr "המשתמש מצטרף לקבוצה פרטית."
+
+#: src/Integrations/buddyboss/Triggers/user-joins-public-group.php:71
+msgid "User Joins Public Group."
+msgstr "המשתמש מצטרף לקבוצה ציבורית."
+
+#: src/Integrations/buddyboss/Triggers/user-joins-specific-type-group.php:71
+msgid "User Joins Specific Type of Group."
+msgstr "המשתמש מצטרף לסוג מסוים של קבוצה."
+
+#: src/Integrations/buddyboss/Triggers/user-leaves-group.php:71
+msgid "User Leaves Group"
+msgstr "המשתמש עוזב את הקבוצה"
+
+#: src/Integrations/buddyboss/Triggers/user-leaves-private-group.php:71
+msgid "User Leaves Private Group"
+msgstr "המשתמש עוזב את הקבוצה הפרטית"
+
+#: src/Integrations/buddyboss/Triggers/user-profile-type-set-to-specific-type.php:71
+msgid "User Profile Type Set To Specific Type"
+msgstr "סוג פרופיל המשתמש הוגדר לסוג מסוים"
+
+#: src/Integrations/buddyboss/Triggers/user-requests-access-private-group.php:71
+msgid "User Requests Access Private Group"
+msgstr "המשתמש מבקש גישה לקבוצה פרטית"
+
+#: src/Integrations/buddyboss/Triggers/user-send-friendship-request.php:71
+msgid "User Sends Request"
+msgstr "המשתמש שולח בקשה"
+
+#: src/Integrations/buddyboss/Triggers/user-updates-profile.php:71
+msgid "User Updates Profile"
+msgstr "המשתמש מעדכן את הפרופיל"
+
+#: src/Integrations/buddypress/actions/add-post-activity-stream-to-group.php:58
+msgid "Add a post to the activity stream of a group"
+msgstr "הוסף פוסט לזרם הפעילות של קבוצה"
+
+#: src/Integrations/buddypress/actions/add-post-sitewide-activity-stream.php:58
+msgid "Add a post to the sitewide activity stream"
+msgstr "הוסף פוסט לזרם הפעילות של האתר"
+
+#: src/Integrations/buddypress/actions/add-post-user-activity-stream.php:58
+msgid "Add a post to the user's activity stream"
+msgstr "הוסף פוסט לזרם הפעילות של המשתמש"
+
+#: src/Integrations/buddypress/actions/add-user-to-group.php:57
+msgid "Add user to group"
+msgstr "הוסף משתמש לקבוצה"
+
+#: src/Integrations/buddypress/actions/change-user-member-type.php:57
+msgid "Set the user's member type to a specific type"
+msgstr "הגדר את סוג החבר של המשתמש לסוג מסוים"
+
+#: src/Integrations/buddypress/actions/end-friendship-with-user.php:57
+msgid "End friendship with a user"
+msgstr "סיים חברות עם משתמש"
+
+#: src/Integrations/buddypress/actions/remove-user-from-group.php:57
+msgid "Remove the user from a group"
+msgstr "הסר את המשתמש מקבוצה"
+
+#: src/Integrations/buddypress/actions/send-all-members-group-notification.php:77
+msgid "Send all members of a group a notification"
+msgstr "שלח לכל חברי הקבוצה הודעה"
+
+#: src/Integrations/buddypress/actions/send-private-message-user.php:57
+msgid "Send a private message to the user"
+msgstr "שלח הודעה פרטית למשתמש"
+
+#: src/Integrations/buddypress/actions/send-user-notification.php:77
+msgid "Send the user a notification"
+msgstr "שלח למשתמש הודעה"
+
+#: src/Integrations/buddypress/actions/set-user-xprofile-data.php:57
+msgid "Set The User's Extended Profile Data"
+msgstr "הגדר את נתוני הפרופיל המורחב של המשתמש"
+
+#: src/Integrations/buddypress/buddypress.php:36
+msgid "BuddyPress"
+msgstr "BuddyPress"
+
+#: src/Integrations/buddypress/buddypress.php:37
+#: src/Integrations/gamipress/gamipress.php:37
+msgid "A WordPress plugin that lets you gamify your WordPress website."
+msgstr "תוסף WordPress שמאפשר לך לגיימיפיק את אתר ה-WordPress שלך."
+
+#: src/Integrations/buddypress/triggers/bp-user-joins-public-group.php:73
+msgid "A user joins a public group"
+msgstr "משתמש מצטרף לקבוצה ציבורית"
+
+#: src/Integrations/buddypress/triggers/bp-user-leaves-group.php:73
+msgid "A user leaves a group"
+msgstr "משתמש עוזב קבוצה"
+
+#: src/Integrations/buddypress/triggers/user-accepts-friend-request.php:73
+msgid "A user accepts a friendship request"
+msgstr "משתמש מקבל בקשת חברות"
+
+#: src/Integrations/buddypress/triggers/user-account-activated.php:73
+msgid "The user's account is activated"
+msgstr "החשבון של המשתמש הופעל"
+
+#: src/Integrations/buddypress/triggers/user-connection-request-accepted.php:73
+msgid "A user's connection request is accepted"
+msgstr "בקשת החיבור של המשתמש התקבלה"
+
+#: src/Integrations/buddypress/triggers/user-creates-group.php:73
+msgid "A user creates a group"
+msgstr "משתמש יוצר קבוצה"
+
+#: src/Integrations/buddypress/triggers/user-joins-private-group.php:73
+msgid "A user joins a private group"
+msgstr "משתמש מצטרף לקבוצה פרטית"
+
+#: src/Integrations/buddypress/triggers/user-member-type-changed.php:73
+msgid "A user's member type is set to a specific type"
+msgstr "סוג החבר של המשתמש הוגדר לסוג מסוים"
+
+#: src/Integrations/buddypress/triggers/user-posts-activity-group.php:74
+msgid "A user makes a post to the activity stream of a group"
+msgstr "משתמש מפרסם פוסט לזרם הפעילות של קבוצה"
+
+#: src/Integrations/buddypress/triggers/user-posts-activity-stream.php:74
+msgid "A user posts activity to their stream"
+msgstr "משתמש מפרסם פעילות לזרם שלו"
+
+#: src/Integrations/buddypress/triggers/user-registers-specific-field-value.php:73
+msgid "A user registers with specific field"
+msgstr "משתמש נרשם עם שדה ספציפי"
+
+#: src/Integrations/buddypress/triggers/user-requests-access-private-group.php:73
+msgid "A user requests access to a private group"
+msgstr "משתמש מבקש גישה לקבוצה פרטית"
+
+#: src/Integrations/buddypress/triggers/user-sends-friend-request.php:73
+msgid "A user sends a friendship request"
+msgstr "משתמש שולח בקשת חברות"
+
+#: src/Integrations/buddypress/triggers/user-updates-avatar.php:73
+msgid "A user updates their avatar"
+msgstr "משתמש מעדכן את התמונה שלו"
+
+#: src/Integrations/buddypress/triggers/user-updates-profile-specific-field.php:73
+msgid "A user updates their profile in a specific field"
+msgstr "משתמש מעדכן את הפרופיל שלו בשדה ספציפי"
+
+#: src/Integrations/buddypress/triggers/user-updates-profile.php:73
+msgid "A user updates their profile"
+msgstr "משתמש מעדכן את הפרופיל שלו"
+
+#: src/Integrations/cartflows/cartflows.php:36
+msgid "CartFlows"
+msgstr "CartFlows"
+
+#: src/Integrations/cartflows/cartflows.php:37
+msgid "Create beautiful checkout pages & sales flows for WooCommerce."
+msgstr "צור דפי תשלום יפים וזרמי מכירה עבור WooCommerce."
+
+#: src/Integrations/cartflows/triggers/accept-downsell.php:69
+msgid "User accepts a downsell"
+msgstr "המשתמש מקבל הצעת downsell"
+
+#: src/Integrations/cartflows/triggers/accept-upsell.php:69
+msgid "User accepts a one click upsell"
+msgstr "המשתמש מקבל upsell בלחיצה אחת"
+
+#: src/Integrations/cartflows/triggers/decline-downsell.php:69
+msgid "User declines downsell"
+msgstr "המשתמש דוחה downsell"
+
+#: src/Integrations/cartflows/triggers/decline-upsell.php:69
+msgid "User declines a one click upsell"
+msgstr "המשתמש דוחה upsell בלחיצה אחת"
+
+#: src/Integrations/cartflows/triggers/downsell-offer-skipped.php:69
+msgid "Downsell Offer Skipped"
+msgstr "הצעת downsell הוחמצה"
+
+#: src/Integrations/cartflows/triggers/order-bump-item-added.php:69
+msgid "Order Bump Item Added"
+msgstr "פריט Order Bump נוסף"
+
+#: src/Integrations/cartflows/triggers/order-bump-item-removed.php:69
+#: src/Integrations/cartflows/triggers/order-bump-item-replaced.php:69
+msgid "Order Bump Item Removed"
+msgstr "פריט Order Bump הוסר"
+
+#: src/Integrations/cartflows/triggers/pre-checkout-offer-item-added.php:69
+msgid "Pre Checkout Offer Item Added"
+msgstr "פריט הצעת Pre Checkout נוסף"
+
+#: src/Integrations/cartflows/triggers/upsell-offer-skipped.php:69
+msgid "Upsell Offer Skipped"
+msgstr "הצעת upsell הוחמצה"
+
+#: src/Integrations/contact-form7/contact-form7.php:36
+msgid "Contact Form7"
+msgstr "Contact Form7"
+
+#: src/Integrations/contact-form7/contact-form7.php:37
+msgid "A WordPress plugin of form submission"
+msgstr "תוסף WordPress של הגשת טפסים"
+
+#: src/Integrations/convertpro/convertpro.php:36
+msgid "ConvertPro"
+msgstr "ConvertPro"
+
+#: src/Integrations/convertpro/convertpro.php:37
+msgid "A WordPress plugin to convert visitors into leads, subscribers and customers. "
+msgstr "תוסף WordPress להמיר מבקרים ללידים, מנויים ולקוחות."
+
+#: src/Integrations/divi-builder/divi-builder.php:36
+msgid "Divi"
+msgstr "דיבי"
+
+#: src/Integrations/divi-builder/divi-builder.php:37
+msgid "The Ultimate WordPress Page Builder."
+msgstr "בונה העמודים האולטימטיבי של וורדפרס."
+
+#: src/Integrations/easy-affiliate/actions/add-affiliate.php:58
+msgid "Add Affiliate"
+msgstr "הוסף שותף"
+
+#: src/Integrations/easy-affiliate/actions/record-sale-affiliate.php:60
+msgid "Record Sale for Affiliate"
+msgstr "רשום מכירה עבור שותף"
+
+#: src/Integrations/easy-affiliate/easy-affiliate.php:35
+msgid "Easy Affiliate"
+msgstr "שותף קל"
+
+#: src/Integrations/easy-affiliate/easy-affiliate.php:36
+msgid "Affiliate Program Plugin for WordPress"
+msgstr "תוסף תוכנית שותפים עבור וורדפרס"
+
+#: src/Integrations/easy-affiliate/triggers/affiliate-added.php:72
+msgid "Affiliate Added"
+msgstr "שותף נוסף"
+
+#: src/Integrations/easy-affiliate/triggers/affiliate-payout-made.php:74
+msgid "Payout made for Affiliate"
+msgstr "תשלום בוצע עבור שותף"
+
+#: src/Integrations/easy-affiliate/triggers/affiliate-sale-recorded.php:74
+msgid "Sale Recorded for Affiliate"
+msgstr "מכירה נרשמה עבור שותף"
+
+#: src/Integrations/edd/actions/create-discount.php:56
+msgid "Create Discount (Free)"
+msgstr "צור הנחה (חינם)"
+
+#: src/Integrations/edd/actions/delete-discount.php:56
+msgid "Delete Discount"
+msgstr "מחק הנחה"
+
+#: src/Integrations/edd/actions/edd-create-discount.php:57
+msgid "Create Discount"
+msgstr "צור הנחה"
+
+#: src/Integrations/edd/actions/find-user-have-active-inactive-license-for-specific-download.php:57
+#: src/Integrations/edd/actions/find-user-have-subscription-for-specific-download.php:58
+msgid "User have subscription for download"
+msgstr "למשתמש יש מנוי להורדה"
+
+#: src/Integrations/edd/actions/find-user-purchased-download.php:57
+msgid "User has purchased a download"
+msgstr "המשתמש רכש הורדה"
+
+#: src/Integrations/edd/edd.php:39
+msgid "EDD"
+msgstr "EDD"
+
+#: src/Integrations/edd/edd.php:40
+msgid "Easy Digital Downloads is a complete eCommerce solution for selling digital products on WordPress."
+msgstr "Easy Digital Downloads היא פתרון מסחר אלקטרוני שלם למכירת מוצרים דיגיטליים על וורדפרס."
+
+#: src/Integrations/edd/triggers/edd-licensekey-activated.php:71
+#: src/Integrations/edd/triggers/edd-licensekey-deactivated.php:71
+#: src/Integrations/edd/triggers/edd-new-licensekey-created.php:71
+msgid "New License Key"
+msgstr "מפתח רישוי חדש"
+
+#: src/Integrations/edd/triggers/edd-licensekey-status-changed-to-active.php:71
+#: src/Integrations/edd/triggers/edd-licensekey-status-changed-to-inactive.php:71
+msgid "License Key Status Changed To Active"
+msgstr "סטטוס מפתח הרישוי שונה ל-active"
+
+#: src/Integrations/edd/triggers/edd-licensekey-status-changed-to-disabled.php:71
+msgid "License Key Status Changed To Disabled"
+msgstr "סטטוס מפתח הרישוי שונה ל-disabled"
+
+#: src/Integrations/edd/triggers/edd-licensekey-status-changed-to-expired.php:71
+msgid "License Key Status Changed To Expired"
+msgstr "סטטוס מפתח הרישוי שונה לפג"
+
+#: src/Integrations/edd/triggers/edd-order-status-changes.php:70
+#: src/Integrations/woocommerce/triggers/order-status-changed.php:67
+msgid "Order Status Changes"
+msgstr "שינויים בסטטוס ההזמנה"
+
+#: src/Integrations/edd/triggers/edd-purchase-one-product.php:71
+msgid "Product Purchased"
+msgstr "מוצר נרכש"
+
+#: src/Integrations/edd/triggers/edd-purchase-product.php:71
+msgid "Order Created"
+msgstr "הזמנה נוצרה"
+
+#: src/Integrations/edd/triggers/edd-purchase-refund.php:69
+msgid "Stripe Payment Refunded"
+msgstr "תשלום סטרייפ הוחזר"
+
+#: src/Integrations/edd/triggers/edd-subscription-renewal.php:70
+msgid "Subscription Renewal"
+msgstr "חידוש מנוי"
+
+#: src/Integrations/elementor-pro/elementor-pro.php:36
+msgid "Elementor"
+msgstr "אלמנטור"
+
+#: src/Integrations/elementor-pro/elementor-pro.php:37
+msgid ""
+"Elementor is the platform web creators choose to build professional WordPress websites, grow their skills, and build "
+"their business."
+msgstr "אלמנטור היא הפלטפורמה שיצרני אתרים בוחרים כדי לבנות אתרי וורדפרס מקצועיים, לפתח את כישוריהם ולבנות את עסקיהם."
+
+#: src/Integrations/elementor-pro/triggers/elementor-new-submit-form.php:66
+#: src/Integrations/elementor-pro/triggers/elementor-submit-form.php:66
+msgid "User submits a form"
+msgstr "המשתמש מגיש טופס"
+
+#: src/Integrations/elementor-pro/triggers/elementor-post-published.php:67
+msgid "Post Published with Elementor"
+msgstr "פוסט פורסם עם אלמנטור"
+
+#: src/Integrations/elementor-pro/triggers/elementor-submit-form-specific-value.php:66
+msgid "Form Submitted with Specific Field Value"
+msgstr "טופס הוגש עם ערך שדה ספציפי"
+
+#: src/Integrations/event-calendar/actions/send-rsvp.php:53
+msgid "RSVP on behalf of the user for an event"
+msgstr "RSVP בשם המשתמש לאירוע"
+
+#: src/Integrations/event-calendar/event-calendar.php:35
+msgid "The Events Calendar"
+msgstr "לוח השנה לאירועים"
+
+#: src/Integrations/event-calendar/event-calendar.php:36
+msgid "Easily create and manage an events calendar on your WordPress site with The Events Calendar plugin."
+msgstr "צור וניהול לוח שנה לאירועים באתר הוורדפרס שלך בקלות עם תוסף לוח השנה לאירועים."
+
+#: src/Integrations/event-calendar/triggers/attendee-registered-event.php:69
+msgid "Attendee Registered for Event"
+msgstr "משתתף נרשם לאירוע"
+
+#: src/Integrations/event-calendar/triggers/attendee-registers-wc.php:69
+msgid "Attendee Registered with WC"
+msgstr "משתתף נרשם עם WC"
+
+#: src/Integrations/event-calendar/triggers/user-attends-event.php:69
+msgid "User Attends Event"
+msgstr "המשתמש משתתף באירוע"
+
+#: src/Integrations/event-calendar/triggers/user-register-event.php:69
+msgid "New Attendee"
+msgstr "משתתף חדש"
+
+#: src/Integrations/events-manager/actions/unregister-user-from-event.php:55
+msgid "Unregister the user from an event"
+msgstr "בטל רישום של המשתמש מאירוע"
+
+#: src/Integrations/events-manager/events-manager.php:36
+msgid "Events Manager"
+msgstr "מנהל אירועים"
+
+#: src/Integrations/events-manager/events-manager.php:37
+msgid "Easy event registration."
+msgstr "רישום לאירועים בקלות."
+
+#: src/Integrations/events-manager/triggers/user-booking-approved.php:70
+msgid "Booking Approved"
+msgstr "הזמנה אושרה"
+
+#: src/Integrations/events-manager/triggers/user-register-in-event.php:70
+msgid "User Registered in Event"
+msgstr "המשתמש נרשם לאירוע"
+
+#: src/Integrations/events-manager/triggers/user-registers-event-with-specific-ticket.php:70
+msgid "User Registers Event with Specific Ticket"
+msgstr "המשתמש נרשם לאירוע עם כרטיס ספציפי"
+
+#: src/Integrations/events-manager/triggers/user-unregister-from-event.php:70
+msgid "User Unregister from event"
+msgstr "המשתמש מבטל רישום מאירוע"
+
+#: src/Integrations/fluent-boards/actions/add-user-to-board.php:59
+msgid "Add User to Board"
+msgstr "הוסף משתמש ללוח"
+
+#: src/Integrations/fluent-boards/actions/add-user-to-board.php:93
+msgid "Board not found."
+msgstr "הלוח לא נמצא."
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:58
+msgid "Assign Task"
+msgstr "הקצה משימה"
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:81
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:79
+msgid "FluentBoards TaskService not found."
+msgstr "שירות המשימות של FluentBoards לא נמצא."
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:85
+#: src/Integrations/fluent-boards/actions/create-sub-task.php:94
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:83
+msgid "FluentBoards Task model not found."
+msgstr "מודל המשימות של FluentBoards לא נמצא."
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:93
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:90
+msgid "Task ID and assignees are required."
+msgstr "ID משימה ומקצים נדרשים."
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:104
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:99
+msgid "Task not found."
+msgstr "המשימה לא נמצאה."
+
+#: src/Integrations/fluent-boards/actions/create-board.php:58
+msgid "Create Board"
+msgstr "צור לוח"
+
+#: src/Integrations/fluent-boards/actions/create-label.php:59
+msgid "Create Label"
+msgstr "צור תווית"
+
+#: src/Integrations/fluent-boards/actions/create-stage.php:59
+msgid "Create Stage"
+msgstr "צור שלב"
+
+#: src/Integrations/fluent-boards/actions/create-sub-task.php:54
+msgid "Create Sub Task"
+msgstr "צור משימה משנה"
+
+#: src/Integrations/fluent-boards/actions/create-task.php:60
+msgid "Create Task"
+msgstr "צור משימה"
+
+#: src/Integrations/fluent-boards/actions/get-board-details.php:57
+msgid "Get Board"
+msgstr "קבל לוח"
+
+#: src/Integrations/fluent-boards/actions/get-task-details.php:58
+msgid "Get Task"
+msgstr "קבל משימה"
+
+#: src/Integrations/fluent-boards/actions/list-task-labels.php:58
+msgid "List Task Labels"
+msgstr "רשימת תוויות משימות"
+
+#: src/Integrations/fluent-boards/actions/list-tasks.php:58
+msgid "List Tasks"
+msgstr "רשימת משימות"
+
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:58
+msgid "Remove Assignee from Task"
+msgstr "הסר מקצה ממשימה"
+
+#: src/Integrations/fluent-boards/fluent-boards.php:35
+msgid "FluentBoards"
+msgstr "FluentBoards"
+
+#: src/Integrations/fluent-boards/fluent-boards.php:36
+msgid ""
+"FluentBoards is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, "
+"webinars, events, sales calls, etc., and save time with scheduling automation."
+msgstr ""
+"FluentBoards היא הפתרון האולטימטיבי לתכנון עבור וורדפרס. נצל את הכוח של פגישות, הזמנות, וובינרים, אירועים, שיחות מכירה "
+"וכו', וחסוך זמן עם אוטומציה של תכנון."
+
+#: src/Integrations/fluent-boards/triggers/board-created.php:72
+msgid "New Board Created"
+msgstr "לוח חדש נוצר"
+
+#: src/Integrations/fluent-boards/triggers/board-member-added.php:72
+msgid "Board Member Added"
+msgstr "חבר לוח נוסף"
+
+#: src/Integrations/fluent-boards/triggers/stage-changed.php:72
+msgid "Stage Changed"
+msgstr "השלב שונה"
+
+#: src/Integrations/fluent-boards/triggers/task-created.php:72
+msgid "New Task Created"
+msgstr "משימה חדשה נוצרה"
+
+#: src/Integrations/fluent-booking/fluent-booking.php:35
+msgid "FluentBooking"
+msgstr "FluentBooking"
+
+#: src/Integrations/fluent-booking/fluent-booking.php:36
+msgid ""
+"FluentBooking is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, "
+"webinars, events, sales calls, etc., and save time with scheduling automation."
+msgstr ""
+"FluentBooking היא הפתרון האולטימטיבי לתכנון עבור וורדפרס. נצל את הכוח של פגישות, הזמנות, וובינרים, אירועים, שיחות מכירה "
+"וכו', וחסוך זמן עם אוטומציה של תכנון."
+
+#: src/Integrations/fluent-booking/triggers/appointment-completed.php:69
+msgid "Appointment Completed"
+msgstr "הפגישה הושלמה"
+
+#: src/Integrations/fluent-form/actions/register-a-new-user.php:58
+msgid "Register New User"
+msgstr "רשום משתמש חדש"
+
+#: src/Integrations/fluent-form/fluent-form.php:35
+msgid "Fluent Form"
+msgstr "פורום שוטף"
+
+#: src/Integrations/fluent-form/fluent-form.php:36
+msgid "Fluent Form is a WordPress Form Builder."
+msgstr "פורום שוטף הוא בונה טפסים של WordPress."
+
+#: src/Integrations/fluent-form/triggers/user-submit-form-specific-field-value.php:69
+msgid "User Submits Form with Specific Field Value"
+msgstr "המשתמש מגיש טופס עם ערך שדה ספציפי"
+
+#: src/Integrations/fluent-form/triggers/user-submit-form.php:69
+#: src/Integrations/metform/triggers/user-submit-form.php:68
+#: src/Integrations/ninja-forms/triggers/user-submit-form.php:68
+#: src/Integrations/ultimate-addons-for-gutenberg/triggers/user-submit-form.php:72
+msgid "User Submits Form"
+msgstr "המשתמש מגיש טופס"
+
+#: src/Integrations/fluent-support/actions/add-tag-to-ticket.php:58
+msgid "Add Tag to Ticket"
+msgstr "הוסף תג לכרטיס"
+
+#: src/Integrations/fluent-support/actions/block-user.php:58
+msgid "Block User"
+msgstr "חסום משתמש"
+
+#: src/Integrations/fluent-support/actions/create-or-obtain-customer.php:59
+msgid "Create Or Obtain Customer"
+msgstr "צור או השג לקוח"
+
+#: src/Integrations/fluent-support/actions/create-ticket.php:59
+msgid "Create Ticket"
+msgstr "צור כרטיס"
+
+#: src/Integrations/fluent-support/actions/get-tickets.php:58
+msgid "Get All Tickets"
+msgstr "קבל את כל הכרטיסים"
+
+#: src/Integrations/fluent-support/actions/reply_to_ticket_as_agent.php:52
+msgid "Reply to Ticket as Agent"
+msgstr "ענה לכרטיס כסוכן"
+
+#: src/Integrations/fluent-support/fluent-support.php:35
+msgid "Fluent Support"
+msgstr "תמיכה שוטפת"
+
+#: src/Integrations/fluent-support/fluent-support.php:36
+msgid "Fluent Support is a WordPress Customer Support plugin."
+msgstr "תמיכה שוטפת היא תוסף תמיכה ללקוחות של WordPress."
+
+#: src/Integrations/fluent-support/triggers/response-added-by-agent.php:69
+msgid "Agent Replied"
+msgstr "הסוכן ענה"
+
+#: src/Integrations/fluent-support/triggers/response-added-by-customer.php:69
+msgid "Customer Replied"
+msgstr "הלקוח ענה"
+
+#: src/Integrations/fluent-support/triggers/ticket-closed-by-agent.php:69
+msgid "Ticket Closed by Agent"
+msgstr "הכרטיס נסגר על ידי הסוכן"
+
+#: src/Integrations/fluent-support/triggers/ticket-closed-by-customer.php:69
+msgid "Ticket Closed by Customer"
+msgstr "הכרטיס נסגר על ידי הלקוח"
+
+#: src/Integrations/fluent-support/triggers/ticket-closed-product.php:69
+msgid "Ticket Closed for Product"
+msgstr "הכרטיס נסגר עבור מוצר"
+
+#: src/Integrations/fluent-support/triggers/ticket-created-product.php:69
+msgid "Ticket Created for Product"
+msgstr "הכרטיס נוצר עבור מוצר"
+
+#: src/Integrations/fluent-support/triggers/ticket-created.php:69
+msgid "Ticket Created"
+msgstr "הכרטיס נוצר"
+
+#: src/Integrations/fluent-support/triggers/ticket-product-replied-agent.php:69
+msgid "Ticket for Product Replied by Agent"
+msgstr "הכרטיס עבור מוצר ענה על ידי הסוכן"
+
+#: src/Integrations/fluent-support/triggers/ticket-product-replied-customer.php:69
+msgid "Ticket for Product Replied by Customer"
+msgstr "הכרטיס עבור מוצר ענה על ידי הלקוח"
+
+#: src/Integrations/fluentcommunity/actions/add-user-to-course.php:54
+msgid "Add User to Course"
+msgstr "הוסף משתמש לקורס"
+
+#: src/Integrations/fluentcommunity/actions/add-user-to-space.php:58
+msgid "Add User to Space"
+msgstr "הוסף משתמש לחלל"
+
+#: src/Integrations/fluentcommunity/actions/create-new-post-feed.php:55
+msgid "Create New Post in Feed"
+msgstr "צור פוסט חדש בפיד"
+
+#: src/Integrations/fluentcommunity/actions/get-all-courses-list.php:58
+msgid "Get All Courses List"
+msgstr "קבל את רשימת הקורסים"
+
+#: src/Integrations/fluentcommunity/actions/get-all-spaces-list.php:58
+msgid "Get All Spaces List"
+msgstr "קבל את רשימת החללים"
+
+#: src/Integrations/fluentcommunity/actions/remove-user-from-course.php:57
+#: src/Integrations/tutorlms/actions/remove-course.php:57
+#: src/Integrations/wp-courseware/actions/wpcw-remove-user-from-course.php:54
+msgid "Remove User from Course"
+msgstr "הסר משתמש מהקורס"
+
+#: src/Integrations/fluentcommunity/actions/remove-user-from-space.php:55
+msgid "Remove User from Space"
+msgstr "הסר משתמש מהחלל"
+
+#: src/Integrations/fluentcommunity/fluentcommunity.php:35
+msgid "Fluent Community"
+msgstr "קהילה שוטפת"
+
+#: src/Integrations/fluentcommunity/fluentcommunity.php:36
+msgid "Simplifying Community Engagement."
+msgstr "פשטת את המעורבות בקהילה."
+
+#: src/Integrations/fluentcommunity/triggers/feed-created.php:65
+msgid "New Feed Created"
+msgstr "פיד חדש נוצר"
+
+#: src/Integrations/fluentcommunity/triggers/feed-updated.php:65
+msgid "Feed Updated"
+msgstr "הפיד עודכן"
+
+#: src/Integrations/fluentcommunity/triggers/new-space-feed-created.php:63
+msgid "New Space Feed Created"
+msgstr "פיד חלל חדש נוצר"
+
+#: src/Integrations/fluentcommunity/triggers/space-created.php:63
+msgid "New Space Created"
+msgstr "חלל חדש נוצר"
+
+#: src/Integrations/fluentcommunity/triggers/user-completes-course.php:64
+#: src/Integrations/sensei-lms/triggers/sl-user-completes-course.php:66
+#: src/Integrations/wp-courseware/tiggerrs/wpcw-user-completes-course.php:67
+msgid "User Completes Course"
+msgstr "המשתמש משלים קורס"
+
+#: src/Integrations/fluentcommunity/triggers/user-enrolls-course.php:64
+msgid "User Enrolls In Course"
+msgstr "המשתמש נרשם לקורס"
+
+#: src/Integrations/fluentcommunity/triggers/user-joins-space.php:63
+msgid "User Joins Space"
+msgstr "המשתמש מצטרף לחלל"
+
+#: src/Integrations/fluentcommunity/triggers/user-leaves-space.php:64
+msgid "User Leaves Space"
+msgstr "המשתמש עוזב את החלל"
+
+#: src/Integrations/fluentcommunity/triggers/user-request-join-space.php:64
+msgid "User Requests To Join Space"
+msgstr "המשתמש מבקש להצטרף לחלל"
+
+#: src/Integrations/fluentcommunity/triggers/user-unenrolls-from-course.php:64
+msgid "User Unenrolls From Course"
+msgstr "המשתמש מתבטל מהקורס"
+
+#: src/Integrations/fluentcrm/actions/add-contact.php:60
+msgid "Add/Update Contact"
+msgstr "הוסף/עדכן קשר"
+
+#: src/Integrations/fluentcrm/actions/add-event.php:57
+msgid "Add Event"
+msgstr "הוסף אירוע"
+
+#: src/Integrations/fluentcrm/actions/add-event.php:85
+msgid "Email, Event Key, and Title are required."
+msgstr "דרושים דוא\"ל, מפתח אירוע וכותרת."
+
+#: src/Integrations/fluentcrm/actions/add-event.php:104
+msgid "Failed to add event. Please try again."
+msgstr "נכשל בהוספת האירוע. אנא נסה שוב."
+
+#: src/Integrations/fluentcrm/actions/add-event.php:110
+msgid "Event has been successfully added."
+msgstr "האירוע נוסף בהצלחה."
+
+#: src/Integrations/fluentcrm/actions/add-note.php:60
+msgid "Add Note"
+msgstr "הוסף הערה"
+
+#: src/Integrations/fluentcrm/actions/add-note.php:104
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-email.php:86
+msgid "Can not find the contact with the email."
+msgstr "לא ניתן למצוא את הקשר עם הדוא\"ל."
+
+#: src/Integrations/fluentcrm/actions/add-note.php:127
+msgid "Failed to add note. Please try again."
+msgstr "נכשל בהוספת ההערה. אנא נסה שוב."
+
+#: src/Integrations/fluentcrm/actions/add-note.php:133
+msgid "Note has been successfully added."
+msgstr "ההערה נוספה בהצלחה."
+
+#: src/Integrations/fluentcrm/actions/add-tag-to-contact.php:59
+msgid "Add Tag"
+msgstr "הוסף תג"
+
+#: src/Integrations/fluentcrm/actions/attach-subscribers-company.php:59
+msgid "Attach Subscribers to Company"
+msgstr "צורף מנויים לחברה"
+
+#: src/Integrations/fluentcrm/actions/attach-subscribers-company.php:116
+msgid "Company has been successfully attached to the Subscribers"
+msgstr "החברה צורפה בהצלחה למנויים"
+
+#: src/Integrations/fluentcrm/actions/create-company.php:60
+msgid "Create Company"
+msgstr "צור חברה"
+
+#: src/Integrations/fluentcrm/actions/create-tag.php:59
+msgid "Create Tag"
+msgstr "צור תג"
+
+#: src/Integrations/fluentcrm/actions/detach-subscribers-company.php:59
+msgid "Detach Subscribers to Company"
+msgstr "הסר מנויים מהחברה"
+
+#: src/Integrations/fluentcrm/actions/detach-subscribers-company.php:116
+msgid "Company has been successfully detached"
+msgstr "החברה הוסרה בהצלחה"
+
+#: src/Integrations/fluentcrm/actions/remove-contact.php:58
+msgid "Remove Contact"
+msgstr "הסר קשר"
+
+#: src/Integrations/fluentcrm/actions/remove-tag-from-contact.php:58
+msgid "Remove Tag"
+msgstr "הסר תג"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-email.php:58
+msgid "Retrieve Contact By Email"
+msgstr "שחזר קשר לפי דוא\"ל"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-id.php:58
+msgid "Retrieve Contact By ID"
+msgstr "שחזר קשר לפי מזהה"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-id.php:86
+msgid "Can not find the contact with the ID."
+msgstr "לא ניתן למצוא את הקשר עם המזהה."
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-list-ids.php:58
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-user-id.php:58
+msgid "Retrieve Contact By User ID"
+msgstr "שחזר קשר לפי מזהה משתמש"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-list-ids.php:92
+msgid "No contacts found"
+msgstr "לא נמצאו קשרים"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-status.php:58
+msgid "Retrieve Contact By Status"
+msgstr "שחזר קשר לפי מצב"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-status.php:97
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-tag-ids.php:92
+msgid "No Contacts Found."
+msgstr "לא נמצאו קשרים."
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-tag-ids.php:58
+msgid "Retrieve Contact By Tag IDs"
+msgstr "שחזר קשר לפי מזהי תג"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-user-id.php:86
+msgid "Invalid contact."
+msgstr "קשר לא תקין."
+
+#: src/Integrations/fluentcrm/actions/send-email-to-list-contacts.php:59
+#: src/Integrations/voxel/actions/send-email.php:56
+#: src/Integrations/voxel/actions/set-post-verified.php:56
+#: src/Integrations/voxel/actions/set-profile-verified.php:56
+msgid "Send Email"
+msgstr "שלח דוא\"ל"
+
+#: src/Integrations/fluentcrm/fluentcrm.php:38
+msgid "FluentCRM"
+msgstr "FluentCRM"
+
+#: src/Integrations/fluentcrm/fluentcrm.php:39
+msgid "FluentCRM is a Self Hosted Email Marketing Automation Plugin for WordPress."
+msgstr "FluentCRM הוא תוסף אוטומציה לשיווק בדוא\"ל המנוהל בעצמו עבור WordPress."
+
+#: src/Integrations/fluentcrm/triggers/add-tag-to-contact-fluentcrm.php:73
+msgid "Tag Added"
+msgstr "תג נוסף"
+
+#: src/Integrations/fluentcrm/triggers/contact-added-to-list-fluentcrm.php:73
+#: src/Integrations/funnel-kit-automations/triggers/contact-added-to-list.php:69
+msgid "Contact Added to List"
+msgstr "קשר נוסף לרשימה"
+
+#: src/Integrations/fluentcrm/triggers/contact-custom-fields-updated-fluentcrm.php:73
+msgid "Contact Custom Fields Updated"
+msgstr "שדות מותאמים אישית של קשר עודכנו"
+
+#: src/Integrations/fluentcrm/triggers/contact-removed-from-list-fluentcrm.php:73
+#: src/Integrations/funnel-kit-automations/triggers/contact-removed-from-list.php:69
+msgid "Contact Removed from List"
+msgstr "הקשר הוסר מהרשימה"
+
+#: src/Integrations/fluentcrm/triggers/contact-status-set-to-specific-status-fluentcrm.php:73
+msgid "Contact Status Set to Specific Status"
+msgstr "סטטוס הקשר הוגדר לסטטוס ספציפי"
+
+#: src/Integrations/fluentcrm/triggers/contact-updated-fluentcrm.php:73
+msgid "Contact Updated"
+msgstr "הקשר עודכן"
+
+#: src/Integrations/fluentcrm/triggers/new-contact-added-fluentcrm.php:73
+msgid "New Contact Added"
+msgstr "קשר חדש נוסף"
+
+#: src/Integrations/fluentcrm/triggers/tag-removed-from-contact.php:73
+msgid "Tag Removed"
+msgstr "תג הוסר"
+
+#: src/Integrations/fluentsmtp/fluentsmtp.php:35
+msgid "FluentSMTP"
+msgstr "FluentSMTP"
+
+#: src/Integrations/fluentsmtp/fluentsmtp.php:36
+msgid ""
+"FluentSMTP is the ultimate WP Mail Plugin that connects with your Email Service Provider natively and makes sure your "
+"emails are delivered."
+msgstr "FluentSMTP הוא התוסף האולטימטיבי לדואר WP שמתחבר לספק שירותי הדואר שלך באופן מקורי ומוודא שהדוא\"ל שלך נשלח."
+
+#: src/Integrations/fluentsmtp/triggers/error-in-email-delivery.php:68
+msgid "Error in Email Delivery"
+msgstr "שגיאה במשלוח דוא\"ל"
+
+#: src/Integrations/formidable-forms/formidable-forms.php:36
+msgid "FormidableForms"
+msgstr "FormidableForms"
+
+#: src/Integrations/formidable-forms/formidable-forms.php:37
+msgid "A WordPress form builder plugin that lets you build single or multi-page contact forms. "
+msgstr "תוסף לבניית טפסים ב-WordPress המאפשר לך לבנות טפסי קשר חד-עמודיים או רב-עמודיים."
+
+#: src/Integrations/formidable-forms/triggers/user-updates-entry-in-form.php:73
+#: src/Integrations/gravity-form/triggers/form-entry-updated.php:73
+msgid "Form Entry Updated"
+msgstr "הזנת טופס עודכנה"
+
+#: src/Integrations/forminator/forminator.php:36
+msgid "Forminator"
+msgstr "Forminator"
+
+#: src/Integrations/forminator/forminator.php:37
+msgid "A form builder plugin. "
+msgstr "תוסף לבניית טפסים."
+
+#: src/Integrations/forminator/triggers/forminator-form-submit.php:73
+msgid "A form is submitted"
+msgstr "טופס הוגש"
+
+#: src/Integrations/funnel-kit-automations/actions/add-contact-to-lists.php:59
+msgid "Add Contact to List(s)"
+msgstr "הוסף קשר לרשימה(ות)"
+
+#: src/Integrations/funnel-kit-automations/actions/add-tags-to-contact.php:60
+msgid "Add Tag(s) to Contact"
+msgstr "הוסף תג(ים) לקשר"
+
+#: src/Integrations/funnel-kit-automations/actions/remove-contact-from-lists.php:59
+msgid "Remove Contact from List(s)"
+msgstr "הסר קשר מרשימה(ות)"
+
+#: src/Integrations/funnel-kit-automations/actions/remove-tags-from-contact.php:59
+msgid "Remove Tag(s) from Contact"
+msgstr "הסר תג(ים) מקשר"
+
+#: src/Integrations/funnel-kit-automations/funnel-kit-automations.php:39
+msgid "FunnelKitAutomations"
+msgstr "FunnelKitAutomations"
+
+#: src/Integrations/funnel-kit-automations/funnel-kit-automations.php:40
+msgid "FunnelKit Automations is a WordPress Customer Support plugin."
+msgstr "FunnelKit Automations הוא תוסף תמיכת לקוחות ב-WordPress."
+
+#: src/Integrations/funnel-kit-automations/triggers/tag-added-to-contact.php:69
+#: src/Integrations/groundhogg/triggers/gh-tag-added-to-contact.php:72
+msgid "Tag Added to Contact"
+msgstr "תג נוסף לקשר"
+
+#: src/Integrations/funnel-kit-automations/triggers/tag-removed-from-contact.php:69
+#: src/Integrations/groundhogg/triggers/gh-tag-removed-from-contact.php:72
+msgid "Tag Removed from Contact"
+msgstr "תג הוסר מקשר"
+
+#: src/Integrations/gamipress/actions/award-achivement-user.php:57
+#: src/Integrations/learndash-achievements/actions/award-achievement-to-user.php:59
+msgid "Award Achievement to User"
+msgstr "הענק הישג למשתמש"
+
+#: src/Integrations/gamipress/actions/award-points-user.php:57
+msgid "Award Points to User"
+msgstr "הענק נקודות למשתמש"
+
+#: src/Integrations/gamipress/actions/award-rank-user.php:56
+msgid "Award Rank to User"
+msgstr "הענק דרגה למשתמש"
+
+#: src/Integrations/gamipress/actions/revoke-achivement-user.php:57
+msgid "Revoke Achievement from User"
+msgstr "שולל הישג ממשתמש"
+
+#: src/Integrations/gamipress/actions/revoke-certain-types-points-user.php:57
+msgid "Revoke Certain Types of Points from User"
+msgstr "שולל סוגים מסוימים של נקודות ממשתמש"
+
+#: src/Integrations/gamipress/actions/revoke-points-user.php:57
+msgid "Revoke Points from the User"
+msgstr "שולל נקודות מהמשתמש"
+
+#: src/Integrations/gamipress/actions/revoke-rank-user.php:57
+msgid "Revoke Rank to User"
+msgstr "שולל דרגה למשתמש"
+
+#: src/Integrations/gamipress/gamipress.php:36
+msgid "GamiPress"
+msgstr "GamiPress"
+
+#: src/Integrations/gamipress/triggers/user-attains-rank.php:73
+msgid "A user attains a rank"
+msgstr "משתמש משיג דרגה"
+
+#: src/Integrations/gamipress/triggers/user-earns-achivements.php:73
+msgid "User Earns an Achievement"
+msgstr "המשתמש מרוויח הישג"
+
+#: src/Integrations/gamipress/triggers/user-earns-specific-points.php:73
+msgid "User Earns Specific Number of Points"
+msgstr "המשתמש מרוויח מספר ספציפי של נקודות"
+
+#: src/Integrations/gamipress/triggers/user-total-points-meets-threshold.php:73
+msgid "User’s Total Point Meets A Threshold"
+msgstr "סך הנקודות של המשתמש עומד על סף"
+
+#: src/Integrations/geo-directory/Actions/add-category-to-place.php:57
+msgid "Add Category To Place"
+msgstr "הוסף קטגוריה למקום"
+
+#: src/Integrations/geo-directory/Actions/add-place.php:56
+msgid "Add/Update Place"
+msgstr "הוסף/עדכן מקום"
+
+#: src/Integrations/geo-directory/Actions/add-place.php:124
+#: src/Integrations/wordpress/actions/create-post.php:146
+msgid "Failed to insert post!"
+msgstr "נכשל בהכנסת פוסט!"
+
+#: src/Integrations/geo-directory/Actions/add-tag-to-place.php:57
+msgid "Add Tag To Place"
+msgstr "הוסף תג למקום"
+
+#: src/Integrations/geo-directory/Actions/remove-category-from-place.php:57
+msgid "Remove Category From Place"
+msgstr "הסר קטגוריה מהמקום"
+
+#: src/Integrations/geo-directory/Actions/remove-tag-from-place.php:57
+msgid "Remove Tag From Place"
+msgstr "הסר תג מהמקום"
+
+#: src/Integrations/geo-directory/Triggers/listing-added.php:64
+msgid "New Place Listing Added"
+msgstr "רשימת מקום חדשה נוספה"
+
+#: src/Integrations/givewp/actions/add-note-to-donor.php:57
+msgid "Add Note To Donor"
+msgstr "הוסף הערה לתורם"
+
+#: src/Integrations/givewp/actions/create-donor.php:57
+msgid "Create Donor"
+msgstr "צור תורם"
+
+#: src/Integrations/givewp/givewp.php:37
+msgid "GiveWP"
+msgstr "GiveWP"
+
+#: src/Integrations/givewp/givewp.php:38
+msgid ""
+"GiveWP is an evolving WordPress donation plugin with a team that genuinely cares about advancing the democratization of "
+"generosity."
+msgstr "GiveWP הוא תוסף תרומות ב-WordPress שמתפתח עם צוות שאכפת לו באמת לקדם את הדמוקרטיזציה של נדיבות."
+
+#: src/Integrations/givewp/triggers/donation-submit-specific-amount.php:73
+msgid "User Submits Donation Form Specific Amount"
+msgstr "המשתמש מגיש טופס תרומה עם סכום ספציפי"
+
+#: src/Integrations/givewp/triggers/donation-submit-specific-field-value.php:73
+msgid "User Submits Donation Form Specific Field Value"
+msgstr "המשתמש מגיש טופס תרומה עם ערך שדה ספציפי"
+
+#: src/Integrations/givewp/triggers/donation-via-form.php:73
+msgid "User Submits Donation Form"
+msgstr "המשתמש מגיש טופס תרומה"
+
+#: src/Integrations/givewp/triggers/user-cancels-recurring-donation.php:73
+msgid "User Cancels Recurring Donation"
+msgstr "המשתמש מבטל תרומה חוזרת"
+
+#: src/Integrations/givewp/triggers/user-continues-recurring-donation.php:73
+msgid "User Continues Recurring Donation"
+msgstr "המשתמש ממשיך תרומה חוזרת"
+
+#: src/Integrations/gravity-form/actions/create-entry-gravity-form.php:58
+msgid "Create Entry for Form"
+msgstr "צור הזנה עבור טופס"
+
+#: src/Integrations/gravity-form/actions/delete-entry-gravity-form.php:58
+msgid "Delete Entry for Form"
+msgstr "מחק הזנה עבור טופס"
+
+#: src/Integrations/gravity-form/actions/delete-entry-gravity-form.php:93
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:97
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:126
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:131
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:206
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:206
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:228
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:250
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:139
+#: src/Integrations/paid-memberships-pro/actions/list-members.php:101
+#: src/Integrations/paid-memberships-pro/actions/list-members.php:126
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:111
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:132
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:127
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:125
+#: src/Integrations/tutorlms/actions/reset-user-course-progress.php:91
+#: src/Integrations/wordpress/actions/remove-user.php:102
+msgid "Success"
+msgstr "הצלחה"
+
+#: src/Integrations/gravity-form/actions/delete-entry-gravity-form.php:94
+msgid "Entry deleted successfully."
+msgstr "ההזנה נמחקה בהצלחה."
+
+#: src/Integrations/gravity-form/gravity-form.php:36
+msgid "Gravity Forms"
+msgstr "Gravity Forms"
+
+#: src/Integrations/gravity-form/gravity-form.php:37
+msgid "Gravity Forms is a WordPress Form Builder."
+msgstr "Gravity Forms הוא בונה טפסים ב-WordPress."
+
+#: src/Integrations/gravity-form/triggers/user-register-gravity-form.php:73
+msgid "User Register with Gravity Form"
+msgstr "המשתמש נרשם עם Gravity Form"
+
+#: src/Integrations/gravity-form/triggers/user-submits-form-specific-field.php:72
+msgid "Form Submitted with Specific Field"
+msgstr "הטופס הוגש עם שדה ספציפי"
+
+#: src/Integrations/gravity-form/triggers/user-submits-payment-gravity-form.php:73
+msgid "User Submits Payment Form"
+msgstr "המשתמש מגיש טופס תשלום"
+
+#: src/Integrations/gravity-kit/gravity-kit.php:36
+msgid "Gravity Kit"
+msgstr "Gravity Kit"
+
+#: src/Integrations/gravity-kit/gravity-kit.php:37
+msgid "Gravity Kit is a WordPress Plugin."
+msgstr "Gravity Kit הוא תוסף ב-WordPress."
+
+#: src/Integrations/gravity-kit/triggers/form-entry-approved.php:74
+msgid "Form Entry Approved"
+msgstr "הזנת טופס אושרה"
+
+#: src/Integrations/gravity-kit/triggers/form-entry-rejected.php:74
+msgid "Form Entry Rejected"
+msgstr "הזנת טופס נדחתה"
+
+#: src/Integrations/groundhogg/actions/gh-add-tag-to-contact.php:58
+#: src/Integrations/jetpack-crm/actions/add-tag-to-contact.php:59
+msgid "Add Tag to Contact"
+msgstr "הוסף תג לקשר"
+
+#: src/Integrations/groundhogg/actions/gh-create-contact.php:58
+msgid "Create/Update Contact"
+msgstr "צור/עדכן קשר"
+
+#: src/Integrations/groundhogg/actions/gh-remove-tag-from-contact.php:58
+msgid "Remove Tag from Contact"
+msgstr "הסר תג מקשר"
+
+#: src/Integrations/groundhogg/groundhogg.php:36
+msgid "Groundhogg"
+msgstr "Groundhogg"
+
+#: src/Integrations/groundhogg/groundhogg.php:37
+msgid ""
+"Groundhogg is the best WordPress CRM & Marketing Automation plugin. Create funnels, email campaigns, newsletters, "
+"marketing automation."
+msgstr ""
+"Groundhogg הוא התוסף הטוב ביותר ל-CRM ושיווק אוטומטי ב-WordPress. צור משפכים, קמפיינים בדוא\"ל, ניוזלטרים, אוטומציה "
+"שיווקית."
+
+#: src/Integrations/happyforms/happyforms.php:36
+msgid "HappyForms"
+msgstr "HappyForms"
+
+#: src/Integrations/happyforms/happyforms.php:37
+msgid "A contact form builder plugin. "
+msgstr "תוסף לבניית טפסי קשר."
+
+#: src/Integrations/jetengine/jetengine.php:35
+msgid "JetEngine"
+msgstr "JetEngine"
+
+#: src/Integrations/jetengine/jetengine.php:36
+msgid ""
+"WordPress Dynamic Content Plugin for\n"
+"\t\tElementor."
+msgstr "תוסף תוכן דינמי ל-WordPress עבור Elementor."
+
+#: src/Integrations/jetengine/triggers/specific-post-field-update.php:73
+msgid "A user updates a specific JetEngine field on a specific post type"
+msgstr "משתמש מעדכן שדה JetEngine ספציפי על סוג פוסט ספציפי"
+
+#: src/Integrations/jetformbuilder/jetformbuilder.php:36
+msgid "JetFormBuilder"
+msgstr "JetFormBuilder"
+
+#: src/Integrations/jetformbuilder/jetformbuilder.php:37
+msgid "A dynamic form creation tool. "
+msgstr "כלי ליצירת טפסים דינמיים."
+
+#: src/Integrations/jetpack-crm/actions/add-tag-to-company.php:59
+msgid "Add Tag to Company"
+msgstr "הוסף תג לחברה"
+
+#: src/Integrations/jetpack-crm/actions/change-status-of-contact.php:59
+msgid "Change Contact Status"
+msgstr "שנה את מצב הקשר"
+
+#: src/Integrations/jetpack-crm/actions/change-status-of-contact.php:84
+msgid "Status or contact email is empty."
+msgstr "המצב או דוא\"ל הקשר ריקים."
+
+#: src/Integrations/jetpack-crm/actions/change-status-of-contact.php:108
+msgid "The contact status has been updated."
+msgstr "סטטוס הקשר עודכן."
+
+#: src/Integrations/jetpack-crm/actions/change-status-of-contact.php:111
+msgid "Contact was not found matching."
+msgstr "לא נמצא קשר תואם."
+
+#: src/Integrations/jetpack-crm/actions/create-contact.php:59
+#: src/Integrations/mail-mint/actions/create-contact.php:60
+msgid "Create Contact"
+msgstr "צור קשר"
+
+#: src/Integrations/jetpack-crm/actions/delete-contact.php:58
+#: src/Integrations/mail-mint/actions/delete-contact.php:59
+msgid "Delete Contact"
+msgstr "מחק קשר"
+
+#: src/Integrations/jetpack-crm/jetpack-crm.php:35
+msgid "JetpackCRM"
+msgstr "JetpackCRM"
+
+#: src/Integrations/jetpack-crm/jetpack-crm.php:36
+msgid "JetpackCRM is a WordPress Customer Support plugin."
+msgstr "JetpackCRM הוא תוסף תמיכת לקוחות עבור WordPress."
+
+#: src/Integrations/jetpack-crm/triggers/company-created.php:69
+msgid "Company Created"
+msgstr "חברה נוצרה"
+
+#: src/Integrations/jetpack-crm/triggers/company-deleted.php:68
+msgid "Company Deleted"
+msgstr "חברה נמחקה"
+
+#: src/Integrations/jetpack-crm/triggers/contact-created.php:69
+msgid "Contact Created"
+msgstr "קשר נוצר"
+
+#: src/Integrations/jetpack-crm/triggers/contact-deleted.php:68
+msgid "Contact Deleted"
+msgstr "קשר נמחק"
+
+#: src/Integrations/jetpack-crm/triggers/event-deleted.php:68
+msgid "Event Deleted"
+msgstr "אירוע נמחק"
+
+#: src/Integrations/jetpack-crm/triggers/invoice-deleted.php:68
+msgid "Invoice Deleted"
+msgstr "חשבונית נמחקה"
+
+#: src/Integrations/jetpack-crm/triggers/quote-accepted.php:69
+msgid "Quote Accepted"
+msgstr "ציטוט התקבל"
+
+#: src/Integrations/jetpack-crm/triggers/quote-created.php:69
+msgid "Quote Created"
+msgstr "ציטוט נוצר"
+
+#: src/Integrations/jetpack-crm/triggers/quote-deleted.php:68
+msgid "Quote Deleted"
+msgstr "ציטוט נמחק"
+
+#: src/Integrations/jetpack-crm/triggers/transaction-deleted.php:68
+msgid "Transaction Deleted"
+msgstr "עסקה נמחקה"
+
+#: src/Integrations/kadence-forms/kadence-forms.php:36
+msgid "Kadence Forms"
+msgstr "Kadence Forms"
+
+#: src/Integrations/kadence-forms/kadence-forms.php:37
+msgid "A WordPress plugin that allows you to easily create contact or marketing form."
+msgstr "תוסף WordPress המאפשר לך ליצור בקלות טופס קשר או טופס שיווק."
+
+#: src/Integrations/late-point/actions/cancel-booking.php:59
+msgid "Cancel Booking"
+msgstr "בטל הזמנה"
+
+#: src/Integrations/late-point/actions/create-agent.php:57
+msgid "Create Agent"
+msgstr "צור סוכן"
+
+#: src/Integrations/late-point/actions/create-booking.php:57
+msgid "Create Order"
+msgstr "צור הזמנה"
+
+#: src/Integrations/late-point/actions/create-coupon.php:57
+#: src/Integrations/memberpress/actions/create-coupon.php:62
+msgid "Create Coupon"
+msgstr "צור קופון"
+
+#: src/Integrations/late-point/actions/create-coupon.php:108
+msgid "Coupon created successfully"
+msgstr "הקופון נוצר בהצלחה"
+
+#: src/Integrations/late-point/actions/create-coupon.php:113
+msgid "Coupon could not be created."
+msgstr "לא ניתן היה ליצור קופון."
+
+#: src/Integrations/late-point/actions/create-customer.php:57
+msgid "Create Customer"
+msgstr "צור לקוח"
+
+#: src/Integrations/late-point/actions/create-order.php:62
+msgid "Create Bundle Order"
+msgstr "צור הזמנה קבוצתית"
+
+#: src/Integrations/late-point/actions/find-agent-by-email.php:58
+msgid "Find Agent By Email"
+msgstr "מצא סוכן לפי דוא\"ל"
+
+#: src/Integrations/late-point/actions/find-booking-by-id.php:58
+msgid "Find Booking By ID"
+msgstr "מצא הזמנה לפי מזהה"
+
+#: src/Integrations/late-point/actions/find-customer-by-email.php:58
+msgid "Find Customer By Email"
+msgstr "מצא לקוח לפי דוא\"ל"
+
+#: src/Integrations/late-point/actions/list-bundles.php:58
+msgid "List Bundles"
+msgstr "רשימת חבילות"
+
+#: src/Integrations/late-point/actions/update-booking.php:57
+msgid "Update Booking"
+msgstr "עדכן הזמנה"
+
+#: src/Integrations/late-point/actions/update-coupon.php:57
+msgid "Update Coupon"
+msgstr "עדכן קופון"
+
+#: src/Integrations/late-point/actions/update-coupon.php:115
+msgid "Coupon updated successfully"
+msgstr "הקופון עודכן בהצלחה"
+
+#: src/Integrations/late-point/actions/update-coupon.php:121
+msgid "Failed to update the coupon."
+msgstr "נכשל בעדכון הקופון."
+
+#: src/Integrations/late-point/late-point.php:42
+msgid "LatePoint"
+msgstr "LatePoint"
+
+#: src/Integrations/late-point/late-point.php:43
+msgid "Appointment Scheduling Plugin for WordPress."
+msgstr "תוסף לתכנון פגישות עבור WordPress."
+
+#: src/Integrations/learndash-achievements/learndash-achievements.php:35
+msgid "LearnDash Achievements"
+msgstr "הישגים של LearnDash"
+
+#: src/Integrations/learndash-achievements/learndash-achievements.php:36
+msgid ""
+"The most powerful learning management system for WordPress. LearnDash Achievements empowers you to recognize and "
+"celebrate your learners` accomplishments with customizable rewards and achievements."
+msgstr ""
+"מערכת ניהול הלמידה החזקה ביותר עבור WordPress. הישגי LearnDash מאפשרים לך להכיר ולחגוג את הישגי הלומדים שלך עם פרסים "
+"והישגים מותאמים אישית."
+
+#: src/Integrations/learndash/actions/add-user-group.php:58
+msgid "Add user to a group"
+msgstr "הוסף משתמש לקבוצה"
+
+#: src/Integrations/learndash/actions/add-user-group.php:81
+#: src/Integrations/learndash/actions/enroll-to-course.php:80
+#: src/Integrations/learndash/actions/remove-from-course.php:79
+#: src/Integrations/learndash/actions/remove-user-group.php:79
+#: src/Integrations/suremembers/actions/add-access-to-group.php:87
+#: src/Integrations/suremembers/actions/remove-access-from-group.php:87
+#: src/Integrations/woocommerce/actions/create-coupon-code.php:76
+msgid "User Not found"
+msgstr "משתמש לא נמצא"
+
+#: src/Integrations/learndash/actions/add-user-group.php:108
+#: src/Integrations/learndash/actions/remove-user-group.php:97
+msgid "No group is available "
+msgstr "אין קבוצה זמינה"
+
+#: src/Integrations/learndash/actions/enroll-to-course.php:57
+#: src/Integrations/lifterlms/actions/enroll-to-course.php:58
+msgid "Enroll User in a course"
+msgstr "הרשמת משתמש לקורס"
+
+#: src/Integrations/learndash/actions/enroll-to-course.php:107
+#: src/Integrations/learndash/actions/remove-from-course.php:106
+#: src/Integrations/lifterlms/actions/enroll-to-course.php:92
+#: src/Integrations/lifterlms/actions/mark-course-complete.php:99
+#: src/Integrations/lifterlms/actions/remove-from-course.php:93
+msgid "No course is available "
+msgstr "אין קורס זמין"
+
+#: src/Integrations/learndash/actions/find-course-taxonomy.php:51
+msgid "Find Course Taxonomies"
+msgstr "מצא טקסונומיות קורסים"
+
+#: src/Integrations/learndash/actions/find-course-taxonomy.php:74
+msgid "Invalid Course ID."
+msgstr "מזהה קורס לא חוקי."
+
+#: src/Integrations/learndash/actions/find-course-taxonomy.php:97
+msgid "No taxonomies found."
+msgstr "לא נמצאו טקסונומיות."
+
+#: src/Integrations/learndash/actions/find-user-groups.php:56
+msgid "Find User Groups"
+msgstr "מצא קבוצות משתמשים"
+
+#: src/Integrations/learndash/actions/find-user-groups.php:77
+msgid "User Not Found"
+msgstr "משתמש לא נמצא"
+
+#: src/Integrations/learndash/actions/find-user-groups.php:86
+msgid "LearnDash function not available"
+msgstr "פונקציית LearnDash אינה זמינה"
+
+#: src/Integrations/learndash/actions/find-user-groups.php:97
+msgid "User is not part of any group"
+msgstr "המשתמש אינו חלק מאף קבוצה"
+
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:56
+msgid "List User Enrolled Courses"
+msgstr "רשימת קורסים בהם נרשם המשתמש"
+
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:98
+msgid "No Enrolled Courses found for this User."
+msgstr "לא נמצאו קורסים רשומים עבור משתמש זה."
+
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:105
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:87
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:87
+msgid "User not found with specified email address."
+msgstr "לא נמצא משתמש עם כתובת דוא\"ל שצוינה."
+
+#: src/Integrations/learndash/actions/make-user-group-leader.php:57
+msgid "Mark User as Group Leader"
+msgstr "סמן משתמש כמנהיג קבוצה"
+
+#: src/Integrations/learndash/actions/mark-course-complete-for-user.php:63
+msgid "Mark Course Complete For User"
+msgstr "סמן קורס כהושלם עבור משתמש"
+
+#: src/Integrations/learndash/actions/mark-lesson-complete-for-user.php:63
+msgid "Mark Lesson Complete For User"
+msgstr "סמן שיעור כהושלם עבור משתמש"
+
+#: src/Integrations/learndash/actions/mark-quiz-complete-for-user.php:57
+msgid "Mark Quiz Complete For User"
+msgstr "סמן מבחן כהושלם עבור משתמש"
+
+#: src/Integrations/learndash/actions/mark-topic-complete-for-user.php:62
+msgid "Mark Topic Complete For User"
+msgstr "סמן נושא כהושלם עבור משתמש"
+
+#: src/Integrations/learndash/actions/remove-from-course.php:57
+msgid "Remove user from a course"
+msgstr "הסר משתמש מקורס"
+
+#: src/Integrations/learndash/actions/remove-user-from-group-leader.php:59
+msgid "Remove User from Group Leader"
+msgstr "הסר משתמש ממנהיג קבוצה"
+
+#: src/Integrations/learndash/actions/remove-user-group.php:57
+msgid "Remove user from a group"
+msgstr "הסר משתמש מקבוצה"
+
+#: src/Integrations/learndash/actions/reset-user-course-progress.php:69
+msgid "Reset User Progress"
+msgstr "אפס את התקדמות המשתמש"
+
+#: src/Integrations/learndash/triggers/course-added-to-group.php:72
+#: src/Integrations/learndash/triggers/essay-question-graded.php:71
+#: src/Integrations/learndash/triggers/group-leader-added-to-group.php:72
+#: src/Integrations/learndash/triggers/group-leader-removed-from-group.php:72
+#: src/Integrations/learndash/triggers/user-access-course-expires.php:71
+#: src/Integrations/learndash/triggers/user-enrolled-course.php:71
+#: src/Integrations/learndash/triggers/user-unenrolled-course.php:71
+msgid "User Added in Group"
+msgstr "משתמש נוסף לקבוצה"
+
+#: src/Integrations/learndash/triggers/user-added-in-group.php:72
+#: src/Integrations/profilegrid/triggers/user-added-to-group.php:74
+msgid "User Added to Group"
+msgstr "משתמש נוסף לקבוצה"
+
+#: src/Integrations/learndash/triggers/user-assignment-graded.php:71
+#: src/Integrations/learndash/triggers/user-submits-essay-quiz.php:71
+msgid "User Submits Essay Quiz"
+msgstr "המשתמש מגיש מבחן חיבור"
+
+#: src/Integrations/learndash/triggers/user-completes-group-course.php:72
+msgid "User Completes Group Course"
+msgstr "המשתמש משלים קורס קבוצתי"
+
+#: src/Integrations/learndash/triggers/user-completes-topic.php:72
+msgid "Topic Completed"
+msgstr "נושא הושלם"
+
+#: src/Integrations/learndash/triggers/user-fails-quiz.php:72
+#: src/Integrations/sensei-lms/triggers/sl-user-fails-quiz.php:66
+msgid "User Fails Quiz"
+msgstr "המשתמש נכשל במבחן"
+
+#: src/Integrations/learndash/triggers/user-passes-quiz.php:72
+#: src/Integrations/sensei-lms/triggers/sl-user-passes-quiz.php:66
+msgid "User Passes Quiz"
+msgstr "המשתמש עבר את המבחן"
+
+#: src/Integrations/learndash/triggers/user-purchase-course.php:73
+msgid "Course Purchased"
+msgstr "קורס נרכש"
+
+#: src/Integrations/learndash/triggers/user-removed-from-group.php:72
+#: src/Integrations/learndash/triggers/user-submits-assignment.php:71
+#: src/Integrations/profilegrid/triggers/user-removed-from-group.php:74
+msgid "User Removed from Group"
+msgstr "המשתמש הוסר מהקבוצה"
+
+#: src/Integrations/learnpress/actions/lp-enroll-user-course.php:99
+msgid "Order created by SureTriggers"
+msgstr "הזמנה נוצרה על ידי SureTriggers"
+
+#: src/Integrations/learnpress/actions/lp-remove-user-course.php:55
+msgid "Remove User From Course"
+msgstr "הסר משתמש מקורס"
+
+#: src/Integrations/learnpress/learnpress.php:36
+msgid "LearnPress"
+msgstr "LearnPress"
+
+#: src/Integrations/learnpress/learnpress.php:37
+msgid "Easily Create And Sell Online Courses On Your WP Site With LearnPress."
+msgstr "צור ומכור קורסים מקוונים בקלות באתר WP שלך עם LearnPress."
+
+#: src/Integrations/learnpress/triggers/complete-course.php:68
+msgid "User completes course"
+msgstr "המשתמש משלים קורס"
+
+#: src/Integrations/learnpress/triggers/complete-lesson.php:68
+msgid "User completes lesson"
+msgstr "המשתמש משלים שיעור"
+
+#: src/Integrations/learnpress/triggers/user-enrolled-in-course.php:68
+#: src/Integrations/lifterlms/triggers/user-enrolled-in-course.php:68
+#: src/Integrations/lifterlms/triggers/user-unenrolled-from-course.php:68
+#: src/Integrations/tutorlms/triggers/user-enrolled-course.php:67
+#: src/Integrations/wp-courseware/tiggerrs/wpcw-user-enrolled-in-course.php:67
+msgid "User Enrolled In Course"
+msgstr "המשתמש נרשם לקורס"
+
+#: src/Integrations/lifterlms/actions/enroll-to-course.php:81
+#: src/Integrations/lifterlms/actions/enroll-to-membership.php:83
+#: src/Integrations/lifterlms/actions/remove-from-course.php:82
+#: src/Integrations/lifterlms/actions/remove-from-membership.php:79
+msgid "LifterLMS enrollment function not found."
+msgstr "פונקציית ההרשמה של LifterLMS לא נמצאה."
+
+#: src/Integrations/lifterlms/actions/enroll-to-membership.php:58
+msgid "Enroll User in a Membership"
+msgstr "הרשמת משתמש לחברות"
+
+#: src/Integrations/lifterlms/actions/enroll-to-membership.php:94
+#: src/Integrations/lifterlms/actions/remove-from-membership.php:91
+msgid "No membership is available "
+msgstr "אין חברות זמינות"
+
+#: src/Integrations/lifterlms/actions/mark-course-complete.php:61
+msgid "Mark course complete for User"
+msgstr "סמן קורס כהושלם עבור משתמש"
+
+#: src/Integrations/lifterlms/actions/mark-course-complete.php:108
+#: src/Integrations/lifterlms/actions/mark-lesson-complete.php:91
+#: src/Integrations/lifterlms/actions/mark-section-complete.php:97
+msgid "The function llms_mark_complete does not exist"
+msgstr "הפונקציה llms_mark_complete אינה קיימת"
+
+#: src/Integrations/lifterlms/actions/mark-lesson-complete.php:59
+msgid "Mark lesson complete for User"
+msgstr "סמן שיעור כהושלם עבור משתמש"
+
+#: src/Integrations/lifterlms/actions/mark-section-complete.php:61
+msgid "Mark section complete for User"
+msgstr "סמן חלק כהושלם עבור משתמש"
+
+#: src/Integrations/lifterlms/actions/remove-from-course.php:58
+msgid "Remove user from course"
+msgstr "הסר משתמש מהקורס"
+
+#: src/Integrations/lifterlms/actions/remove-from-membership.php:57
+msgid "Remove user from membership"
+msgstr "הסר משתמש מחברות"
+
+#: src/Integrations/lifterlms/lifterlms.php:36
+msgid "LifterLMS"
+msgstr "LifterLMS"
+
+#: src/Integrations/lifterlms/lifterlms.php:37
+msgid "Easily Create And Sell Online Courses On Your WP Site With LifterLMS."
+msgstr "צור ומכור קורסים מקוונים בקלות באתר WP שלך עם LifterLMS."
+
+#: src/Integrations/lifterlms/triggers/complete-course.php:68
+#: src/Integrations/wplms/triggers/wplms-course-completed.php:67
+msgid "User complete course"
+msgstr "משתמש השלים קורס"
+
+#: src/Integrations/lifterlms/triggers/complete-lesson.php:68
+msgid "User Completes a Lesson"
+msgstr "משתמש משלים שיעור"
+
+#: src/Integrations/lifterlms/triggers/complete-section.php:69
+msgid "User complete section"
+msgstr "משתמש השלים חלק"
+
+#: src/Integrations/lifterlms/triggers/purchase-course.php:69
+msgid "User purchase course"
+msgstr "משתמש רוכש קורס"
+
+#: src/Integrations/lifterlms/triggers/purchase-membership.php:68
+msgid "User purchase a membership"
+msgstr "משתמש רוכש חברות"
+
+#: src/Integrations/lifterlms/triggers/user-cancels-membership.php:68
+msgid "User cancels a membership"
+msgstr "משתמש מבטל חברות"
+
+#: src/Integrations/mail-mint/actions/add-lists-to-contact.php:58
+msgid "Add Lists To Contact"
+msgstr "הוסף רשימות ליצירת קשר"
+
+#: src/Integrations/mail-mint/actions/add-recipients-to-campaign.php:59
+msgid "Add Recipients To Campaign"
+msgstr "הוסף נמענים לקמפיין"
+
+#: src/Integrations/mail-mint/actions/add-tag-to-contact.php:58
+msgid "Add Tag To Contact"
+msgstr "הוסף תג ליצירת קשר"
+
+#: src/Integrations/mail-mint/actions/list-campaigns.php:57
+msgid "List Campaigns"
+msgstr "רשימת קמפיינים"
+
+#: src/Integrations/mail-mint/actions/list-contacts.php:57
+msgid "List Contacts"
+msgstr "רשימת אנשי קשר"
+
+#: src/Integrations/mail-mint/actions/list-lists.php:58
+msgid "Get Lists"
+msgstr "קבל רשימות"
+
+#: src/Integrations/mail-mint/actions/list-tags.php:58
+msgid "List Tags"
+msgstr "רשימת תגיות"
+
+#: src/Integrations/mail-mint/actions/remove-list-from-contact.php:60
+msgid "Remove Lists From Contact"
+msgstr "הסר רשימות מיצירת קשר"
+
+#: src/Integrations/mail-mint/actions/remove-tag-from-contact.php:60
+msgid "Remove Tags From Contact"
+msgstr "הסר תגיות מיצירת קשר"
+
+#: src/Integrations/mail-mint/mail-mint.php:35
+msgid "MailMint"
+msgstr "MailMint"
+
+#: src/Integrations/mail-mint/triggers/campaign-email-sent.php:70
+msgid "Campaign Email Sent"
+msgstr "דוא\"ל קמפיין נשלח"
+
+#: src/Integrations/mail-mint/triggers/list-applied-to-contact.php:73
+msgid "Lists Added To Contact"
+msgstr "רשימות נוספו ליצירת קשר"
+
+#: src/Integrations/mailpoet/actions/add-subscriber-to-list.php:60
+msgid "Add New Subscriber"
+msgstr "הוסף מנוי חדש"
+
+#: src/Integrations/mailpoet/actions/remove-subscriber-from-list.php:61
+#: src/Integrations/newsletter/actions/remove-user-from-list.php:58
+msgid "Remove User from List"
+msgstr "הסר משתמש מרשימה"
+
+#: src/Integrations/mailpoet/actions/update-subscriber-status.php:57
+msgid "Update Subscriber Status"
+msgstr "עדכן מצב מנוי"
+
+#: src/Integrations/mailpoet/actions/update-subscriber-status.php:80
+#: src/Integrations/mailpoet/actions/update-subscriber-to-new-list.php:80
+msgid "MailPoet API class not exists."
+msgstr "מחלקת MailPoet API אינה קיימת."
+
+#: src/Integrations/mailpoet/actions/update-subscriber-status.php:95
+msgid "Please enter a subscriber email."
+msgstr "אנא הזן דוא\"ל מנוי."
+
+#: src/Integrations/mailpoet/actions/update-subscriber-to-new-list.php:57
+#: src/Integrations/newsletter/actions/add-user-to-list.php:58
+msgid "Add User to List"
+msgstr "הוסף משתמש לרשימה"
+
+#: src/Integrations/mailpoet/actions/update-subscriber-to-new-list.php:95
+msgid "Please enter a list."
+msgstr "אנא הזן רשימה."
+
+#: src/Integrations/mailpoet/mailpoet.php:38
+msgid "MailPoet"
+msgstr "MailPoet"
+
+#: src/Integrations/mailpoet/mailpoet.php:39
+msgid "A WordPress plugin for emails and newletters."
+msgstr "תוסף WordPress לדוא\"ל ולניוזלטרים."
+
+#: src/Integrations/masteriyo/masteriyo.php:35
+msgid "Masteriyo"
+msgstr "Masteriyo"
+
+#: src/Integrations/masteriyo/masteriyo.php:36
+#: src/Integrations/masterstudy-lms/masterstudy-lms.php:36
+msgid "A WordPress LMS Plugin."
+msgstr "תוסף LMS של WordPress."
+
+#: src/Integrations/masteriyo/triggers/ma-quiz-passed.php:73
+#: src/Integrations/masterstudy-lms/triggers/quiz-passed.php:73
+msgid "Quiz Passed"
+msgstr "מבחן עבר"
+
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:89
+msgid "Login credentials for your course"
+msgstr "פרטי הכניסה לקורס שלך"
+
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:93
+msgid "Login: %1$s Password: %2$s Site URL: %3$s"
+msgstr "כניסה: %1$s סיסמה: %2$s כתובת אתר: %3$s"
+
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:127
+msgid "User enrolled into course successfully."
+msgstr "משתמש נרשם לקורס בהצלחה."
+
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:132
+msgid "User already enrolled into this course."
+msgstr "משתמש כבר נרשם לקורס הזה."
+
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:53
+msgid "Mark a course complete for the user"
+msgstr "סמן קורס כהושלם עבור המשתמש"
+
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:207
+msgid "Course marked as completed successfully."
+msgstr "הקורס סומן כהושלם בהצלחה."
+
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:213
+msgid "Course does not have any lessons or quizzes added."
+msgstr "לקורס אין שיעורים או מבחנים שהוספו."
+
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:53
+msgid "Mark a lesson complete for the user"
+msgstr "סמן שיעור כהושלם עבור המשתמש"
+
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:138
+msgid "No Lessons found in selected Course."
+msgstr "לא נמצאו שיעורים בקורס שנבחר."
+
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:207
+msgid "Lesson marked complete successfully."
+msgstr "השיעור סומן כהושלם בהצלחה."
+
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:212
+msgid "Lesson not found."
+msgstr "השיעור לא נמצא."
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:53
+msgid "Unroll User From Course"
+msgstr "הסר משתמש מהקורס"
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:86
+msgid "User with the email provided not found."
+msgstr "משתמש עם הדוא\"ל שסופק לא נמצא."
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:105
+msgid "User not enrolled into this course."
+msgstr "משתמש לא נרשם לקורס הזה."
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:229
+msgid "User progress reset successfully."
+msgstr "ההתקדמות של המשתמש הוחזרה בהצלחה."
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:236
+msgid "Something went wrong. Please check the action step configuration."
+msgstr "משהו השתבש. אנא בדוק את הגדרת שלב הפעולה."
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:251
+msgid "User unrolled from course successfully."
+msgstr "המשתמש הוסר מהקורס בהצלחה."
+
+#: src/Integrations/masterstudy-lms/masterstudy-lms.php:35
+msgid "MasterStudyLms"
+msgstr "MasterStudyLms"
+
+#: src/Integrations/masterstudy-lms/triggers/user-enrolled-course.php:73
+msgid "User Enrolled InTo Course"
+msgstr "משתמש נרשם לקורס"
+
+#: src/Integrations/memberpress-course/actions/complete-course.php:61
+msgid "Complete Course"
+msgstr "השלם קורס"
+
+#: src/Integrations/memberpress-course/actions/complete-lesson.php:61
+msgid "Complete Lesson"
+msgstr "השלם שיעור"
+
+#: src/Integrations/memberpress-course/actions/reset-user-progress.php:61
+msgid "Reset Course Progress"
+msgstr "אפס את התקדמות הקורס"
+
+#: src/Integrations/memberpress-course/memberpress-course.php:40
+msgid "MemberPressCourse"
+msgstr "MemberPressCourse"
+
+#: src/Integrations/memberpress-course/memberpress-course.php:41
+msgid "Easily Create And Sell Online Courses On Your WP Site With MemberPressCourse."
+msgstr "צור ומכור קורסים מקוונים בקלות באתר WP שלך עם MemberPressCourse."
+
+#: src/Integrations/memberpress/actions/add-membership.php:62
+msgid "Add to Membership"
+msgstr "הוסף לחברות"
+
+#: src/Integrations/memberpress/actions/remove-membership.php:60
+msgid "Remove from Membership"
+msgstr "הסר מחברות"
+
+#: src/Integrations/memberpress/actions/remove-membership.php:117
+msgid "Empty subscription table "
+msgstr "טבלת המנויים ריקה"
+
+#: src/Integrations/memberpress/memberpress.php:36
+msgid "MemberPress"
+msgstr "MemberPress"
+
+#: src/Integrations/memberpress/memberpress.php:37
+msgid "MemberPress will Help Build Membership Site."
+msgstr "MemberPress יעזור לבנות אתר חברות."
+
+#: src/Integrations/memberpress/triggers/coupon-code-redeemed.php:72
+msgid "Coupon Code Redeemed"
+msgstr "קוד קופון מומש"
+
+#: src/Integrations/memberpress/triggers/membership-cancelled.php:72
+msgid "Membership Cancelled"
+msgstr "חברות בוטלה"
+
+#: src/Integrations/memberpress/triggers/membership-paused.php:72
+msgid "Membership Paused"
+msgstr "חברות הוקפאה"
+
+#: src/Integrations/memberpress/triggers/purchase-membership.php:72
+#: src/Integrations/restrict-content/triggers/restrict-content-membership-purchased.php:74
+msgid "Membership Purchased"
+msgstr "חברות נרכשה"
+
+#: src/Integrations/metabox/actions/add-cloneable-field-value.php:53
+msgid "Add Cloneable Field Value"
+msgstr "הוסף ערך שדה שניתן לשכפל"
+
+#: src/Integrations/metabox/actions/get-metabox-value.php:53
+msgid "Get Meta Value"
+msgstr "קבל ערך מטה"
+
+#: src/Integrations/metabox/actions/get-metabox-value.php:80
+#: src/Integrations/metabox/actions/get-object-fields.php:80
+msgid "No value found."
+msgstr "לא נמצא ערך."
+
+#: src/Integrations/metabox/actions/get-metabox-value.php:89
+msgid "Function rwmb_get_value not exists. Please make sure the Metabox plugin is installed and active."
+msgstr "הפונקציה rwmb_get_value אינה קיימת. אנא ודא שהתוסף Metabox מותקן ופועל."
+
+#: src/Integrations/metabox/actions/get-object-fields.php:53
+#: src/Integrations/metabox/actions/set-metavalue.php:53
+msgid "Get Object Fields"
+msgstr "קבל שדות אובייקט"
+
+#: src/Integrations/metabox/actions/get-object-fields.php:91
+msgid "Function rwmb_get_object_fields not exists. Please make sure the Metabox plugin is installed and active."
+msgstr "הפונקציה rwmb_get_object_fields אינה קיימת. אנא ודא שהתוסף Metabox מותקן ופועל."
+
+#: src/Integrations/metabox/actions/set-metavalue.php:96
+msgid "Function rwmb_set_meta not exists. Please make sure the Metabox plugin is installed and active."
+msgstr "הפונקציה rwmb_set_meta אינה קיימת. אנא ודא שהתוסף Metabox מותקן ופועל."
+
+#: src/Integrations/metabox/actions/update-cloneable-field-value.php:53
+msgid "Update Cloneable Field Value"
+msgstr "עדכן ערך שדה ניתן לשכפול"
+
+#: src/Integrations/metabox/metabox.php:35
+msgid "MetaBox"
+msgstr "MetaBox"
+
+#: src/Integrations/metabox/metabox.php:36
+msgid "Meta Box is a framework that helps you create custom post types and custom fields quickly and easily."
+msgstr "Meta Box הוא מסגרת שעוזרת לך ליצור סוגי פוסטים מותאמים ושדות מותאמים במהירות ובקלות."
+
+#: src/Integrations/metabox/triggers/metabox-after-form-submission.php:73
+#: src/Integrations/metabox/triggers/user-metabox-field-updated.php:73
+msgid "User Metabox Field Updated"
+msgstr "שדה Metabox של המשתמש עודכן"
+
+#: src/Integrations/metabox/triggers/post-metabox-field-updated.php:73
+msgid "Field is updated on Post"
+msgstr "השדה עודכן בפוסט"
+
+#: src/Integrations/metform/metform.php:35
+msgid "MetForm"
+msgstr "MetForm"
+
+#: src/Integrations/metform/metform.php:36
+msgid "MetForm is a WordPress Form Builder."
+msgstr "MetForm הוא בונה טפסים של WordPress."
+
+#: src/Integrations/modern-events-calendar/actions/register-user-for-an-event.php:59
+msgid "Register User for an Event"
+msgstr "רשום משתמש לאירוע"
+
+#: src/Integrations/modern-events-calendar/modern-events-calendar.php:35
+msgid "Modern Events Calendar"
+msgstr "לוח שנה מודרני לאירועים"
+
+#: src/Integrations/modern-events-calendar/modern-events-calendar.php:36
+msgid "Best WordPress Event Calendar Plugin."
+msgstr "התוסף הטוב ביותר ללוח שנה לאירועים ב-WordPress."
+
+#: src/Integrations/modern-events-calendar/triggers/event-booking-cancelled.php:70
+msgid "Event Booking Cancelled"
+msgstr "הזמנת האירוע בוטלה"
+
+#: src/Integrations/modern-events-calendar/triggers/event-booking-completed.php:70
+msgid "Event Booking Completed"
+msgstr "הזמנת האירוע הושלמה"
+
+#: src/Integrations/modern-events-calendar/triggers/event-booking-confirmed.php:70
+msgid "Event Booking Confirmed"
+msgstr "הזמנת האירוע אושרה"
+
+#: src/Integrations/modern-events-calendar/triggers/event-booking-pending.php:70
+msgid "Event Booking Pending"
+msgstr "הזמנת האירוע ממתינה"
+
+#: src/Integrations/modern-events-calendar/triggers/event-created.php:67
+msgid "New Event Created"
+msgstr "אירוע חדש נוצר"
+
+#: src/Integrations/mycred/actions/award-badge-to-user.php:58
+msgid "Award Badge"
+msgstr "תג פרס"
+
+#: src/Integrations/mycred/actions/award-points-to-user.php:59
+msgid "Award Points"
+msgstr "נקודות פרס"
+
+#: src/Integrations/mycred/actions/award-points-to-user.php:95
+#: src/Integrations/mycred/actions/revoke-points-from-user.php:87
+msgid "Awarded by SureTriggers"
+msgstr "הוענק על ידי SureTriggers"
+
+#: src/Integrations/mycred/actions/award-rank-to-user.php:58
+msgid "Award Rank"
+msgstr "דרגת פרס"
+
+#: src/Integrations/mycred/actions/revoke-badge-from-user.php:58
+#: src/Integrations/mycred/actions/revoke-points-from-user.php:58
+msgid "Revoke Badge"
+msgstr "שולל תג"
+
+#: src/Integrations/mycred/actions/revoke-badge-from-user.php:103
+msgid "The user does not have the selected badge."
+msgstr "למשתמש אין את התג הנבחר."
+
+#: src/Integrations/mycred/actions/revoke-badge-from-user.php:110
+msgid "The user does not have badges."
+msgstr "למשתמש אין תגיות."
+
+#: src/Integrations/mycred/mycred.php:36
+msgid "MyCred"
+msgstr "MyCred"
+
+#: src/Integrations/mycred/mycred.php:37
+msgid "A free points management plugin for WordPress."
+msgstr "תוסף ניהול נקודות חינמי עבור WordPress."
+
+#: src/Integrations/newsletter/newsletter.php:35
+msgid "Newsletter"
+msgstr "ניוזלטר"
+
+#: src/Integrations/newsletter/newsletter.php:36
+msgid ""
+"Newsletter is a powerful yet simple email creation tool that helps you get in touch with your subscribers and engage "
+"them with your own content."
+msgstr "ניוזלטר הוא כלי יצירת דוא\"ל חזק אך פשוט שעוזר לך ליצור קשר עם המנויים שלך ולמשוך אותם עם התוכן שלך."
+
+#: src/Integrations/newsletter/triggers/subscription-form-submitted-list.php:73
+msgid "Subscription Form Submitted with Specific List"
+msgstr "טופס המנוי הוגש עם רשימה ספציפית"
+
+#: src/Integrations/ninja-forms/ninja-forms.php:35
+msgid "Ninja Forms"
+msgstr "Ninja Forms"
+
+#: src/Integrations/ninja-forms/ninja-forms.php:36
+msgid "Ninja Forms is a WordPress Form Builder."
+msgstr "Ninja Forms הוא בונה טפסים של WordPress."
+
+#: src/Integrations/ninja-tables/actions/add-row-in-table.php:57
+msgid "Add Row in Table"
+msgstr "הוסף שורה בטבלה"
+
+#: src/Integrations/ninja-tables/actions/delete-row-in-table.php:57
+msgid "Delete Row in Table"
+msgstr "מחק שורה בטבלה"
+
+#: src/Integrations/ninja-tables/actions/lists-rows-in-table.php:57
+msgid "Lists Rows in Table"
+msgstr "רשימות שורות בטבלה"
+
+#: src/Integrations/ninja-tables/actions/update-row-in-table.php:57
+msgid "Update Row in Table"
+msgstr "עדכן שורה בטבלה"
+
+#: src/Integrations/ninja-tables/ninja-tables.php:35
+msgid "Ninja Tables"
+msgstr "Ninja Tables"
+
+#: src/Integrations/ninja-tables/ninja-tables.php:36
+msgid "Best Data Table Plugin for WordPress."
+msgstr "התוסף הטוב ביותר לטבלאות נתונים עבור WordPress."
+
+#: src/Integrations/ninja-tables/triggers/new-row-added-ninja-tables.php:69
+msgid "New Row Added"
+msgstr "שורה חדשה נוספה"
+
+#: src/Integrations/ninja-tables/triggers/row-updated-ninja-tables.php:69
+msgid "Row Updated"
+msgstr "השורה עודכנה"
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:56
+msgid "Add the user to a membership level"
+msgstr "הוסף את המשתמש לרמת חברות"
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:85
+msgid "User is already a member of the specified level."
+msgstr "המשתמש כבר חבר ברמה המצוינת."
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:95
+msgid "Invalid level."
+msgstr "רמה לא חוקית."
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:140
+msgid "User added to Membership level."
+msgstr "המשתמש נוסף לרמת חברות."
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:146
+msgid "We're unable to assign the specified level to the user."
+msgstr "איננו יכולים להקצות את הרמה המצוינת למשתמש."
+
+#: src/Integrations/paid-memberships-pro/actions/list-members.php:55
+msgid "List all users in a membership level"
+msgstr "רשום את כל המשתמשים ברמת חברות"
+
+#: src/Integrations/paid-memberships-pro/actions/list-members.php:102
+msgid "No active members found for the selected level."
+msgstr "לא נמצאו חברים פעילים לרמה הנבחרת."
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:56
+msgid "Remove the user from a membership level"
+msgstr "הסר את המשתמש מרמת חברות"
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:98
+msgid "User does not belong to any membership levels."
+msgstr "המשתמש אינו שייך לשום רמת חברות."
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:112
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:133
+msgid "User removed from Membership level."
+msgstr "המשתמש הוסר מרמת חברות."
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:123
+msgid "User was not a member of the specified level."
+msgstr "המשתמש לא היה חבר ברמה המצוינת."
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:139
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:146
+msgid "We're unable to cancel the specified level from the user."
+msgstr "איננו יכולים לבטל את הרמה המצוינת מהמשתמש."
+
+#: src/Integrations/paid-memberships-pro/paid-memberships-pro.php:36
+msgid "PaidMembershipsPro"
+msgstr "PaidMembershipsPro"
+
+#: src/Integrations/paid-memberships-pro/paid-memberships-pro.php:37
+msgid "A tool that help to start, manage and grow membership."
+msgstr "כלי שעוזר להתחיל, לנהל ולגדול חברות."
+
+#: src/Integrations/paid-memberships-pro/triggers/admin-assigns-membership-user.php:74
+msgid "An admin assigns a membership level to a user"
+msgstr "מנהל מקצה רמת חברות למשתמש"
+
+#: src/Integrations/paid-memberships-pro/triggers/user-cancels-membership.php:74
+msgid "A user cancels a membership"
+msgstr "משתמש מבטל חברות"
+
+#: src/Integrations/paid-memberships-pro/triggers/user-membership-expires.php:73
+msgid "A user's subscription to a membership expires"
+msgstr "המנוי של משתמש לחברות פג"
+
+#: src/Integrations/paid-memberships-pro/triggers/user-purchases-membership.php:74
+msgid "A user purchases a membership"
+msgstr "משתמש רוכש חברות"
+
+#: src/Integrations/paid-memberships-pro/triggers/user-renews-expired-membership.php:74
+msgid "A user renews an expired membership"
+msgstr "משתמש מחדש חברות שפג תוקפה"
+
+#: src/Integrations/paymattic/actions/change-payment-status.php:59
+msgid "Change Payment Status "
+msgstr "שנה את מצב התשלום"
+
+#: src/Integrations/paymattic/paymattic.php:36
+msgid "Paymattic"
+msgstr "Paymattic"
+
+#: src/Integrations/paymattic/paymattic.php:37
+msgid "Paymattic is a WordPress Payment form plugin."
+msgstr "Paymattic הוא תוסף טפסי תשלום של WordPress."
+
+#: src/Integrations/paymattic/triggers/payment-form-submitted.php:72
+msgid "Payment Form Completed"
+msgstr "טופס תשלום הושלם"
+
+#: src/Integrations/paymattic/triggers/payment-status-changed.php:73
+msgid "Payment Status Changed"
+msgstr "סטטוס תשלום השתנה"
+
+#: src/Integrations/peepso/actions/add-post-sitewide-activity-stream.php:61
+msgid "Add Post to Sitewide Activity Stream"
+msgstr "הוסף פוסט לזרם הפעילות הכללי"
+
+#: src/Integrations/peepso/actions/change-user-peepso-role.php:60
+msgid "Change User PeepSo Role"
+msgstr "שנה תפקיד PeepSo של המשתמש"
+
+#: src/Integrations/peepso/peepso.php:36
+msgid "PeepSo"
+msgstr "PeepSo"
+
+#: src/Integrations/peepso/peepso.php:37
+msgid "PeepSo is a social network plugin for WordPress that allows you to quickly add a social network."
+msgstr "PeepSo הוא תוסף רשת חברתית עבור WordPress המאפשר לך להוסיף במהירות רשת חברתית."
+
+#: src/Integrations/peepso/triggers/user-follows-member.php:67
+msgid "User Follows PeppSo Member"
+msgstr "המשתמש עוקב אחרי חבר PeepSo"
+
+#: src/Integrations/peepso/triggers/user-loses-follower.php:67
+msgid "User Loses Follower"
+msgstr "המשתמש איבד עוקב"
+
+#: src/Integrations/peepso/triggers/user-unfollows-member.php:67
+msgid "User Unfollows PeppSo Member"
+msgstr "המשתמש הפסיק לעקוב אחרי חבר PeepSo"
+
+#: src/Integrations/peepso/triggers/user-updates-avatar.php:67
+msgid "User Updates Avatar"
+msgstr "המשתמש עדכן את התמונה שלו"
+
+#: src/Integrations/peepso/triggers/user-updates-specific-profile-field-value.php:68
+msgid "User Updates Specific Profile Field Value"
+msgstr "המשתמש עדכן ערך שדה פרופיל ספציפי"
+
+#: src/Integrations/peepso/triggers/user-updates-specific-profile-field.php:68
+msgid "User Updates Specific Profile Field"
+msgstr "המשתמש עדכן שדה פרופיל ספציפי"
+
+#: src/Integrations/peepso/triggers/write-activity-post.php:68
+msgid "New Activity Post"
+msgstr "פוסט פעילות חדש"
+
+#: src/Integrations/pie-forms/pie-forms.php:35
+msgid "Pie Forms"
+msgstr "טפסי פאי"
+
+#: src/Integrations/pie-forms/pie-forms.php:36
+msgid "Pie Forms is a WordPress Form Builder."
+msgstr "טפסי פאי הוא בונה טפסים עבור WordPress."
+
+#: src/Integrations/powerful-docs/powerful-docs.php:36
+msgid "Powerful Docs"
+msgstr "מסמכים רבי עוצמה"
+
+#: src/Integrations/powerful-docs/powerful-docs.php:37
+msgid ""
+"Easily build documentation website with AJAX based live search functionality and keep track of search term. This plugin "
+"provides shortcodes to display category list & live search input box."
+msgstr ""
+"בנה בקלות אתר תיעוד עם פונקציית חיפוש חיה מבוססת AJAX ושמור על מעקב אחר מונחי החיפוש. תוסף זה מספק קודים קצרים להצגת "
+"רשימת קטגוריות ותיבת קלט חיפוש חיה."
+
+#: src/Integrations/powerful-docs/triggers/pfd-feedback-received.php:73
+msgid "Feedback Received"
+msgstr "משוב התקבל"
+
+#: src/Integrations/presto-player/actions/create-media-hub.php:57
+msgid "Create Media Hub"
+msgstr "צור מרכז מדיה"
+
+#: src/Integrations/presto-player/actions/create-media-hub.php:90
+msgid "Both YouTube and self-hosted video URLs are empty. Please provide at least one."
+msgstr "גם כתובות ה-URL של YouTube וגם של סרטונים עצמיים ריקות. אנא ספק לפחות אחת."
+
+#: src/Integrations/presto-player/actions/create-media-hub.php:112
+msgid "Invalid YouTube URL."
+msgstr "כתובת URL של YouTube אינה חוקית."
+
+#: src/Integrations/presto-player/actions/create-media-hub.php:133
+msgid "There was an error creating the video!"
+msgstr "הייתה שגיאה ביצירת הסרטון!"
+
+#: src/Integrations/presto-player/presto-player.php:35
+msgid "PrestoPlayer"
+msgstr "PrestoPlayer"
+
+#: src/Integrations/presto-player/presto-player.php:36
+#: src/Integrations/restrict-content/restrict-content.php:39
+#: src/Integrations/wishlistmember/wishlistmember.php:37
+msgid "Connect with your fans, faster your community."
+msgstr "התחבר עם המעריצים שלך, מהיר יותר את הקהילה שלך."
+
+#: src/Integrations/presto-player/triggers/user-complete-video.php:74
+msgid "Video Completed"
+msgstr "הסרטון הושלם"
+
+#: src/Integrations/presto-player/triggers/user-video-percent.php:70
+msgid "Video Watched"
+msgstr "הסרטון נצפה"
+
+#: src/Integrations/profilegrid/profilegrid.php:35
+msgid "ProfileGrid"
+msgstr "ProfileGrid"
+
+#: src/Integrations/profilegrid/profilegrid.php:36
+msgid ""
+"Create WordPress user profiles, groups, communities, paid memberships, directories, WooCommerce profiles, bbPress "
+"profiles, content restriction, sign-up pages, blog submissions, notifications, social activity and private messaging, "
+"beautiful threaded interface and a lot more!"
+msgstr ""
+"צור פרופילים של משתמשי WordPress, קבוצות, קהילות, חברות בתשלום, מדריכים, פרופילים של WooCommerce, פרופילים של bbPress, "
+"הגבלת תוכן, דפי הרשמה, הגשת בלוגים, התראות, פעילות חברתית והודעות פרטיות, ממשק יפהפה עם חוטים ועוד הרבה יותר!"
+
+#: src/Integrations/profilegrid/triggers/group-deleted.php:74
+msgid "Group Deleted"
+msgstr "הקבוצה נמחקה"
+
+#: src/Integrations/profilegrid/triggers/group-manager-resets-password.php:73
+msgid "Group Manager Resets Password"
+msgstr "מנהל הקבוצה איפס סיסמה"
+
+#: src/Integrations/profilegrid/triggers/membership-request-approved.php:74
+msgid "Membership Request Approved"
+msgstr "בקשת חברות אושרה"
+
+#: src/Integrations/profilegrid/triggers/membership-request-denied.php:74
+msgid "Membership Request Denied"
+msgstr "בקשת חברות נדחתה"
+
+#: src/Integrations/profilegrid/triggers/new-membership-request.php:74
+msgid "New Membership Request"
+msgstr "בקשת חברות חדשה"
+
+#: src/Integrations/profilegrid/triggers/payment-complete.php:73
+msgid "Payment Complete"
+msgstr "תשלום הושלם"
+
+#: src/Integrations/profilegrid/triggers/payment-failed.php:73
+msgid "Payment Failed"
+msgstr "תשלום נכשל"
+
+#: src/Integrations/profilegrid/triggers/user-assigned-group-manager.php:74
+msgid "User Assigned Group Manager"
+msgstr "המשתמש מונה כמנהל קבוצה"
+
+#: src/Integrations/profilegrid/triggers/user-unassigned-group-manager.php:74
+msgid "User UnAssigned Group Manager"
+msgstr "המשתמש הוסר כמנהל קבוצה"
+
+#: src/Integrations/projecthuddle/actions/create-mockup.php:57
+#: src/Integrations/wordpress/actions/create-post.php:56
+#: src/Integrations/wordpress/actions/update-post-excerpt.php:56
+msgid "Post: Create a Post"
+msgstr "פוסט: צור פוסט"
+
+#: src/Integrations/projecthuddle/projecthuddle.php:38
+msgid "SureFeedback"
+msgstr "SureFeedback"
+
+#: src/Integrations/projecthuddle/projecthuddle.php:39
+msgid "A WordPress plugin for Website & Design feedback."
+msgstr "תוסף WordPress למשוב על אתרים ועיצובים."
+
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:73
+msgid "Comment Marked As Resolved"
+msgstr "התגובה סומנה כפתורה"
+
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:73
+msgid "New Comment On Site"
+msgstr "תגובה חדשה באתר"
+
+#: src/Integrations/raffle-press/raffle-press.php:35
+msgid "RafflePress"
+msgstr "RafflePress"
+
+#: src/Integrations/raffle-press/raffle-press.php:36
+msgid "Best WordPress Giveaway and Contest Plugin."
+msgstr "התוסף הטוב ביותר להגרלות ותחרויות עבור WordPress."
+
+#: src/Integrations/raffle-press/triggers/someone-registered-for-giveaway-with-specific-action.php:70
+msgid "Someone Registered for Giveaway with Specific Action"
+msgstr "מישהו נרשם להגרלה עם פעולה ספציפית"
+
+#: src/Integrations/raffle-press/triggers/someone-registered-for-giveaway.php:70
+msgid "Someone Registered for Giveaway"
+msgstr "מישהו נרשם להגרלה"
+
+#: src/Integrations/restrict-content/actions/restrict-content-add-user.php:60
+#: src/Integrations/wishlistmember/actions/wishlist-member-add-user.php:59
+msgid "Add User to Membership Level"
+msgstr "הוסף משתמש לרמת חברות"
+
+#: src/Integrations/restrict-content/actions/restrict-content-remove-user.php:59
+#: src/Integrations/wishlistmember/actions/wishlist-member-remove-user.php:58
+msgid "Remove User from Membership Level"
+msgstr "הסר משתמש מרמת חברות"
+
+#: src/Integrations/restrict-content/restrict-content.php:38
+msgid "Restrict Content Pro"
+msgstr "Restrict Content Pro"
+
+#: src/Integrations/restrict-content/triggers/restrict-content-membership-cancelled.php:74
+msgid "Customer Membership Cancelled"
+msgstr "חברות הלקוח בוטלה"
+
+#: src/Integrations/restrict-content/triggers/restrict-content-membership-expired.php:74
+msgid "Customer Membership Expired"
+msgstr "חברות הלקוח פגה"
+
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:128
+msgid "User enrolled successfully"
+msgstr "המשתמש נרשם בהצלחה"
+
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:59
+msgid "Unenroll User From Course"
+msgstr "הסר את המשתמש מהקורס"
+
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:126
+msgid "User unenrolled successfully"
+msgstr "המשתמש הוסר בהצלחה"
+
+#: src/Integrations/sensei-lms/sensei-lms.php:35
+msgid "Sensei LMS"
+msgstr "Sensei LMS"
+
+#: src/Integrations/sensei-lms/sensei-lms.php:36
+msgid "Learning Management System"
+msgstr "מערכת ניהול למידה"
+
+#: src/Integrations/sensei-lms/triggers/sl-user-attempt-quiz.php:66
+msgid "User Attempts Quiz"
+msgstr "המשתמש מנסה מבחן"
+
+#: src/Integrations/sensei-lms/triggers/sl-user-completes-lesson.php:66
+msgid "User Completes Lesson"
+msgstr "המשתמש השלים שיעור"
+
+#: src/Integrations/sensei-lms/triggers/sl-user-completes-quiz-percentage.php:66
+msgid "User Completes Quiz Percentage"
+msgstr "אחוז השאלות שהמשתמש השלים במבחן"
+
+#: src/Integrations/sensei-lms/triggers/sl-user-enrolled-course.php:66
+msgid "User Enrolled Course"
+msgstr "המשתמש נרשם לקורס"
+
+#: src/Integrations/services-for-surecart/services-for-surecart.php:36
+msgid "Services For SureCart"
+msgstr "שירותים עבור SureCart"
+
+#: src/Integrations/services-for-surecart/services-for-surecart.php:37
+msgid ""
+"Services For SureCart plugin empowers you to sell services and custom deliverables with SureCart. Enjoy features like "
+"status and activity tracking, built-in messaging, and final delivery and approvals, all beautifully integrated directly "
+"into your website and customer dashboard."
+msgstr ""
+"שירותים עבור תוסף SureCart מאפשרים לך למכור שירותים ומסירות מותאמות אישית עם SureCart. תהנה מתכונות כמו מעקב אחר מצב "
+"ופעילות, הודעות מובנות, ומסירה סופית ואישורים, הכל משולב בצורה יפה ישירות באתר שלך ולוח הבקרה של הלקוח."
+
+#: src/Integrations/services-for-surecart/triggers/contract-signed.php:73
+msgid "Contract Signed"
+msgstr "החוזה נחתם"
+
+#: src/Integrations/services-for-surecart/triggers/customer-approves-final-delivery.php:73
+msgid "Customer Approves Final Delivery"
+msgstr "הלקוח מאשר את המסירה הסופית"
+
+#: src/Integrations/services-for-surecart/triggers/customer-request-revision.php:73
+msgid "Customer Request Revision"
+msgstr "הלקוח מבקש תיקון"
+
+#: src/Integrations/services-for-surecart/triggers/delivery-date-changed.php:73
+msgid "Delivery Date Changed"
+msgstr "תאריך המסירה שונה"
+
+#: src/Integrations/services-for-surecart/triggers/message-final-delivery-sent.php:73
+msgid "Final Delivery Sent"
+msgstr "המסירה הסופית נשלחה"
+
+#: src/Integrations/services-for-surecart/triggers/message-sent.php:73
+msgid "Message Sent"
+msgstr "הודעה נשלחה"
+
+#: src/Integrations/services-for-surecart/triggers/new-service-creation.php:73
+msgid "New Service Created"
+msgstr "שירות חדש נוצר"
+
+#: src/Integrations/services-for-surecart/triggers/requirement-submitted.php:73
+msgid "Requirement Submitted"
+msgstr "דרישה הוגשה"
+
+#: src/Integrations/services-for-surecart/triggers/service-auto-complete.php:73
+msgid "Service Auto Complete"
+msgstr "שירות הושלם אוטומטית"
+
+#: src/Integrations/services-for-surecart/triggers/service-cancel.php:73
+msgid "Service Cancel"
+msgstr "שירות בוטל"
+
+#: src/Integrations/services-for-surecart/triggers/service-completed.php:73
+msgid "Service Completed"
+msgstr "השירות הושלם"
+
+#: src/Integrations/services-for-surecart/triggers/service-mark-completed.php:73
+msgid "Service Mark Completed"
+msgstr "השירות סומן כהושלם"
+
+#: src/Integrations/services-for-surecart/triggers/service-marked-cancelled.php:73
+msgid "Service Marked as Canceled"
+msgstr "השירות סומן כבוטל"
+
+#: src/Integrations/simply-schedule-appointments/simply-schedule-appointments.php:35
+msgid "SimplyScheduleAppointments"
+msgstr "SimplyScheduleAppointments"
+
+#: src/Integrations/simply-schedule-appointments/simply-schedule-appointments.php:36
+msgid "Simply Schedule Appointments Booking Plugin is for Consultants and Small Businesses using WordPress."
+msgstr "תוסף Simply Schedule Appointments Booking מיועד לייעוצים ולעסקים קטנים המשתמשים ב-WordPress."
+
+#: src/Integrations/slice-wp/actions/slicewp-create-commission.php:56
+msgid "Create Commission for specific Affiliate"
+msgstr "צור עמלה עבור שותף ספציפי"
+
+#: src/Integrations/slice-wp/actions/slicewp-list-affiliates.php:56
+msgid "List Affiliates"
+msgstr "רשימת שותפים"
+
+#: src/Integrations/slice-wp/slice-wp.php:35
+msgid "SliceWP"
+msgstr "SliceWP"
+
+#: src/Integrations/slice-wp/triggers/affiliate-created.php:72
+msgid "Affiliate Created"
+msgstr "שותף נוצר"
+
+#: src/Integrations/slice-wp/triggers/affiliate-updated.php:72
+msgid "Affiliate Updated"
+msgstr "שותף עודכן"
+
+#: src/Integrations/slice-wp/triggers/commision-created.php:72
+msgid "Commission Created"
+msgstr "עמלה נוצרה"
+
+#: src/Integrations/slice-wp/triggers/commision-updated.php:72
+msgid "Commission Updated"
+msgstr "עמלה עודכנה"
+
+#: src/Integrations/support-portal-for-surecart/support-portal-for-surecart.php:36
+msgid "Support Portal For SureCart"
+msgstr "פורטל תמיכה עבור SureCart"
+
+#: src/Integrations/support-portal-for-surecart/support-portal-for-surecart.php:37
+msgid ""
+"Support Portal For SureCart plugin allows customers to request support directly from their SureCart Customer Dashboard, "
+"seamlessly integrating a ticketing system with automated notifications and streamlined management within the SureCart "
+"interface."
+msgstr ""
+"פורטל התמיכה עבור תוסף SureCart מאפשר ללקוחות לבקש תמיכה ישירות מלוח הבקרה של הלקוח שלהם ב-SureCart, ומשלב בצורה חלקה "
+"מערכת כרטיסים עם התראות אוטומטיות וניהול מזורז בתוך ממשק SureCart."
+
+#: src/Integrations/support-portal-for-surecart/triggers/new-email-message-fetched.php:73
+msgid "New Email Message Fetched"
+msgstr "הודעת דוא\"ל חדשה נמשתה"
+
+#: src/Integrations/support-portal-for-surecart/triggers/new-message-sent.php:73
+msgid "New Message Sent"
+msgstr "הודעה חדשה נשלחה"
+
+#: src/Integrations/support-portal-for-surecart/triggers/new-support-ticket-created.php:74
+msgid "New Support Ticket Created"
+msgstr "כרטיס תמיכה חדש נוצר"
+
+#: src/Integrations/support-portal-for-surecart/triggers/support-ticket-status-changed.php:74
+msgid "Support Ticket Status Changed"
+msgstr "סטטוס כרטיס התמיכה שונה"
+
+#: src/Integrations/support-portal-for-surecart/triggers/tickets-marked-as-closed.php:74
+msgid "Tickets Marked as Closed"
+msgstr "כרטיסים סומנו כסגורים"
+
+#: src/Integrations/support-portal-for-surecart/triggers/tickets-marked-as-open.php:74
+msgid "Tickets Marked as Opened"
+msgstr "כרטיסים סומנו כפתוחים"
+
+#: src/Integrations/sureforms/actions/sureforms-send-data.php:55
+msgid "Send Data"
+msgstr "שלח נתונים"
+
+#: src/Integrations/sureforms/sureforms.php:37
+msgid "SureForms"
+msgstr "SureForms"
+
+#: src/Integrations/sureforms/sureforms.php:38
+#: src/Integrations/suremail/suremail.php:38
+msgid "A simple yet powerful way to create modern forms for your website."
+msgstr "דרך פשוטה אך חזקה ליצור טפסים מודרניים לאתר שלך."
+
+#: src/Integrations/suremail/suremail.php:37
+msgid "SureMail"
+msgstr "SureMail"
+
+#: src/Integrations/suremail/triggers/suremail-mail-blocked.php:72
+msgid "Mail Blocked To Send"
+msgstr "דוא\"ל נחסם לשליחה"
+
+#: src/Integrations/suremail/triggers/suremail-mail-failed.php:72
+msgid "Mail Failed To Send"
+msgstr "שליחת דוא\"ל נכשלה"
+
+#: src/Integrations/suremail/triggers/suremail-mail-sent.php:72
+msgid "Mail Sent"
+msgstr "הדוא\"ל נשלח"
+
+#: src/Integrations/suremembers/actions/add-access-to-group.php:57
+msgid "Add User to Access Group"
+msgstr "הוסף משתמש לקבוצת גישה"
+
+#: src/Integrations/suremembers/actions/add-access-to-group.php:79
+msgid "SureMembers Helper class not found"
+msgstr "מחלקת SureMembers לא נמצאה"
+
+#: src/Integrations/suremembers/actions/remove-access-from-group.php:79
+msgid "SureMembers Helper class not found."
+msgstr "מחלקת SureMembers לא נמצאה."
+
+#: src/Integrations/suremembers/suremembers.php:37
+msgid "SureMembers"
+msgstr "SureMembers"
+
+#: src/Integrations/suremembers/suremembers.php:38
+msgid "A simple yet powerful way to add content restriction to your website."
+msgstr "דרך פשוטה אך חזקה להוסיף הגבלת תוכן לאתר שלך."
+
+#: src/Integrations/suremembers/triggers/access-group-updated.php:73
+msgid "Group Updated"
+msgstr "הקבוצה עודכנה"
+
+#: src/Integrations/suremembers/triggers/user-added-in-group.php:73
+msgid "User Added"
+msgstr "משתמש נוסף"
+
+#: src/Integrations/suremembers/triggers/user-removed-from-group.php:73
+msgid "User Removed"
+msgstr "משתמש הוסר"
+
+#: src/Integrations/thrive-leads/thrive-leads.php:35
+msgid "Thrive Leads"
+msgstr "Thrive Leads"
+
+#: src/Integrations/thrive-leads/thrive-leads.php:36
+msgid "Lead generation plugin for WordPress."
+msgstr "תוסף ליצירת לידים עבור WordPress."
+
+#: src/Integrations/thrive-leads/triggers/registration-form-submitted.php:68
+msgid "Registration Form Submitted"
+msgstr "טופס רישום הוגש"
+
+#: src/Integrations/triggerbutton/triggerbutton.php:37
+msgid "Trigger Button"
+msgstr "כפתור הפעלה"
+
+#: src/Integrations/triggerbutton/triggerbutton.php:38
+msgid "A Trigger Button to complete the automation."
+msgstr "כפתור הפעלה להשלמת האוטומציה."
+
+#: src/Integrations/triggerbutton/triggers/user-clicks-on-trigger-button.php:67
+msgid "A User Clicks on Trigger Button"
+msgstr "משתמש לוחץ על כפתור ההפעלה"
+
+#: src/Integrations/tutorlms/actions/enroll-course.php:57
+msgid "Enroll User in Course"
+msgstr "רשום משתמש בקורס"
+
+#: src/Integrations/tutorlms/actions/list-enrolled-users.php:57
+msgid "List Enrolled Users"
+msgstr "רשימת משתמשים רשומים"
+
+#: src/Integrations/tutorlms/actions/list-enrolled-users.php:82
+msgid "Required Tutor LMS functions or classes are not available."
+msgstr "פונקציות או מחלקות Tutor LMS הנדרשות אינן זמינות."
+
+#: src/Integrations/tutorlms/actions/list-enrolled-users.php:90
+msgid "Invalid course ID provided."
+msgstr "מספר זיהוי קורס לא תקין הוזן."
+
+#: src/Integrations/tutorlms/actions/list-enrolled-users.php:100
+msgid "No enrolled users found for this course."
+msgstr "לא נמצאו משתמשים רשומים לקורס זה."
+
+#: src/Integrations/tutorlms/actions/mark-course-complete.php:58
+msgid "Mark Course Complete"
+msgstr "סמן קורס כהושלם"
+
+#: src/Integrations/tutorlms/actions/mark-lesson-complete.php:57
+msgid "Mark Lesson Complete"
+msgstr "סמן שיעור כהושלם"
+
+#: src/Integrations/tutorlms/actions/reset-user-course-progress.php:56
+msgid "Reset User Course Progress"
+msgstr "אפס את התקדמות הקורס של המשתמש"
+
+#: src/Integrations/tutorlms/actions/reset-user-course-progress.php:92
+msgid "User course progress has been successfully reset."
+msgstr "התקדמות הקורס של המשתמש הוסרה בהצלחה."
+
+#: src/Integrations/tutorlms/triggers/complete-course.php:66
+msgid "User complete Course"
+msgstr "המשתמש השלים קורס"
+
+#: src/Integrations/tutorlms/triggers/complete-lesson.php:65
+msgid "User complete Lesson"
+msgstr "המשתמש השלים שיעור"
+
+#: src/Integrations/tutorlms/triggers/purchase-course.php:70
+msgid "User purchases a course [WooCommerce]"
+msgstr "המשתמש רוכש קורס [WooCommerce]"
+
+#: src/Integrations/tutorlms/triggers/user-achieves-percentage.php:66
+#: src/Integrations/tutorlms/triggers/user-passes-quiz.php:66
+msgid "User passes Quiz"
+msgstr "המשתמש עבר מבחן"
+
+#: src/Integrations/tutorlms/triggers/user-fails-quiz.php:66
+msgid "User fails Quiz"
+msgstr "המשתמש נכשל במבחן"
+
+#: src/Integrations/tutorlms/triggers/user-posts-question-course.php:66
+msgid "User Posts Question in Course"
+msgstr "המשתמש פרסם שאלה בקורס"
+
+#: src/Integrations/tutorlms/tutorlms.php:35
+msgid "TutorLMS"
+msgstr "TutorLMS"
+
+#: src/Integrations/tutorlms/tutorlms.php:36
+msgid "Easily Create And Sell Online Courses On Your WP Site With TutorLMS."
+msgstr "צור ומכור קורסים מקוונים בקלות באתר WP שלך עם TutorLMS."
+
+#: src/Integrations/ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php:36
+msgid "Spectra"
+msgstr "Spectra"
+
+#: src/Integrations/ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php:37
+msgid "Supercharge the Gutenberg editor with beautiful and powerful blocks to design websites."
+msgstr "שפר את עורך גוטנברג עם בלוקים יפים ועוצמתיים לעיצוב אתרים."
+
+#: src/Integrations/ultimate-member/actions/add-user-role.php:53
+msgid "Add a role to the user's roles"
+msgstr "הוסף תפקיד לתפקידי המשתמש"
+
+#: src/Integrations/ultimate-member/actions/add-user-role.php:80
+#: src/Integrations/ultimate-member/actions/user-role-change.php:81
+msgid "This user is not type of WP_User"
+msgstr "משתמש זה אינו סוג של WP_User"
+
+#: src/Integrations/ultimate-member/actions/user-role-change.php:53
+msgid "Set the user's role to a specific role"
+msgstr "קבע את תפקיד המשתמש לתפקיד ספציפי"
+
+#: src/Integrations/ultimate-member/triggers/user-inactive.php:73
+msgid "User Become Inactive"
+msgstr "המשתמש הפך לא פעיל"
+
+#: src/Integrations/ultimate-member/triggers/user-logsin.php:70
+msgid "User LogsIn With A Form"
+msgstr "המשתמש נכנס עם טופס"
+
+#: src/Integrations/ultimate-member/triggers/user-registers.php:70
+msgid "User Registers With A Form"
+msgstr "המשתמש נרשם עם טופס"
+
+#: src/Integrations/ultimate-member/triggers/user-rolechange.php:70
+msgid "User Role Change"
+msgstr "שינוי תפקיד המשתמש"
+
+#: src/Integrations/ultimate-member/ultimate-member.php:35
+msgid "UltimateMember"
+msgstr "UltimateMember"
+
+#: src/Integrations/ultimate-member/ultimate-member.php:36
+msgid "A user profile plugin."
+msgstr "תוסף פרופיל משתמש."
+
+#: src/Integrations/voxel/actions/add-post-profile-wall.php:57
+msgid "Add Post to Profile Wall"
+msgstr "הוסף פוסט לקיר הפרופיל"
+
+#: src/Integrations/voxel/actions/add-post-profile-wall.php:121
+msgid "Post added to user's profile wall successfully"
+msgstr "הפוסט נוסף בהצלחה לקיר הפרופיל של המשתמש"
+
+#: src/Integrations/voxel/actions/add-post-to-collection.php:56
+msgid "Add Post to Collection"
+msgstr "הוסף פוסט לאוסף"
+
+#: src/Integrations/voxel/actions/add-post-to-collection.php:125
+msgid "Post added to collection successfully"
+msgstr "הפוסט נוסף בהצלחה לאוסף"
+
+#: src/Integrations/voxel/actions/add-post-wall.php:58
+msgid "Add Post to Wall"
+msgstr "הוסף פוסט לקיר"
+
+#: src/Integrations/voxel/actions/add-post-wall.php:121
+msgid "Post added to Post's wall successfully"
+msgstr "הפוסט נוסף בהצלחה לקיר הפוסט"
+
+#: src/Integrations/voxel/actions/change-membership-plan.php:56
+msgid "Change Membership Plan"
+msgstr "שנה תוכנית חברות"
+
+#: src/Integrations/voxel/actions/change-membership-plan.php:143
+msgid "Membership plan updated successfully"
+msgstr "תוכנית החברות עודכנה בהצלחה"
+
+#: src/Integrations/voxel/actions/claim-post.php:58
+msgid "Claim Post"
+msgstr "דרוש פוסט"
+
+#: src/Integrations/voxel/actions/claim-post.php:127
+msgid "Post claimed successfully."
+msgstr "הפוסט נתבע בהצלחה."
+
+#: src/Integrations/voxel/actions/delete-wall-post.php:56
+msgid "Delete Post Wall"
+msgstr "מחק את קיר הפוסט"
+
+#: src/Integrations/voxel/actions/delete-wall-post.php:95
+msgid "Wall Post deleted successfully"
+msgstr "פוסט הקיר נמחק בהצלחה"
+
+#: src/Integrations/voxel/actions/follow-post.php:58
+msgid "Follow Post"
+msgstr "עקוב אחרי פוסט"
+
+#: src/Integrations/voxel/actions/follow-post.php:112
+msgid "Post followed successfully."
+msgstr "הפוסט נעקב בהצלחה."
+
+#: src/Integrations/voxel/actions/get-address-by-coordinates.php:57
+msgid "Get Address By Coordinates"
+msgstr "קבל כתובת לפי קואורדינטות"
+
+#: src/Integrations/voxel/actions/get-coordinates-by-address.php:57
+msgid "Get Coordinates By Address"
+msgstr "קבל קואורדינטות לפי כתובת"
+
+#: src/Integrations/voxel/actions/get-member-by-email.php:57
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-by-email.php:59
+msgid "Get Member By Email"
+msgstr "קבל חבר לפי דוא\"ל"
+
+#: src/Integrations/voxel/actions/get-member-by-id.php:57
+msgid "Get Member By ID"
+msgstr "קבל חבר לפי מזהה"
+
+#: src/Integrations/voxel/actions/get-member-by-profile-id.php:57
+msgid "Get Member By Profile ID"
+msgstr "קבל חבר לפי מזהה פרופיל"
+
+#: src/Integrations/voxel/actions/get-post-by-id.php:57
+msgid "Get Post By ID"
+msgstr "קבל פוסט לפי מזהה"
+
+#: src/Integrations/voxel/actions/get-posts-by-voxel-field.php:57
+msgid "Get Posts by Voxel Field"
+msgstr "קבל פוסטים לפי שדה Voxel"
+
+#: src/Integrations/voxel/actions/new-collection-post.php:57
+msgid "Create New Collection Post"
+msgstr "צור פוסט חדש לאוסף"
+
+#: src/Integrations/voxel/actions/new-collection-post.php:130
+#: src/Integrations/voxel/actions/update-collection-post.php:117
+msgid "Collection created successfully"
+msgstr "האוסף נוצר בהצלחה"
+
+#: src/Integrations/voxel/actions/new-post.php:57
+msgid "Create New Post"
+msgstr "צור פוסט חדש"
+
+#: src/Integrations/voxel/actions/new-post.php:134
+msgid "Post created successfully"
+msgstr "הפוסט נוצר בהצלחה"
+
+#: src/Integrations/voxel/actions/new-profile.php:57
+msgid "Create New Profile"
+msgstr "צור פרופיל חדש"
+
+#: src/Integrations/voxel/actions/new-profile.php:132
+#: src/Integrations/voxel/actions/update-profile.php:124
+msgid "Profile created successfully"
+msgstr "הפרופיל נוצר בהצלחה"
+
+#: src/Integrations/voxel/actions/remove-post-from-collection.php:56
+msgid "Remove Post from Collection"
+msgstr "הסר פוסט מהאוסף"
+
+#: src/Integrations/voxel/actions/remove-post-from-collection.php:125
+msgid "Post removed from collection successfully"
+msgstr "הפוסט הוסר מהאוסף בהצלחה"
+
+#: src/Integrations/voxel/actions/send-custom-in-app-notification.php:56
+msgid "Send Custom In App Notification"
+msgstr "שלח הודעת התראה מותאמת בתוך האפליקציה"
+
+#: src/Integrations/voxel/actions/send-custom-in-app-notification.php:169
+msgid "Custom In-app notification sent successfully"
+msgstr "התראה מותאמת בתוך האפליקציה נשלחה בהצלחה"
+
+#: src/Integrations/voxel/actions/send-direct-message.php:57
+msgid "Send Direct Message"
+msgstr "שלח הודעה ישירה"
+
+#: src/Integrations/voxel/actions/send-email.php:104
+msgid "Email sent successfully"
+msgstr "הדוא\"ל נשלח בהצלחה"
+
+#: src/Integrations/voxel/actions/set-collection-post-verified.php:56
+msgid "Set Collection Post Verified"
+msgstr "קבע את הפוסט לאוסף כמאומת"
+
+#: src/Integrations/voxel/actions/set-collection-post-verified.php:94
+#: src/Integrations/voxel/actions/set-post-verified.php:94
+msgid "Post Set as Verified"
+msgstr "הפוסט הוגדר כמאומת"
+
+#: src/Integrations/voxel/actions/set-custom-priority.php:56
+msgid "Set Custom Priority"
+msgstr "קבע עדיפות מותאמת"
+
+#: src/Integrations/voxel/actions/set-custom-priority.php:106
+msgid "Custom priority set successfully"
+msgstr "העדיפות המותאמת נקבעה בהצלחה"
+
+#: src/Integrations/voxel/actions/set-profile-verified.php:94
+msgid "Profile Verified Successfully"
+msgstr "הפרופיל אומת בהצלחה"
+
+#: src/Integrations/voxel/actions/update-collection-post.php:57
+msgid "Update Collection Post"
+msgstr "עדכן פוסט לאוסף"
+
+#: src/Integrations/voxel/actions/update-post.php:57
+msgid "Update Post"
+msgstr "עדכן פוסט"
+
+#: src/Integrations/voxel/actions/update-post.php:129
+msgid "Post updated successfully"
+msgstr "הפוסט עודכן בהצלחה"
+
+#: src/Integrations/voxel/actions/update-profile.php:57
+msgid "Update Profile"
+msgstr "עדכן פרופיל"
+
+#: src/Integrations/voxel/triggers/collection-post-created.php:74
+msgid "Collection Post Submitted"
+msgstr "פוסט האוסף הוגש"
+
+#: src/Integrations/voxel/triggers/collection-post-updated.php:74
+msgid "Collection Post Updated"
+msgstr "פוסט האוסף עודכן"
+
+#: src/Integrations/voxel/triggers/comment-reply-created-timeline.php:73
+msgid "New Comment Reply Created on Timeline"
+msgstr "תגובה חדשה נוצרה על ציר הזמן"
+
+#: src/Integrations/voxel/triggers/membership-plan-activated.php:73
+msgid "Membership Plan Activated"
+msgstr "תוכנית החברות הופעלה"
+
+#: src/Integrations/voxel/triggers/membership-plan-canceled.php:73
+msgid "Membership Plan Canceled"
+msgstr "תוכנית החברות בוטלה"
+
+#: src/Integrations/voxel/triggers/membership-plan-switched.php:73
+msgid "Membership Plan Switched"
+msgstr "תוכנית החברות הוחלפה"
+
+#: src/Integrations/voxel/triggers/membership-user-registered.php:73
+msgid "User Registered"
+msgstr "המשתמש נרשם"
+
+#: src/Integrations/voxel/triggers/new-comment-timeline.php:73
+msgid "New Comment Created on Timeline"
+msgstr "תגובה חדשה נוצרה על ציר הזמן"
+
+#: src/Integrations/voxel/triggers/new-order-placed.php:73
+msgid "New Order Placed"
+msgstr "הוזמן חדש הוזמן"
+
+#: src/Integrations/voxel/triggers/new-profile-created.php:73
+msgid "New Profile Created"
+msgstr "פרופיל חדש נוצר"
+
+#: src/Integrations/voxel/triggers/new-wall-post-by-user.php:74
+msgid "New Wall Post by User"
+msgstr "פוסט קיר חדש על ידי המשתמש"
+
+#: src/Integrations/voxel/triggers/order-approved-by-vendor.php:73
+#: src/Integrations/voxel/triggers/orders-promotion-activated.php:73
+msgid "Order Approved By Vendor"
+msgstr "ההזמנה אושרה על ידי הספק"
+
+#: src/Integrations/voxel/triggers/order-canceled-by-customer.php:73
+msgid "Order Canceled by Customer"
+msgstr "ההזמנה בוטלה על ידי הלקוח"
+
+#: src/Integrations/voxel/triggers/order-declined-by-vendor.php:73
+msgid "Order Declined By Vendor"
+msgstr "ההזמנה נדחתה על ידי הספק"
+
+#: src/Integrations/voxel/triggers/orders-claim-listing.php:73
+msgid "Orders Claim Listing"
+msgstr "רשימת תביעות הזמנות"
+
+#: src/Integrations/voxel/triggers/orders-promotion-canceled.php:73
+msgid "Order Promotion Canceled"
+msgstr "קידום ההזמנה בוטל"
+
+#: src/Integrations/voxel/triggers/post-approved.php:75
+msgid "Post Approved"
+msgstr "הפוסט אושר"
+
+#: src/Integrations/voxel/triggers/post-rejected.php:75
+msgid "Post Rejected"
+msgstr "הפוסט נדחה"
+
+#: src/Integrations/voxel/triggers/post-review-approved.php:75
+msgid "Post Review Approved"
+msgstr "סקירת הפוסט אושרה"
+
+#: src/Integrations/voxel/triggers/post-reviewed.php:75
+msgid "Post Reviewed"
+msgstr "הפוסט נבדק"
+
+#: src/Integrations/voxel/triggers/post-submitted.php:75
+msgid "Post Submitted"
+msgstr "הפוסט הוגש"
+
+#: src/Integrations/voxel/triggers/post-updated.php:75
+msgid "Post Updated"
+msgstr "הפוסט עודכן"
+
+#: src/Integrations/voxel/triggers/profile-approved.php:73
+msgid "Profile Approved"
+msgstr "הפרופיל אושר"
+
+#: src/Integrations/voxel/triggers/profile-rejected.php:73
+msgid "Profile Rejected"
+msgstr "הפרופיל נדחה"
+
+#: src/Integrations/voxel/triggers/profile-reviewed.php:72
+msgid "Profile Reviewed"
+msgstr "הפרופיל נבדק"
+
+#: src/Integrations/voxel/triggers/profile-updated.php:73
+msgid "Profile Updated"
+msgstr "הפרופיל עודכן"
+
+#: src/Integrations/voxel/triggers/profile-wall-new-post.php:73
+msgid "Profile New Wall Post"
+msgstr "פוסט חדש בפרופיל"
+
+#: src/Integrations/voxel/triggers/timeline-post-approved.php:75
+msgid "Timeline Post Approved"
+msgstr "הפוסט בטיימליין אושר"
+
+#: src/Integrations/voxel/triggers/user-receives-message.php:73
+msgid "User Receives Message"
+msgstr "המשתמש קיבל הודעה"
+
+#: src/Integrations/voxel/triggers/users-timeline-approved.php:72
+msgid "Users Timeline Approved"
+msgstr "הטיימליין של המשתמש אושר"
+
+#: src/Integrations/voxel/triggers/users-timeline-created.php:72
+msgid "Users Timeline Created"
+msgstr "הטיימליין של המשתמש נוצר"
+
+#: src/Integrations/voxel/triggers/voxel-comment-liked.php:72
+msgid "Comment Liked"
+msgstr "התגובה אהובה"
+
+#: src/Integrations/voxel/triggers/voxel-post-followed.php:71
+msgid "Post Followed"
+msgstr "הפוסט נעקב"
+
+#: src/Integrations/voxel/triggers/voxel-post-liked.php:72
+msgid "Post Liked"
+msgstr "הפוסט אהוב"
+
+#: src/Integrations/voxel/triggers/voxel-post-quoted.php:72
+#: src/Integrations/voxel/triggers/voxel-post-reposted.php:72
+msgid "Post Reposted"
+msgstr "הפוסט שותף מחדש"
+
+#: src/Integrations/voxel/triggers/voxel-post-unfollowed.php:71
+msgid "Post UnFollowed"
+msgstr "הפוסט לא נעקב"
+
+#: src/Integrations/voxel/triggers/voxel-user-mentioned-in-comment.php:72
+msgid "User Mentioned In Comment"
+msgstr "המשתמש הוזכר בתגובה"
+
+#: src/Integrations/voxel/triggers/voxel-user-mentioned-in-post.php:72
+msgid "User Mentioned In Post"
+msgstr "המשתמש הוזכר בפוסט"
+
+#: src/Integrations/voxel/triggers/wall-post-approved.php:74
+msgid "Wall Post Approved"
+msgstr "הפוסט בקיר אושר"
+
+#: src/Integrations/voxel/voxel.php:36
+msgid "Voxel"
+msgstr "וקסל"
+
+#: src/Integrations/voxel/voxel.php:37
+msgid "Voxel is a complete no code solution in a single packageto create WordPress dynamic sites."
+msgstr "וקסל הוא פתרון שלם ללא קוד בחבילה אחת ליצירת אתרי וורדפרס דינמיים."
+
+#: src/Integrations/voxel/voxel.php:64
+msgid "Post not found"
+msgstr "הפוסט לא נמצא"
+
+#: src/Integrations/voxel/voxel.php:286
+msgid "Description"
+msgstr "תיאור"
+
+#: src/Integrations/voxel/voxel.php:297
+msgid "Timezone"
+msgstr "אזור זמן"
+
+#: src/Integrations/voxel/voxel.php:312
+msgid "Address"
+msgstr "כתובת"
+
+#: src/Integrations/voxel/voxel.php:317
+msgid "Latitude"
+msgstr "קו רוחב"
+
+#: src/Integrations/voxel/voxel.php:322
+msgid "Longitude"
+msgstr "קו אורך"
+
+#: src/Integrations/voxel/voxel.php:333
+msgid "Email"
+msgstr "דוא\"ל"
+
+#: src/Integrations/voxel/voxel.php:344
+#: src/Integrations/voxel/voxel.php:356
+#: src/Integrations/voxel/voxel.php:370
+#: src/Integrations/voxel/voxel.php:382
+#: src/Integrations/voxel/voxel.php:484
+#: src/Integrations/voxel/voxel.php:496
+#: src/Integrations/voxel/voxel.php:613
+msgid "Image ID"
+msgstr "מזהה תמונה"
+
+#: src/Integrations/voxel/voxel.php:346
+#: src/Integrations/voxel/voxel.php:358
+#: src/Integrations/voxel/voxel.php:486
+#: src/Integrations/voxel/voxel.php:498
+msgid "Provide Image ID"
+msgstr "ספק מזהה תמונה"
+
+#: src/Integrations/voxel/voxel.php:372
+#: src/Integrations/voxel/voxel.php:384
+msgid "Provide Image IDs, separated by comma"
+msgstr "ספק מזהי תמונה, מופרדים בפסיק"
+
+#: src/Integrations/voxel/voxel.php:394
+msgid "Website URL"
+msgstr "כתובת אתר"
+
+#: src/Integrations/voxel/voxel.php:405
+msgid "Phone Number"
+msgstr "מספר טלפון"
+
+#: src/Integrations/voxel/voxel.php:422
+#: src/Integrations/voxel/voxel.php:664
+msgid "Event Start Date"
+msgstr "תאריך התחלה של האירוע"
+
+#: src/Integrations/voxel/voxel.php:427
+#: src/Integrations/voxel/voxel.php:669
+msgid "Event End Date"
+msgstr "תאריך סיום של האירוע"
+
+#: src/Integrations/voxel/voxel.php:432
+#: src/Integrations/voxel/voxel.php:674
+msgid "Event Frequency"
+msgstr "תדירות האירוע"
+
+#: src/Integrations/voxel/voxel.php:437
+#: src/Integrations/voxel/voxel.php:679
+msgid "Event Unit"
+msgstr "יחידת האירוע"
+
+#: src/Integrations/voxel/voxel.php:439
+#: src/Integrations/voxel/voxel.php:681
+msgid "Accepted values: day, week, month, year"
+msgstr "ערכים מקובלים: יום, שבוע, חודש, שנה"
+
+#: src/Integrations/voxel/voxel.php:443
+#: src/Integrations/voxel/voxel.php:685
+msgid "Event Until"
+msgstr "אירוע עד"
+
+#: src/Integrations/voxel/voxel.php:460
+msgid "Work Days"
+msgstr "ימי עבודה"
+
+#: src/Integrations/voxel/voxel.php:462
+msgid "Accepted values: mon, tue, wed, thu, fri, sat, sun"
+msgstr "ערכים מקובלים: ב', ג', ד', ה', ו', ש', א'"
+
+#: src/Integrations/voxel/voxel.php:466
+msgid "Work Hours"
+msgstr "שעות עבודה"
+
+#: src/Integrations/voxel/voxel.php:468
+msgid ""
+"Enter value pairs as start and end time, separated by dash. For multiple pairs, use comma separator. Eg. 09:00-17:00, "
+"09:00-12:00"
+msgstr "הזן זוגות ערכים כזמן התחלה וסיום, מופרדים במקף. עבור מספר זוגות, השתמש בפסיק. לדוגמה: 09:00-17:00, 09:00-12:00"
+
+#: src/Integrations/voxel/voxel.php:472
+msgid "Work Status"
+msgstr "סטטוס עבודה"
+
+#: src/Integrations/voxel/voxel.php:474
+msgid "Accepted values: hours, open, close, appointments_only"
+msgstr "ערכים מקובלים: שעות, פתוח, סגור, רק פגישות"
+
+#: src/Integrations/voxel/voxel.php:508
+msgid "Profile Name"
+msgstr "שם פרופיל"
+
+#: src/Integrations/voxel/voxel.php:520
+msgid "Text"
+msgstr "טקסט"
+
+#: src/Integrations/voxel/voxel.php:531
+msgid "Number"
+msgstr "מספר"
+
+#: src/Integrations/voxel/voxel.php:542
+msgid "Switcher"
+msgstr "מתג"
+
+#: src/Integrations/voxel/voxel.php:553
+msgid "Text Editor"
+msgstr "עורך טקסט"
+
+#: src/Integrations/voxel/voxel.php:564
+msgid "Taxonomy Slug"
+msgstr "סלאג של קטגוריה"
+
+#: src/Integrations/voxel/voxel.php:566
+msgid "Provide related taxonomy slug(s). If multiples allowed, separate with comma."
+msgstr "ספק סלאג(ים) של קטגוריה קשורה. אם מותר מספר, הפרד בפסיק."
+
+#: src/Integrations/voxel/voxel.php:576
+msgid "Product ID"
+msgstr "מזהה מוצר"
+
+#: src/Integrations/voxel/voxel.php:578
+msgid "Provide Product ID"
+msgstr "ספק מזהה מוצר"
+
+#: src/Integrations/voxel/voxel.php:588
+msgid "Phone"
+msgstr "טלפון"
+
+#: src/Integrations/voxel/voxel.php:599
+msgid "URL"
+msgstr "כתובת אתר"
+
+#: src/Integrations/voxel/voxel.php:615
+#: src/Integrations/voxel/voxel.php:744
+msgid "Provide Image IDs. Separate with comma."
+msgstr "ספק מזהי תמונה. הפרד בפסיק."
+
+#: src/Integrations/voxel/voxel.php:628
+msgid "File ID"
+msgstr "מזהה קובץ"
+
+#: src/Integrations/voxel/voxel.php:630
+msgid "Provide File ID"
+msgstr "ספק מזהה קובץ"
+
+#: src/Integrations/voxel/voxel.php:645
+msgid "Repeater"
+msgstr "חוזר"
+
+#: src/Integrations/voxel/voxel.php:696
+msgid "Post ID"
+msgstr "מזהה פוסט"
+
+#: src/Integrations/voxel/voxel.php:698
+msgid "Provide Post ID"
+msgstr "ספק מזהה פוסט"
+
+#: src/Integrations/voxel/voxel.php:708
+msgid "Date"
+msgstr "תאריך"
+
+#: src/Integrations/voxel/voxel.php:719
+msgid "Select"
+msgstr "בחר"
+
+#: src/Integrations/voxel/voxel.php:730
+msgid "Color"
+msgstr "צבע"
+
+#: src/Integrations/voxel/voxel.php:742
+msgid "Image IDs"
+msgstr "מזהי תמונה"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-add-update-user.php:59
+msgid "Add/Update Member"
+msgstr "הוסף/עדכן חבר"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-check-if-user-is-member.php:59
+msgid "Check if User is Member"
+msgstr "בדוק אם המשתמש הוא חבר"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-check-if-user-is-member.php:91
+msgid "User exists in the membership level."
+msgstr "המשתמש קיים ברמת החברות."
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-check-if-user-is-member.php:96
+msgid "User does not exist in the membership level."
+msgstr "המשתמש אינו קיים ברמת החברות."
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-create-new-level.php:59
+msgid "Create New Level"
+msgstr "צור רמה חדשה"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-create-new-level.php:96
+msgid "Failed to create a level"
+msgstr "נכשל ביצירת רמה"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-existing-member.php:59
+msgid "Delete Existing Member"
+msgstr "מחק חבר קיים"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-existing-member.php:90
+msgid "Member deleted successfully."
+msgstr "החבר נמחק בהצלחה."
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-existing-member.php:96
+msgid "Failed to delete a member."
+msgstr "נכשל במחיקת חבר."
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-level.php:59
+msgid "Delete Level"
+msgstr "מחק רמה"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-level.php:90
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-specific-level-details.php:90
+#: src/Integrations/wishlistmember/actions/wishlist-member-update-existing-level.php:97
+msgid "Failed to update a level"
+msgstr "נכשל בעדכון רמה"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-all-levels.php:59
+msgid "Get all Levels"
+msgstr "קבל את כל הרמות"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-all-levels.php:91
+msgid "Failed to fetch a level"
+msgstr "נכשל בהבאת רמה"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-by-email.php:91
+msgid "No user found for the searched email"
+msgstr "לא נמצא משתמש עבור הדוא\"ל שחיפשת"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-by-username.php:59
+msgid "Get Member By Username"
+msgstr "קבל חבר לפי שם משתמש"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-by-username.php:94
+msgid "No user found for the searched username"
+msgstr "לא נמצא משתמש עבור שם המשתמש שחיפשת"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-information.php:59
+msgid "Get Member Information"
+msgstr "קבל מידע על חבר"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-information.php:91
+msgid "Failed to get a member information"
+msgstr "נכשל בקבלת מידע על חבר"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-specific-level-details.php:59
+msgid "Get Specific Level Details"
+msgstr "קבל פרטי רמה ספציפית"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-specific-member-level.php:59
+msgid "Get specific Members Levels"
+msgstr "קבל רמות חברים ספציפיות"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-specific-member-level.php:91
+msgid "Member is not added to any level."
+msgstr "החבר לא נוסף לשום רמה."
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-update-existing-level.php:59
+msgid "Update Existing Level"
+msgstr "עדכן רמה קיימת"
+
+#: src/Integrations/wishlistmember/triggers/wishlist-membership-add-user.php:74
+msgid "User Added to Membership Level"
+msgstr "המשתמש נוסף לרמת החברות"
+
+#: src/Integrations/wishlistmember/triggers/wishlist-membership-remove-user.php:74
+msgid "User Removed from Membership Level"
+msgstr "המשתמש הוסר מרמת החברות"
+
+#: src/Integrations/wishlistmember/wishlistmember.php:36
+msgid "WishlistMember"
+msgstr "WishlistMember"
+
+#: src/Integrations/woocommerce-bookings/triggers/booking-created.php:70
+#: src/Integrations/woocommerce-bookings/triggers/booking-status-changed.php:70
+msgid "Booking Created"
+msgstr "הזמנה נוצרה"
+
+#: src/Integrations/woocommerce-bookings/woocommerce-bookings.php:35
+msgid "Woocommerce Bookings"
+msgstr "הזמנות ווקומרס"
+
+#: src/Integrations/woocommerce-bookings/woocommerce-bookings.php:36
+msgid ""
+"WooCommerce Bookings is an extension for WooCommerce that allow customers to book appointments, make reservations or "
+"rent equipment without leaving your site."
+msgstr ""
+"הזמנות WooCommerce הוא תוסף עבור WooCommerce המאפשר ללקוחות להזמין פגישות, לבצע הזמנות או לשכור ציוד מבלי לעזוב את האתר "
+"שלך."
+
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:56
+msgid "Add the user to a membership plan."
+msgstr "הוסף את המשתמש לתוכנית חברות."
+
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:88
+msgid "This user has already an active membership in the specified membership plan."
+msgstr "למשתמש זה כבר יש חברות פעילה בתוכנית החברות המצוינת."
+
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:116
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:136
+msgid "This user is not registered."
+msgstr "המשתמש הזה אינו רשום."
+
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:123
+msgid "The user email is not valid."
+msgstr "כתובת האימייל של המשתמש אינה תקפה."
+
+#: src/Integrations/woocommerce-memberships/actions/change-user-membership-plan.php:57
+msgid "Change User Membership Plan"
+msgstr "שנה את תוכנית החברות של המשתמש"
+
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:55
+msgid "Remove the user from a membership plan."
+msgstr "הסר את המשתמש מתוכנית חברות."
+
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:88
+msgid "The user was not a member of any membership plans."
+msgstr "המשתמש לא היה חבר באף תוכנית חברות."
+
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:112
+msgid "The user was not a member of the specified membership plan."
+msgstr "המשתמש לא היה חבר בתוכנית החברות המצוינת."
+
+#: src/Integrations/woocommerce-memberships/triggers/add-user-membership-plan.php:69
+msgid "A user is added to a membership plan"
+msgstr "משתמש נוסף לתוכנית חברות"
+
+#: src/Integrations/woocommerce-memberships/triggers/user-membership-plan-cancelled.php:69
+msgid "A user's access to a membership plan is cancelled"
+msgstr "הגישה של המשתמש לתוכנית חברות בוטלה"
+
+#: src/Integrations/woocommerce-memberships/triggers/user-membership-plan-expires.php:69
+msgid "A user's access to a membership plan expires"
+msgstr "הגישה של המשתמש לתוכנית חברות פגה"
+
+#: src/Integrations/woocommerce-memberships/triggers/user-membership-status-changed.php:69
+msgid "User's membership status is changed"
+msgstr "סטטוס החברות של המשתמש שונה"
+
+#: src/Integrations/woocommerce-memberships/woocommerce-memberships.php:35
+msgid "WoocommerceMemberships"
+msgstr "WoocommerceMemberships"
+
+#: src/Integrations/woocommerce-memberships/woocommerce-memberships.php:36
+msgid "Woocommerce memberships plugin."
+msgstr "תוסף חברות של Woocommerce."
+
+#: src/Integrations/woocommerce-shipstation/triggers/order-shipped.php:70
+msgid "Order Is Shipped"
+msgstr "הזמנה נשלחה"
+
+#: src/Integrations/woocommerce-shipstation/triggers/specific-amount-order-shipped.php:70
+msgid "Order For Specific Amount Shipped"
+msgstr "הזמנה עבור סכום ספציפי נשלחה"
+
+#: src/Integrations/woocommerce-shipstation/triggers/specific-product-order-shipped.php:70
+msgid "Order For Specific Product Shipped"
+msgstr "הזמנה עבור מוצר ספציפי נשלחה"
+
+#: src/Integrations/woocommerce-shipstation/woocommerce-shipstation.php:35
+msgid "WoocommerceShipstation"
+msgstr "WoocommerceShipstation"
+
+#: src/Integrations/woocommerce-shipstation/woocommerce-shipstation.php:36
+msgid "Woocommerce shipstation plugin."
+msgstr "תוסף shipstation של Woocommerce."
+
+#: src/Integrations/woocommerce-subscriptions/actions/add-subscription-coupon.php:57
+msgid "Add Coupon"
+msgstr "הוסף קופון"
+
+#: src/Integrations/woocommerce-subscriptions/actions/add-update-subscription-custom-fields.php:56
+#: src/Integrations/woocommerce/actions/add-update-order-custom-fields.php:58
+msgid "Add or Update Custom Fields"
+msgstr "הוסף או עדכן שדות מותאמים אישית"
+
+#: src/Integrations/woocommerce-subscriptions/actions/change-subscription-status.php:57
+msgid "Change Subscription Status"
+msgstr "שנה את מצב המנוי"
+
+#: src/Integrations/woocommerce-subscriptions/actions/create-subscription-order-cost.php:59
+#: src/Integrations/woocommerce-subscriptions/actions/create-subscription-order-product.php:59
+msgid "Create a subscription order with a product"
+msgstr "צור הזמנת מנוי עם מוצר"
+
+#: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:58
+msgid "Extend User Subscription"
+msgstr "הארך את המנוי של המשתמש"
+
+#: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:115
+msgid "#%s"
+msgstr "#%s"
+
+#: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:121
+msgid "Subscription successfully extended by SureTriggers. Order %s"
+msgstr "המנוי הוארך בהצלחה על ידי SureTriggers. הזמנה %s"
+
+#: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:124
+msgid "Failed to extend subscription after customer renewed early. Order %s"
+msgstr "נכשל בהארכת המנוי לאחר שהלקוח חידש מוקדם. הזמנה %s"
+
+#: src/Integrations/woocommerce-subscriptions/actions/find-subscription-by-user-id.php:57
+msgid "Find Subscription by User ID"
+msgstr "מצא מנוי לפי מזהה משתמש"
+
+#: src/Integrations/woocommerce-subscriptions/actions/remove-product-user-subscription.php:57
+msgid "Remove Product User Subscription"
+msgstr "הסר את המנוי של המוצר למשתמש"
+
+#: src/Integrations/woocommerce-subscriptions/actions/update-subscription-end-date.php:57
+msgid "Update Subscription End Date"
+msgstr "עדכן את תאריך סיום המנוי"
+
+#: src/Integrations/woocommerce-subscriptions/actions/update-subscription-next-payment-date.php:57
+msgid "Update Subscription Next Payment Date"
+msgstr "עדכן את תאריך התשלום הבא של המנוי"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-cancels-subscription-product.php:71
+msgid "User Cancels Subscription"
+msgstr "המשתמש מבטל מנוי"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-purchases-variable-subscription.php:71
+msgid "User Purchases Variable Subscription"
+msgstr "המשתמש רוכש מנוי משתנה"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-renewal-subscription-payment-failed.php:71
+msgid "User Renewal Subscription Payment Failed"
+msgstr "תשלום חידוש המנוי של המשתמש נכשל"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-renews-subscription-product.php:71
+msgid "User Renews Subscription"
+msgstr "המשתמש חידש מנוי"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-subscribes-product.php:71
+msgid "User Subscribes To Product"
+msgstr "המשתמש נרשם למוצר"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-subscription-product-expires.php:71
+msgid "User Subscription Expires"
+msgstr "המנוי של המשתמש פג"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-subscription-trial-end.php:71
+msgid "User Subscription Trial End"
+msgstr "ניסיון המנוי של המשתמש פג"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-subscription-updated.php:71
+msgid "User Subscription Updated"
+msgstr "המנוי של המשתמש עודכן"
+
+#: src/Integrations/woocommerce-subscriptions/woocommerce-subscriptions.php:35
+msgid "WoocommerceSubscriptions"
+msgstr "WoocommerceSubscriptions"
+
+#: src/Integrations/woocommerce-subscriptions/woocommerce-subscriptions.php:36
+msgid "Woocommerce subscriptions plugin."
+msgstr "תוסף המנויים של Woocommerce."
+
+#: src/Integrations/woocommerce/actions/add-attribute-terms.php:57
+msgid "Add Attribute Terms"
+msgstr "הוסף תנאי תכונה"
+
+#: src/Integrations/woocommerce/actions/add-customer.php:58
+msgid "Add New Customer in WooCommerce"
+msgstr "הוסף לקוח חדש ב-WooCommerce"
+
+#: src/Integrations/woocommerce/actions/add-customer.php:92
+msgid "Email already exists."
+msgstr "האימייל כבר קיים."
+
+#: src/Integrations/woocommerce/actions/add-order-note.php:58
+msgid "Add Order Note"
+msgstr "הוסף הערת הזמנה"
+
+#: src/Integrations/woocommerce/actions/add-product-attributes.php:56
+msgid "Add Product Attributes"
+msgstr "הוסף תכונות מוצר"
+
+#: src/Integrations/woocommerce/actions/add-product-attributes.php:117
+msgid "Attributes added succcessfully."
+msgstr "התכונות נוספו בהצלחה."
+
+#: src/Integrations/woocommerce/actions/create-attribute.php:57
+msgid "Create Attributes"
+msgstr "צור תכונות"
+
+#: src/Integrations/woocommerce/actions/create-coupon-code.php:55
+msgid "Generate a coupon code."
+msgstr "צור קוד קופון."
+
+#: src/Integrations/woocommerce/actions/create-new-order.php:56
+msgid "Create a new order for the user"
+msgstr "צור הזמנה חדשה עבור המשתמש"
+
+#: src/Integrations/woocommerce/actions/create-new-order.php:79
+msgid "Unable to create order."
+msgstr "לא ניתן ליצור הזמנה."
+
+#: src/Integrations/woocommerce/actions/create-product-variation.php:57
+msgid "Create Product Variation"
+msgstr "צור וריאציה של מוצר"
+
+#: src/Integrations/woocommerce/actions/create-product.php:58
+msgid "Create Product in WooCommerce"
+msgstr "צור מוצר ב-WooCommerce"
+
+#: src/Integrations/woocommerce/actions/create-product.php:119
+msgid "Failed to get the product."
+msgstr "נכשל בהשגת המוצר."
+
+#: src/Integrations/woocommerce/actions/delete-coupon.php:56
+msgid "Delete a coupon code."
+msgstr "מחק קוד קופון."
+
+#: src/Integrations/woocommerce/actions/find-orders-by-user-id.php:57
+msgid "Find Orders by User ID"
+msgstr "מצא הזמנות לפי מזהה משתמש"
+
+#: src/Integrations/woocommerce/actions/get-order-details-by-order-id.php:57
+msgid "Get Order Details by Order ID"
+msgstr "קבל פרטי הזמנה לפי מזהה הזמנה"
+
+#: src/Integrations/woocommerce/actions/get-product-by-id.php:57
+msgid "Get Product By ID"
+msgstr "קבל מוצר לפי מזהה"
+
+#: src/Integrations/woocommerce/actions/update-status-of-order.php:58
+msgid "Update Status of Order."
+msgstr "עדכן את מצב ההזמנה."
+
+#: src/Integrations/woocommerce/triggers/add-product-to-cart.php:69
+msgid "Product is added to cart"
+msgstr "המוצר נוסף לעגלת הקניות"
+
+#: src/Integrations/woocommerce/triggers/customer-created.php:66
+#: src/Integrations/woocommerce/triggers/customer-total-spend-reach-specific-amount.php:66
+msgid "Customer Created"
+msgstr "לקוח נוצר"
+
+#: src/Integrations/woocommerce/triggers/customer-order-count-reach-specific-count.php:66
+msgid "Customer Order Count Reaches Specific Count"
+msgstr "ספירת הזמנות של לקוח מגיעה למספר ספציפי"
+
+#: src/Integrations/woocommerce/triggers/order-created.php:70
+msgid "Order created"
+msgstr "ההזמנה נוצרה"
+
+#: src/Integrations/woocommerce/triggers/order-note-added.php:66
+msgid "Order Note Added"
+msgstr "הערת הזמנה נוספה"
+
+#: src/Integrations/woocommerce/triggers/order-paid.php:70
+msgid "Order Paid"
+msgstr "ההזמנה שולמה"
+
+#: src/Integrations/woocommerce/triggers/purchase-product-category.php:71
+msgid "Product Category Purchased"
+msgstr "קטגוריית מוצר נרכשה"
+
+#: src/Integrations/woocommerce/triggers/purchase-product.php:71
+msgid "User purchases a product"
+msgstr "המשתמש רוכש מוצר"
+
+#: src/Integrations/woocommerce/triggers/purchase-variable-product.php:66
+msgid "User purchases a variable product with a variation selected"
+msgstr "המשתמש רוכש מוצר משתנה עם וריאציה שנבחרה"
+
+#: src/Integrations/woocommerce/triggers/review-product.php:68
+msgid "User reviews a product"
+msgstr "המשתמש סקירה מוצר"
+
+#: src/Integrations/woocommerce/triggers/subscription-var-purchase.php:68
+msgid "User purchases a variable subscription"
+msgstr "המשתמש רוכש מנוי משתנה"
+
+#: src/Integrations/woocommerce/triggers/view-product.php:66
+msgid "User views a product"
+msgstr "המשתמש צופה במוצר"
+
+#: src/Integrations/wordpress/actions/add-new-media.php:57
+msgid "Add New Image To Media Library"
+msgstr "הוסף תמונה חדשה לספריית המדיה"
+
+#: src/Integrations/wordpress/actions/add-new-role.php:57
+msgid "Role: Add a new role to the user's roles"
+msgstr "תפקיד: הוסף תפקיד חדש לתפקידי המשתמש"
+
+#: src/Integrations/wordpress/actions/add-tag-to-post.php:57
+#: src/Integrations/wordpress/actions/get-user-by-role.php:57
+msgid "Get All Users By Role"
+msgstr "קבל את כל המשתמשים לפי תפקיד"
+
+#: src/Integrations/wordpress/actions/add-taxonomy-to-post.php:57
+msgid "Add Taxonomy"
+msgstr "הוסף טקסונומיה"
+
+#: src/Integrations/wordpress/actions/change-role.php:57
+msgid "Role: Change the user's role to a new role"
+msgstr "תפקיד: שנה את תפקיד המשתמש לתפקיד חדש"
+
+#: src/Integrations/wordpress/actions/create-category.php:57
+msgid "Create New Category"
+msgstr "צור קטגוריה חדשה"
+
+#: src/Integrations/wordpress/actions/create-comment.php:56
+msgid "Create Comment"
+msgstr "צור תגובה"
+
+#: src/Integrations/wordpress/actions/create-role.php:57
+msgid "Create Role"
+msgstr "צור תפקיד"
+
+#: src/Integrations/wordpress/actions/create-tag.php:57
+msgid "Create New Tag"
+msgstr "צור תג חדש"
+
+#: src/Integrations/wordpress/actions/create-user-if-not-exists.php:56
+msgid "User: Create new user if not exists with Email"
+msgstr "משתמש: צור משתמש חדש אם אינו קיים עם דוא\"ל"
+
+#: src/Integrations/wordpress/actions/create-user-if-not-exists.php:207
+msgid "Unable to show the password while updating the user"
+msgstr "לא ניתן להציג את הסיסמה בזמן עדכון המשתמש"
+
+#: src/Integrations/wordpress/actions/delete-user.php:57
+msgid "Delete User"
+msgstr "מחק משתמש"
+
+#: src/Integrations/wordpress/actions/find-posts.php:55
+msgid "Find Posts"
+msgstr "מצא פוסטים"
+
+#: src/Integrations/wordpress/actions/find-user-by-email.php:57
+msgid "Find User By Email"
+msgstr "מצא משתמש לפי דוא\"ל"
+
+#: src/Integrations/wordpress/actions/find-user-by-id.php:57
+msgid "Find User By ID"
+msgstr "מצא משתמש לפי מזהה"
+
+#: src/Integrations/wordpress/actions/find-user-meta-by-key.php:56
+msgid "User: Find User meta by key"
+msgstr "משתמש: מצא מטא משתמש לפי מפתח"
+
+#: src/Integrations/wordpress/actions/find-user-metas.php:56
+msgid "User: Find User meta"
+msgstr "משתמש: מצא מטא משתמש"
+
+#: src/Integrations/wordpress/actions/get-post-by-id.php:56
+msgid "Get Post by ID"
+msgstr "קבל פוסט לפי מזהה"
+
+#: src/Integrations/wordpress/actions/get-post-metadata.php:56
+msgid "Get Post Metadata"
+msgstr "קבל מטא פוסט"
+
+#: src/Integrations/wordpress/actions/get-post-taxonomy.php:57
+msgid "Get Post Taxonomies"
+msgstr "קבל טקסונומיות פוסט"
+
+#: src/Integrations/wordpress/actions/get-post-terms.php:57
+msgid "Get Post Terms"
+msgstr "קבל מונחים לפוסט"
+
+#: src/Integrations/wordpress/actions/get-taxonomy-by-name.php:57
+msgid "Get Taxonomy By Name"
+msgstr "קבל טקסונומיה לפי שם"
+
+#: src/Integrations/wordpress/actions/remove-role.php:57
+#: src/Integrations/wordpress/triggers/remove-user-role.php:71
+msgid "Role: Remove a role from the user"
+msgstr "תפקיד: הסר תפקיד מהמשתמש"
+
+#: src/Integrations/wordpress/actions/remove-user-meta.php:56
+msgid "Remove User Meta"
+msgstr "הסר מטא משתמש"
+
+#: src/Integrations/wordpress/actions/remove-user.php:56
+msgid "User: Remove User"
+msgstr "משתמש: הסר משתמש"
+
+#: src/Integrations/wordpress/actions/remove-user.php:103
+msgid "User deleted successfully."
+msgstr "המשתמש נמחק בהצלחה."
+
+#: src/Integrations/wordpress/actions/remove-user.php:108
+msgid "User not found."
+msgstr "המשתמש לא נמצא."
+
+#: src/Integrations/wordpress/actions/remove-user.php:114
+msgid "Please enter valid email."
+msgstr "אנא הזן דוא\"ל תקף."
+
+#: src/Integrations/wordpress/actions/send-mail.php:57
+msgid "Send an email"
+msgstr "שלח דוא\"ל"
+
+#: src/Integrations/wordpress/actions/set-post-meta.php:56
+msgid "Post: Set Post meta"
+msgstr "פוסט: הגדר מטא פוסט"
+
+#: src/Integrations/wordpress/actions/set-post-meta.php:78
+msgid "No post meta operation found!"
+msgstr "לא נמצאה פעולה של מטא פוסט!"
+
+#: src/Integrations/wordpress/actions/set-user-meta.php:56
+msgid "User: Set User meta"
+msgstr "משתמש: הגדר מטא משתמש"
+
+#: src/Integrations/wordpress/actions/update-comment-status.php:57
+msgid "Update Comment Status"
+msgstr "עדכן מצב תגובה"
+
+#: src/Integrations/wordpress/actions/update-post.php:56
+msgid "Post: Update a Post"
+msgstr "פוסט: עדכן פוסט"
+
+#: src/Integrations/wordpress/actions/update-post.php:102
+msgid "No post meta array found to update!"
+msgstr "לא נמצא מערך מטא פוסט לעדכון!"
+
+#: src/Integrations/wordpress/actions/update-user.php:56
+msgid "User: Update User Details"
+msgstr "משתמש: עדכן פרטי משתמש"
+
+#: src/Integrations/wordpress/actions/update-user.php:93
+msgid "Invalid username: %1$s."
+msgstr "שם משתמש לא תקף: %1$s."
+
+#: src/Integrations/wordpress/actions/update-user.php:98
+msgid "Username \"%1$s\" already exists."
+msgstr "שם משתמש \"%1$s\" כבר קיים."
+
+#: src/Integrations/wordpress/actions/update-user.php:107
+msgid "Invalid email address: %1$s."
+msgstr "כתובת דוא\"ל לא תקפה: %1$s."
+
+#: src/Integrations/wordpress/actions/update-user.php:113
+msgid "Email address \"%1$s\" already exists."
+msgstr "כתובת דוא\"ל \"%1$s\" כבר קיימת."
+
+#: src/Integrations/wordpress/triggers/add-user-role.php:67
+msgid "Role: Add a new role to the users roles"
+msgstr "תפקיד: הוסף תפקיד חדש לתפקידי המשתמשים"
+
+#: src/Integrations/wordpress/triggers/change-specific-role-to-specific.php:71
+msgid "Role: A user's role changed from a specific role to a specific role"
+msgstr "תפקיד: תפקיד של משתמש שונה מתפקיד ספציפי לתפקיד ספציפי"
+
+#: src/Integrations/wordpress/triggers/insert-comment.php:74
+msgid "User submits a comment on a post"
+msgstr "המשתמש מגיש תגובה על פוסט"
+
+#: src/Integrations/wordpress/triggers/post-of-type-set-to-status.php:70
+msgid "User's specific type of post is set to a status"
+msgstr "סוג ספציפי של פוסט של המשתמש מוגדר למצב"
+
+#: src/Integrations/wordpress/triggers/post-trashed.php:72
+msgid "Post/Page/CPT is moved to Trash"
+msgstr "פוסט/דף/CPT הועבר לפח"
+
+#: src/Integrations/wordpress/triggers/update-post.php:72
+msgid "User updates a post"
+msgstr "המשתמש מעדכן פוסט"
+
+#: src/Integrations/wordpress/triggers/update-specific-post.php:71
+msgid "User updates a post in a specific status"
+msgstr "המשתמש מעדכן פוסט במצב ספציפי"
+
+#: src/Integrations/wordpress/triggers/update-user-role.php:71
+msgid "Role: Change the users role to a new role"
+msgstr "תפקיד: שנה את תפקיד המשתמשים לתפקיד חדש"
+
+#: src/Integrations/wordpress/triggers/user-comment-approved.php:71
+msgid "User's comment on a post is approved"
+msgstr "התגובה של המשתמש על פוסט אושרה"
+
+#: src/Integrations/wordpress/triggers/user-create.php:71
+msgid "User is created"
+msgstr "המשתמש נוצר"
+
+#: src/Integrations/wordpress/triggers/user-login.php:70
+msgid "User logs in to the site"
+msgstr "המשתמש נכנס לאתר"
+
+#: src/Integrations/wordpress/triggers/user-meta-key-updated.php:68
+msgid "User's specific meta key is updated"
+msgstr "המפתח הספציפי של המטא של המשתמש עודכן"
+
+#: src/Integrations/wordpress/triggers/user-password-reset.php:72
+msgid "User resets their password"
+msgstr "המשתמש מאפס את הסיסמה שלו"
+
+#: src/Integrations/wordpress/triggers/user-profile-field-updated.php:72
+msgid "User's profile field is updated"
+msgstr "שדה הפרופיל של המשתמש עודכן"
+
+#: src/Integrations/wordpress/triggers/view-post.php:69
+msgid "User views any post"
+msgstr "המשתמש צופה בכל פוסט"
+
+#: src/Integrations/wp-all-import/triggers/wp-all-import-completed.php:69
+msgid "Import Completed"
+msgstr "ייבוא הושלם"
+
+#: src/Integrations/wp-all-import/triggers/wp-all-import-failed.php:69
+msgid "Import Failed"
+msgstr "ייבוא נכשל"
+
+#: src/Integrations/wp-all-import/triggers/wp-all-import-post-type-imported.php:69
+msgid "Post Type Imported"
+msgstr "סוג הפוסט יובא"
+
+#: src/Integrations/wp-all-import/wp-all-import.php:35
+msgid "WPAllImport"
+msgstr "WPAllImport"
+
+#: src/Integrations/wp-all-import/wp-all-import.php:36
+msgid "WP All Import plugin."
+msgstr "תוסף WP All Import."
+
+#: src/Integrations/wp-courseware/tiggerrs/wpcw-user-completes-module.php:67
+msgid "User Completes Module"
+msgstr "המשתמש משלים מודול"
+
+#: src/Integrations/wp-courseware/tiggerrs/wpcw-user-completes-unit.php:67
+msgid "User Completes Unit"
+msgstr "המשתמש משלים יחידה"
+
+#: src/Integrations/wp-courseware/wp-courseware.php:35
+msgid "WP Courseware"
+msgstr "WP Courseware"
+
+#: src/Integrations/wp-courseware/wp-courseware.php:36
+msgid ""
+"WP Courseware is a popular WordPress plugin for creating and managing online courses. It allows you to easily organize "
+"course content, track student progress, and create engaging learning experiences on your WordPress website."
+msgstr ""
+"WP Courseware הוא תוסף פופולרי של WordPress ליצירה וניהול קורסים מקוונים. הוא מאפשר לך לארגן בקלות תוכן קורס, לעקוב אחר "
+"התקדמות תלמידים וליצור חוויות למידה מרתקות באתר WordPress שלך."
+
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:57
+msgid "Add Tag To User"
+msgstr "הוסף תג למשתמש"
+
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:109
+msgid "Failed to create new tag."
+msgstr "נכשל ביצירת תג חדש."
+
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:115
+msgid "WP Fusion CRM does not support tag creation."
+msgstr "WP Fusion CRM לא תומך ביצירת תג."
+
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:156
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:111
+msgid "Please enter valid user."
+msgstr "אנא הזן משתמש תקף."
+
+#: src/Integrations/wp-fusion/actions/wf-get-contact-id.php:56
+msgid "Get Contact ID"
+msgstr "קבל מזהה קשר"
+
+#: src/Integrations/wp-fusion/actions/wf-get-contact-id.php:100
+msgid "No contact found for the given email"
+msgstr "לא נמצא קשר עבור הדוא\"ל הנתון"
+
+#: src/Integrations/wp-fusion/actions/wf-get-contact-tags.php:56
+msgid "Get Contact Tags"
+msgstr "קבל תגיות קשר"
+
+#: src/Integrations/wp-fusion/actions/wf-get-contact-tags.php:98
+msgid "No tags found for the given contact ID."
+msgstr "לא נמצאו תגיות עבור מזהה הקשר הנתון."
+
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:57
+msgid "Remove Tag From User"
+msgstr "הסר תג מהמשתמש"
+
+#: src/Integrations/wp-fusion/triggers/wf-tag-added-to-user.php:67
+msgid "Tag Added To User"
+msgstr "תג נוסף למשתמש"
+
+#: src/Integrations/wp-fusion/triggers/wf-tag-modified.php:67
+msgid "User Tag Modified"
+msgstr "תג המשתמש שונה"
+
+#: src/Integrations/wp-fusion/triggers/wf-tag-removed-from-user.php:67
+msgid "Tag Removed From User"
+msgstr "תג הוסר מהמשתמש"
+
+#: src/Integrations/wp-fusion/wp-fusion.php:35
+msgid "WP Fusion"
+msgstr "WP פיוז'ן"
+
+#: src/Integrations/wp-fusion/wp-fusion.php:36
+msgid "WP Fusion links WordPress with CRM."
+msgstr "WP פיוז'ן מקשר בין WordPress ל-CRM."
+
+#: src/Integrations/wp-job-manager/triggers/publish-job.php:67
+msgid "User publishes a job of a type"
+msgstr "המשתמש מפרסם עבודה מסוג"
+
+#: src/Integrations/wp-job-manager/wp-job-manager.php:36
+msgid "WPJobManager"
+msgstr "WPJobManager"
+
+#: src/Integrations/wp-job-manager/wp-job-manager.php:37
+msgid "Manage job listings from the WordPress admin panel."
+msgstr "נהל רשימות עבודות מלוח הניהול של WordPress."
+
+#: src/Integrations/wp-polls/triggers/poll-submitted-with-specific-answer.php:70
+msgid "Poll Submitted with a Specific Answer"
+msgstr "סקר הוגש עם תשובה ספציפית"
+
+#: src/Integrations/wp-polls/triggers/poll-submitted.php:70
+msgid "Poll Submitted"
+msgstr "סקר הוגש"
+
+#: src/Integrations/wp-polls/wp-polls.php:35
+msgid "WP-Polls"
+msgstr "WP-Polls"
+
+#: src/Integrations/wp-polls/wp-polls.php:36
+msgid "WP-Polls is a WordPress polls plugin."
+msgstr "WP-Polls הוא תוסף סקרים ל-WordPress."
+
+#: src/Integrations/wp-simple-pay/triggers/payment-for-form-completed.php:72
+msgid "Payment For Form Completed"
+msgstr "תשלום עבור טופס הושלם"
+
+#: src/Integrations/wp-simple-pay/triggers/subscription-for-form-created.php:72
+msgid "Subscription For Form Created"
+msgstr "מנוי עבור טופס נוצר"
+
+#: src/Integrations/wp-simple-pay/triggers/subscription-for-form-renewed.php:72
+msgid "Subscription For Form Renewed"
+msgstr "מנוי עבור טופס חודש"
+
+#: src/Integrations/wp-simple-pay/wp-simple-pay.php:36
+msgid "WP Simple Pay"
+msgstr "WP Simple Pay"
+
+#: src/Integrations/wp-simple-pay/wp-simple-pay.php:37
+msgid "WP Simple Pay is a WordPress Payment form plugin."
+msgstr "WP Simple Pay הוא תוסף טופס תשלום ל-WordPress."
+
+#: src/Integrations/wp-travel-engine/actions/create-coupon.php:55
+msgid "Create a Coupon"
+msgstr "צור קופון"
+
+#: src/Integrations/wp-travel-engine/actions/create-coupon.php:56
+msgid "Create a new coupon for WP Travel Engine"
+msgstr "צור קופון חדש עבור WP Travel Engine"
+
+#: src/Integrations/wp-travel-engine/actions/create-coupon.php:77
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:76
+#: src/Integrations/wp-travel-engine/actions/list-bookings.php:77
+#: src/Integrations/wp-travel-engine/actions/list-trips.php:77
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:76
+msgid "WP Travel Engine plugin is not active."
+msgstr "תוסף WP Travel Engine אינו פעיל."
+
+#: src/Integrations/wp-travel-engine/actions/create-coupon.php:84
+msgid "Coupon code is required."
+msgstr "קוד קופון נדרש."
+
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:55
+msgid "Create a Trip"
+msgstr "צור טיול"
+
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:105
+msgid "Trip name is required."
+msgstr "שם הטיול נדרש."
+
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:152
+msgid "Failed to create trip."
+msgstr "נכשל ביצירת טיול."
+
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:196
+msgid "Trip created with ID %d"
+msgstr "הטיול נוצר עם מזהה %d"
+
+#: src/Integrations/wp-travel-engine/actions/list-bookings.php:55
+msgid "List Bookings"
+msgstr "רשימת הזמנות"
+
+#: src/Integrations/wp-travel-engine/actions/list-bookings.php:56
+msgid "Get a list of bookings with optional filtering"
+msgstr "קבל רשימת הזמנות עם סינון אופציונלי"
+
+#: src/Integrations/wp-travel-engine/actions/list-trips.php:55
+msgid "List Trips"
+msgstr "רשימת טיולים"
+
+#: src/Integrations/wp-travel-engine/actions/list-trips.php:56
+msgid "Get a list of trips with optional filtering"
+msgstr "קבל רשימת טיולים עם סינון אופציונלי"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-booking.php:55
+msgid "Retrieve a Booking"
+msgstr "שחזר הזמנה"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-booking.php:75
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:83
+msgid "Booking ID is required."
+msgstr "מזהה ההזמנה נדרש."
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-booking.php:85
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:101
+msgid "Booking not found."
+msgstr "ההזמנה לא נמצאה."
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-enquiry.php:55
+msgid "Retrieve an Enquiry"
+msgstr "שחזר פנייה"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-enquiry.php:75
+msgid "Enquiry ID is required."
+msgstr "מזהה הפנייה נדרש."
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-enquiry.php:85
+msgid "Enquiry not found."
+msgstr "הפנייה לא נמצאה."
+
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:55
+msgid "Update Booking Status"
+msgstr "עדכן מצב הזמנה"
+
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:90
+msgid "New status is required."
+msgstr "מצב חדש נדרש."
+
+#: src/Integrations/wp-travel-engine/triggers/new-enquiry-submitted.php:69
+msgid "New Enquiry Submitted"
+msgstr "פנייה חדשה הוגשה"
+
+#: src/Integrations/wp-travel-engine/wp-travel-engine.php:36
+msgid "WP Travel Engine"
+msgstr "WP Travel Engine"
+
+#: src/Integrations/wp-travel-engine/wp-travel-engine.php:37
+msgid "WP Travel Engine is a complete travel booking WordPress plugin to create travel and tour packages."
+msgstr "WP Travel Engine הוא תוסף הזמנות טיולים מלא ל-WordPress ליצירת חבילות טיולים וסיורים."
+
+#: src/Integrations/wp-user-manager/triggers/user-removes-profile-cover-image.php:67
+msgid "User Removes Profile Cover Image"
+msgstr "המשתמש מסיר תמונת כיסוי פרופיל"
+
+#: src/Integrations/wp-user-manager/triggers/user-removes-profile-photo.php:67
+msgid "User Removes Profile Photo"
+msgstr "המשתמש מסיר תמונת פרופיל"
+
+#: src/Integrations/wp-user-manager/triggers/user-updates-account-information.php:67
+msgid "User Updates Account Information"
+msgstr "המשתמש מעדכן מידע על החשבון"
+
+#: src/Integrations/wp-user-manager/triggers/user-updates-cover-photo.php:67
+msgid "User Updates Cover Photo"
+msgstr "המשתמש מעדכן תמונת כיסוי"
+
+#: src/Integrations/wp-user-manager/triggers/user-updates-profile-description.php:67
+msgid "User Updates Profile Description"
+msgstr "המשתמש מעדכן תיאור פרופיל"
+
+#: src/Integrations/wp-user-manager/triggers/user-updates-profile-photo.php:67
+msgid "User Updates Profile Photo"
+msgstr "המשתמש מעדכן תמונת פרופיל"
+
+#: src/Integrations/wp-user-manager/wp-user-manager.php:36
+msgid "WP User Manager"
+msgstr "WP User Manager"
+
+#: src/Integrations/wp-user-manager/wp-user-manager.php:37
+msgid "WP User Manager is a User management form plugin."
+msgstr "WP User Manager הוא תוסף לניהול משתמשים."
+
+#: src/Integrations/wpforms/wpforms.php:35
+msgid "WPForms"
+msgstr "WPForms"
+
+#: src/Integrations/wpforms/wpforms.php:36
+msgid "Building forms in WordPress can be hard. WPForms makes it easy."
+msgstr "בניית טפסים ב-WordPress יכולה להיות קשה. WPForms מקלה על כך."
+
+#: src/Integrations/wpforo/actions/set-user-reputation.php:57
+msgid "Set User Reputation"
+msgstr "קבע מוניטין למשתמש"
+
+#: src/Integrations/wpforo/actions/wf-create-topic.php:60
+msgid "Create Topic"
+msgstr "צור נושא"
+
+#: src/Integrations/wpforo/actions/wf-delete-topic.php:57
+msgid "Delete Topic"
+msgstr "מחק נושא"
+
+#: src/Integrations/wpforo/wpforo.php:35
+msgid "wpForo"
+msgstr "wpForo"
+
+#: src/Integrations/wplms/wplms.php:35
+msgid "WPLMS"
+msgstr "WPLMS"
+
+#: src/Integrations/wplms/wplms.php:36
+msgid "WPLMS is a social network plugin for WordPress that allows you to quickly add a social network."
+msgstr "WPLMS הוא תוסף רשת חברתית ל-WordPress המאפשר לך להוסיף במהירות רשת חברתית."
+
+#: src/Integrations/wployalty/actions/wployalty-add-points-customer.php:59
+msgid "Add Points to Customer"
+msgstr "הוסף נקודות ללקוח"
+
+#: src/Integrations/wployalty/actions/wployalty-remove-points-customer.php:59
+msgid "Remove Points of Customer"
+msgstr "הסר נקודות מלקוח"
+
+#: src/Integrations/wployalty/triggers/wployalty-points-awarded-customer.php:73
+msgid "Points Awarded Customer"
+msgstr "נקודות הוענקו ללקוח"
+
+#: src/Integrations/wployalty/wployalty.php:35
+msgid "WPLoyalty"
+msgstr "WPLoyalty"
+
+#: src/Integrations/wployalty/wployalty.php:36
+msgid ""
+"The best WordPress forum plugin, \n"
+"\t\tfull-fledged yet easy and light forum solution for your WordPress website. \n"
+"\t\tThe only forum software with multiple forum layouts."
+msgstr ""
+"התוסף הטוב ביותר לפורומים ב-WordPress, פתרון פורום מלא אך קל וקליל לאתר ה-WordPress שלך. התוכנה היחידה לפורומים עם מספר "
+"תבניות פורום."
+
+#: src/Integrations/ws-form/ws-form.php:35
+msgid "WS Form"
+msgstr "WS Form"
+
+#: src/Integrations/ws-form/ws-form.php:36
+msgid "WS Form LITE is a powerful contact form builder plugin for WordPress."
+msgstr "WS Form LITE הוא תוסף בונה טפסים חזק ל-WordPress."
+
+#: src/Loader.php:92
+msgid "Please Connect OttoKit"
+msgstr "אנא חבר את OttoKit"
+
+#: src/Loader.php:108
+msgid "Please connect to or create your OttoKit account."
+msgstr "אנא התחבר או צור חשבון OttoKit שלך."
+
+#: src/Loader.php:109
+msgid "This will enable you to connect your various plugins, and apps together and automate repetitive tasks."
+msgstr "זה יאפשר לך לחבר את התוספים והאפליקציות השונות שלך יחד ולבצע אוטומציה של משימות חוזרות."
+
+#: src/Loader.php:110
+msgid "Get Started"
+msgstr "התחל"
+
+#: src/Loader.php:185
+msgid "Connect your plugins and apps together with OttoKit"
+msgstr "חבר את התוספים והאפליקציות שלך יחד עם OttoKit"
+
+#: src/Loader.php:189
+msgid ""
+"Please connect to or create your OttoKit account. This will enable you to connect your various plugins and apps "
+"together and automate repetitive tasks."
+msgstr ""
+"אנא התחבר או צור חשבון OttoKit שלך. זה יאפשר לך לחבר את התוספים והאפליקציות השונות שלך יחד ולבצע אוטומציה של משימות "
+"חוזרות."
+
+#: src/Loader.php:191
+msgid "Get Started With OttoKit"
+msgstr "התחל עם OttoKit"
+
+#: src/Loader.php:192
+msgid "Learn More"
+msgstr "למד עוד"
+
+#: src/Loader.php:233
+msgid "OttoKit Connection Issue"
+msgstr "בעיה בחיבור עם OttoKit"
+
+#: src/Loader.php:238
+msgid ""
+"There is an issue with the established connection between WordPress and OttoKit. Please visit the OttoKit dashboard to "
+"verify and re-establish the connection if necessary."
+msgstr "יש בעיה עם החיבור שהוקם בין WordPress ל-OttoKit. אנא בקר בלוח המחוונים של OttoKit כדי לאמת ולחדש את החיבור אם יש צורך."
+
+#: src/Loader.php:241
+msgid "Go To OttoKit"
+msgstr "עבור ל-OttoKit"
+
+#: src/Loader.php:273
+msgid "Dashboard"
+msgstr "לוח מחוונים"
+
+#: src/Loader.php:275
+msgid "Connect"
+msgstr "חבר"
+
+#: src/Loader.php:384
+#: src/Loader.php:385
+msgid "OttoKit Settings"
+msgstr "הגדרות OttoKit"
+
+#: src/Loader.php:547
+msgid "OttoKit is connected."
+msgstr "OttoKit מחובר."
+
+#: src/Loader.php:550
+msgid ""
+"Your WordPress site is successfully connected to the OttoKit SaaS platform. However, the OttoKit interface display is "
+"currently disabled. Click below to enable it."
+msgstr ""
+"אתר ה-WordPress שלך מחובר בהצלחה לפלטפורמת ה-SaaS של OttoKit. עם זאת, תצוגת הממשק של OttoKit מושבתת כרגע. לחץ למטה כדי "
+"להפעיל אותה."
+
+#: src/Loader.php:553
+msgid "Access Connection Page"
+msgstr "גש לדף החיבור"
+
+#: src/Loader.php:571
+#: src/Loader.php:604
+msgid "OttoKit Not Connected."
+msgstr "OttoKit לא מחובר."
+
+#: src/Loader.php:574
+msgid ""
+"It looks like your WordPress site’s connection with OttoKit has been affected because the URL used for communication "
+"has changed. The current link for your site is different from the one OttoKit was originally connected to."
+msgstr ""
+"נראה שהחיבור של אתר ה-WordPress שלך עם OttoKit הושפע מכיוון שה-URL שנעשה בו שימוש לתקשורת השתנה. הקישור הנוכחי לאתר שלך "
+"שונה מזה ש-OttoKit היה מחובר אליו במקור."
+
+#: src/Loader.php:577
+msgid "Access Dashboard"
+msgstr "גש ללוח המחוונים"
+
+#: src/Loader.php:580
+msgid "Disconnect OttoKit"
+msgstr "הפסיק חיבור עם OttoKit"
+
+#: src/Loader.php:607
+msgid "Please connect your OttoKit account to access registered events and outgoing requests."
+msgstr "אנא חבר את חשבון OttoKit שלך כדי לגשת לאירועים רשומים ולבקשות יוצאות."
+
+#: src/Loader.php:609
+msgid "Connect With OttoKit"
+msgstr "חבר עם OttoKit"
+
+#: src/Loader.php:621
+msgid "Outgoing Requests"
+msgstr "בקשות יוצאות"
+
+#: app/build/main.js:4923
+#: app/src/components/Settings/Settings.jsx:179
+#: app/build/main.js:4825
+msgid "Settings saved successfully!"
+msgstr "ההגדרות נשמרו בהצלחה!"
+
+#: app/build/main.js:4926
+#: app/src/components/Settings/Settings.jsx:182
+#: app/build/main.js:4828
+msgid "Failed to save settings. Please try again."
+msgstr "נכשל בשמירת ההגדרות. אנא נסה שוב."
+
+#: app/build/main.js:4933
+#: app/src/components/Settings/Settings.jsx:185
+#: app/build/main.js:4831
+msgid "Network error. Please check your connection and try again."
+msgstr "שגיאת רשת. אנא בדוק את החיבור שלך ונסה שוב."
+
+#: app/build/main.js:4960
+#: app/src/components/Settings/Settings.jsx:205
+#: app/build/main.js:4851
+msgid "user"
+msgstr "משתמש"
+
+#: app/build/main.js:4960
+#: app/src/components/Settings/Settings.jsx:206
+#: app/build/main.js:4852
+msgid "users"
+msgstr "משתמשים"
+
+#: app/build/main.js:4961
+#: app/src/components/Settings/Settings.jsx:209
+#: app/build/main.js:4855
+msgid "role"
+msgstr "תפקיד"
+
+#: app/build/main.js:4961
+#: app/src/components/Settings/Settings.jsx:210
+#: app/build/main.js:4856
+msgid "roles"
+msgstr "תפקידים"
+
+#: app/build/main.js:4986
+#: app/src/components/Settings/Settings.jsx:236
+#: app/build/main.js:4882
+msgid "Control who can access the OttoKit Interface"
+msgstr "שלוט מי יכול לגשת לממשק של OttoKit"
+
+#: app/build/main.js:4990
+#: app/src/components/Settings/Settings.jsx:239
+#: app/build/main.js:4885
+msgid ""
+"Only administrators can access OttoKit by default. Use the options below to grant access to other users or roles. "
+"Anyone not added here won’t see OttoKit in their WordPress admin menu."
+msgstr ""
+"רק מנהלים יכולים לגשת ל-OttoKit כברירת מחדל. השתמש באפשרויות למטה כדי להעניק גישה למשתמשים או תפקידים אחרים. כל מי שלא "
+"נוסף כאן לא יראה את OttoKit בתפריט הניהול של WordPress שלהם."
+
+#: app/build/main.js:4994
+#: app/src/components/Settings/Settings.jsx:244
+#: app/build/main.js:4890
+msgid "Select Users"
+msgstr "בחר משתמשים"
+
+#: app/build/main.js:4999
+#: app/src/components/Settings/Settings.jsx:249
+#: app/build/main.js:4895
+msgid "Select users who can view and access the OttoKit interface."
+msgstr "בחר משתמשים שיכולים לצפות ולגשת לממשק של OttoKit."
+
+#: app/build/main.js:5020
+#: app/build/main.js:5065
+#: app/src/components/Settings/Settings.jsx:268
+#: app/src/components/Settings/Settings.jsx:317
+#: app/build/main.js:4914
+#: app/build/main.js:4963
+msgid "No options"
+msgstr "אין אפשרויות"
+
+#: app/build/main.js:5036
+#: app/src/components/Settings/Settings.jsx:293
+#: app/build/main.js:4939
+msgid "Select Roles"
+msgstr "בחר תפקידים"
+
+#: app/build/main.js:5041
+#: app/src/components/Settings/Settings.jsx:298
+#: app/build/main.js:4944
+msgid "Select user roles who can view and access the OttoKit interface."
+msgstr "בחר תפקידי משתמשים שיכולים לצפות ולגשת לממשק של OttoKit."
+
+#: app/build/main.js:5086
+#: app/src/components/Settings/Settings.jsx:349
+#: app/build/main.js:4995
+msgid "Save"
+msgstr "שמור"
+
+#: app/build/main.js:5090
+#: app/src/components/Settings/Settings.jsx:359
+#: app/build/main.js:5005
+msgid "Note:"
+msgstr "הערה:"
+
+#: app/build/main.js:5090
+#: app/src/components/Settings/Settings.jsx:360
+#: app/build/main.js:5006
+msgid "Administrators already have full access by default - you don’t need to add them here."
+msgstr "מנהלים כבר יש להם גישה מלאה כברירת מחדל - אינך צריך להוסיף אותם כאן."
+
+#: app/build/main.js:5096
+#: app/src/components/Settings/Settings.jsx:367
+#: app/build/main.js:5013
+msgid "Confirm Changes"
+msgstr "אשר שינויים"
+
+#: app/build/main.js:5098
+#: app/src/components/Settings/Settings.jsx:371
+#: app/build/main.js:5017
+msgid "By continuing, the selected"
+msgstr "בהמשך, ה"
+
+#: app/build/main.js:5098
+#: app/src/components/Settings/Settings.jsx:375
+#: app/build/main.js:5021
+msgid "and"
+msgstr "וה"
+
+#: app/build/main.js:5098
+#: app/src/components/Settings/Settings.jsx:376
+#: app/build/main.js:5022
+msgid ""
+"will be able to access and view the OttoKit Interface from their WordPress dashboard. Are you sure you want to allow "
+"this?"
+msgstr "יוכלו לגשת ולצפות בממשק של OttoKit מלוח המחוונים של WordPress שלהם. האם אתה בטוח שאתה רוצה לאפשר זאת?"
+
+#: app/build/main.js:5105
+#: app/src/components/Settings/Settings.jsx:389
+#: app/build/main.js:5035
+msgid "Cancel"
+msgstr "ביטול"
+
+#: app/build/main.js:5108
+#: app/src/components/Settings/Settings.jsx:395
+#: app/build/main.js:5041
+msgid "Confirm"
+msgstr "אשר"
+
+#: app/build/main.js:5255
+#: app/src/components/dashboard/index.jsx:105
+#: app/build/main.js:5158
+msgid "Disconnecting"
+msgstr "מפסיק חיבור"
+
+#: app/build/main.js:5256
+#: app/src/components/dashboard/index.jsx:106
+#: app/build/main.js:5159
+msgid "Something went wrong! please try again later"
+msgstr "משהו השתבש! אנא נסה שוב מאוחר יותר"
+
+#: app/src/components/notification/index.js:62
+msgid "Close"
+msgstr "סגור"
+
+#: src/Loader.php
+msgid "Workflows"
+msgstr "זרימות עבודה"
+
+#: src/Loader.php
+msgid "Tables"
+msgstr "טבלאות"
+
+#: src/Loader.php
+msgid "Forms"
+msgstr "טפסים"
+
+#: src/Loader.php
+msgid "MCP"
+msgstr "MCP"
+
+#: src/Loader.php
+msgid "Recipes"
+msgstr "מתכונים"
+
+#: src/Loader.php
+msgid "Folders"
+msgstr "תיקיות"
+
+#: src/Loader.php
+msgid "Email Templates"
+msgstr "תבניות דוא\"ל"
+
+#: src/Loader.php
+msgid "Variables"
+msgstr "משתנים"
+
+#: src/Loader.php
+msgid "History"
+msgstr "היסטוריה"
+
+#: src/Loader.php
+msgid "Apps"
+msgstr "אפליקציות"
+
+#: src/Loader.php
+msgid "Members"
+msgstr "חברים"
+
+#: src/Loader.php
+msgid "Settings"
+msgstr "הגדרות"
+
+#: src/Loader.php
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Troubleshooting"
+msgstr "פתרון בעיות"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If you are experiencing issues with OttoKit, clearing the cache will disconnect and re-connect your site. Your "
+"automations and settings will be preserved."
+msgstr "אם אתה נתקל בבעיות עם OttoKit, ניקוי המטמון ינתק ויחבר מחדש את האתר שלך. האוטומציות וההגדרות שלך יישמרו."
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Clear Cache & Reconnect"
+msgstr "נקה מטמון וחבר מחדש"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "When should you clear the cache?"
+msgstr "מתי כדאי לנקות את המטמון?"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "1. Connection issues after site migration"
+msgstr "1. בעיות חיבור לאחר העברת האתר"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If you recently migrated your site to a new domain or hosting provider, the stored connection tokens may still point to "
+"the old URL. Clearing the cache re-establishes the OttoKit connection with the new site URL so triggers and actions can "
+"communicate correctly."
+msgstr ""
+"אם העברת לאחרונה את האתר שלך לדומיין או ספק אירוח חדש, טוקני החיבור המאוחסנים עשויים עדיין להפנות ל-URL הישן. ניקוי "
+"המטמון מחדש מקים את החיבור של OttoKit עם ה-URL החדש של האתר כך שהטריגרים והפעולות יוכלו לתקשר כראוי."
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "2. Automations suddenly stopped firing"
+msgstr "2. אוטומציות הפסיקו לפעול בפתאומיות"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If your triggers and automations were working previously but have suddenly stopped, the authentication token or "
+"registered events may have become stale. Clearing the cache refreshes the token, re-syncs all registered events with "
+"the OttoKit server, and restores the connection."
+msgstr ""
+"אם הטריגרים והאוטומציות שלך עבדו בעבר אך הפסיקו בפתאומיות, ייתכן שטוקן האימות או האירועים הרשומים הפכו לא תקפים. ניקוי "
+"המטמון מעדכן את הטוקן, מסנכרן מחדש את כל האירועים הרשומים עם שרת OttoKit, ומחזיר את החיבור."
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "3. Unexpected behavior after a plugin update"
+msgstr "3. התנהגות בלתי צפויה לאחר עדכון תוסף"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"After updating OttoKit (or related plugins like WooCommerce, LearnDash, etc.), cached data from the previous version "
+"may cause triggers to not appear, events to not register, or the status page to show stale information. Clearing the "
+"cache resolves these version mismatch issues."
+msgstr ""
+"לאחר עדכון OttoKit (או תוספים קשורים כמו WooCommerce, LearnDash וכו'), נתוני המטמון מהגרסה הקודמת עשויים לגרום לכך "
+"שהטריגרים לא יופיעו, האירועים לא יירשמו, או שדף הסטטוס יראה מידע ישן. ניקוי המטמון פותר בעיות חוסר התאמה בין גרסאות אלו."
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"Clearing the cache will not delete your automations, settings, or connected integrations. It only resets the local "
+"connection data so your site can re-authenticate with the OttoKit platform."
+msgstr ""
+"ניקוי המטמון לא ימחק את האוטומציות, ההגדרות או האינטגרציות המחוברות שלך. זה רק מאפס את נתוני החיבור המקומיים כך שהאתר "
+"שלך יוכל לאמת מחדש עם פלטפורמת OttoKit."
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Outgoing Request Logging"
+msgstr "רישום בקשות יוצאות"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is currently disabled. No new requests are being stored. Failed requests cannot be retried automatically."
+msgstr "הרישום כבוי כרגע. אין בקשות חדשות שנשמרות. בקשות שנכשלו לא יכולות להתבצע מחדש באופן אוטומטי."
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is enabled. Every outgoing webhook request is stored in the database for retry and history."
+msgstr "הרישום פעיל. כל בקשת webhook יוצאת נשמרת במסד הנתונים לצורך ניסיון מחדש והיסטוריה."
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Enable Logging"
+msgstr "אפשר רישום"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Disable Logging"
+msgstr "כבה רישום"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Actions"
+msgstr "פעולות"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Select request %s"
+msgstr "בחר בקשה %s"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Retry Selected"
+msgstr "ניסיון מחדש שנבחר"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Delete Selected"
+msgstr "מחק שנבחר"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Rerun"
+msgstr "הרץ מחדש"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "View Response"
+msgstr "צפה בתגובה"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Pending Requests"
+msgstr "בקשות ממתינות"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "From date"
+msgstr "מתאריך"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "To date"
+msgstr "עד תאריך"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request & Response Details"
+msgstr "פרטי בקשה ותגובה"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request Data"
+msgstr "נתוני בקשה"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Please select at least one request."
+msgstr "אנא בחר לפחות בקשה אחת."

@@ -5288,3 +5288,166 @@ msgstr ""
 #: app/src/components/notification/index.js:62
 msgid "Close"
 msgstr ""
+
+#: src/Loader.php
+msgid "Workflows"
+msgstr ""
+
+#: src/Loader.php
+msgid "Tables"
+msgstr ""
+
+#: src/Loader.php
+msgid "Forms"
+msgstr ""
+
+#: src/Loader.php
+msgid "MCP"
+msgstr ""
+
+#: src/Loader.php
+msgid "Recipes"
+msgstr ""
+
+#: src/Loader.php
+msgid "Folders"
+msgstr ""
+
+#: src/Loader.php
+msgid "Email Templates"
+msgstr ""
+
+#: src/Loader.php
+msgid "Variables"
+msgstr ""
+
+#: src/Loader.php
+msgid "History"
+msgstr ""
+
+#: src/Loader.php
+msgid "Apps"
+msgstr ""
+
+#: src/Loader.php
+msgid "Members"
+msgstr ""
+
+#: src/Loader.php
+msgid "Settings"
+msgstr ""
+
+
+#: src/Loader.php
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Troubleshooting"
+msgstr ""
+
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "If you are experiencing issues with OttoKit, clearing the cache will disconnect and re-connect your site. Your automations and settings will be preserved."
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Clear Cache & Reconnect"
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "When should you clear the cache?"
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "1. Connection issues after site migration"
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "If you recently migrated your site to a new domain or hosting provider, the stored connection tokens may still point to the old URL. Clearing the cache re-establishes the OttoKit connection with the new site URL so triggers and actions can communicate correctly."
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "2. Automations suddenly stopped firing"
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "If your triggers and automations were working previously but have suddenly stopped, the authentication token or registered events may have become stale. Clearing the cache refreshes the token, re-syncs all registered events with the OttoKit server, and restores the connection."
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "3. Unexpected behavior after a plugin update"
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "After updating OttoKit (or related plugins like WooCommerce, LearnDash, etc.), cached data from the previous version may cause triggers to not appear, events to not register, or the status page to show stale information. Clearing the cache resolves these version mismatch issues."
+msgstr ""
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Clearing the cache will not delete your automations, settings, or connected integrations. It only resets the local connection data so your site can re-authenticate with the OttoKit platform."
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Outgoing Request Logging"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is currently disabled. No new requests are being stored. Failed requests cannot be retried automatically."
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is enabled. Every outgoing webhook request is stored in the database for retry and history."
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Enable Logging"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Disable Logging"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Actions"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Select request %s"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Retry Selected"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Delete Selected"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Rerun"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "View Response"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Pending Requests"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "From date"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "To date"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request & Response Details"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request Data"
+msgstr ""
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Please select at least one request."
+msgstr ""

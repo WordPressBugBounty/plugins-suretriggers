@@ -10506,11 +10506,38 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$fields_arr = [];
 			}
 
-			$context['pluggable_data'] = array_merge( $result, $fields_arr, $event, $customer_result, $coupon_result, $tags );
+			$event_period_data = [];
+			if ( ! empty( $result['eventPeriodId'] ) ) {
+				$period_row = $wpdb->get_row(
+					$wpdb->prepare(
+						'SELECT periodStart, periodEnd FROM ' . $wpdb->prefix . 'amelia_events_periods WHERE id = %d',
+						[ $result['eventPeriodId'] ]
+					),
+					ARRAY_A
+				);
+				if ( ! empty( $period_row ) ) {
+					$event_period_data = $period_row;
+				}
+			}
+
+			$payment_data = [];
+			if ( ! empty( $result['customerBookingId'] ) ) {
+				$amount_paid  = $wpdb->get_var(
+					$wpdb->prepare(
+						'SELECT SUM(amount) FROM ' . $wpdb->prefix . 'amelia_payments WHERE customerBookingId = %d AND status = %s',
+						[ $result['customerBookingId'], 'paid' ]
+					)
+				);
+				$payment_data = [
+					'amountPaid' => null !== $amount_paid ? $amount_paid : '0',
+				];
+			}
+
+			$context['pluggable_data'] = array_merge( $result, $fields_arr, $event, $customer_result, $coupon_result, $tags, $event_period_data, $payment_data );
 			$context['response_type']  = 'live';
 		} else {
 
-			$context = json_decode( '{"response_type": "sample","pluggable_data": {"id": "1","appointmentId": null,"customerId": "1","status": "visible","price": "10","persons": "1","couponId": null,"token": "6485b07ce9","info": "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"phone\":\"+213551223123\",\"locale\":\"en_US\",\"timeZone\":\"Asia\\/Kolkata\",\"urlParams\":null}","utcOffset": null,"aggregatedPrice": "1","packageCustomerServiceId": null,"duration": null,"created": "2023-02-02 06:35:18","actionsCompleted": "1","Do You Know Automation?": "Yes","When Are You Coming?": "2023-04-20","Upload Something": "","Tell Us About You!": "Hey there!","customerBookingId": "105","eventPeriodId": "5","parentId": null,"name": "Music Event","bookingOpens": null,"bookingCloses": "2023-02-09 08:00:00","bookingOpensRec": "same","bookingClosesRec": "same","ticketRangeRec": "calculate","recurringCycle": null,"recurringOrder": null,"recurringInterval": null,"recurringMonthly": null,"monthlyDate": null,"monthlyOnRepeat": null,"monthlyOnDay": null,"recurringUntil": null,"maxCapacity": "12","maxCustomCapacity": null,"maxExtraPeople": null,"locationId": null,"customLocation": "Kolkata","description": null,"color": "#1788FB","show": "1","notifyParticipants": "1","settings": "{\"payments\":{\"onSite\":true,\"payPal\":{\"enabled\":false},\"stripe\":{\"enabled\":false},\"mollie\":{\"enabled\":false},\"razorpay\":{\"enabled\":false}},\"general\":{\"minimumTimeRequirementPriorToCanceling\":null,\"redirectUrlAfterAppointment\":null},\"zoom\":{\"enabled\":false},\"lessonSpace\":{\"enabled\":false}}","zoomUserId": null,"bringingAnyone": "1","bookMultipleTimes": "1","translations": "{\"defaultLanguage\":\"en_US\"}","depositPayment": "disabled","depositPerPerson": "1","fullPayment": "0","deposit": "0","customPricing": "0","organizerId": "2","closeAfterMin": null,"closeAfterMinBookings": "0","type": "customer","externalId": "91","firstName": "John","lastName": "Doe","email": "johnd@gmail.com","birthday": null,"phone": "+213551223123","gender": null,"note": null,"pictureFullPath": null,"pictureThumbPath": null,"password": null,"usedTokens": null,"countryPhoneIso": "dz","timeZone": null}}', true );
+			$context = json_decode( '{"response_type": "sample","pluggable_data": {"id": "1","appointmentId": null,"customerId": "1","status": "visible","price": "10","persons": "1","couponId": null,"token": "6485b07ce9","info": "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"phone\":\"+213551223123\",\"locale\":\"en_US\",\"timeZone\":\"Asia\\/Kolkata\",\"urlParams\":null}","utcOffset": null,"aggregatedPrice": "1","packageCustomerServiceId": null,"duration": null,"created": "2023-02-02 06:35:18","actionsCompleted": "1","Do You Know Automation?": "Yes","When Are You Coming?": "2023-04-20","Upload Something": "","Tell Us About You!": "Hey there!","customerBookingId": "105","eventPeriodId": "5","parentId": null,"name": "Music Event","bookingOpens": null,"bookingCloses": "2023-02-09 08:00:00","bookingOpensRec": "same","bookingClosesRec": "same","ticketRangeRec": "calculate","recurringCycle": null,"recurringOrder": null,"recurringInterval": null,"recurringMonthly": null,"monthlyDate": null,"monthlyOnRepeat": null,"monthlyOnDay": null,"recurringUntil": null,"maxCapacity": "12","maxCustomCapacity": null,"maxExtraPeople": null,"locationId": null,"customLocation": "Kolkata","description": null,"color": "#1788FB","show": "1","notifyParticipants": "1","settings": "{\"payments\":{\"onSite\":true,\"payPal\":{\"enabled\":false},\"stripe\":{\"enabled\":false},\"mollie\":{\"enabled\":false},\"razorpay\":{\"enabled\":false}},\"general\":{\"minimumTimeRequirementPriorToCanceling\":null,\"redirectUrlAfterAppointment\":null},\"zoom\":{\"enabled\":false},\"lessonSpace\":{\"enabled\":false}}","zoomUserId": null,"bringingAnyone": "1","bookMultipleTimes": "1","translations": "{\"defaultLanguage\":\"en_US\"}","depositPayment": "disabled","depositPerPerson": "1","fullPayment": "0","deposit": "0","customPricing": "0","organizerId": "2","closeAfterMin": null,"closeAfterMinBookings": "0","type": "customer","externalId": "91","firstName": "John","lastName": "Doe","email": "johnd@gmail.com","birthday": null,"phone": "+213551223123","gender": null,"note": null,"pictureFullPath": null,"pictureThumbPath": null,"password": null,"usedTokens": null,"countryPhoneIso": "dz","timeZone": null,"periodStart": "2023-04-20 10:00:00","periodEnd": "2023-04-20 12:00:00","amountPaid": "10"}}', true );
 		}
 
 		return $context;

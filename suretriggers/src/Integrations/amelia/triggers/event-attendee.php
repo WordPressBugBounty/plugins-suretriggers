@@ -183,7 +183,34 @@ if ( ! class_exists( 'EventAttendee' ) ) :
 				$fields_arr = [];
 			}
 
-			$context                       = array_merge( $result, $fields_arr, $event, $customer_result, $coupon_result, $tags );
+			$event_period_data = [];
+			if ( ! empty( $result['eventPeriodId'] ) ) {
+				$period_row = $wpdb->get_row(
+					$wpdb->prepare(
+						'SELECT periodStart, periodEnd FROM ' . $wpdb->prefix . 'amelia_events_periods WHERE id = %d',
+						[ $result['eventPeriodId'] ]
+					),
+					ARRAY_A
+				);
+				if ( ! empty( $period_row ) ) {
+					$event_period_data = $period_row;
+				}
+			}
+
+			$payment_data = [];
+			if ( ! empty( $result['customerBookingId'] ) ) {
+				$amount_paid  = $wpdb->get_var(
+					$wpdb->prepare(
+						'SELECT SUM(amount) FROM ' . $wpdb->prefix . 'amelia_payments WHERE customerBookingId = %d AND status = %s',
+						[ $result['customerBookingId'], 'paid' ]
+					)
+				);
+				$payment_data = [
+					'amountPaid' => null !== $amount_paid ? $amount_paid : '0',
+				];
+			}
+
+			$context                       = array_merge( $result, $fields_arr, $event, $customer_result, $coupon_result, $tags, $event_period_data, $payment_data );
 			$context['amelia_events_list'] = $args['event']['id'];
 
 			AutomationController::sure_trigger_handle_trigger(

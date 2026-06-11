@@ -1,0 +1,5510 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OttoKit\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/suretriggers\n"
+"Last-Translator: gpt-po v1.2.3\n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Domain: suretriggers\n"
+
+#: suretriggers.php
+#: src/Controllers/RestController.php:625
+#: src/Loader.php:353
+#. Plugin Name of the plugin
+#. Author of the plugin
+msgid "OttoKit"
+msgstr "奥托套件"
+
+#: suretriggers.php
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://ottokit.com/"
+msgstr "https://ottokit.com/"
+
+#: suretriggers.php
+#. Description of the plugin
+msgid ""
+"OttoKit helps people automate their work by integrating multiple apps and plugins, allowing them to share data and "
+"perform tasks automatically."
+msgstr "奥托套件通过整合多个应用程序和插件，帮助人们自动化工作，使他们能够共享数据并自动执行任务。"
+
+#: functions.php:95
+msgid "Click here"
+msgstr "点击这里"
+
+#: functions.php:100
+msgid "Clicking..."
+msgstr "点击中..."
+
+#: functions.php:101
+msgid "Clicked!!"
+msgstr "已点击！！"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:96
+msgid "ID"
+msgstr "ID"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:97
+msgid "Response Code"
+msgstr "响应代码"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:98
+#: src/Controllers/GlobalSearchController.php:4369
+#: src/Loader.php:375
+#: src/Loader.php:620
+msgid "Status"
+msgstr "状态"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:99
+msgid "Trigger Event"
+msgstr "触发事件"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:100
+msgid "Error Info"
+msgstr "错误信息"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:101
+msgid "Created At"
+msgstr "创建于"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:102
+#: src/Admin/Views/st-admin-outgoing-req-page.php:129
+msgid "Retry"
+msgstr "重试"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:225
+msgid "All Requests"
+msgstr "所有请求"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:227
+msgid "Success Requests"
+msgstr "成功请求"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:230
+msgid "Failed Requests"
+msgstr "失败请求"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:233
+msgid "Filter"
+msgstr "过滤"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php:258
+msgid ""
+"Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be "
+"automatically deleted after 60 days."
+msgstr "注意：成功的外发请求将在30天后自动删除，而失败的外发请求将在60天后自动删除。"
+
+#: src/Admin/Views/st-admin-system-page.php:15
+msgid "Registered Events"
+msgstr "注册事件"
+
+#: src/Admin/Views/st-admin-system-page.php:57
+msgid "No Trigger registered yet."
+msgstr "尚未注册触发器。"
+
+#: src/Controllers/GlobalSearchController.php:2157
+msgid "No title"
+msgstr "无标题"
+
+#: src/Controllers/GlobalSearchController.php:3068
+msgid "Subscribed"
+msgstr "已订阅"
+
+#: src/Controllers/GlobalSearchController.php:3072
+msgid "Pending"
+msgstr "待处理"
+
+#: src/Controllers/GlobalSearchController.php:3076
+msgid "Unsubscribed"
+msgstr "已退订"
+
+#: src/Controllers/GlobalSearchController.php:3080
+msgid "Bounced"
+msgstr "退回"
+
+#: src/Controllers/GlobalSearchController.php:3084
+msgid "Complained"
+msgstr "投诉"
+
+#: src/Controllers/GlobalSearchController.php:3106
+msgid "Yes"
+msgstr "是"
+
+#: src/Controllers/GlobalSearchController.php:3110
+msgid "No"
+msgstr "否"
+
+#: src/Controllers/GlobalSearchController.php:3258
+msgid "Lead"
+msgstr "潜在客户"
+
+#: src/Controllers/GlobalSearchController.php:3262
+msgid "Customer"
+msgstr "客户"
+
+#: src/Controllers/GlobalSearchController.php:3266
+msgid "Refused"
+msgstr "拒绝"
+
+#: src/Controllers/GlobalSearchController.php:3270
+msgid "Blacklisted"
+msgstr "黑名单"
+
+#: src/Controllers/GlobalSearchController.php:3274
+msgid "Cancelled by Customer"
+msgstr "客户取消"
+
+#: src/Controllers/GlobalSearchController.php:3278
+msgid "Cancelled by Us (Pre-Quote)"
+msgstr "我们取消（报价前）"
+
+#: src/Controllers/GlobalSearchController.php:3282
+msgid "Cancelled by Us (Post-Quote)"
+msgstr "我们取消（报价后）"
+
+#: src/Controllers/GlobalSearchController.php:4322
+msgid "User Name"
+msgstr "用户名"
+
+#: src/Controllers/GlobalSearchController.php:4326
+msgid "User Email"
+msgstr "用户邮箱"
+
+#: src/Controllers/GlobalSearchController.php:4330
+msgid "Display Name"
+msgstr "显示名称"
+
+#: src/Controllers/GlobalSearchController.php:4334
+msgid "User Password"
+msgstr "用户密码"
+
+#: src/Controllers/GlobalSearchController.php:4338
+#: src/Controllers/GlobalSearchController.php:9834
+#: src/Controllers/GlobalSearchController.php:9905
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:127
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:116
+msgid "Website"
+msgstr "网站"
+
+#: src/Controllers/GlobalSearchController.php:4361
+msgid "Type"
+msgstr "类型"
+
+#: src/Controllers/GlobalSearchController.php:4377
+msgid "Author"
+msgstr "作者"
+
+#: src/Controllers/GlobalSearchController.php:4385
+#: src/Integrations/voxel/voxel.php:275
+msgid "Title"
+msgstr "标题"
+
+#: src/Controllers/GlobalSearchController.php:4392
+msgid "Slug"
+msgstr "别名"
+
+#: src/Controllers/GlobalSearchController.php:4399
+msgid "Content"
+msgstr "内容"
+
+#: src/Controllers/GlobalSearchController.php:9834
+#: src/Controllers/GlobalSearchController.php:9905
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:127
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:116
+msgid "Mockup"
+msgstr "模型"
+
+#: src/Controllers/GlobalSearchController.php:9835
+#: src/Controllers/GlobalSearchController.php:9906
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:128
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:117
+msgid "Resolved"
+msgstr "已解决"
+
+#: src/Controllers/GlobalSearchController.php:9835
+#: src/Controllers/GlobalSearchController.php:9906
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:128
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:117
+msgid "Unresolved"
+msgstr "未解决"
+
+#: src/Controllers/GlobalSearchController.php:14340
+msgid "Level"
+msgstr "级别"
+
+#: src/Controllers/RestController.php:511
+#: src/Controllers/WebhookRequestsController.php:200
+#: src/Controllers/WebhookRequestsController.php:250
+msgid "Service not available"
+msgstr "服务不可用"
+
+#: src/Controllers/RestController.php:585
+msgid "Connection Successfully Set"
+msgstr "连接成功建立"
+
+#: src/Controllers/RestController.php:587
+msgid "Error in Connection"
+msgstr "连接错误"
+
+#: src/Controllers/RestController.php:592
+#: src/Loader.php:374
+msgid "OttoKit Status"
+msgstr "奥托套件状态"
+
+#: src/Controllers/RestController.php:597
+msgid "Rest URL"
+msgstr "REST URL"
+
+#: src/Controllers/RestController.php:602
+msgid "OttoKit Version"
+msgstr "奥托套件版本"
+
+#: src/Controllers/RestController.php:610
+msgid "Encryption Key"
+msgstr "加密密钥"
+
+#: src/Controllers/RestController.php:611
+#: src/Controllers/RestController.php:619
+msgid "Defined"
+msgstr "已定义"
+
+#: src/Controllers/RestController.php:618
+msgid "Encryption Salt"
+msgstr "加密盐"
+
+#: src/Controllers/WebhookRequestsController.php:72
+msgid "Every 30 minutes"
+msgstr "每30分钟"
+
+#: src/Controllers/WebhookRequestsController.php:76
+msgid "Every 6 hours"
+msgstr "每6小时"
+
+#: src/Integrations/academylms/academylms.php:35
+msgid "Academy LMS"
+msgstr "学院LMS"
+
+#: src/Integrations/academylms/academylms.php:36
+#: src/Integrations/advanced-ads/advanced-ads.php:36
+msgid "A Powerful WordPress Ad Management Plugin. Advanced Ads is a great plugin that makes it easier to manage your ads."
+msgstr "一个强大的WordPress广告管理插件。Advanced Ads是一个很棒的插件，使您更容易管理广告。"
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:54
+#: src/Integrations/learnpress/actions/lp-enroll-user-course.php:55
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:54
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:59
+#: src/Integrations/wp-courseware/actions/wpcw-enroll-user-to-course.php:54
+msgid "Enroll User To Course"
+msgstr "将用户注册到课程"
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:108
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:115
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:122
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:129
+#: src/Integrations/asgaros/actions/subscribeuserinforum.php:85
+#: src/Integrations/bbpress/actions/addreplyintopic.php:87
+#: src/Integrations/bbpress/actions/addtopicinforum.php:89
+#: src/Integrations/bbpress/actions/subscribeuserinforum.php:82
+#: src/Integrations/learndash-achievements/actions/award-achievement-to-user.php:126
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:104
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:111
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:108
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:212
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:137
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:211
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:85
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:92
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:104
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:235
+#: src/Integrations/metabox/actions/get-object-fields.php:90
+#: src/Integrations/metabox/actions/set-metavalue.php:95
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:84
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:94
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:145
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:97
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:122
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:138
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:145
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:86
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:93
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:86
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:93
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:87
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:105
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:115
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:122
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:87
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:100
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:111
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:125
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:135
+#: src/Integrations/wordpress/actions/remove-user.php:107
+#: src/Integrations/wordpress/actions/remove-user.php:113
+#: src/Integrations/wp-courseware/actions/wpcw-enroll-user-to-course.php:112
+#: src/Integrations/wp-courseware/actions/wpcw-remove-user-from-course.php:114
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:108
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:114
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:155
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:161
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:110
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:117
+#: src/Integrations/wpforo/actions/add-user-to-group.php:99
+#: src/Integrations/wpforo/actions/remove-user-from-group.php:124
+#: src/Integrations/wpforo/actions/set-user-reputation.php:103
+#: src/Integrations/wpforo/actions/wf-create-topic.php:158
+msgid "Error"
+msgstr "错误"
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:109
+msgid "Something went wrong."
+msgstr "出现问题。"
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:116
+msgid "User is already enrolled to course."
+msgstr "用户已注册课程。"
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:123
+msgid "User not exists."
+msgstr "用户不存在。"
+
+#: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:130
+#: src/Integrations/asgaros/actions/subscribeuserinforum.php:86
+#: src/Integrations/bbpress/actions/addreplyintopic.php:88
+#: src/Integrations/bbpress/actions/addtopicinforum.php:90
+#: src/Integrations/bbpress/actions/subscribeuserinforum.php:83
+#: src/Integrations/learndash-achievements/actions/award-achievement-to-user.php:127
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:112
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:109
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:93
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:94
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:94
+#: src/Integrations/wp-courseware/actions/wpcw-enroll-user-to-course.php:113
+#: src/Integrations/wp-courseware/actions/wpcw-remove-user-from-course.php:115
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:162
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:118
+#: src/Integrations/wpforo/actions/add-user-to-group.php:100
+#: src/Integrations/wpforo/actions/remove-user-from-group.php:125
+#: src/Integrations/wpforo/actions/set-user-reputation.php:104
+#: src/Integrations/wpforo/actions/wf-create-topic.php:159
+msgid "Please enter valid email address."
+msgstr "请输入有效的电子邮件地址。"
+
+#: src/Integrations/academylms/triggers/course-completed.php:73
+#: src/Integrations/learndash/triggers/user-completes-course.php:72
+#: src/Integrations/masteriyo/triggers/ma-course-completed.php:73
+#: src/Integrations/masterstudy-lms/triggers/course-completed.php:73
+#: src/Integrations/memberpress-course/triggers/course-completed.php:68
+msgid "Course Completed"
+msgstr "课程完成"
+
+#: src/Integrations/academylms/triggers/enrolled-course.php:73
+msgid "Enrolled Course"
+msgstr "已注册课程"
+
+#: src/Integrations/academylms/triggers/lesson-completed.php:73
+#: src/Integrations/learndash/triggers/user-completes-lesson.php:72
+#: src/Integrations/masteriyo/triggers/ma-lesson-completed.php:73
+#: src/Integrations/masterstudy-lms/triggers/lesson-passed.php:73
+#: src/Integrations/memberpress-course/triggers/lesson-completed.php:68
+msgid "Lesson Completed"
+msgstr "课程完成"
+
+#: src/Integrations/academylms/triggers/quiz-completed.php:73
+msgid "Quiz Completed"
+msgstr "测验完成"
+
+#: src/Integrations/academylms/triggers/quiz-failed.php:73
+#: src/Integrations/masteriyo/triggers/ma-quiz-failed.php:73
+#: src/Integrations/masterstudy-lms/triggers/quiz-failed.php:73
+msgid "Quiz Failed"
+msgstr "测验失败"
+
+#: src/Integrations/advanced-ads/actions/set-ad-status.php:58
+msgid "Set Ad Status"
+msgstr "设置广告状态"
+
+#: src/Integrations/advanced-ads/advanced-ads.php:35
+msgid "Advanced Ads"
+msgstr "高级广告"
+
+#: src/Integrations/advanced-ads/triggers/ad-status-change.php:73
+msgid "Ad Status Changed"
+msgstr "广告状态已更改"
+
+#: src/Integrations/advanced-ads/triggers/ad-status-set-to-specific-type.php:73
+msgid "Ad Status Set to Specific Type"
+msgstr "广告状态已设置为特定类型"
+
+#: src/Integrations/advanced-coupons/actions/add-store-credit-to-user.php:59
+msgid "Add Store Credit to User"
+msgstr "向用户添加商店积分"
+
+#: src/Integrations/advanced-coupons/actions/remove-store-credit-from-user.php:59
+msgid "Remove Store Credit from User"
+msgstr "从用户中移除商店积分"
+
+#: src/Integrations/advanced-coupons/advanced-coupons.php:35
+msgid "Advanced Coupons"
+msgstr "高级优惠券"
+
+#: src/Integrations/advanced-coupons/advanced-coupons.php:36
+msgid "Advanced coupons for Woocommerce"
+msgstr "Woocommerce的高级优惠券"
+
+#: src/Integrations/advanced-coupons/triggers/user-credit-exceeds-specific-amount.php:73
+#: src/Integrations/advanced-coupons/triggers/user-receives-store-credit.php:74
+msgid "User Store Credit Exceeds Specific Amount"
+msgstr "用户商店积分超过特定金额"
+
+#: src/Integrations/advanced-coupons/triggers/user-lifetime-credit-exceeds-specific-amount.php:73
+msgid "User Lifetime Credit Exceeds Specific Amount"
+msgstr "用户终身积分超过特定金额"
+
+#: src/Integrations/advanced-coupons/triggers/user-spends-store-credit.php:74
+msgid "User Spends Store Credit"
+msgstr "用户消费商店积分"
+
+#: src/Integrations/advanced-custom-fields/actions/get-option-acf-value.php:54
+msgid "Get Option Value"
+msgstr "获取选项值"
+
+#: src/Integrations/advanced-custom-fields/actions/get-post-acf-value.php:54
+msgid "Get Post Value"
+msgstr "获取帖子值"
+
+#: src/Integrations/advanced-custom-fields/actions/get-user-acf-value.php:54
+msgid "Get User Value"
+msgstr "获取用户值"
+
+#: src/Integrations/advanced-custom-fields/actions/update-group-field-value.php:53
+msgid "Add Sub Field Value in Group"
+msgstr "在组中添加子字段值"
+
+#: src/Integrations/advanced-custom-fields/actions/update-option-acf-value.php:54
+msgid "Update Option Value"
+msgstr "更新选项值"
+
+#: src/Integrations/advanced-custom-fields/actions/update-post-acf-value.php:54
+msgid "Update Post Value"
+msgstr "更新帖子值"
+
+#: src/Integrations/advanced-custom-fields/actions/update-repeater-field-value.php:54
+msgid "Update Repeater Field Value"
+msgstr "更新重复字段值"
+
+#: src/Integrations/advanced-custom-fields/actions/update-user-acf-value.php:54
+msgid "Update User Value"
+msgstr "更新用户值"
+
+#: src/Integrations/advanced-custom-fields/advanced-custom-fields.php:35
+msgid "AdvancedCustomFields"
+msgstr "高级自定义字段"
+
+#: src/Integrations/advanced-custom-fields/advanced-custom-fields.php:36
+msgid "Advanced Custom Fields (ACF) helps you easily customize WordPress with powerful, professional and intuitive fields."
+msgstr "高级自定义字段（ACF）帮助您轻松使用强大、专业和直观的字段自定义WordPress。"
+
+#: src/Integrations/advanced-custom-fields/triggers/options-acf-field-updated.php:73
+msgid "Field Updated On Options Page"
+msgstr "选项页面上的字段已更新"
+
+#: src/Integrations/advanced-custom-fields/triggers/post-acf-field-updated.php:73
+msgid "Field Updated On Post"
+msgstr "帖子上的字段已更新"
+
+#: src/Integrations/advanced-custom-fields/triggers/user-acf-field-updated.php:73
+msgid "Field Updated On User Profile"
+msgstr "用户资料上的字段已更新"
+
+#: src/Integrations/affiliatewp/actions/affiliate-create-affiliate.php:53
+#: src/Integrations/slice-wp/actions/slicewp-create-affiliate.php:56
+msgid "Create Affiliate"
+msgstr "创建联盟"
+
+#: src/Integrations/affiliatewp/actions/affiliate-create-referral-user.php:53
+msgid "Create Referral for User"
+msgstr "为用户创建推荐"
+
+#: src/Integrations/affiliatewp/actions/affiliate-create-referral.php:53
+msgid "Create Referral for specific Affiliate"
+msgstr "为特定联盟创建推荐"
+
+#: src/Integrations/affiliatewp/actions/affiliate-link-customer.php:53
+msgid "Link Customer to an Affiliate for Lifetime Commissions"
+msgstr "将客户链接到附属机构以获得终身佣金"
+
+#: src/Integrations/affiliatewp/affiliatewp.php:36
+msgid "AffiliateWP"
+msgstr "AffiliateWP"
+
+#: src/Integrations/affiliatewp/affiliatewp.php:37
+#: src/Integrations/slice-wp/slice-wp.php:36
+msgid "Affiliate Plugin for WordPress."
+msgstr "WordPress的附属插件。"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-approved.php:72
+#: src/Integrations/affiliatewp/triggers/affiliate-makes-specific-type-referral.php:71
+msgid "Affiliate Approved"
+msgstr "附属机构已批准"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-await-approval.php:70
+msgid "Affiliate Awaiting Approval"
+msgstr "附属机构待批准"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-edd-product-purchased.php:73
+msgid "Affiliate Refers a sale of Easy Digital Downloads Product"
+msgstr "附属机构推荐Easy Digital Downloads产品的销售"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-mb-product-purchased.php:72
+msgid "MemberPress Product Purchased using Affiliate Referral"
+msgstr "使用附属推荐购买的MemberPress产品"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-specific-type-referral-paid.php:71
+msgid "Affiliate Referral of Specific Type Paid"
+msgstr "特定类型的附属推荐已支付"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-specific-type-referral-rejected.php:71
+msgid "Affiliate Referral of Specific Type Rejected"
+msgstr "特定类型的附属推荐被拒绝"
+
+#: src/Integrations/affiliatewp/triggers/affiliate-wc-product-purchased.php:72
+msgid "WooCommerce Product Purchased using Affiliate Referral"
+msgstr "使用附属推荐购买的WooCommerce产品"
+
+#: src/Integrations/affiliatewp/triggers/refer-sale-of-product.php:70
+msgid "New Referral/Referral Status Updated"
+msgstr "新推荐/推荐状态已更新"
+
+#: src/Integrations/amelia/amelia.php:36
+msgid "Amelia"
+msgstr "Amelia"
+
+#: src/Integrations/amelia/amelia.php:37
+msgid "A WordPress plugin that allows you to easily schedule and manage appointments and bookings on your website."
+msgstr "一个WordPress插件，允许您轻松安排和管理网站上的约会和预订。"
+
+#: src/Integrations/amelia/triggers/appointment-booked.php:69
+#: src/Integrations/appointment-hour-booking/triggers/new-appointment.php:69
+#: src/Integrations/fluent-booking/triggers/appointment-booked.php:69
+#: src/Integrations/simply-schedule-appointments/triggers/appointment-booked.php:69
+#: src/Integrations/simply-schedule-appointments/triggers/ssa-aapointment-canceled.php:69
+msgid "New Appointment Booked"
+msgstr "新预约已预订"
+
+#: src/Integrations/amelia/triggers/appointment-booking-status-changed.php:69
+msgid "Appointment Booking Status Changed"
+msgstr "预约状态已更改"
+
+#: src/Integrations/amelia/triggers/appointment-cancelled.php:69
+#: src/Integrations/fluent-booking/triggers/appointment-cancelled.php:69
+msgid "Appointment Cancelled"
+msgstr "预约已取消"
+
+#: src/Integrations/amelia/triggers/appointment-rescheduled.php:69
+#: src/Integrations/simply-schedule-appointments/triggers/appointment-rescheduled.php:69
+msgid "Appointment Rescheduled"
+msgstr "预约已重新安排"
+
+#: src/Integrations/amelia/triggers/event-attendee.php:69
+msgid "New Event Attendee"
+msgstr "新活动参与者"
+
+#: src/Integrations/amelia/triggers/event-booking-status-changed.php:69
+msgid "Event Booking Status Changed"
+msgstr "活动预订状态已更改"
+
+#: src/Integrations/amelia/triggers/event-cancelled.php:69
+msgid "Event Cancelled"
+msgstr "活动已取消"
+
+#: src/Integrations/amelia/triggers/event-rescheduled.php:69
+msgid "Event Rescheduled"
+msgstr "活动已重新安排"
+
+#: src/Integrations/appointment-hour-booking/appointment-hour-booking.php:35
+msgid "Appointment Hour Booking"
+msgstr "预约小时预订"
+
+#: src/Integrations/appointment-hour-booking/appointment-hour-booking.php:36
+msgid "A WordPress Booking plugin."
+msgstr "一个WordPress预订插件。"
+
+#: src/Integrations/appointment-hour-booking/triggers/booking-status-updated.php:69
+msgid "Booking Status Updated"
+msgstr "预订状态已更新"
+
+#: src/Integrations/asgaros/actions/create-forum.php:59
+#: src/Integrations/buddypress/actions/create-group.php:57
+msgid "Create a group"
+msgstr "创建一个小组"
+
+#: src/Integrations/asgaros/actions/create-topic.php:59
+msgid "Create a topic"
+msgstr "创建一个主题"
+
+#: src/Integrations/asgaros/actions/post-reply-in-topic.php:59
+msgid "Post Reply in Topic"
+msgstr "在主题中回复帖子"
+
+#: src/Integrations/asgaros/actions/subscribeuserinforum.php:54
+#: src/Integrations/bbpress/actions/subscribeuserinforum.php:53
+msgid "Subscribe User In Forum"
+msgstr "在论坛中订阅用户"
+
+#: src/Integrations/asgaros/asgaros.php:35
+msgid "Asgaros"
+msgstr "Asgaros"
+
+#: src/Integrations/asgaros/asgaros.php:36
+#: src/Integrations/wpforo/wpforo.php:36
+msgid ""
+"The best WordPress forum plugin, full-fledged yet easy and light forum solution for your WordPress website. The only "
+"forum software with multiple forum layouts."
+msgstr "最好的WordPress论坛插件，功能齐全且轻便的论坛解决方案，适用于您的WordPress网站。唯一具有多种论坛布局的论坛软件。"
+
+#: src/Integrations/asgaros/triggers/user-creates-new-topic-forum.php:74
+#: src/Integrations/wpforo/triggers/user-creates-new-topic-forum.php:73
+msgid "User Creates New Topic in Forum"
+msgstr "用户在论坛中创建新主题"
+
+#: src/Integrations/asgaros/triggers/user-replies-topic-forum.php:74
+#: src/Integrations/wpforo/triggers/user-replies-topic-forum.php:73
+msgid "User Replies to Topic in Forum"
+msgstr "用户在论坛中回复主题"
+
+#: src/Integrations/AutomateAction.php:150
+#: src/Integrations/woocommerce/actions/create-coupon-code.php:86
+msgid "Required field is missing: "
+msgstr "缺少必填字段："
+
+#: src/Integrations/badgeos/actions/award-achievement-to-user.php:56
+msgid "Award a Achievement to the user"
+msgstr "授予用户成就"
+
+#: src/Integrations/badgeos/badgeos.php:35
+msgid "BadgeOS"
+msgstr "BadgeOS"
+
+#: src/Integrations/badgeos/badgeos.php:36
+msgid "BadgeOS lets your site’s users complete tasks and earn badges that recognize their achievement."
+msgstr "BadgeOS让您网站的用户完成任务并获得认可其成就的徽章。"
+
+#: src/Integrations/bbpress/actions/addreplyintopic.php:53
+msgid "Add Reply In Topic"
+msgstr "在主题中添加回复"
+
+#: src/Integrations/bbpress/actions/addtopicinforum.php:54
+msgid "Add Topic to Forum"
+msgstr "向论坛添加主题"
+
+#: src/Integrations/bbpress/bbpress.php:35
+msgid "bbPress"
+msgstr "bbPress"
+
+#: src/Integrations/bbpress/bbpress.php:36
+msgid "Discussion forums for WordPress."
+msgstr "WordPress的讨论论坛。"
+
+#: src/Integrations/bbpress/Triggers/reply-to-topic.php:71
+msgid "Reply To Topic."
+msgstr "回复主题。"
+
+#: src/Integrations/bbpress/Triggers/topic-added.php:71
+msgid "Topic Created."
+msgstr "主题已创建。"
+
+#: src/Integrations/beaver-builder/triggers/user-submit-contact-form.php:66
+msgid "User Submits Contact/Subscribe Form"
+msgstr "用户提交联系/订阅表单"
+
+#: src/Integrations/better-messages/actions/bm-post-message-to-chatroom.php:57
+msgid "Post Message to Chatroom"
+msgstr "在聊天室中发布消息"
+
+#: src/Integrations/better-messages/actions/bm-private-message-to-user.php:57
+msgid "Send Private Message"
+msgstr "发送私人消息"
+
+#: src/Integrations/better-messages/better-messages.php:36
+msgid "Better Messages"
+msgstr "更好的消息"
+
+#: src/Integrations/better-messages/better-messages.php:37
+msgid ""
+"Better Messages – is realtime private messaging system for WordPress, BuddyPress, BuddyBoss Platform, Ultimate Member, "
+"PeepSo and any other WordPress powered websites."
+msgstr "更好的消息 - 是一个实时私人消息系统，适用于WordPress、BuddyPress、BuddyBoss平台、Ultimate Member、PeepSo和任何其他WordPress驱动的网站。"
+
+#: src/Integrations/better-messages/triggers/bm-new-message-received.php:67
+msgid "New Message Received"
+msgstr "新消息已收到"
+
+#: src/Integrations/bricks-builder/bricks-builder.php:35
+msgid "Bricks"
+msgstr "Bricks"
+
+#: src/Integrations/bricks-builder/bricks-builder.php:36
+msgid "Visual Site Builder for WordPress"
+msgstr "WordPress的可视化网站构建器"
+
+#: src/Integrations/bricks-builder/triggers/bricksbuilder-submit-form.php:67
+#: src/Integrations/contact-form7/triggers/form-submit.php:72
+#: src/Integrations/convertpro/triggers/form-submit.php:72
+#: src/Integrations/divi-builder/triggers/user-submits-form.php:68
+#: src/Integrations/formidable-forms/triggers/formidable-form-submit.php:74
+#: src/Integrations/gravity-form/triggers/user-submits-form.php:72
+#: src/Integrations/happyforms/triggers/happyforms-form-submit.php:73
+#: src/Integrations/jetformbuilder/triggers/jet-form-submit.php:73
+#: src/Integrations/kadence-forms/triggers/kadence-form-submit.php:72
+#: src/Integrations/mailpoet/triggers/form-submitted.php:71
+#: src/Integrations/pie-forms/triggers/user-submit-form.php:68
+#: src/Integrations/sureforms/triggers/sureforms-form-submitted.php:72
+#: src/Integrations/thrive-leads/triggers/form-submitted.php:68
+#: src/Integrations/wpforms/triggers/user-submits-form.php:68
+#: src/Integrations/ws-form/triggers/user-submits-ws-form.php:68
+msgid "Form Submitted"
+msgstr "表单已提交"
+
+#: src/Integrations/buddyboss/Actions/add-post-to-activity-feed.php:58
+msgid "Add post to activity feed"
+msgstr "将帖子添加到活动动态"
+
+#: src/Integrations/buddyboss/Actions/add-post-to-group.php:58
+msgid "Add post to activity stream of group"
+msgstr "将帖子添加到小组的活动流"
+
+#: src/Integrations/buddyboss/Actions/add-post-to-group.php:87
+msgid "BuddyBoss Groups activity functions not found."
+msgstr "未找到BuddyBoss小组活动功能。"
+
+#: src/Integrations/buddyboss/Actions/add-post-to-user-activity-feed.php:58
+msgid "Add Post to User Activity Feed"
+msgstr "将帖子添加到用户活动动态"
+
+#: src/Integrations/buddyboss/Actions/add-user-to-group.php:58
+#: src/Integrations/wpforo/actions/add-user-to-group.php:58
+msgid "Add User to Group"
+msgstr "将用户添加到小组"
+
+#: src/Integrations/buddyboss/Actions/add-user-to-group.php:81
+msgid "BuddyBoss Groups join function not found."
+msgstr "未找到BuddyBoss小组加入功能。"
+
+#: src/Integrations/buddyboss/Actions/change-user-member-type.php:58
+msgid "Change Member Profile Type"
+msgstr "更改成员资料类型"
+
+#: src/Integrations/buddyboss/Actions/create-group.php:57
+msgid "Create Group"
+msgstr "创建小组"
+
+#: src/Integrations/buddyboss/Actions/end-friendship-with-user.php:57
+msgid "End friendship with user"
+msgstr "结束与用户的友谊"
+
+#: src/Integrations/buddyboss/Actions/follow-user.php:57
+#: src/Integrations/peepso/actions/follow-user.php:59
+msgid "Follow User"
+msgstr "关注用户"
+
+#: src/Integrations/buddyboss/Actions/get-forum-subscribers.php:56
+msgid "Get Forum Subscribers"
+msgstr "获取论坛订阅者"
+
+#: src/Integrations/buddyboss/Actions/post-reply-topic-forum.php:57
+msgid "Post Reply Topic In Forum"
+msgstr "在论坛中回复主题"
+
+#: src/Integrations/buddyboss/Actions/post-topic-in-forum.php:57
+msgid "Post Topic In Forum"
+msgstr "在论坛中发布主题"
+
+#: src/Integrations/buddyboss/Actions/remove-user-from-group.php:58
+#: src/Integrations/suremembers/actions/remove-access-from-group.php:57
+#: src/Integrations/wpforo/actions/remove-user-from-group.php:58
+msgid "Remove User from Group"
+msgstr "从小组中移除用户"
+
+#: src/Integrations/buddyboss/Actions/remove-user-from-group.php:81
+msgid "BuddyBoss Groups functions not found."
+msgstr "未找到BuddyBoss小组功能。"
+
+#: src/Integrations/buddyboss/Actions/send-friend-request-user.php:57
+#: src/Integrations/buddypress/actions/send-friendship-request-user.php:57
+msgid "Send a friendship request to a user"
+msgstr "向用户发送好友请求"
+
+#: src/Integrations/buddyboss/Actions/send-message-to-group-members.php:58
+msgid "Send Message to Group Members"
+msgstr "向小组成员发送消息"
+
+#: src/Integrations/buddyboss/Actions/send-message-to-user.php:57
+msgid "Send Message"
+msgstr "发送消息"
+
+#: src/Integrations/buddyboss/Actions/send-notification-to-all-members-of-group.php:123
+msgid "Send Notification To All Members Of Group"
+msgstr "向小组的所有成员发送通知"
+
+#: src/Integrations/buddyboss/Actions/send-notification-to-all-members-of-group.php:145
+msgid "BuddyBoss core functions not found."
+msgstr "未找到BuddyBoss核心功能。"
+
+#: src/Integrations/buddyboss/Actions/set-user-extended-profile.php:58
+msgid "Set User Extended Profile"
+msgstr "设置用户扩展资料"
+
+#: src/Integrations/buddyboss/Actions/set-user-status.php:57
+msgid "Set User Status"
+msgstr "设置用户状态"
+
+#: src/Integrations/buddyboss/Actions/stop-following-user.php:58
+msgid "Stop Following User"
+msgstr "停止关注用户"
+
+#: src/Integrations/buddyboss/Actions/subscribe-user-to-forum.php:57
+msgid "Subscribe User to Forum"
+msgstr "订阅用户到论坛"
+
+#: src/Integrations/buddyboss/buddyboss.php:35
+msgid "BuddyBoss"
+msgstr "BuddyBoss"
+
+#: src/Integrations/buddyboss/Triggers/user-accepts-friendship-request.php:71
+msgid "User Accepts Request"
+msgstr "用户接受请求"
+
+#: src/Integrations/buddyboss/Triggers/user-account-activated.php:71
+msgid "User Account Activated"
+msgstr "用户账户已激活"
+
+#: src/Integrations/buddyboss/Triggers/user-creates-group.php:71
+msgid "User Creates Group"
+msgstr "用户创建小组"
+
+#: src/Integrations/buddyboss/Triggers/user-gains-follower.php:71
+#: src/Integrations/peepso/triggers/user-gains-follower.php:67
+msgid "User Gains Follower"
+msgstr "用户获得关注者"
+
+#: src/Integrations/buddyboss/Triggers/user-joins-private-group.php:71
+msgid "User Joins Private Group."
+msgstr "用户加入私人小组。"
+
+#: src/Integrations/buddyboss/Triggers/user-joins-public-group.php:71
+msgid "User Joins Public Group."
+msgstr "用户加入公共小组。"
+
+#: src/Integrations/buddyboss/Triggers/user-joins-specific-type-group.php:71
+msgid "User Joins Specific Type of Group."
+msgstr "用户加入特定类型的小组。"
+
+#: src/Integrations/buddyboss/Triggers/user-leaves-group.php:71
+msgid "User Leaves Group"
+msgstr "用户离开小组"
+
+#: src/Integrations/buddyboss/Triggers/user-leaves-private-group.php:71
+msgid "User Leaves Private Group"
+msgstr "用户离开私人小组"
+
+#: src/Integrations/buddyboss/Triggers/user-profile-type-set-to-specific-type.php:71
+msgid "User Profile Type Set To Specific Type"
+msgstr "用户资料类型设置为特定类型"
+
+#: src/Integrations/buddyboss/Triggers/user-requests-access-private-group.php:71
+msgid "User Requests Access Private Group"
+msgstr "用户请求访问私人小组"
+
+#: src/Integrations/buddyboss/Triggers/user-send-friendship-request.php:71
+msgid "User Sends Request"
+msgstr "用户发送请求"
+
+#: src/Integrations/buddyboss/Triggers/user-updates-profile.php:71
+msgid "User Updates Profile"
+msgstr "用户更新资料"
+
+#: src/Integrations/buddypress/actions/add-post-activity-stream-to-group.php:58
+msgid "Add a post to the activity stream of a group"
+msgstr "向小组的活动流添加帖子"
+
+#: src/Integrations/buddypress/actions/add-post-sitewide-activity-stream.php:58
+msgid "Add a post to the sitewide activity stream"
+msgstr "向全站活动流添加帖子"
+
+#: src/Integrations/buddypress/actions/add-post-user-activity-stream.php:58
+msgid "Add a post to the user's activity stream"
+msgstr "向用户的活动流添加帖子"
+
+#: src/Integrations/buddypress/actions/add-user-to-group.php:57
+msgid "Add user to group"
+msgstr "将用户添加到小组"
+
+#: src/Integrations/buddypress/actions/change-user-member-type.php:57
+msgid "Set the user's member type to a specific type"
+msgstr "将用户的成员类型设置为特定类型"
+
+#: src/Integrations/buddypress/actions/end-friendship-with-user.php:57
+msgid "End friendship with a user"
+msgstr "与用户结束友谊"
+
+#: src/Integrations/buddypress/actions/remove-user-from-group.php:57
+msgid "Remove the user from a group"
+msgstr "从小组中移除用户"
+
+#: src/Integrations/buddypress/actions/send-all-members-group-notification.php:77
+msgid "Send all members of a group a notification"
+msgstr "向小组的所有成员发送通知"
+
+#: src/Integrations/buddypress/actions/send-private-message-user.php:57
+msgid "Send a private message to the user"
+msgstr "向用户发送私信"
+
+#: src/Integrations/buddypress/actions/send-user-notification.php:77
+msgid "Send the user a notification"
+msgstr "向用户发送通知"
+
+#: src/Integrations/buddypress/actions/set-user-xprofile-data.php:57
+msgid "Set The User's Extended Profile Data"
+msgstr "设置用户的扩展资料数据"
+
+#: src/Integrations/buddypress/buddypress.php:36
+msgid "BuddyPress"
+msgstr "BuddyPress"
+
+#: src/Integrations/buddypress/buddypress.php:37
+#: src/Integrations/gamipress/gamipress.php:37
+msgid "A WordPress plugin that lets you gamify your WordPress website."
+msgstr "一个让您为WordPress网站添加游戏化功能的插件。"
+
+#: src/Integrations/buddypress/triggers/bp-user-joins-public-group.php:73
+msgid "A user joins a public group"
+msgstr "用户加入公共小组"
+
+#: src/Integrations/buddypress/triggers/bp-user-leaves-group.php:73
+msgid "A user leaves a group"
+msgstr "用户离开小组"
+
+#: src/Integrations/buddypress/triggers/user-accepts-friend-request.php:73
+msgid "A user accepts a friendship request"
+msgstr "用户接受好友请求"
+
+#: src/Integrations/buddypress/triggers/user-account-activated.php:73
+msgid "The user's account is activated"
+msgstr "用户的账户已激活"
+
+#: src/Integrations/buddypress/triggers/user-connection-request-accepted.php:73
+msgid "A user's connection request is accepted"
+msgstr "用户的连接请求被接受"
+
+#: src/Integrations/buddypress/triggers/user-creates-group.php:73
+msgid "A user creates a group"
+msgstr "用户创建小组"
+
+#: src/Integrations/buddypress/triggers/user-joins-private-group.php:73
+msgid "A user joins a private group"
+msgstr "用户加入私人小组"
+
+#: src/Integrations/buddypress/triggers/user-member-type-changed.php:73
+msgid "A user's member type is set to a specific type"
+msgstr "用户的成员类型设置为特定类型"
+
+#: src/Integrations/buddypress/triggers/user-posts-activity-group.php:74
+msgid "A user makes a post to the activity stream of a group"
+msgstr "用户在小组的活动流中发布帖子"
+
+#: src/Integrations/buddypress/triggers/user-posts-activity-stream.php:74
+msgid "A user posts activity to their stream"
+msgstr "用户在他们的流中发布活动"
+
+#: src/Integrations/buddypress/triggers/user-registers-specific-field-value.php:73
+msgid "A user registers with specific field"
+msgstr "用户使用特定字段注册"
+
+#: src/Integrations/buddypress/triggers/user-requests-access-private-group.php:73
+msgid "A user requests access to a private group"
+msgstr "用户请求访问私人小组"
+
+#: src/Integrations/buddypress/triggers/user-sends-friend-request.php:73
+msgid "A user sends a friendship request"
+msgstr "用户发送好友请求"
+
+#: src/Integrations/buddypress/triggers/user-updates-avatar.php:73
+msgid "A user updates their avatar"
+msgstr "用户更新他们的头像"
+
+#: src/Integrations/buddypress/triggers/user-updates-profile-specific-field.php:73
+msgid "A user updates their profile in a specific field"
+msgstr "用户在特定字段中更新他们的资料"
+
+#: src/Integrations/buddypress/triggers/user-updates-profile.php:73
+msgid "A user updates their profile"
+msgstr "用户更新他们的资料"
+
+#: src/Integrations/cartflows/cartflows.php:36
+msgid "CartFlows"
+msgstr "CartFlows"
+
+#: src/Integrations/cartflows/cartflows.php:37
+msgid "Create beautiful checkout pages & sales flows for WooCommerce."
+msgstr "为WooCommerce创建美丽的结账页面和销售流程。"
+
+#: src/Integrations/cartflows/triggers/accept-downsell.php:69
+msgid "User accepts a downsell"
+msgstr "用户接受降价销售"
+
+#: src/Integrations/cartflows/triggers/accept-upsell.php:69
+msgid "User accepts a one click upsell"
+msgstr "用户接受一键加售"
+
+#: src/Integrations/cartflows/triggers/decline-downsell.php:69
+msgid "User declines downsell"
+msgstr "用户拒绝降价销售"
+
+#: src/Integrations/cartflows/triggers/decline-upsell.php:69
+msgid "User declines a one click upsell"
+msgstr "用户拒绝一键加售"
+
+#: src/Integrations/cartflows/triggers/downsell-offer-skipped.php:69
+msgid "Downsell Offer Skipped"
+msgstr "跳过降价销售优惠"
+
+#: src/Integrations/cartflows/triggers/order-bump-item-added.php:69
+msgid "Order Bump Item Added"
+msgstr "订单附加项已添加"
+
+#: src/Integrations/cartflows/triggers/order-bump-item-removed.php:69
+#: src/Integrations/cartflows/triggers/order-bump-item-replaced.php:69
+msgid "Order Bump Item Removed"
+msgstr "订单附加项已移除"
+
+#: src/Integrations/cartflows/triggers/pre-checkout-offer-item-added.php:69
+msgid "Pre Checkout Offer Item Added"
+msgstr "预结账优惠项已添加"
+
+#: src/Integrations/cartflows/triggers/upsell-offer-skipped.php:69
+msgid "Upsell Offer Skipped"
+msgstr "跳过加售优惠"
+
+#: src/Integrations/contact-form7/contact-form7.php:36
+msgid "Contact Form7"
+msgstr "联系表单7"
+
+#: src/Integrations/contact-form7/contact-form7.php:37
+msgid "A WordPress plugin of form submission"
+msgstr "一个WordPress表单提交插件"
+
+#: src/Integrations/convertpro/convertpro.php:36
+msgid "ConvertPro"
+msgstr "ConvertPro"
+
+#: src/Integrations/convertpro/convertpro.php:37
+msgid "A WordPress plugin to convert visitors into leads, subscribers and customers. "
+msgstr "一个将访客转化为潜在客户、订阅者和客户的WordPress插件。"
+
+#: src/Integrations/divi-builder/divi-builder.php:36
+msgid "Divi"
+msgstr "Divi"
+
+#: src/Integrations/divi-builder/divi-builder.php:37
+msgid "The Ultimate WordPress Page Builder."
+msgstr "终极WordPress页面构建器。"
+
+#: src/Integrations/easy-affiliate/actions/add-affiliate.php:58
+msgid "Add Affiliate"
+msgstr "添加联盟"
+
+#: src/Integrations/easy-affiliate/actions/record-sale-affiliate.php:60
+msgid "Record Sale for Affiliate"
+msgstr "为联盟记录销售"
+
+#: src/Integrations/easy-affiliate/easy-affiliate.php:35
+msgid "Easy Affiliate"
+msgstr "简单联盟"
+
+#: src/Integrations/easy-affiliate/easy-affiliate.php:36
+msgid "Affiliate Program Plugin for WordPress"
+msgstr "WordPress的联盟计划插件"
+
+#: src/Integrations/easy-affiliate/triggers/affiliate-added.php:72
+msgid "Affiliate Added"
+msgstr "联盟已添加"
+
+#: src/Integrations/easy-affiliate/triggers/affiliate-payout-made.php:74
+msgid "Payout made for Affiliate"
+msgstr "已为联盟支付"
+
+#: src/Integrations/easy-affiliate/triggers/affiliate-sale-recorded.php:74
+msgid "Sale Recorded for Affiliate"
+msgstr "为联盟记录的销售"
+
+#: src/Integrations/edd/actions/create-discount.php:56
+msgid "Create Discount (Free)"
+msgstr "创建折扣（免费）"
+
+#: src/Integrations/edd/actions/delete-discount.php:56
+msgid "Delete Discount"
+msgstr "删除折扣"
+
+#: src/Integrations/edd/actions/edd-create-discount.php:57
+msgid "Create Discount"
+msgstr "创建折扣"
+
+#: src/Integrations/edd/actions/find-user-have-active-inactive-license-for-specific-download.php:57
+#: src/Integrations/edd/actions/find-user-have-subscription-for-specific-download.php:58
+msgid "User have subscription for download"
+msgstr "用户有下载订阅"
+
+#: src/Integrations/edd/actions/find-user-purchased-download.php:57
+msgid "User has purchased a download"
+msgstr "用户已购买下载"
+
+#: src/Integrations/edd/edd.php:39
+msgid "EDD"
+msgstr "EDD"
+
+#: src/Integrations/edd/edd.php:40
+msgid "Easy Digital Downloads is a complete eCommerce solution for selling digital products on WordPress."
+msgstr "Easy Digital Downloads是一个完整的电子商务解决方案，用于在WordPress上销售数字产品。"
+
+#: src/Integrations/edd/triggers/edd-licensekey-activated.php:71
+#: src/Integrations/edd/triggers/edd-licensekey-deactivated.php:71
+#: src/Integrations/edd/triggers/edd-new-licensekey-created.php:71
+msgid "New License Key"
+msgstr "新许可证密钥"
+
+#: src/Integrations/edd/triggers/edd-licensekey-status-changed-to-active.php:71
+#: src/Integrations/edd/triggers/edd-licensekey-status-changed-to-inactive.php:71
+msgid "License Key Status Changed To Active"
+msgstr "许可证密钥状态已更改为活动"
+
+#: src/Integrations/edd/triggers/edd-licensekey-status-changed-to-disabled.php:71
+msgid "License Key Status Changed To Disabled"
+msgstr "许可证密钥状态已更改为禁用"
+
+#: src/Integrations/edd/triggers/edd-licensekey-status-changed-to-expired.php:71
+msgid "License Key Status Changed To Expired"
+msgstr "许可证密钥状态已更改为过期"
+
+#: src/Integrations/edd/triggers/edd-order-status-changes.php:70
+#: src/Integrations/woocommerce/triggers/order-status-changed.php:67
+msgid "Order Status Changes"
+msgstr "订单状态更改"
+
+#: src/Integrations/edd/triggers/edd-purchase-one-product.php:71
+msgid "Product Purchased"
+msgstr "产品已购买"
+
+#: src/Integrations/edd/triggers/edd-purchase-product.php:71
+msgid "Order Created"
+msgstr "订单已创建"
+
+#: src/Integrations/edd/triggers/edd-purchase-refund.php:69
+msgid "Stripe Payment Refunded"
+msgstr "Stripe支付已退款"
+
+#: src/Integrations/edd/triggers/edd-subscription-renewal.php:70
+msgid "Subscription Renewal"
+msgstr "订阅续费"
+
+#: src/Integrations/elementor-pro/elementor-pro.php:36
+msgid "Elementor"
+msgstr "Elementor"
+
+#: src/Integrations/elementor-pro/elementor-pro.php:37
+msgid ""
+"Elementor is the platform web creators choose to build professional WordPress websites, grow their skills, and build "
+"their business."
+msgstr "Elementor是网络创作者选择的平台，用于构建专业的WordPress网站，提升技能并发展业务。"
+
+#: src/Integrations/elementor-pro/triggers/elementor-new-submit-form.php:66
+#: src/Integrations/elementor-pro/triggers/elementor-submit-form.php:66
+msgid "User submits a form"
+msgstr "用户提交表单"
+
+#: src/Integrations/elementor-pro/triggers/elementor-post-published.php:67
+msgid "Post Published with Elementor"
+msgstr "使用Elementor发布的帖子"
+
+#: src/Integrations/elementor-pro/triggers/elementor-submit-form-specific-value.php:66
+msgid "Form Submitted with Specific Field Value"
+msgstr "提交具有特定字段值的表单"
+
+#: src/Integrations/event-calendar/actions/send-rsvp.php:53
+msgid "RSVP on behalf of the user for an event"
+msgstr "代表用户为活动RSVP"
+
+#: src/Integrations/event-calendar/event-calendar.php:35
+msgid "The Events Calendar"
+msgstr "活动日历"
+
+#: src/Integrations/event-calendar/event-calendar.php:36
+msgid "Easily create and manage an events calendar on your WordPress site with The Events Calendar plugin."
+msgstr "使用活动日历插件轻松创建和管理WordPress网站上的活动日历。"
+
+#: src/Integrations/event-calendar/triggers/attendee-registered-event.php:69
+msgid "Attendee Registered for Event"
+msgstr "活动的与会者已注册"
+
+#: src/Integrations/event-calendar/triggers/attendee-registers-wc.php:69
+msgid "Attendee Registered with WC"
+msgstr "与会者已使用WC注册"
+
+#: src/Integrations/event-calendar/triggers/user-attends-event.php:69
+msgid "User Attends Event"
+msgstr "用户参加活动"
+
+#: src/Integrations/event-calendar/triggers/user-register-event.php:69
+msgid "New Attendee"
+msgstr "新与会者"
+
+#: src/Integrations/events-manager/actions/unregister-user-from-event.php:55
+msgid "Unregister the user from an event"
+msgstr "取消用户在活动中的注册"
+
+#: src/Integrations/events-manager/events-manager.php:36
+msgid "Events Manager"
+msgstr "活动管理器"
+
+#: src/Integrations/events-manager/events-manager.php:37
+msgid "Easy event registration."
+msgstr "轻松的活动注册。"
+
+#: src/Integrations/events-manager/triggers/user-booking-approved.php:70
+msgid "Booking Approved"
+msgstr "预订已批准"
+
+#: src/Integrations/events-manager/triggers/user-register-in-event.php:70
+msgid "User Registered in Event"
+msgstr "用户已在活动中注册"
+
+#: src/Integrations/events-manager/triggers/user-registers-event-with-specific-ticket.php:70
+msgid "User Registers Event with Specific Ticket"
+msgstr "用户注册具有特定票的活动"
+
+#: src/Integrations/events-manager/triggers/user-unregister-from-event.php:70
+msgid "User Unregister from event"
+msgstr "用户取消注册活动"
+
+#: src/Integrations/fluent-boards/actions/add-user-to-board.php:59
+msgid "Add User to Board"
+msgstr "将用户添加到看板"
+
+#: src/Integrations/fluent-boards/actions/add-user-to-board.php:93
+msgid "Board not found."
+msgstr "找不到看板。"
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:58
+msgid "Assign Task"
+msgstr "分配任务"
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:81
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:79
+msgid "FluentBoards TaskService not found."
+msgstr "找不到FluentBoards任务服务。"
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:85
+#: src/Integrations/fluent-boards/actions/create-sub-task.php:94
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:83
+msgid "FluentBoards Task model not found."
+msgstr "找不到FluentBoards任务模型。"
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:93
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:90
+msgid "Task ID and assignees are required."
+msgstr "任务ID和被分配者是必需的。"
+
+#: src/Integrations/fluent-boards/actions/assign-task.php:104
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:99
+msgid "Task not found."
+msgstr "找不到任务。"
+
+#: src/Integrations/fluent-boards/actions/create-board.php:58
+msgid "Create Board"
+msgstr "创建看板"
+
+#: src/Integrations/fluent-boards/actions/create-label.php:59
+msgid "Create Label"
+msgstr "创建标签"
+
+#: src/Integrations/fluent-boards/actions/create-stage.php:59
+msgid "Create Stage"
+msgstr "创建阶段"
+
+#: src/Integrations/fluent-boards/actions/create-sub-task.php:54
+msgid "Create Sub Task"
+msgstr "创建子任务"
+
+#: src/Integrations/fluent-boards/actions/create-task.php:60
+msgid "Create Task"
+msgstr "创建任务"
+
+#: src/Integrations/fluent-boards/actions/get-board-details.php:57
+msgid "Get Board"
+msgstr "获取看板"
+
+#: src/Integrations/fluent-boards/actions/get-task-details.php:58
+msgid "Get Task"
+msgstr "获取任务"
+
+#: src/Integrations/fluent-boards/actions/list-task-labels.php:58
+msgid "List Task Labels"
+msgstr "列出任务标签"
+
+#: src/Integrations/fluent-boards/actions/list-tasks.php:58
+msgid "List Tasks"
+msgstr "列出任务"
+
+#: src/Integrations/fluent-boards/actions/remove-assignee-from-task.php:58
+msgid "Remove Assignee from Task"
+msgstr "从任务中移除被分配者"
+
+#: src/Integrations/fluent-boards/fluent-boards.php:35
+msgid "FluentBoards"
+msgstr "FluentBoards"
+
+#: src/Integrations/fluent-boards/fluent-boards.php:36
+msgid ""
+"FluentBoards is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, "
+"webinars, events, sales calls, etc., and save time with scheduling automation."
+msgstr "FluentBoards是WordPress的终极调度解决方案。利用无限预约、预订、网络研讨会、活动、销售电话等的强大功能，并通过调度自动化节省时间。"
+
+#: src/Integrations/fluent-boards/triggers/board-created.php:72
+msgid "New Board Created"
+msgstr "新看板已创建"
+
+#: src/Integrations/fluent-boards/triggers/board-member-added.php:72
+msgid "Board Member Added"
+msgstr "看板成员已添加"
+
+#: src/Integrations/fluent-boards/triggers/stage-changed.php:72
+msgid "Stage Changed"
+msgstr "阶段已更改"
+
+#: src/Integrations/fluent-boards/triggers/task-created.php:72
+msgid "New Task Created"
+msgstr "新任务已创建"
+
+#: src/Integrations/fluent-booking/fluent-booking.php:35
+msgid "FluentBooking"
+msgstr "FluentBooking"
+
+#: src/Integrations/fluent-booking/fluent-booking.php:36
+msgid ""
+"FluentBooking is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, "
+"webinars, events, sales calls, etc., and save time with scheduling automation."
+msgstr "FluentBooking是WordPress的终极调度解决方案。利用无限预约、预订、网络研讨会、活动、销售电话等的强大功能，并通过调度自动化节省时间。"
+
+#: src/Integrations/fluent-booking/triggers/appointment-completed.php:69
+msgid "Appointment Completed"
+msgstr "预约完成"
+
+#: src/Integrations/fluent-form/actions/register-a-new-user.php:58
+msgid "Register New User"
+msgstr "注册新用户"
+
+#: src/Integrations/fluent-form/fluent-form.php:35
+msgid "Fluent Form"
+msgstr "流畅表单"
+
+#: src/Integrations/fluent-form/fluent-form.php:36
+msgid "Fluent Form is a WordPress Form Builder."
+msgstr "流畅表单是一个WordPress表单构建器。"
+
+#: src/Integrations/fluent-form/triggers/user-submit-form-specific-field-value.php:69
+msgid "User Submits Form with Specific Field Value"
+msgstr "用户提交具有特定字段值的表单"
+
+#: src/Integrations/fluent-form/triggers/user-submit-form.php:69
+#: src/Integrations/metform/triggers/user-submit-form.php:68
+#: src/Integrations/ninja-forms/triggers/user-submit-form.php:68
+#: src/Integrations/ultimate-addons-for-gutenberg/triggers/user-submit-form.php:72
+msgid "User Submits Form"
+msgstr "用户提交表单"
+
+#: src/Integrations/fluent-support/actions/add-tag-to-ticket.php:58
+msgid "Add Tag to Ticket"
+msgstr "向票证添加标签"
+
+#: src/Integrations/fluent-support/actions/block-user.php:58
+msgid "Block User"
+msgstr "阻止用户"
+
+#: src/Integrations/fluent-support/actions/create-or-obtain-customer.php:59
+msgid "Create Or Obtain Customer"
+msgstr "创建或获取客户"
+
+#: src/Integrations/fluent-support/actions/create-ticket.php:59
+msgid "Create Ticket"
+msgstr "创建票证"
+
+#: src/Integrations/fluent-support/actions/get-tickets.php:58
+msgid "Get All Tickets"
+msgstr "获取所有票证"
+
+#: src/Integrations/fluent-support/actions/reply_to_ticket_as_agent.php:52
+msgid "Reply to Ticket as Agent"
+msgstr "作为代理回复票证"
+
+#: src/Integrations/fluent-support/fluent-support.php:35
+msgid "Fluent Support"
+msgstr "流畅支持"
+
+#: src/Integrations/fluent-support/fluent-support.php:36
+msgid "Fluent Support is a WordPress Customer Support plugin."
+msgstr "流畅支持是一个WordPress客户支持插件。"
+
+#: src/Integrations/fluent-support/triggers/response-added-by-agent.php:69
+msgid "Agent Replied"
+msgstr "代理已回复"
+
+#: src/Integrations/fluent-support/triggers/response-added-by-customer.php:69
+msgid "Customer Replied"
+msgstr "客户已回复"
+
+#: src/Integrations/fluent-support/triggers/ticket-closed-by-agent.php:69
+msgid "Ticket Closed by Agent"
+msgstr "代理关闭票证"
+
+#: src/Integrations/fluent-support/triggers/ticket-closed-by-customer.php:69
+msgid "Ticket Closed by Customer"
+msgstr "客户关闭票证"
+
+#: src/Integrations/fluent-support/triggers/ticket-closed-product.php:69
+msgid "Ticket Closed for Product"
+msgstr "产品的票证已关闭"
+
+#: src/Integrations/fluent-support/triggers/ticket-created-product.php:69
+msgid "Ticket Created for Product"
+msgstr "为产品创建的票证"
+
+#: src/Integrations/fluent-support/triggers/ticket-created.php:69
+msgid "Ticket Created"
+msgstr "票证已创建"
+
+#: src/Integrations/fluent-support/triggers/ticket-product-replied-agent.php:69
+msgid "Ticket for Product Replied by Agent"
+msgstr "产品的票证由代理回复"
+
+#: src/Integrations/fluent-support/triggers/ticket-product-replied-customer.php:69
+msgid "Ticket for Product Replied by Customer"
+msgstr "产品的票证由客户回复"
+
+#: src/Integrations/fluentcommunity/actions/add-user-to-course.php:54
+msgid "Add User to Course"
+msgstr "将用户添加到课程"
+
+#: src/Integrations/fluentcommunity/actions/add-user-to-space.php:58
+msgid "Add User to Space"
+msgstr "将用户添加到空间"
+
+#: src/Integrations/fluentcommunity/actions/create-new-post-feed.php:55
+msgid "Create New Post in Feed"
+msgstr "在动态中创建新帖子"
+
+#: src/Integrations/fluentcommunity/actions/get-all-courses-list.php:58
+msgid "Get All Courses List"
+msgstr "获取所有课程列表"
+
+#: src/Integrations/fluentcommunity/actions/get-all-spaces-list.php:58
+msgid "Get All Spaces List"
+msgstr "获取所有空间列表"
+
+#: src/Integrations/fluentcommunity/actions/remove-user-from-course.php:57
+#: src/Integrations/tutorlms/actions/remove-course.php:57
+#: src/Integrations/wp-courseware/actions/wpcw-remove-user-from-course.php:54
+msgid "Remove User from Course"
+msgstr "从课程中移除用户"
+
+#: src/Integrations/fluentcommunity/actions/remove-user-from-space.php:55
+msgid "Remove User from Space"
+msgstr "从空间中移除用户"
+
+#: src/Integrations/fluentcommunity/fluentcommunity.php:35
+msgid "Fluent Community"
+msgstr "流畅社区"
+
+#: src/Integrations/fluentcommunity/fluentcommunity.php:36
+msgid "Simplifying Community Engagement."
+msgstr "简化社区参与。"
+
+#: src/Integrations/fluentcommunity/triggers/feed-created.php:65
+msgid "New Feed Created"
+msgstr "新动态已创建"
+
+#: src/Integrations/fluentcommunity/triggers/feed-updated.php:65
+msgid "Feed Updated"
+msgstr "动态已更新"
+
+#: src/Integrations/fluentcommunity/triggers/new-space-feed-created.php:63
+msgid "New Space Feed Created"
+msgstr "新空间动态已创建"
+
+#: src/Integrations/fluentcommunity/triggers/space-created.php:63
+msgid "New Space Created"
+msgstr "新空间已创建"
+
+#: src/Integrations/fluentcommunity/triggers/user-completes-course.php:64
+#: src/Integrations/sensei-lms/triggers/sl-user-completes-course.php:66
+#: src/Integrations/wp-courseware/tiggerrs/wpcw-user-completes-course.php:67
+msgid "User Completes Course"
+msgstr "用户完成课程"
+
+#: src/Integrations/fluentcommunity/triggers/user-enrolls-course.php:64
+msgid "User Enrolls In Course"
+msgstr "用户注册课程"
+
+#: src/Integrations/fluentcommunity/triggers/user-joins-space.php:63
+msgid "User Joins Space"
+msgstr "用户加入空间"
+
+#: src/Integrations/fluentcommunity/triggers/user-leaves-space.php:64
+msgid "User Leaves Space"
+msgstr "用户离开空间"
+
+#: src/Integrations/fluentcommunity/triggers/user-request-join-space.php:64
+msgid "User Requests To Join Space"
+msgstr "用户请求加入空间"
+
+#: src/Integrations/fluentcommunity/triggers/user-unenrolls-from-course.php:64
+msgid "User Unenrolls From Course"
+msgstr "用户退课"
+
+#: src/Integrations/fluentcrm/actions/add-contact.php:60
+msgid "Add/Update Contact"
+msgstr "添加/更新联系人"
+
+#: src/Integrations/fluentcrm/actions/add-event.php:57
+msgid "Add Event"
+msgstr "添加事件"
+
+#: src/Integrations/fluentcrm/actions/add-event.php:85
+msgid "Email, Event Key, and Title are required."
+msgstr "电子邮件、事件密钥和标题是必需的。"
+
+#: src/Integrations/fluentcrm/actions/add-event.php:104
+msgid "Failed to add event. Please try again."
+msgstr "添加事件失败。请再试一次。"
+
+#: src/Integrations/fluentcrm/actions/add-event.php:110
+msgid "Event has been successfully added."
+msgstr "事件已成功添加。"
+
+#: src/Integrations/fluentcrm/actions/add-note.php:60
+msgid "Add Note"
+msgstr "添加备注"
+
+#: src/Integrations/fluentcrm/actions/add-note.php:104
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-email.php:86
+msgid "Can not find the contact with the email."
+msgstr "无法找到具有该电子邮件的联系人。"
+
+#: src/Integrations/fluentcrm/actions/add-note.php:127
+msgid "Failed to add note. Please try again."
+msgstr "添加备注失败。请再试一次。"
+
+#: src/Integrations/fluentcrm/actions/add-note.php:133
+msgid "Note has been successfully added."
+msgstr "备注已成功添加。"
+
+#: src/Integrations/fluentcrm/actions/add-tag-to-contact.php:59
+msgid "Add Tag"
+msgstr "添加标签"
+
+#: src/Integrations/fluentcrm/actions/attach-subscribers-company.php:59
+msgid "Attach Subscribers to Company"
+msgstr "将订阅者附加到公司"
+
+#: src/Integrations/fluentcrm/actions/attach-subscribers-company.php:116
+msgid "Company has been successfully attached to the Subscribers"
+msgstr "公司已成功附加到订阅者"
+
+#: src/Integrations/fluentcrm/actions/create-company.php:60
+msgid "Create Company"
+msgstr "创建公司"
+
+#: src/Integrations/fluentcrm/actions/create-tag.php:59
+msgid "Create Tag"
+msgstr "创建标签"
+
+#: src/Integrations/fluentcrm/actions/detach-subscribers-company.php:59
+msgid "Detach Subscribers to Company"
+msgstr "从公司中分离订阅者"
+
+#: src/Integrations/fluentcrm/actions/detach-subscribers-company.php:116
+msgid "Company has been successfully detached"
+msgstr "公司已成功分离"
+
+#: src/Integrations/fluentcrm/actions/remove-contact.php:58
+msgid "Remove Contact"
+msgstr "移除联系人"
+
+#: src/Integrations/fluentcrm/actions/remove-tag-from-contact.php:58
+msgid "Remove Tag"
+msgstr "移除标签"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-email.php:58
+msgid "Retrieve Contact By Email"
+msgstr "通过电子邮件检索联系人"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-id.php:58
+msgid "Retrieve Contact By ID"
+msgstr "通过ID检索联系人"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-id.php:86
+msgid "Can not find the contact with the ID."
+msgstr "无法找到具有该ID的联系人。"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-list-ids.php:58
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-user-id.php:58
+msgid "Retrieve Contact By User ID"
+msgstr "通过用户ID检索联系人"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-list-ids.php:92
+msgid "No contacts found"
+msgstr "未找到联系人"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-status.php:58
+msgid "Retrieve Contact By Status"
+msgstr "通过状态检索联系人"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-status.php:97
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-tag-ids.php:92
+msgid "No Contacts Found."
+msgstr "未找到联系人。"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-tag-ids.php:58
+msgid "Retrieve Contact By Tag IDs"
+msgstr "通过标签ID检索联系人"
+
+#: src/Integrations/fluentcrm/actions/retrieve-contact-by-user-id.php:86
+msgid "Invalid contact."
+msgstr "无效的联系人。"
+
+#: src/Integrations/fluentcrm/actions/send-email-to-list-contacts.php:59
+#: src/Integrations/voxel/actions/send-email.php:56
+#: src/Integrations/voxel/actions/set-post-verified.php:56
+#: src/Integrations/voxel/actions/set-profile-verified.php:56
+msgid "Send Email"
+msgstr "发送电子邮件"
+
+#: src/Integrations/fluentcrm/fluentcrm.php:38
+msgid "FluentCRM"
+msgstr "流畅CRM"
+
+#: src/Integrations/fluentcrm/fluentcrm.php:39
+msgid "FluentCRM is a Self Hosted Email Marketing Automation Plugin for WordPress."
+msgstr "流畅CRM是一个自托管的WordPress电子邮件营销自动化插件。"
+
+#: src/Integrations/fluentcrm/triggers/add-tag-to-contact-fluentcrm.php:73
+msgid "Tag Added"
+msgstr "标签已添加"
+
+#: src/Integrations/fluentcrm/triggers/contact-added-to-list-fluentcrm.php:73
+#: src/Integrations/funnel-kit-automations/triggers/contact-added-to-list.php:69
+msgid "Contact Added to List"
+msgstr "联系人已添加到列表"
+
+#: src/Integrations/fluentcrm/triggers/contact-custom-fields-updated-fluentcrm.php:73
+msgid "Contact Custom Fields Updated"
+msgstr "联系人自定义字段已更新"
+
+#: src/Integrations/fluentcrm/triggers/contact-removed-from-list-fluentcrm.php:73
+#: src/Integrations/funnel-kit-automations/triggers/contact-removed-from-list.php:69
+msgid "Contact Removed from List"
+msgstr "联系人已从列表中移除"
+
+#: src/Integrations/fluentcrm/triggers/contact-status-set-to-specific-status-fluentcrm.php:73
+msgid "Contact Status Set to Specific Status"
+msgstr "联系人状态已设置为特定状态"
+
+#: src/Integrations/fluentcrm/triggers/contact-updated-fluentcrm.php:73
+msgid "Contact Updated"
+msgstr "联系人已更新"
+
+#: src/Integrations/fluentcrm/triggers/new-contact-added-fluentcrm.php:73
+msgid "New Contact Added"
+msgstr "新联系人已添加"
+
+#: src/Integrations/fluentcrm/triggers/tag-removed-from-contact.php:73
+msgid "Tag Removed"
+msgstr "标签已移除"
+
+#: src/Integrations/fluentsmtp/fluentsmtp.php:35
+msgid "FluentSMTP"
+msgstr "流畅SMTP"
+
+#: src/Integrations/fluentsmtp/fluentsmtp.php:36
+msgid ""
+"FluentSMTP is the ultimate WP Mail Plugin that connects with your Email Service Provider natively and makes sure your "
+"emails are delivered."
+msgstr "流畅SMTP是终极WP邮件插件，可以与您的电子邮件服务提供商本地连接，并确保您的电子邮件被送达。"
+
+#: src/Integrations/fluentsmtp/triggers/error-in-email-delivery.php:68
+msgid "Error in Email Delivery"
+msgstr "邮件发送错误"
+
+#: src/Integrations/formidable-forms/formidable-forms.php:36
+msgid "FormidableForms"
+msgstr "FormidableForms"
+
+#: src/Integrations/formidable-forms/formidable-forms.php:37
+msgid "A WordPress form builder plugin that lets you build single or multi-page contact forms. "
+msgstr "一个WordPress表单构建插件，让您构建单页或多页联系表单。"
+
+#: src/Integrations/formidable-forms/triggers/user-updates-entry-in-form.php:73
+#: src/Integrations/gravity-form/triggers/form-entry-updated.php:73
+msgid "Form Entry Updated"
+msgstr "表单条目已更新"
+
+#: src/Integrations/forminator/forminator.php:36
+msgid "Forminator"
+msgstr "Forminator"
+
+#: src/Integrations/forminator/forminator.php:37
+msgid "A form builder plugin. "
+msgstr "一个表单构建插件。"
+
+#: src/Integrations/forminator/triggers/forminator-form-submit.php:73
+msgid "A form is submitted"
+msgstr "表单已提交"
+
+#: src/Integrations/funnel-kit-automations/actions/add-contact-to-lists.php:59
+msgid "Add Contact to List(s)"
+msgstr "将联系人添加到列表"
+
+#: src/Integrations/funnel-kit-automations/actions/add-tags-to-contact.php:60
+msgid "Add Tag(s) to Contact"
+msgstr "将标签添加到联系人"
+
+#: src/Integrations/funnel-kit-automations/actions/remove-contact-from-lists.php:59
+msgid "Remove Contact from List(s)"
+msgstr "从列表中移除联系人"
+
+#: src/Integrations/funnel-kit-automations/actions/remove-tags-from-contact.php:59
+msgid "Remove Tag(s) from Contact"
+msgstr "从联系人中移除标签"
+
+#: src/Integrations/funnel-kit-automations/funnel-kit-automations.php:39
+msgid "FunnelKitAutomations"
+msgstr "FunnelKitAutomations"
+
+#: src/Integrations/funnel-kit-automations/funnel-kit-automations.php:40
+msgid "FunnelKit Automations is a WordPress Customer Support plugin."
+msgstr "FunnelKit Automations是一个WordPress客户支持插件。"
+
+#: src/Integrations/funnel-kit-automations/triggers/tag-added-to-contact.php:69
+#: src/Integrations/groundhogg/triggers/gh-tag-added-to-contact.php:72
+msgid "Tag Added to Contact"
+msgstr "标签已添加到联系人"
+
+#: src/Integrations/funnel-kit-automations/triggers/tag-removed-from-contact.php:69
+#: src/Integrations/groundhogg/triggers/gh-tag-removed-from-contact.php:72
+msgid "Tag Removed from Contact"
+msgstr "标签已从联系人中移除"
+
+#: src/Integrations/gamipress/actions/award-achivement-user.php:57
+#: src/Integrations/learndash-achievements/actions/award-achievement-to-user.php:59
+msgid "Award Achievement to User"
+msgstr "授予用户成就"
+
+#: src/Integrations/gamipress/actions/award-points-user.php:57
+msgid "Award Points to User"
+msgstr "授予用户积分"
+
+#: src/Integrations/gamipress/actions/award-rank-user.php:56
+msgid "Award Rank to User"
+msgstr "授予用户等级"
+
+#: src/Integrations/gamipress/actions/revoke-achivement-user.php:57
+msgid "Revoke Achievement from User"
+msgstr "撤销用户成就"
+
+#: src/Integrations/gamipress/actions/revoke-certain-types-points-user.php:57
+msgid "Revoke Certain Types of Points from User"
+msgstr "撤销用户某些类型的积分"
+
+#: src/Integrations/gamipress/actions/revoke-points-user.php:57
+msgid "Revoke Points from the User"
+msgstr "撤销用户的积分"
+
+#: src/Integrations/gamipress/actions/revoke-rank-user.php:57
+msgid "Revoke Rank to User"
+msgstr "撤销用户等级"
+
+#: src/Integrations/gamipress/gamipress.php:36
+msgid "GamiPress"
+msgstr "GamiPress"
+
+#: src/Integrations/gamipress/triggers/user-attains-rank.php:73
+msgid "A user attains a rank"
+msgstr "用户获得一个等级"
+
+#: src/Integrations/gamipress/triggers/user-earns-achivements.php:73
+msgid "User Earns an Achievement"
+msgstr "用户获得一个成就"
+
+#: src/Integrations/gamipress/triggers/user-earns-specific-points.php:73
+msgid "User Earns Specific Number of Points"
+msgstr "用户获得特定数量的积分"
+
+#: src/Integrations/gamipress/triggers/user-total-points-meets-threshold.php:73
+msgid "User’s Total Point Meets A Threshold"
+msgstr "用户的总积分达到阈值"
+
+#: src/Integrations/geo-directory/Actions/add-category-to-place.php:57
+msgid "Add Category To Place"
+msgstr "将类别添加到地点"
+
+#: src/Integrations/geo-directory/Actions/add-place.php:56
+msgid "Add/Update Place"
+msgstr "添加/更新地点"
+
+#: src/Integrations/geo-directory/Actions/add-place.php:124
+#: src/Integrations/wordpress/actions/create-post.php:146
+msgid "Failed to insert post!"
+msgstr "插入帖子失败！"
+
+#: src/Integrations/geo-directory/Actions/add-tag-to-place.php:57
+msgid "Add Tag To Place"
+msgstr "将标签添加到地点"
+
+#: src/Integrations/geo-directory/Actions/remove-category-from-place.php:57
+msgid "Remove Category From Place"
+msgstr "从地点中移除类别"
+
+#: src/Integrations/geo-directory/Actions/remove-tag-from-place.php:57
+msgid "Remove Tag From Place"
+msgstr "从地点中移除标签"
+
+#: src/Integrations/geo-directory/Triggers/listing-added.php:64
+msgid "New Place Listing Added"
+msgstr "新增地点列表已添加"
+
+#: src/Integrations/givewp/actions/add-note-to-donor.php:57
+msgid "Add Note To Donor"
+msgstr "添加备注给捐赠者"
+
+#: src/Integrations/givewp/actions/create-donor.php:57
+msgid "Create Donor"
+msgstr "创建捐赠者"
+
+#: src/Integrations/givewp/givewp.php:37
+msgid "GiveWP"
+msgstr "GiveWP"
+
+#: src/Integrations/givewp/givewp.php:38
+msgid ""
+"GiveWP is an evolving WordPress donation plugin with a team that genuinely cares about advancing the democratization of "
+"generosity."
+msgstr "GiveWP是一个不断发展的WordPress捐赠插件，团队真心关心推动慷慨的民主化。"
+
+#: src/Integrations/givewp/triggers/donation-submit-specific-amount.php:73
+msgid "User Submits Donation Form Specific Amount"
+msgstr "用户提交特定金额的捐赠表单"
+
+#: src/Integrations/givewp/triggers/donation-submit-specific-field-value.php:73
+msgid "User Submits Donation Form Specific Field Value"
+msgstr "用户提交特定字段值的捐赠表单"
+
+#: src/Integrations/givewp/triggers/donation-via-form.php:73
+msgid "User Submits Donation Form"
+msgstr "用户提交捐赠表单"
+
+#: src/Integrations/givewp/triggers/user-cancels-recurring-donation.php:73
+msgid "User Cancels Recurring Donation"
+msgstr "用户取消定期捐赠"
+
+#: src/Integrations/givewp/triggers/user-continues-recurring-donation.php:73
+msgid "User Continues Recurring Donation"
+msgstr "用户继续定期捐赠"
+
+#: src/Integrations/gravity-form/actions/create-entry-gravity-form.php:58
+msgid "Create Entry for Form"
+msgstr "为表单创建条目"
+
+#: src/Integrations/gravity-form/actions/delete-entry-gravity-form.php:58
+msgid "Delete Entry for Form"
+msgstr "删除表单条目"
+
+#: src/Integrations/gravity-form/actions/delete-entry-gravity-form.php:93
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:97
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:126
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:131
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:206
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:206
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:228
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:250
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:139
+#: src/Integrations/paid-memberships-pro/actions/list-members.php:101
+#: src/Integrations/paid-memberships-pro/actions/list-members.php:126
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:111
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:132
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:127
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:125
+#: src/Integrations/tutorlms/actions/reset-user-course-progress.php:91
+#: src/Integrations/wordpress/actions/remove-user.php:102
+msgid "Success"
+msgstr "成功"
+
+#: src/Integrations/gravity-form/actions/delete-entry-gravity-form.php:94
+msgid "Entry deleted successfully."
+msgstr "条目已成功删除。"
+
+#: src/Integrations/gravity-form/gravity-form.php:36
+msgid "Gravity Forms"
+msgstr "Gravity Forms"
+
+#: src/Integrations/gravity-form/gravity-form.php:37
+msgid "Gravity Forms is a WordPress Form Builder."
+msgstr "Gravity Forms是一个WordPress表单构建器。"
+
+#: src/Integrations/gravity-form/triggers/user-register-gravity-form.php:73
+msgid "User Register with Gravity Form"
+msgstr "用户使用Gravity Form注册"
+
+#: src/Integrations/gravity-form/triggers/user-submits-form-specific-field.php:72
+msgid "Form Submitted with Specific Field"
+msgstr "提交具有特定字段的表单"
+
+#: src/Integrations/gravity-form/triggers/user-submits-payment-gravity-form.php:73
+msgid "User Submits Payment Form"
+msgstr "用户提交支付表单"
+
+#: src/Integrations/gravity-kit/gravity-kit.php:36
+msgid "Gravity Kit"
+msgstr "Gravity Kit"
+
+#: src/Integrations/gravity-kit/gravity-kit.php:37
+msgid "Gravity Kit is a WordPress Plugin."
+msgstr "Gravity Kit是一个WordPress插件。"
+
+#: src/Integrations/gravity-kit/triggers/form-entry-approved.php:74
+msgid "Form Entry Approved"
+msgstr "表单条目已批准"
+
+#: src/Integrations/gravity-kit/triggers/form-entry-rejected.php:74
+msgid "Form Entry Rejected"
+msgstr "表单条目已拒绝"
+
+#: src/Integrations/groundhogg/actions/gh-add-tag-to-contact.php:58
+#: src/Integrations/jetpack-crm/actions/add-tag-to-contact.php:59
+msgid "Add Tag to Contact"
+msgstr "将标签添加到联系人"
+
+#: src/Integrations/groundhogg/actions/gh-create-contact.php:58
+msgid "Create/Update Contact"
+msgstr "创建/更新联系人"
+
+#: src/Integrations/groundhogg/actions/gh-remove-tag-from-contact.php:58
+msgid "Remove Tag from Contact"
+msgstr "从联系人中移除标签"
+
+#: src/Integrations/groundhogg/groundhogg.php:36
+msgid "Groundhogg"
+msgstr "Groundhogg"
+
+#: src/Integrations/groundhogg/groundhogg.php:37
+msgid ""
+"Groundhogg is the best WordPress CRM & Marketing Automation plugin. Create funnels, email campaigns, newsletters, "
+"marketing automation."
+msgstr "Groundhogg是最好的WordPress CRM和营销自动化插件。创建漏斗、电子邮件活动、新闻通讯、营销自动化。"
+
+#: src/Integrations/happyforms/happyforms.php:36
+msgid "HappyForms"
+msgstr "HappyForms"
+
+#: src/Integrations/happyforms/happyforms.php:37
+msgid "A contact form builder plugin. "
+msgstr "一个联系表单构建插件。"
+
+#: src/Integrations/jetengine/jetengine.php:35
+msgid "JetEngine"
+msgstr "JetEngine"
+
+#: src/Integrations/jetengine/jetengine.php:36
+msgid ""
+"WordPress Dynamic Content Plugin for\n"
+"\t\tElementor."
+msgstr "WordPress动态内容插件，用于Elementor。"
+
+#: src/Integrations/jetengine/triggers/specific-post-field-update.php:73
+msgid "A user updates a specific JetEngine field on a specific post type"
+msgstr "用户在特定帖子类型上更新特定JetEngine字段"
+
+#: src/Integrations/jetformbuilder/jetformbuilder.php:36
+msgid "JetFormBuilder"
+msgstr "JetFormBuilder"
+
+#: src/Integrations/jetformbuilder/jetformbuilder.php:37
+msgid "A dynamic form creation tool. "
+msgstr "一个动态表单创建工具。"
+
+#: src/Integrations/jetpack-crm/actions/add-tag-to-company.php:59
+msgid "Add Tag to Company"
+msgstr "将标签添加到公司"
+
+#: src/Integrations/jetpack-crm/actions/change-status-of-contact.php:59
+msgid "Change Contact Status"
+msgstr "更改联系人状态"
+
+#: src/Integrations/jetpack-crm/actions/change-status-of-contact.php:84
+msgid "Status or contact email is empty."
+msgstr "状态或联系电子邮件为空。"
+
+#: src/Integrations/jetpack-crm/actions/change-status-of-contact.php:108
+msgid "The contact status has been updated."
+msgstr "联系人状态已更新。"
+
+#: src/Integrations/jetpack-crm/actions/change-status-of-contact.php:111
+msgid "Contact was not found matching."
+msgstr "未找到匹配的联系人。"
+
+#: src/Integrations/jetpack-crm/actions/create-contact.php:59
+#: src/Integrations/mail-mint/actions/create-contact.php:60
+msgid "Create Contact"
+msgstr "创建联系人"
+
+#: src/Integrations/jetpack-crm/actions/delete-contact.php:58
+#: src/Integrations/mail-mint/actions/delete-contact.php:59
+msgid "Delete Contact"
+msgstr "删除联系人"
+
+#: src/Integrations/jetpack-crm/jetpack-crm.php:35
+msgid "JetpackCRM"
+msgstr "JetpackCRM"
+
+#: src/Integrations/jetpack-crm/jetpack-crm.php:36
+msgid "JetpackCRM is a WordPress Customer Support plugin."
+msgstr "JetpackCRM 是一个 WordPress 客户支持插件。"
+
+#: src/Integrations/jetpack-crm/triggers/company-created.php:69
+msgid "Company Created"
+msgstr "公司已创建"
+
+#: src/Integrations/jetpack-crm/triggers/company-deleted.php:68
+msgid "Company Deleted"
+msgstr "公司已删除"
+
+#: src/Integrations/jetpack-crm/triggers/contact-created.php:69
+msgid "Contact Created"
+msgstr "联系人已创建"
+
+#: src/Integrations/jetpack-crm/triggers/contact-deleted.php:68
+msgid "Contact Deleted"
+msgstr "联系人已删除"
+
+#: src/Integrations/jetpack-crm/triggers/event-deleted.php:68
+msgid "Event Deleted"
+msgstr "事件已删除"
+
+#: src/Integrations/jetpack-crm/triggers/invoice-deleted.php:68
+msgid "Invoice Deleted"
+msgstr "发票已删除"
+
+#: src/Integrations/jetpack-crm/triggers/quote-accepted.php:69
+msgid "Quote Accepted"
+msgstr "报价已接受"
+
+#: src/Integrations/jetpack-crm/triggers/quote-created.php:69
+msgid "Quote Created"
+msgstr "报价已创建"
+
+#: src/Integrations/jetpack-crm/triggers/quote-deleted.php:68
+msgid "Quote Deleted"
+msgstr "报价已删除"
+
+#: src/Integrations/jetpack-crm/triggers/transaction-deleted.php:68
+msgid "Transaction Deleted"
+msgstr "交易已删除"
+
+#: src/Integrations/kadence-forms/kadence-forms.php:36
+msgid "Kadence Forms"
+msgstr "Kadence 表单"
+
+#: src/Integrations/kadence-forms/kadence-forms.php:37
+msgid "A WordPress plugin that allows you to easily create contact or marketing form."
+msgstr "一个 WordPress 插件，允许您轻松创建联系或营销表单。"
+
+#: src/Integrations/late-point/actions/cancel-booking.php:59
+msgid "Cancel Booking"
+msgstr "取消预订"
+
+#: src/Integrations/late-point/actions/create-agent.php:57
+msgid "Create Agent"
+msgstr "创建代理"
+
+#: src/Integrations/late-point/actions/create-booking.php:57
+msgid "Create Order"
+msgstr "创建订单"
+
+#: src/Integrations/late-point/actions/create-coupon.php:57
+#: src/Integrations/memberpress/actions/create-coupon.php:62
+msgid "Create Coupon"
+msgstr "创建优惠券"
+
+#: src/Integrations/late-point/actions/create-coupon.php:108
+msgid "Coupon created successfully"
+msgstr "优惠券创建成功"
+
+#: src/Integrations/late-point/actions/create-coupon.php:113
+msgid "Coupon could not be created."
+msgstr "优惠券无法创建。"
+
+#: src/Integrations/late-point/actions/create-customer.php:57
+msgid "Create Customer"
+msgstr "创建客户"
+
+#: src/Integrations/late-point/actions/create-order.php:62
+msgid "Create Bundle Order"
+msgstr "创建捆绑订单"
+
+#: src/Integrations/late-point/actions/find-agent-by-email.php:58
+msgid "Find Agent By Email"
+msgstr "通过电子邮件查找代理"
+
+#: src/Integrations/late-point/actions/find-booking-by-id.php:58
+msgid "Find Booking By ID"
+msgstr "通过 ID 查找预订"
+
+#: src/Integrations/late-point/actions/find-customer-by-email.php:58
+msgid "Find Customer By Email"
+msgstr "通过电子邮件查找客户"
+
+#: src/Integrations/late-point/actions/list-bundles.php:58
+msgid "List Bundles"
+msgstr "列出捆绑"
+
+#: src/Integrations/late-point/actions/update-booking.php:57
+msgid "Update Booking"
+msgstr "更新预订"
+
+#: src/Integrations/late-point/actions/update-coupon.php:57
+msgid "Update Coupon"
+msgstr "更新优惠券"
+
+#: src/Integrations/late-point/actions/update-coupon.php:115
+msgid "Coupon updated successfully"
+msgstr "优惠券更新成功"
+
+#: src/Integrations/late-point/actions/update-coupon.php:121
+msgid "Failed to update the coupon."
+msgstr "更新优惠券失败。"
+
+#: src/Integrations/late-point/late-point.php:42
+msgid "LatePoint"
+msgstr "LatePoint"
+
+#: src/Integrations/late-point/late-point.php:43
+msgid "Appointment Scheduling Plugin for WordPress."
+msgstr "WordPress 的预约调度插件。"
+
+#: src/Integrations/learndash-achievements/learndash-achievements.php:35
+msgid "LearnDash Achievements"
+msgstr "LearnDash 成就"
+
+#: src/Integrations/learndash-achievements/learndash-achievements.php:36
+msgid ""
+"The most powerful learning management system for WordPress. LearnDash Achievements empowers you to recognize and "
+"celebrate your learners` accomplishments with customizable rewards and achievements."
+msgstr "最强大的 WordPress 学习管理系统。LearnDash 成就使您能够通过可自定义的奖励和成就来认可和庆祝学习者的成就。"
+
+#: src/Integrations/learndash/actions/add-user-group.php:58
+msgid "Add user to a group"
+msgstr "将用户添加到组"
+
+#: src/Integrations/learndash/actions/add-user-group.php:81
+#: src/Integrations/learndash/actions/enroll-to-course.php:80
+#: src/Integrations/learndash/actions/remove-from-course.php:79
+#: src/Integrations/learndash/actions/remove-user-group.php:79
+#: src/Integrations/suremembers/actions/add-access-to-group.php:87
+#: src/Integrations/suremembers/actions/remove-access-from-group.php:87
+#: src/Integrations/woocommerce/actions/create-coupon-code.php:76
+msgid "User Not found"
+msgstr "未找到用户"
+
+#: src/Integrations/learndash/actions/add-user-group.php:108
+#: src/Integrations/learndash/actions/remove-user-group.php:97
+msgid "No group is available "
+msgstr "没有可用的组"
+
+#: src/Integrations/learndash/actions/enroll-to-course.php:57
+#: src/Integrations/lifterlms/actions/enroll-to-course.php:58
+msgid "Enroll User in a course"
+msgstr "将用户注册到课程"
+
+#: src/Integrations/learndash/actions/enroll-to-course.php:107
+#: src/Integrations/learndash/actions/remove-from-course.php:106
+#: src/Integrations/lifterlms/actions/enroll-to-course.php:92
+#: src/Integrations/lifterlms/actions/mark-course-complete.php:99
+#: src/Integrations/lifterlms/actions/remove-from-course.php:93
+msgid "No course is available "
+msgstr "没有可用的课程"
+
+#: src/Integrations/learndash/actions/find-course-taxonomy.php:51
+msgid "Find Course Taxonomies"
+msgstr "查找课程分类"
+
+#: src/Integrations/learndash/actions/find-course-taxonomy.php:74
+msgid "Invalid Course ID."
+msgstr "无效的课程 ID。"
+
+#: src/Integrations/learndash/actions/find-course-taxonomy.php:97
+msgid "No taxonomies found."
+msgstr "未找到分类。"
+
+#: src/Integrations/learndash/actions/find-user-groups.php:56
+msgid "Find User Groups"
+msgstr "查找用户组"
+
+#: src/Integrations/learndash/actions/find-user-groups.php:77
+msgid "User Not Found"
+msgstr "未找到用户"
+
+#: src/Integrations/learndash/actions/find-user-groups.php:86
+msgid "LearnDash function not available"
+msgstr "LearnDash 功能不可用"
+
+#: src/Integrations/learndash/actions/find-user-groups.php:97
+msgid "User is not part of any group"
+msgstr "用户不属于任何组"
+
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:56
+msgid "List User Enrolled Courses"
+msgstr "列出用户注册的课程"
+
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:98
+msgid "No Enrolled Courses found for this User."
+msgstr "未找到该用户的注册课程。"
+
+#: src/Integrations/learndash/actions/list-user-enrolled-courses.php:105
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:87
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:87
+msgid "User not found with specified email address."
+msgstr "未找到指定电子邮件地址的用户。"
+
+#: src/Integrations/learndash/actions/make-user-group-leader.php:57
+msgid "Mark User as Group Leader"
+msgstr "将用户标记为组长"
+
+#: src/Integrations/learndash/actions/mark-course-complete-for-user.php:63
+msgid "Mark Course Complete For User"
+msgstr "将课程标记为用户完成"
+
+#: src/Integrations/learndash/actions/mark-lesson-complete-for-user.php:63
+msgid "Mark Lesson Complete For User"
+msgstr "将课程标记为用户完成"
+
+#: src/Integrations/learndash/actions/mark-quiz-complete-for-user.php:57
+msgid "Mark Quiz Complete For User"
+msgstr "将测验标记为用户完成"
+
+#: src/Integrations/learndash/actions/mark-topic-complete-for-user.php:62
+msgid "Mark Topic Complete For User"
+msgstr "将主题标记为用户完成"
+
+#: src/Integrations/learndash/actions/remove-from-course.php:57
+msgid "Remove user from a course"
+msgstr "将用户从课程中移除"
+
+#: src/Integrations/learndash/actions/remove-user-from-group-leader.php:59
+msgid "Remove User from Group Leader"
+msgstr "将用户从组长中移除"
+
+#: src/Integrations/learndash/actions/remove-user-group.php:57
+msgid "Remove user from a group"
+msgstr "将用户从组中移除"
+
+#: src/Integrations/learndash/actions/reset-user-course-progress.php:69
+msgid "Reset User Progress"
+msgstr "重置用户进度"
+
+#: src/Integrations/learndash/triggers/course-added-to-group.php:72
+#: src/Integrations/learndash/triggers/essay-question-graded.php:71
+#: src/Integrations/learndash/triggers/group-leader-added-to-group.php:72
+#: src/Integrations/learndash/triggers/group-leader-removed-from-group.php:72
+#: src/Integrations/learndash/triggers/user-access-course-expires.php:71
+#: src/Integrations/learndash/triggers/user-enrolled-course.php:71
+#: src/Integrations/learndash/triggers/user-unenrolled-course.php:71
+msgid "User Added in Group"
+msgstr "用户已添加到组"
+
+#: src/Integrations/learndash/triggers/user-added-in-group.php:72
+#: src/Integrations/profilegrid/triggers/user-added-to-group.php:74
+msgid "User Added to Group"
+msgstr "用户已添加到组"
+
+#: src/Integrations/learndash/triggers/user-assignment-graded.php:71
+#: src/Integrations/learndash/triggers/user-submits-essay-quiz.php:71
+msgid "User Submits Essay Quiz"
+msgstr "用户提交论文测验"
+
+#: src/Integrations/learndash/triggers/user-completes-group-course.php:72
+msgid "User Completes Group Course"
+msgstr "用户完成小组课程"
+
+#: src/Integrations/learndash/triggers/user-completes-topic.php:72
+msgid "Topic Completed"
+msgstr "主题已完成"
+
+#: src/Integrations/learndash/triggers/user-fails-quiz.php:72
+#: src/Integrations/sensei-lms/triggers/sl-user-fails-quiz.php:66
+msgid "User Fails Quiz"
+msgstr "用户测验未通过"
+
+#: src/Integrations/learndash/triggers/user-passes-quiz.php:72
+#: src/Integrations/sensei-lms/triggers/sl-user-passes-quiz.php:66
+msgid "User Passes Quiz"
+msgstr "用户测验通过"
+
+#: src/Integrations/learndash/triggers/user-purchase-course.php:73
+msgid "Course Purchased"
+msgstr "课程已购买"
+
+#: src/Integrations/learndash/triggers/user-removed-from-group.php:72
+#: src/Integrations/learndash/triggers/user-submits-assignment.php:71
+#: src/Integrations/profilegrid/triggers/user-removed-from-group.php:74
+msgid "User Removed from Group"
+msgstr "用户已从组中移除"
+
+#: src/Integrations/learnpress/actions/lp-enroll-user-course.php:99
+msgid "Order created by SureTriggers"
+msgstr "由 SureTriggers 创建的订单"
+
+#: src/Integrations/learnpress/actions/lp-remove-user-course.php:55
+msgid "Remove User From Course"
+msgstr "将用户从课程中移除"
+
+#: src/Integrations/learnpress/learnpress.php:36
+msgid "LearnPress"
+msgstr "LearnPress"
+
+#: src/Integrations/learnpress/learnpress.php:37
+msgid "Easily Create And Sell Online Courses On Your WP Site With LearnPress."
+msgstr "使用 LearnPress 在您的 WP 网站上轻松创建和销售在线课程。"
+
+#: src/Integrations/learnpress/triggers/complete-course.php:68
+msgid "User completes course"
+msgstr "用户完成课程"
+
+#: src/Integrations/learnpress/triggers/complete-lesson.php:68
+msgid "User completes lesson"
+msgstr "用户完成课程"
+
+#: src/Integrations/learnpress/triggers/user-enrolled-in-course.php:68
+#: src/Integrations/lifterlms/triggers/user-enrolled-in-course.php:68
+#: src/Integrations/lifterlms/triggers/user-unenrolled-from-course.php:68
+#: src/Integrations/tutorlms/triggers/user-enrolled-course.php:67
+#: src/Integrations/wp-courseware/tiggerrs/wpcw-user-enrolled-in-course.php:67
+msgid "User Enrolled In Course"
+msgstr "用户已注册课程"
+
+#: src/Integrations/lifterlms/actions/enroll-to-course.php:81
+#: src/Integrations/lifterlms/actions/enroll-to-membership.php:83
+#: src/Integrations/lifterlms/actions/remove-from-course.php:82
+#: src/Integrations/lifterlms/actions/remove-from-membership.php:79
+msgid "LifterLMS enrollment function not found."
+msgstr "未找到 LifterLMS 注册功能。"
+
+#: src/Integrations/lifterlms/actions/enroll-to-membership.php:58
+msgid "Enroll User in a Membership"
+msgstr "将用户注册到会员"
+
+#: src/Integrations/lifterlms/actions/enroll-to-membership.php:94
+#: src/Integrations/lifterlms/actions/remove-from-membership.php:91
+msgid "No membership is available "
+msgstr "没有可用的会员"
+
+#: src/Integrations/lifterlms/actions/mark-course-complete.php:61
+msgid "Mark course complete for User"
+msgstr "为用户标记课程完成"
+
+#: src/Integrations/lifterlms/actions/mark-course-complete.php:108
+#: src/Integrations/lifterlms/actions/mark-lesson-complete.php:91
+#: src/Integrations/lifterlms/actions/mark-section-complete.php:97
+msgid "The function llms_mark_complete does not exist"
+msgstr "函数 llms_mark_complete 不存在"
+
+#: src/Integrations/lifterlms/actions/mark-lesson-complete.php:59
+msgid "Mark lesson complete for User"
+msgstr "为用户标记课程完成"
+
+#: src/Integrations/lifterlms/actions/mark-section-complete.php:61
+msgid "Mark section complete for User"
+msgstr "为用户标记章节完成"
+
+#: src/Integrations/lifterlms/actions/remove-from-course.php:58
+msgid "Remove user from course"
+msgstr "从课程中移除用户"
+
+#: src/Integrations/lifterlms/actions/remove-from-membership.php:57
+msgid "Remove user from membership"
+msgstr "从会员资格中移除用户"
+
+#: src/Integrations/lifterlms/lifterlms.php:36
+msgid "LifterLMS"
+msgstr "LifterLMS"
+
+#: src/Integrations/lifterlms/lifterlms.php:37
+msgid "Easily Create And Sell Online Courses On Your WP Site With LifterLMS."
+msgstr "轻松在您的 WP 网站上创建和销售在线课程，使用 LifterLMS。"
+
+#: src/Integrations/lifterlms/triggers/complete-course.php:68
+#: src/Integrations/wplms/triggers/wplms-course-completed.php:67
+msgid "User complete course"
+msgstr "用户完成课程"
+
+#: src/Integrations/lifterlms/triggers/complete-lesson.php:68
+msgid "User Completes a Lesson"
+msgstr "用户完成一节课"
+
+#: src/Integrations/lifterlms/triggers/complete-section.php:69
+msgid "User complete section"
+msgstr "用户完成章节"
+
+#: src/Integrations/lifterlms/triggers/purchase-course.php:69
+msgid "User purchase course"
+msgstr "用户购买课程"
+
+#: src/Integrations/lifterlms/triggers/purchase-membership.php:68
+msgid "User purchase a membership"
+msgstr "用户购买会员资格"
+
+#: src/Integrations/lifterlms/triggers/user-cancels-membership.php:68
+msgid "User cancels a membership"
+msgstr "用户取消会员资格"
+
+#: src/Integrations/mail-mint/actions/add-lists-to-contact.php:58
+msgid "Add Lists To Contact"
+msgstr "将列表添加到联系人"
+
+#: src/Integrations/mail-mint/actions/add-recipients-to-campaign.php:59
+msgid "Add Recipients To Campaign"
+msgstr "将收件人添加到活动"
+
+#: src/Integrations/mail-mint/actions/add-tag-to-contact.php:58
+msgid "Add Tag To Contact"
+msgstr "将标签添加到联系人"
+
+#: src/Integrations/mail-mint/actions/list-campaigns.php:57
+msgid "List Campaigns"
+msgstr "列出活动"
+
+#: src/Integrations/mail-mint/actions/list-contacts.php:57
+msgid "List Contacts"
+msgstr "列出联系人"
+
+#: src/Integrations/mail-mint/actions/list-lists.php:58
+msgid "Get Lists"
+msgstr "获取列表"
+
+#: src/Integrations/mail-mint/actions/list-tags.php:58
+msgid "List Tags"
+msgstr "列出标签"
+
+#: src/Integrations/mail-mint/actions/remove-list-from-contact.php:60
+msgid "Remove Lists From Contact"
+msgstr "从联系人中移除列表"
+
+#: src/Integrations/mail-mint/actions/remove-tag-from-contact.php:60
+msgid "Remove Tags From Contact"
+msgstr "从联系人中移除标签"
+
+#: src/Integrations/mail-mint/mail-mint.php:35
+msgid "MailMint"
+msgstr "MailMint"
+
+#: src/Integrations/mail-mint/triggers/campaign-email-sent.php:70
+msgid "Campaign Email Sent"
+msgstr "活动邮件已发送"
+
+#: src/Integrations/mail-mint/triggers/list-applied-to-contact.php:73
+msgid "Lists Added To Contact"
+msgstr "列表已添加到联系人"
+
+#: src/Integrations/mailpoet/actions/add-subscriber-to-list.php:60
+msgid "Add New Subscriber"
+msgstr "添加新订阅者"
+
+#: src/Integrations/mailpoet/actions/remove-subscriber-from-list.php:61
+#: src/Integrations/newsletter/actions/remove-user-from-list.php:58
+msgid "Remove User from List"
+msgstr "从列表中移除用户"
+
+#: src/Integrations/mailpoet/actions/update-subscriber-status.php:57
+msgid "Update Subscriber Status"
+msgstr "更新订阅者状态"
+
+#: src/Integrations/mailpoet/actions/update-subscriber-status.php:80
+#: src/Integrations/mailpoet/actions/update-subscriber-to-new-list.php:80
+msgid "MailPoet API class not exists."
+msgstr "MailPoet API 类不存在。"
+
+#: src/Integrations/mailpoet/actions/update-subscriber-status.php:95
+msgid "Please enter a subscriber email."
+msgstr "请输入订阅者电子邮件。"
+
+#: src/Integrations/mailpoet/actions/update-subscriber-to-new-list.php:57
+#: src/Integrations/newsletter/actions/add-user-to-list.php:58
+msgid "Add User to List"
+msgstr "将用户添加到列表"
+
+#: src/Integrations/mailpoet/actions/update-subscriber-to-new-list.php:95
+msgid "Please enter a list."
+msgstr "请输入列表。"
+
+#: src/Integrations/mailpoet/mailpoet.php:38
+msgid "MailPoet"
+msgstr "MailPoet"
+
+#: src/Integrations/mailpoet/mailpoet.php:39
+msgid "A WordPress plugin for emails and newletters."
+msgstr "一个用于电子邮件和新闻通讯的 WordPress 插件。"
+
+#: src/Integrations/masteriyo/masteriyo.php:35
+msgid "Masteriyo"
+msgstr "Masteriyo"
+
+#: src/Integrations/masteriyo/masteriyo.php:36
+#: src/Integrations/masterstudy-lms/masterstudy-lms.php:36
+msgid "A WordPress LMS Plugin."
+msgstr "一个 WordPress LMS 插件。"
+
+#: src/Integrations/masteriyo/triggers/ma-quiz-passed.php:73
+#: src/Integrations/masterstudy-lms/triggers/quiz-passed.php:73
+msgid "Quiz Passed"
+msgstr "测验通过"
+
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:89
+msgid "Login credentials for your course"
+msgstr "您的课程登录凭据"
+
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:93
+msgid "Login: %1$s Password: %2$s Site URL: %3$s"
+msgstr "登录：%1$s 密码：%2$s 网站 URL：%3$s"
+
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:127
+msgid "User enrolled into course successfully."
+msgstr "用户成功注册课程。"
+
+#: src/Integrations/masterstudy-lms/actions/enrollusertocourse.php:132
+msgid "User already enrolled into this course."
+msgstr "用户已注册此课程。"
+
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:53
+msgid "Mark a course complete for the user"
+msgstr "为用户标记课程完成"
+
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:207
+msgid "Course marked as completed successfully."
+msgstr "课程成功标记为完成。"
+
+#: src/Integrations/masterstudy-lms/actions/markcoursecompleteforuser.php:213
+msgid "Course does not have any lessons or quizzes added."
+msgstr "课程没有添加任何课程或测验。"
+
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:53
+msgid "Mark a lesson complete for the user"
+msgstr "为用户标记课程完成"
+
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:138
+msgid "No Lessons found in selected Course."
+msgstr "在选定的课程中未找到课程。"
+
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:207
+msgid "Lesson marked complete successfully."
+msgstr "课程成功标记为完成。"
+
+#: src/Integrations/masterstudy-lms/actions/marklessoncompleteforuser.php:212
+msgid "Lesson not found."
+msgstr "未找到课程。"
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:53
+msgid "Unroll User From Course"
+msgstr "从课程中取消用户注册"
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:86
+msgid "User with the email provided not found."
+msgstr "未找到提供的电子邮件用户。"
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:105
+msgid "User not enrolled into this course."
+msgstr "用户未注册此课程。"
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:229
+msgid "User progress reset successfully."
+msgstr "用户进度重置成功。"
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:236
+msgid "Something went wrong. Please check the action step configuration."
+msgstr "出现问题。请检查操作步骤配置。"
+
+#: src/Integrations/masterstudy-lms/actions/unrolluserfromcourse.php:251
+msgid "User unrolled from course successfully."
+msgstr "用户成功从课程中取消注册。"
+
+#: src/Integrations/masterstudy-lms/masterstudy-lms.php:35
+msgid "MasterStudyLms"
+msgstr "MasterStudyLms"
+
+#: src/Integrations/masterstudy-lms/triggers/user-enrolled-course.php:73
+msgid "User Enrolled InTo Course"
+msgstr "用户注册课程"
+
+#: src/Integrations/memberpress-course/actions/complete-course.php:61
+msgid "Complete Course"
+msgstr "完成课程"
+
+#: src/Integrations/memberpress-course/actions/complete-lesson.php:61
+msgid "Complete Lesson"
+msgstr "完成课程"
+
+#: src/Integrations/memberpress-course/actions/reset-user-progress.php:61
+msgid "Reset Course Progress"
+msgstr "重置课程进度"
+
+#: src/Integrations/memberpress-course/memberpress-course.php:40
+msgid "MemberPressCourse"
+msgstr "MemberPressCourse"
+
+#: src/Integrations/memberpress-course/memberpress-course.php:41
+msgid "Easily Create And Sell Online Courses On Your WP Site With MemberPressCourse."
+msgstr "轻松在您的 WP 网站上创建和销售在线课程，使用 MemberPressCourse。"
+
+#: src/Integrations/memberpress/actions/add-membership.php:62
+msgid "Add to Membership"
+msgstr "添加到会员资格"
+
+#: src/Integrations/memberpress/actions/remove-membership.php:60
+msgid "Remove from Membership"
+msgstr "从会员资格中移除"
+
+#: src/Integrations/memberpress/actions/remove-membership.php:117
+msgid "Empty subscription table "
+msgstr "空的订阅表"
+
+#: src/Integrations/memberpress/memberpress.php:36
+msgid "MemberPress"
+msgstr "MemberPress"
+
+#: src/Integrations/memberpress/memberpress.php:37
+msgid "MemberPress will Help Build Membership Site."
+msgstr "MemberPress 将帮助建立会员网站。"
+
+#: src/Integrations/memberpress/triggers/coupon-code-redeemed.php:72
+msgid "Coupon Code Redeemed"
+msgstr "优惠券代码已兑换"
+
+#: src/Integrations/memberpress/triggers/membership-cancelled.php:72
+msgid "Membership Cancelled"
+msgstr "会员资格已取消"
+
+#: src/Integrations/memberpress/triggers/membership-paused.php:72
+msgid "Membership Paused"
+msgstr "会员资格已暂停"
+
+#: src/Integrations/memberpress/triggers/purchase-membership.php:72
+#: src/Integrations/restrict-content/triggers/restrict-content-membership-purchased.php:74
+msgid "Membership Purchased"
+msgstr "会员资格已购买"
+
+#: src/Integrations/metabox/actions/add-cloneable-field-value.php:53
+msgid "Add Cloneable Field Value"
+msgstr "添加可克隆字段值"
+
+#: src/Integrations/metabox/actions/get-metabox-value.php:53
+msgid "Get Meta Value"
+msgstr "获取元值"
+
+#: src/Integrations/metabox/actions/get-metabox-value.php:80
+#: src/Integrations/metabox/actions/get-object-fields.php:80
+msgid "No value found."
+msgstr "未找到值。"
+
+#: src/Integrations/metabox/actions/get-metabox-value.php:89
+msgid "Function rwmb_get_value not exists. Please make sure the Metabox plugin is installed and active."
+msgstr "函数 rwmb_get_value 不存在。请确保 Metabox 插件已安装并激活。"
+
+#: src/Integrations/metabox/actions/get-object-fields.php:53
+#: src/Integrations/metabox/actions/set-metavalue.php:53
+msgid "Get Object Fields"
+msgstr "获取对象字段"
+
+#: src/Integrations/metabox/actions/get-object-fields.php:91
+msgid "Function rwmb_get_object_fields not exists. Please make sure the Metabox plugin is installed and active."
+msgstr "函数 rwmb_get_object_fields 不存在。请确保 Metabox 插件已安装并激活。"
+
+#: src/Integrations/metabox/actions/set-metavalue.php:96
+msgid "Function rwmb_set_meta not exists. Please make sure the Metabox plugin is installed and active."
+msgstr "函数 rwmb_set_meta 不存在。请确保 Metabox 插件已安装并激活。"
+
+#: src/Integrations/metabox/actions/update-cloneable-field-value.php:53
+msgid "Update Cloneable Field Value"
+msgstr "更新可克隆字段值"
+
+#: src/Integrations/metabox/metabox.php:35
+msgid "MetaBox"
+msgstr "MetaBox"
+
+#: src/Integrations/metabox/metabox.php:36
+msgid "Meta Box is a framework that helps you create custom post types and custom fields quickly and easily."
+msgstr "Meta Box 是一个框架，可以帮助您快速轻松地创建自定义帖子类型和自定义字段。"
+
+#: src/Integrations/metabox/triggers/metabox-after-form-submission.php:73
+#: src/Integrations/metabox/triggers/user-metabox-field-updated.php:73
+msgid "User Metabox Field Updated"
+msgstr "用户 Metabox 字段已更新"
+
+#: src/Integrations/metabox/triggers/post-metabox-field-updated.php:73
+msgid "Field is updated on Post"
+msgstr "字段已在帖子上更新"
+
+#: src/Integrations/metform/metform.php:35
+msgid "MetForm"
+msgstr "MetForm"
+
+#: src/Integrations/metform/metform.php:36
+msgid "MetForm is a WordPress Form Builder."
+msgstr "MetForm 是一个 WordPress 表单构建器。"
+
+#: src/Integrations/modern-events-calendar/actions/register-user-for-an-event.php:59
+msgid "Register User for an Event"
+msgstr "为活动注册用户"
+
+#: src/Integrations/modern-events-calendar/modern-events-calendar.php:35
+msgid "Modern Events Calendar"
+msgstr "现代活动日历"
+
+#: src/Integrations/modern-events-calendar/modern-events-calendar.php:36
+msgid "Best WordPress Event Calendar Plugin."
+msgstr "最佳 WordPress 活动日历插件。"
+
+#: src/Integrations/modern-events-calendar/triggers/event-booking-cancelled.php:70
+msgid "Event Booking Cancelled"
+msgstr "活动预订已取消"
+
+#: src/Integrations/modern-events-calendar/triggers/event-booking-completed.php:70
+msgid "Event Booking Completed"
+msgstr "活动预订已完成"
+
+#: src/Integrations/modern-events-calendar/triggers/event-booking-confirmed.php:70
+msgid "Event Booking Confirmed"
+msgstr "活动预订已确认"
+
+#: src/Integrations/modern-events-calendar/triggers/event-booking-pending.php:70
+msgid "Event Booking Pending"
+msgstr "活动预订待处理"
+
+#: src/Integrations/modern-events-calendar/triggers/event-created.php:67
+msgid "New Event Created"
+msgstr "新活动已创建"
+
+#: src/Integrations/mycred/actions/award-badge-to-user.php:58
+msgid "Award Badge"
+msgstr "奖励徽章"
+
+#: src/Integrations/mycred/actions/award-points-to-user.php:59
+msgid "Award Points"
+msgstr "奖励积分"
+
+#: src/Integrations/mycred/actions/award-points-to-user.php:95
+#: src/Integrations/mycred/actions/revoke-points-from-user.php:87
+msgid "Awarded by SureTriggers"
+msgstr "由 SureTriggers 授予"
+
+#: src/Integrations/mycred/actions/award-rank-to-user.php:58
+msgid "Award Rank"
+msgstr "奖励等级"
+
+#: src/Integrations/mycred/actions/revoke-badge-from-user.php:58
+#: src/Integrations/mycred/actions/revoke-points-from-user.php:58
+msgid "Revoke Badge"
+msgstr "撤销徽章"
+
+#: src/Integrations/mycred/actions/revoke-badge-from-user.php:103
+msgid "The user does not have the selected badge."
+msgstr "用户没有所选徽章。"
+
+#: src/Integrations/mycred/actions/revoke-badge-from-user.php:110
+msgid "The user does not have badges."
+msgstr "用户没有徽章。"
+
+#: src/Integrations/mycred/mycred.php:36
+msgid "MyCred"
+msgstr "MyCred"
+
+#: src/Integrations/mycred/mycred.php:37
+msgid "A free points management plugin for WordPress."
+msgstr "一个免费的 WordPress 积分管理插件。"
+
+#: src/Integrations/newsletter/newsletter.php:35
+msgid "Newsletter"
+msgstr "新闻通讯"
+
+#: src/Integrations/newsletter/newsletter.php:36
+msgid ""
+"Newsletter is a powerful yet simple email creation tool that helps you get in touch with your subscribers and engage "
+"them with your own content."
+msgstr "新闻通讯是一个强大而简单的电子邮件创建工具，帮助您与订阅者联系并用您自己的内容吸引他们。"
+
+#: src/Integrations/newsletter/triggers/subscription-form-submitted-list.php:73
+msgid "Subscription Form Submitted with Specific List"
+msgstr "特定列表提交的订阅表单"
+
+#: src/Integrations/ninja-forms/ninja-forms.php:35
+msgid "Ninja Forms"
+msgstr "忍者表单"
+
+#: src/Integrations/ninja-forms/ninja-forms.php:36
+msgid "Ninja Forms is a WordPress Form Builder."
+msgstr "忍者表单是一个 WordPress 表单构建器。"
+
+#: src/Integrations/ninja-tables/actions/add-row-in-table.php:57
+msgid "Add Row in Table"
+msgstr "在表中添加行"
+
+#: src/Integrations/ninja-tables/actions/delete-row-in-table.php:57
+msgid "Delete Row in Table"
+msgstr "在表中删除行"
+
+#: src/Integrations/ninja-tables/actions/lists-rows-in-table.php:57
+msgid "Lists Rows in Table"
+msgstr "在表中列出行"
+
+#: src/Integrations/ninja-tables/actions/update-row-in-table.php:57
+msgid "Update Row in Table"
+msgstr "在表中更新行"
+
+#: src/Integrations/ninja-tables/ninja-tables.php:35
+msgid "Ninja Tables"
+msgstr "忍者表格"
+
+#: src/Integrations/ninja-tables/ninja-tables.php:36
+msgid "Best Data Table Plugin for WordPress."
+msgstr "最佳 WordPress 数据表插件。"
+
+#: src/Integrations/ninja-tables/triggers/new-row-added-ninja-tables.php:69
+msgid "New Row Added"
+msgstr "新行已添加"
+
+#: src/Integrations/ninja-tables/triggers/row-updated-ninja-tables.php:69
+msgid "Row Updated"
+msgstr "行已更新"
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:56
+msgid "Add the user to a membership level"
+msgstr "将用户添加到会员等级"
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:85
+msgid "User is already a member of the specified level."
+msgstr "用户已经是指定等级的成员。"
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:95
+msgid "Invalid level."
+msgstr "无效等级。"
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:140
+msgid "User added to Membership level."
+msgstr "用户已添加到会员等级。"
+
+#: src/Integrations/paid-memberships-pro/actions/add-user-membership-level.php:146
+msgid "We're unable to assign the specified level to the user."
+msgstr "我们无法将指定等级分配给用户。"
+
+#: src/Integrations/paid-memberships-pro/actions/list-members.php:55
+msgid "List all users in a membership level"
+msgstr "列出会员等级中的所有用户"
+
+#: src/Integrations/paid-memberships-pro/actions/list-members.php:102
+msgid "No active members found for the selected level."
+msgstr "未找到所选等级的活跃成员。"
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:56
+msgid "Remove the user from a membership level"
+msgstr "将用户从会员等级中移除"
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:98
+msgid "User does not belong to any membership levels."
+msgstr "用户不属于任何会员等级。"
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:112
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:133
+msgid "User removed from Membership level."
+msgstr "用户已从会员等级中移除。"
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:123
+msgid "User was not a member of the specified level."
+msgstr "用户不是指定等级的成员。"
+
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:139
+#: src/Integrations/paid-memberships-pro/actions/remove-user-membership-level.php:146
+msgid "We're unable to cancel the specified level from the user."
+msgstr "我们无法取消用户的指定等级。"
+
+#: src/Integrations/paid-memberships-pro/paid-memberships-pro.php:36
+msgid "PaidMembershipsPro"
+msgstr "PaidMembershipsPro"
+
+#: src/Integrations/paid-memberships-pro/paid-memberships-pro.php:37
+msgid "A tool that help to start, manage and grow membership."
+msgstr "一个帮助开始、管理和发展会员的工具。"
+
+#: src/Integrations/paid-memberships-pro/triggers/admin-assigns-membership-user.php:74
+msgid "An admin assigns a membership level to a user"
+msgstr "管理员将会员等级分配给用户"
+
+#: src/Integrations/paid-memberships-pro/triggers/user-cancels-membership.php:74
+msgid "A user cancels a membership"
+msgstr "用户取消会员资格"
+
+#: src/Integrations/paid-memberships-pro/triggers/user-membership-expires.php:73
+msgid "A user's subscription to a membership expires"
+msgstr "用户的会员订阅到期"
+
+#: src/Integrations/paid-memberships-pro/triggers/user-purchases-membership.php:74
+msgid "A user purchases a membership"
+msgstr "用户购买会员资格"
+
+#: src/Integrations/paid-memberships-pro/triggers/user-renews-expired-membership.php:74
+msgid "A user renews an expired membership"
+msgstr "用户续订过期的会员资格"
+
+#: src/Integrations/paymattic/actions/change-payment-status.php:59
+msgid "Change Payment Status "
+msgstr "更改支付状态"
+
+#: src/Integrations/paymattic/paymattic.php:36
+msgid "Paymattic"
+msgstr "Paymattic"
+
+#: src/Integrations/paymattic/paymattic.php:37
+msgid "Paymattic is a WordPress Payment form plugin."
+msgstr "Paymattic 是一个 WordPress 支付表单插件。"
+
+#: src/Integrations/paymattic/triggers/payment-form-submitted.php:72
+msgid "Payment Form Completed"
+msgstr "付款表单已完成"
+
+#: src/Integrations/paymattic/triggers/payment-status-changed.php:73
+msgid "Payment Status Changed"
+msgstr "付款状态已更改"
+
+#: src/Integrations/peepso/actions/add-post-sitewide-activity-stream.php:61
+msgid "Add Post to Sitewide Activity Stream"
+msgstr "将帖子添加到全站活动流"
+
+#: src/Integrations/peepso/actions/change-user-peepso-role.php:60
+msgid "Change User PeepSo Role"
+msgstr "更改用户 PeepSo 角色"
+
+#: src/Integrations/peepso/peepso.php:36
+msgid "PeepSo"
+msgstr "PeepSo"
+
+#: src/Integrations/peepso/peepso.php:37
+msgid "PeepSo is a social network plugin for WordPress that allows you to quickly add a social network."
+msgstr "PeepSo 是一个 WordPress 社交网络插件，允许您快速添加社交网络。"
+
+#: src/Integrations/peepso/triggers/user-follows-member.php:67
+msgid "User Follows PeppSo Member"
+msgstr "用户关注 PeppSo 成员"
+
+#: src/Integrations/peepso/triggers/user-loses-follower.php:67
+msgid "User Loses Follower"
+msgstr "用户失去关注者"
+
+#: src/Integrations/peepso/triggers/user-unfollows-member.php:67
+msgid "User Unfollows PeppSo Member"
+msgstr "用户取消关注 PeppSo 成员"
+
+#: src/Integrations/peepso/triggers/user-updates-avatar.php:67
+msgid "User Updates Avatar"
+msgstr "用户更新头像"
+
+#: src/Integrations/peepso/triggers/user-updates-specific-profile-field-value.php:68
+msgid "User Updates Specific Profile Field Value"
+msgstr "用户更新特定个人资料字段值"
+
+#: src/Integrations/peepso/triggers/user-updates-specific-profile-field.php:68
+msgid "User Updates Specific Profile Field"
+msgstr "用户更新特定个人资料字段"
+
+#: src/Integrations/peepso/triggers/write-activity-post.php:68
+msgid "New Activity Post"
+msgstr "新活动帖子"
+
+#: src/Integrations/pie-forms/pie-forms.php:35
+msgid "Pie Forms"
+msgstr "饼图表单"
+
+#: src/Integrations/pie-forms/pie-forms.php:36
+msgid "Pie Forms is a WordPress Form Builder."
+msgstr "饼图表单是一个 WordPress 表单构建器。"
+
+#: src/Integrations/powerful-docs/powerful-docs.php:36
+msgid "Powerful Docs"
+msgstr "强大的文档"
+
+#: src/Integrations/powerful-docs/powerful-docs.php:37
+msgid ""
+"Easily build documentation website with AJAX based live search functionality and keep track of search term. This plugin "
+"provides shortcodes to display category list & live search input box."
+msgstr "轻松构建带有 AJAX 实时搜索功能的文档网站，并跟踪搜索词。此插件提供短代码以显示类别列表和实时搜索输入框。"
+
+#: src/Integrations/powerful-docs/triggers/pfd-feedback-received.php:73
+msgid "Feedback Received"
+msgstr "反馈已收到"
+
+#: src/Integrations/presto-player/actions/create-media-hub.php:57
+msgid "Create Media Hub"
+msgstr "创建媒体中心"
+
+#: src/Integrations/presto-player/actions/create-media-hub.php:90
+msgid "Both YouTube and self-hosted video URLs are empty. Please provide at least one."
+msgstr "YouTube 和自托管视频 URL 均为空。请至少提供一个。"
+
+#: src/Integrations/presto-player/actions/create-media-hub.php:112
+msgid "Invalid YouTube URL."
+msgstr "无效的 YouTube URL。"
+
+#: src/Integrations/presto-player/actions/create-media-hub.php:133
+msgid "There was an error creating the video!"
+msgstr "创建视频时出错！"
+
+#: src/Integrations/presto-player/presto-player.php:35
+msgid "PrestoPlayer"
+msgstr "PrestoPlayer"
+
+#: src/Integrations/presto-player/presto-player.php:36
+#: src/Integrations/restrict-content/restrict-content.php:39
+#: src/Integrations/wishlistmember/wishlistmember.php:37
+msgid "Connect with your fans, faster your community."
+msgstr "与您的粉丝联系，更快地建立您的社区。"
+
+#: src/Integrations/presto-player/triggers/user-complete-video.php:74
+msgid "Video Completed"
+msgstr "视频已完成"
+
+#: src/Integrations/presto-player/triggers/user-video-percent.php:70
+msgid "Video Watched"
+msgstr "视频已观看"
+
+#: src/Integrations/profilegrid/profilegrid.php:35
+msgid "ProfileGrid"
+msgstr "ProfileGrid"
+
+#: src/Integrations/profilegrid/profilegrid.php:36
+msgid ""
+"Create WordPress user profiles, groups, communities, paid memberships, directories, WooCommerce profiles, bbPress "
+"profiles, content restriction, sign-up pages, blog submissions, notifications, social activity and private messaging, "
+"beautiful threaded interface and a lot more!"
+msgstr "创建 WordPress 用户个人资料、组、社区、付费会员、目录、WooCommerce 个人资料、bbPress 个人资料、内容限制、注册页面、博客提交、通知、社交活动和私人消息，漂亮的线程界面以及更多！"
+
+#: src/Integrations/profilegrid/triggers/group-deleted.php:74
+msgid "Group Deleted"
+msgstr "小组已删除"
+
+#: src/Integrations/profilegrid/triggers/group-manager-resets-password.php:73
+msgid "Group Manager Resets Password"
+msgstr "小组管理员重置密码"
+
+#: src/Integrations/profilegrid/triggers/membership-request-approved.php:74
+msgid "Membership Request Approved"
+msgstr "会员请求已批准"
+
+#: src/Integrations/profilegrid/triggers/membership-request-denied.php:74
+msgid "Membership Request Denied"
+msgstr "会员请求已拒绝"
+
+#: src/Integrations/profilegrid/triggers/new-membership-request.php:74
+msgid "New Membership Request"
+msgstr "新会员请求"
+
+#: src/Integrations/profilegrid/triggers/payment-complete.php:73
+msgid "Payment Complete"
+msgstr "付款完成"
+
+#: src/Integrations/profilegrid/triggers/payment-failed.php:73
+msgid "Payment Failed"
+msgstr "付款失败"
+
+#: src/Integrations/profilegrid/triggers/user-assigned-group-manager.php:74
+msgid "User Assigned Group Manager"
+msgstr "用户被分配为小组管理员"
+
+#: src/Integrations/profilegrid/triggers/user-unassigned-group-manager.php:74
+msgid "User UnAssigned Group Manager"
+msgstr "用户取消分配小组管理员"
+
+#: src/Integrations/projecthuddle/actions/create-mockup.php:57
+#: src/Integrations/wordpress/actions/create-post.php:56
+#: src/Integrations/wordpress/actions/update-post-excerpt.php:56
+msgid "Post: Create a Post"
+msgstr "帖子：创建帖子"
+
+#: src/Integrations/projecthuddle/projecthuddle.php:38
+msgid "SureFeedback"
+msgstr "SureFeedback"
+
+#: src/Integrations/projecthuddle/projecthuddle.php:39
+msgid "A WordPress plugin for Website & Design feedback."
+msgstr "用于网站和设计反馈的 WordPress 插件。"
+
+#: src/Integrations/projecthuddle/triggers/comment-resolved.php:73
+msgid "Comment Marked As Resolved"
+msgstr "评论标记为已解决"
+
+#: src/Integrations/projecthuddle/triggers/new-comment-on-site.php:73
+msgid "New Comment On Site"
+msgstr "网站上的新评论"
+
+#: src/Integrations/raffle-press/raffle-press.php:35
+msgid "RafflePress"
+msgstr "RafflePress"
+
+#: src/Integrations/raffle-press/raffle-press.php:36
+msgid "Best WordPress Giveaway and Contest Plugin."
+msgstr "最佳 WordPress 抽奖和竞赛插件。"
+
+#: src/Integrations/raffle-press/triggers/someone-registered-for-giveaway-with-specific-action.php:70
+msgid "Someone Registered for Giveaway with Specific Action"
+msgstr "有人以特定操作注册抽奖"
+
+#: src/Integrations/raffle-press/triggers/someone-registered-for-giveaway.php:70
+msgid "Someone Registered for Giveaway"
+msgstr "有人注册抽奖"
+
+#: src/Integrations/restrict-content/actions/restrict-content-add-user.php:60
+#: src/Integrations/wishlistmember/actions/wishlist-member-add-user.php:59
+msgid "Add User to Membership Level"
+msgstr "将用户添加到会员级别"
+
+#: src/Integrations/restrict-content/actions/restrict-content-remove-user.php:59
+#: src/Integrations/wishlistmember/actions/wishlist-member-remove-user.php:58
+msgid "Remove User from Membership Level"
+msgstr "将用户从会员级别中移除"
+
+#: src/Integrations/restrict-content/restrict-content.php:38
+msgid "Restrict Content Pro"
+msgstr "限制内容专业版"
+
+#: src/Integrations/restrict-content/triggers/restrict-content-membership-cancelled.php:74
+msgid "Customer Membership Cancelled"
+msgstr "客户会员已取消"
+
+#: src/Integrations/restrict-content/triggers/restrict-content-membership-expired.php:74
+msgid "Customer Membership Expired"
+msgstr "客户会员已过期"
+
+#: src/Integrations/sensei-lms/actions/sl-enroll-user-to-course.php:128
+msgid "User enrolled successfully"
+msgstr "用户成功注册"
+
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:59
+msgid "Unenroll User From Course"
+msgstr "从课程中取消注册用户"
+
+#: src/Integrations/sensei-lms/actions/sl-unenroll-user-from-course.php:126
+msgid "User unenrolled successfully"
+msgstr "用户成功取消注册"
+
+#: src/Integrations/sensei-lms/sensei-lms.php:35
+msgid "Sensei LMS"
+msgstr "Sensei LMS"
+
+#: src/Integrations/sensei-lms/sensei-lms.php:36
+msgid "Learning Management System"
+msgstr "学习管理系统"
+
+#: src/Integrations/sensei-lms/triggers/sl-user-attempt-quiz.php:66
+msgid "User Attempts Quiz"
+msgstr "用户尝试测验"
+
+#: src/Integrations/sensei-lms/triggers/sl-user-completes-lesson.php:66
+msgid "User Completes Lesson"
+msgstr "用户完成课程"
+
+#: src/Integrations/sensei-lms/triggers/sl-user-completes-quiz-percentage.php:66
+msgid "User Completes Quiz Percentage"
+msgstr "用户完成测验百分比"
+
+#: src/Integrations/sensei-lms/triggers/sl-user-enrolled-course.php:66
+msgid "User Enrolled Course"
+msgstr "用户注册课程"
+
+#: src/Integrations/services-for-surecart/services-for-surecart.php:36
+msgid "Services For SureCart"
+msgstr "SureCart 的服务"
+
+#: src/Integrations/services-for-surecart/services-for-surecart.php:37
+msgid ""
+"Services For SureCart plugin empowers you to sell services and custom deliverables with SureCart. Enjoy features like "
+"status and activity tracking, built-in messaging, and final delivery and approvals, all beautifully integrated directly "
+"into your website and customer dashboard."
+msgstr "SureCart 插件的服务功能使您能够销售服务和定制交付物。享受状态和活动跟踪、内置消息传递以及最终交付和审批等功能，所有这些都完美集成在您的网站和客户仪表板中。"
+
+#: src/Integrations/services-for-surecart/triggers/contract-signed.php:73
+msgid "Contract Signed"
+msgstr "合同已签署"
+
+#: src/Integrations/services-for-surecart/triggers/customer-approves-final-delivery.php:73
+msgid "Customer Approves Final Delivery"
+msgstr "客户批准最终交付"
+
+#: src/Integrations/services-for-surecart/triggers/customer-request-revision.php:73
+msgid "Customer Request Revision"
+msgstr "客户请求修改"
+
+#: src/Integrations/services-for-surecart/triggers/delivery-date-changed.php:73
+msgid "Delivery Date Changed"
+msgstr "交付日期已更改"
+
+#: src/Integrations/services-for-surecart/triggers/message-final-delivery-sent.php:73
+msgid "Final Delivery Sent"
+msgstr "最终交付已发送"
+
+#: src/Integrations/services-for-surecart/triggers/message-sent.php:73
+msgid "Message Sent"
+msgstr "消息已发送"
+
+#: src/Integrations/services-for-surecart/triggers/new-service-creation.php:73
+msgid "New Service Created"
+msgstr "新服务已创建"
+
+#: src/Integrations/services-for-surecart/triggers/requirement-submitted.php:73
+msgid "Requirement Submitted"
+msgstr "需求已提交"
+
+#: src/Integrations/services-for-surecart/triggers/service-auto-complete.php:73
+msgid "Service Auto Complete"
+msgstr "服务自动完成"
+
+#: src/Integrations/services-for-surecart/triggers/service-cancel.php:73
+msgid "Service Cancel"
+msgstr "服务已取消"
+
+#: src/Integrations/services-for-surecart/triggers/service-completed.php:73
+msgid "Service Completed"
+msgstr "服务已完成"
+
+#: src/Integrations/services-for-surecart/triggers/service-mark-completed.php:73
+msgid "Service Mark Completed"
+msgstr "服务标记为完成"
+
+#: src/Integrations/services-for-surecart/triggers/service-marked-cancelled.php:73
+msgid "Service Marked as Canceled"
+msgstr "服务标记为已取消"
+
+#: src/Integrations/simply-schedule-appointments/simply-schedule-appointments.php:35
+msgid "SimplyScheduleAppointments"
+msgstr "SimplyScheduleAppointments"
+
+#: src/Integrations/simply-schedule-appointments/simply-schedule-appointments.php:36
+msgid "Simply Schedule Appointments Booking Plugin is for Consultants and Small Businesses using WordPress."
+msgstr "Simply Schedule Appointments 预订插件适用于使用 WordPress 的顾问和小型企业。"
+
+#: src/Integrations/slice-wp/actions/slicewp-create-commission.php:56
+msgid "Create Commission for specific Affiliate"
+msgstr "为特定的联盟创建佣金"
+
+#: src/Integrations/slice-wp/actions/slicewp-list-affiliates.php:56
+msgid "List Affiliates"
+msgstr "列出联盟"
+
+#: src/Integrations/slice-wp/slice-wp.php:35
+msgid "SliceWP"
+msgstr "SliceWP"
+
+#: src/Integrations/slice-wp/triggers/affiliate-created.php:72
+msgid "Affiliate Created"
+msgstr "联盟已创建"
+
+#: src/Integrations/slice-wp/triggers/affiliate-updated.php:72
+msgid "Affiliate Updated"
+msgstr "联盟已更新"
+
+#: src/Integrations/slice-wp/triggers/commision-created.php:72
+msgid "Commission Created"
+msgstr "佣金已创建"
+
+#: src/Integrations/slice-wp/triggers/commision-updated.php:72
+msgid "Commission Updated"
+msgstr "佣金已更新"
+
+#: src/Integrations/support-portal-for-surecart/support-portal-for-surecart.php:36
+msgid "Support Portal For SureCart"
+msgstr "SureCart 支持门户"
+
+#: src/Integrations/support-portal-for-surecart/support-portal-for-surecart.php:37
+msgid ""
+"Support Portal For SureCart plugin allows customers to request support directly from their SureCart Customer Dashboard, "
+"seamlessly integrating a ticketing system with automated notifications and streamlined management within the SureCart "
+"interface."
+msgstr "SureCart 插件的支持门户允许客户直接从他们的 SureCart 客户仪表板请求支持，完美集成了一个带有自动通知和简化管理的工单系统。"
+
+#: src/Integrations/support-portal-for-surecart/triggers/new-email-message-fetched.php:73
+msgid "New Email Message Fetched"
+msgstr "新电子邮件消息已获取"
+
+#: src/Integrations/support-portal-for-surecart/triggers/new-message-sent.php:73
+msgid "New Message Sent"
+msgstr "新消息已发送"
+
+#: src/Integrations/support-portal-for-surecart/triggers/new-support-ticket-created.php:74
+msgid "New Support Ticket Created"
+msgstr "新支持工单已创建"
+
+#: src/Integrations/support-portal-for-surecart/triggers/support-ticket-status-changed.php:74
+msgid "Support Ticket Status Changed"
+msgstr "支持工单状态已更改"
+
+#: src/Integrations/support-portal-for-surecart/triggers/tickets-marked-as-closed.php:74
+msgid "Tickets Marked as Closed"
+msgstr "工单已标记为关闭"
+
+#: src/Integrations/support-portal-for-surecart/triggers/tickets-marked-as-open.php:74
+msgid "Tickets Marked as Opened"
+msgstr "工单已标记为打开"
+
+#: src/Integrations/sureforms/actions/sureforms-send-data.php:55
+msgid "Send Data"
+msgstr "发送数据"
+
+#: src/Integrations/sureforms/sureforms.php:37
+msgid "SureForms"
+msgstr "SureForms"
+
+#: src/Integrations/sureforms/sureforms.php:38
+#: src/Integrations/suremail/suremail.php:38
+msgid "A simple yet powerful way to create modern forms for your website."
+msgstr "为您的网站创建现代表单的一种简单而强大的方式。"
+
+#: src/Integrations/suremail/suremail.php:37
+msgid "SureMail"
+msgstr "SureMail"
+
+#: src/Integrations/suremail/triggers/suremail-mail-blocked.php:72
+msgid "Mail Blocked To Send"
+msgstr "邮件发送被阻止"
+
+#: src/Integrations/suremail/triggers/suremail-mail-failed.php:72
+msgid "Mail Failed To Send"
+msgstr "邮件发送失败"
+
+#: src/Integrations/suremail/triggers/suremail-mail-sent.php:72
+msgid "Mail Sent"
+msgstr "邮件已发送"
+
+#: src/Integrations/suremembers/actions/add-access-to-group.php:57
+msgid "Add User to Access Group"
+msgstr "将用户添加到访问组"
+
+#: src/Integrations/suremembers/actions/add-access-to-group.php:79
+msgid "SureMembers Helper class not found"
+msgstr "未找到 SureMembers 辅助类"
+
+#: src/Integrations/suremembers/actions/remove-access-from-group.php:79
+msgid "SureMembers Helper class not found."
+msgstr "未找到 SureMembers 辅助类。"
+
+#: src/Integrations/suremembers/suremembers.php:37
+msgid "SureMembers"
+msgstr "SureMembers"
+
+#: src/Integrations/suremembers/suremembers.php:38
+msgid "A simple yet powerful way to add content restriction to your website."
+msgstr "为您的网站添加内容限制的一种简单而强大的方式。"
+
+#: src/Integrations/suremembers/triggers/access-group-updated.php:73
+msgid "Group Updated"
+msgstr "组已更新"
+
+#: src/Integrations/suremembers/triggers/user-added-in-group.php:73
+msgid "User Added"
+msgstr "用户已添加"
+
+#: src/Integrations/suremembers/triggers/user-removed-from-group.php:73
+msgid "User Removed"
+msgstr "用户已移除"
+
+#: src/Integrations/thrive-leads/thrive-leads.php:35
+msgid "Thrive Leads"
+msgstr "Thrive Leads"
+
+#: src/Integrations/thrive-leads/thrive-leads.php:36
+msgid "Lead generation plugin for WordPress."
+msgstr "用于 WordPress 的潜在客户生成插件。"
+
+#: src/Integrations/thrive-leads/triggers/registration-form-submitted.php:68
+msgid "Registration Form Submitted"
+msgstr "注册表单已提交"
+
+#: src/Integrations/triggerbutton/triggerbutton.php:37
+msgid "Trigger Button"
+msgstr "触发按钮"
+
+#: src/Integrations/triggerbutton/triggerbutton.php:38
+msgid "A Trigger Button to complete the automation."
+msgstr "完成自动化的触发按钮。"
+
+#: src/Integrations/triggerbutton/triggers/user-clicks-on-trigger-button.php:67
+msgid "A User Clicks on Trigger Button"
+msgstr "用户点击触发按钮"
+
+#: src/Integrations/tutorlms/actions/enroll-course.php:57
+msgid "Enroll User in Course"
+msgstr "将用户注册到课程"
+
+#: src/Integrations/tutorlms/actions/list-enrolled-users.php:57
+msgid "List Enrolled Users"
+msgstr "列出已注册用户"
+
+#: src/Integrations/tutorlms/actions/list-enrolled-users.php:82
+msgid "Required Tutor LMS functions or classes are not available."
+msgstr "所需的 Tutor LMS 函数或类不可用。"
+
+#: src/Integrations/tutorlms/actions/list-enrolled-users.php:90
+msgid "Invalid course ID provided."
+msgstr "提供的课程 ID 无效。"
+
+#: src/Integrations/tutorlms/actions/list-enrolled-users.php:100
+msgid "No enrolled users found for this course."
+msgstr "未找到该课程的已注册用户。"
+
+#: src/Integrations/tutorlms/actions/mark-course-complete.php:58
+msgid "Mark Course Complete"
+msgstr "标记课程为完成"
+
+#: src/Integrations/tutorlms/actions/mark-lesson-complete.php:57
+msgid "Mark Lesson Complete"
+msgstr "标记课程为完成"
+
+#: src/Integrations/tutorlms/actions/reset-user-course-progress.php:56
+msgid "Reset User Course Progress"
+msgstr "重置用户课程进度"
+
+#: src/Integrations/tutorlms/actions/reset-user-course-progress.php:92
+msgid "User course progress has been successfully reset."
+msgstr "用户课程进度已成功重置。"
+
+#: src/Integrations/tutorlms/triggers/complete-course.php:66
+msgid "User complete Course"
+msgstr "用户完成课程"
+
+#: src/Integrations/tutorlms/triggers/complete-lesson.php:65
+msgid "User complete Lesson"
+msgstr "用户完成课程"
+
+#: src/Integrations/tutorlms/triggers/purchase-course.php:70
+msgid "User purchases a course [WooCommerce]"
+msgstr "用户购买课程 [WooCommerce]"
+
+#: src/Integrations/tutorlms/triggers/user-achieves-percentage.php:66
+#: src/Integrations/tutorlms/triggers/user-passes-quiz.php:66
+msgid "User passes Quiz"
+msgstr "用户通过测验"
+
+#: src/Integrations/tutorlms/triggers/user-fails-quiz.php:66
+msgid "User fails Quiz"
+msgstr "用户未通过测验"
+
+#: src/Integrations/tutorlms/triggers/user-posts-question-course.php:66
+msgid "User Posts Question in Course"
+msgstr "用户在课程中发布问题"
+
+#: src/Integrations/tutorlms/tutorlms.php:35
+msgid "TutorLMS"
+msgstr "TutorLMS"
+
+#: src/Integrations/tutorlms/tutorlms.php:36
+msgid "Easily Create And Sell Online Courses On Your WP Site With TutorLMS."
+msgstr "轻松在您的 WP 网站上使用 TutorLMS 创建和销售在线课程。"
+
+#: src/Integrations/ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php:36
+msgid "Spectra"
+msgstr "Spectra"
+
+#: src/Integrations/ultimate-addons-for-gutenberg/ultimate-addons-for-gutenberg.php:37
+msgid "Supercharge the Gutenberg editor with beautiful and powerful blocks to design websites."
+msgstr "通过美丽而强大的区块增强 Gutenberg 编辑器，以设计网站。"
+
+#: src/Integrations/ultimate-member/actions/add-user-role.php:53
+msgid "Add a role to the user's roles"
+msgstr "为用户的角色添加角色"
+
+#: src/Integrations/ultimate-member/actions/add-user-role.php:80
+#: src/Integrations/ultimate-member/actions/user-role-change.php:81
+msgid "This user is not type of WP_User"
+msgstr "该用户不是 WP_User 类型"
+
+#: src/Integrations/ultimate-member/actions/user-role-change.php:53
+msgid "Set the user's role to a specific role"
+msgstr "将用户的角色设置为特定角色"
+
+#: src/Integrations/ultimate-member/triggers/user-inactive.php:73
+msgid "User Become Inactive"
+msgstr "用户变为非活跃状态"
+
+#: src/Integrations/ultimate-member/triggers/user-logsin.php:70
+msgid "User LogsIn With A Form"
+msgstr "用户通过表单登录"
+
+#: src/Integrations/ultimate-member/triggers/user-registers.php:70
+msgid "User Registers With A Form"
+msgstr "用户通过表单注册"
+
+#: src/Integrations/ultimate-member/triggers/user-rolechange.php:70
+msgid "User Role Change"
+msgstr "用户角色变更"
+
+#: src/Integrations/ultimate-member/ultimate-member.php:35
+msgid "UltimateMember"
+msgstr "UltimateMember"
+
+#: src/Integrations/ultimate-member/ultimate-member.php:36
+msgid "A user profile plugin."
+msgstr "一个用户资料插件。"
+
+#: src/Integrations/voxel/actions/add-post-profile-wall.php:57
+msgid "Add Post to Profile Wall"
+msgstr "将帖子添加到个人资料墙"
+
+#: src/Integrations/voxel/actions/add-post-profile-wall.php:121
+msgid "Post added to user's profile wall successfully"
+msgstr "帖子成功添加到用户的个人资料墙"
+
+#: src/Integrations/voxel/actions/add-post-to-collection.php:56
+msgid "Add Post to Collection"
+msgstr "将帖子添加到集合"
+
+#: src/Integrations/voxel/actions/add-post-to-collection.php:125
+msgid "Post added to collection successfully"
+msgstr "帖子成功添加到集合"
+
+#: src/Integrations/voxel/actions/add-post-wall.php:58
+msgid "Add Post to Wall"
+msgstr "将帖子添加到墙上"
+
+#: src/Integrations/voxel/actions/add-post-wall.php:121
+msgid "Post added to Post's wall successfully"
+msgstr "帖子成功添加到帖子的墙上"
+
+#: src/Integrations/voxel/actions/change-membership-plan.php:56
+msgid "Change Membership Plan"
+msgstr "更改会员计划"
+
+#: src/Integrations/voxel/actions/change-membership-plan.php:143
+msgid "Membership plan updated successfully"
+msgstr "会员计划成功更新"
+
+#: src/Integrations/voxel/actions/claim-post.php:58
+msgid "Claim Post"
+msgstr "认领帖子"
+
+#: src/Integrations/voxel/actions/claim-post.php:127
+msgid "Post claimed successfully."
+msgstr "帖子成功认领。"
+
+#: src/Integrations/voxel/actions/delete-wall-post.php:56
+msgid "Delete Post Wall"
+msgstr "删除帖子墙"
+
+#: src/Integrations/voxel/actions/delete-wall-post.php:95
+msgid "Wall Post deleted successfully"
+msgstr "墙上帖子成功删除"
+
+#: src/Integrations/voxel/actions/follow-post.php:58
+msgid "Follow Post"
+msgstr "关注帖子"
+
+#: src/Integrations/voxel/actions/follow-post.php:112
+msgid "Post followed successfully."
+msgstr "帖子成功关注。"
+
+#: src/Integrations/voxel/actions/get-address-by-coordinates.php:57
+msgid "Get Address By Coordinates"
+msgstr "通过坐标获取地址"
+
+#: src/Integrations/voxel/actions/get-coordinates-by-address.php:57
+msgid "Get Coordinates By Address"
+msgstr "通过地址获取坐标"
+
+#: src/Integrations/voxel/actions/get-member-by-email.php:57
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-by-email.php:59
+msgid "Get Member By Email"
+msgstr "通过电子邮件获取会员"
+
+#: src/Integrations/voxel/actions/get-member-by-id.php:57
+msgid "Get Member By ID"
+msgstr "通过 ID 获取会员"
+
+#: src/Integrations/voxel/actions/get-member-by-profile-id.php:57
+msgid "Get Member By Profile ID"
+msgstr "通过个人资料 ID 获取会员"
+
+#: src/Integrations/voxel/actions/get-post-by-id.php:57
+msgid "Get Post By ID"
+msgstr "通过 ID 获取帖子"
+
+#: src/Integrations/voxel/actions/get-posts-by-voxel-field.php:57
+msgid "Get Posts by Voxel Field"
+msgstr "通过 Voxel 字段获取帖子"
+
+#: src/Integrations/voxel/actions/new-collection-post.php:57
+msgid "Create New Collection Post"
+msgstr "创建新集合帖子"
+
+#: src/Integrations/voxel/actions/new-collection-post.php:130
+#: src/Integrations/voxel/actions/update-collection-post.php:117
+msgid "Collection created successfully"
+msgstr "集合成功创建"
+
+#: src/Integrations/voxel/actions/new-post.php:57
+msgid "Create New Post"
+msgstr "创建新帖子"
+
+#: src/Integrations/voxel/actions/new-post.php:134
+msgid "Post created successfully"
+msgstr "帖子成功创建"
+
+#: src/Integrations/voxel/actions/new-profile.php:57
+msgid "Create New Profile"
+msgstr "创建新个人资料"
+
+#: src/Integrations/voxel/actions/new-profile.php:132
+#: src/Integrations/voxel/actions/update-profile.php:124
+msgid "Profile created successfully"
+msgstr "个人资料成功创建"
+
+#: src/Integrations/voxel/actions/remove-post-from-collection.php:56
+msgid "Remove Post from Collection"
+msgstr "从集合中移除帖子"
+
+#: src/Integrations/voxel/actions/remove-post-from-collection.php:125
+msgid "Post removed from collection successfully"
+msgstr "帖子成功从集合中移除"
+
+#: src/Integrations/voxel/actions/send-custom-in-app-notification.php:56
+msgid "Send Custom In App Notification"
+msgstr "发送自定义应用内通知"
+
+#: src/Integrations/voxel/actions/send-custom-in-app-notification.php:169
+msgid "Custom In-app notification sent successfully"
+msgstr "自定义应用内通知成功发送"
+
+#: src/Integrations/voxel/actions/send-direct-message.php:57
+msgid "Send Direct Message"
+msgstr "发送直接消息"
+
+#: src/Integrations/voxel/actions/send-email.php:104
+msgid "Email sent successfully"
+msgstr "电子邮件成功发送"
+
+#: src/Integrations/voxel/actions/set-collection-post-verified.php:56
+msgid "Set Collection Post Verified"
+msgstr "设置集合帖子已验证"
+
+#: src/Integrations/voxel/actions/set-collection-post-verified.php:94
+#: src/Integrations/voxel/actions/set-post-verified.php:94
+msgid "Post Set as Verified"
+msgstr "帖子设置为已验证"
+
+#: src/Integrations/voxel/actions/set-custom-priority.php:56
+msgid "Set Custom Priority"
+msgstr "设置自定义优先级"
+
+#: src/Integrations/voxel/actions/set-custom-priority.php:106
+msgid "Custom priority set successfully"
+msgstr "自定义优先级成功设置"
+
+#: src/Integrations/voxel/actions/set-profile-verified.php:94
+msgid "Profile Verified Successfully"
+msgstr "个人资料成功验证"
+
+#: src/Integrations/voxel/actions/update-collection-post.php:57
+msgid "Update Collection Post"
+msgstr "更新集合帖子"
+
+#: src/Integrations/voxel/actions/update-post.php:57
+msgid "Update Post"
+msgstr "更新帖子"
+
+#: src/Integrations/voxel/actions/update-post.php:129
+msgid "Post updated successfully"
+msgstr "帖子成功更新"
+
+#: src/Integrations/voxel/actions/update-profile.php:57
+msgid "Update Profile"
+msgstr "更新个人资料"
+
+#: src/Integrations/voxel/triggers/collection-post-created.php:74
+msgid "Collection Post Submitted"
+msgstr "集合帖子已提交"
+
+#: src/Integrations/voxel/triggers/collection-post-updated.php:74
+msgid "Collection Post Updated"
+msgstr "集合帖子已更新"
+
+#: src/Integrations/voxel/triggers/comment-reply-created-timeline.php:73
+msgid "New Comment Reply Created on Timeline"
+msgstr "时间线创建了新的评论回复"
+
+#: src/Integrations/voxel/triggers/membership-plan-activated.php:73
+msgid "Membership Plan Activated"
+msgstr "会员计划已激活"
+
+#: src/Integrations/voxel/triggers/membership-plan-canceled.php:73
+msgid "Membership Plan Canceled"
+msgstr "会员计划已取消"
+
+#: src/Integrations/voxel/triggers/membership-plan-switched.php:73
+msgid "Membership Plan Switched"
+msgstr "会员计划已切换"
+
+#: src/Integrations/voxel/triggers/membership-user-registered.php:73
+msgid "User Registered"
+msgstr "用户已注册"
+
+#: src/Integrations/voxel/triggers/new-comment-timeline.php:73
+msgid "New Comment Created on Timeline"
+msgstr "时间线创建了新的评论"
+
+#: src/Integrations/voxel/triggers/new-order-placed.php:73
+msgid "New Order Placed"
+msgstr "新订单已下"
+
+#: src/Integrations/voxel/triggers/new-profile-created.php:73
+msgid "New Profile Created"
+msgstr "新个人资料已创建"
+
+#: src/Integrations/voxel/triggers/new-wall-post-by-user.php:74
+msgid "New Wall Post by User"
+msgstr "用户的新墙帖子"
+
+#: src/Integrations/voxel/triggers/order-approved-by-vendor.php:73
+#: src/Integrations/voxel/triggers/orders-promotion-activated.php:73
+msgid "Order Approved By Vendor"
+msgstr "订单已被供应商批准"
+
+#: src/Integrations/voxel/triggers/order-canceled-by-customer.php:73
+msgid "Order Canceled by Customer"
+msgstr "订单已被客户取消"
+
+#: src/Integrations/voxel/triggers/order-declined-by-vendor.php:73
+msgid "Order Declined By Vendor"
+msgstr "订单已被供应商拒绝"
+
+#: src/Integrations/voxel/triggers/orders-claim-listing.php:73
+msgid "Orders Claim Listing"
+msgstr "订单认领列表"
+
+#: src/Integrations/voxel/triggers/orders-promotion-canceled.php:73
+msgid "Order Promotion Canceled"
+msgstr "订单促销已取消"
+
+#: src/Integrations/voxel/triggers/post-approved.php:75
+msgid "Post Approved"
+msgstr "帖子已批准"
+
+#: src/Integrations/voxel/triggers/post-rejected.php:75
+msgid "Post Rejected"
+msgstr "帖子已被拒绝"
+
+#: src/Integrations/voxel/triggers/post-review-approved.php:75
+msgid "Post Review Approved"
+msgstr "帖子审核已批准"
+
+#: src/Integrations/voxel/triggers/post-reviewed.php:75
+msgid "Post Reviewed"
+msgstr "帖子已审核"
+
+#: src/Integrations/voxel/triggers/post-submitted.php:75
+msgid "Post Submitted"
+msgstr "帖子已提交"
+
+#: src/Integrations/voxel/triggers/post-updated.php:75
+msgid "Post Updated"
+msgstr "帖子已更新"
+
+#: src/Integrations/voxel/triggers/profile-approved.php:73
+msgid "Profile Approved"
+msgstr "个人资料已批准"
+
+#: src/Integrations/voxel/triggers/profile-rejected.php:73
+msgid "Profile Rejected"
+msgstr "个人资料已拒绝"
+
+#: src/Integrations/voxel/triggers/profile-reviewed.php:72
+msgid "Profile Reviewed"
+msgstr "个人资料已审核"
+
+#: src/Integrations/voxel/triggers/profile-updated.php:73
+msgid "Profile Updated"
+msgstr "个人资料已更新"
+
+#: src/Integrations/voxel/triggers/profile-wall-new-post.php:73
+msgid "Profile New Wall Post"
+msgstr "个人资料新墙帖子"
+
+#: src/Integrations/voxel/triggers/timeline-post-approved.php:75
+msgid "Timeline Post Approved"
+msgstr "时间线帖子已批准"
+
+#: src/Integrations/voxel/triggers/user-receives-message.php:73
+msgid "User Receives Message"
+msgstr "用户收到消息"
+
+#: src/Integrations/voxel/triggers/users-timeline-approved.php:72
+msgid "Users Timeline Approved"
+msgstr "用户时间线已批准"
+
+#: src/Integrations/voxel/triggers/users-timeline-created.php:72
+msgid "Users Timeline Created"
+msgstr "用户时间线已创建"
+
+#: src/Integrations/voxel/triggers/voxel-comment-liked.php:72
+msgid "Comment Liked"
+msgstr "评论已点赞"
+
+#: src/Integrations/voxel/triggers/voxel-post-followed.php:71
+msgid "Post Followed"
+msgstr "帖子已关注"
+
+#: src/Integrations/voxel/triggers/voxel-post-liked.php:72
+msgid "Post Liked"
+msgstr "帖子已点赞"
+
+#: src/Integrations/voxel/triggers/voxel-post-quoted.php:72
+#: src/Integrations/voxel/triggers/voxel-post-reposted.php:72
+msgid "Post Reposted"
+msgstr "帖子已转发"
+
+#: src/Integrations/voxel/triggers/voxel-post-unfollowed.php:71
+msgid "Post UnFollowed"
+msgstr "帖子已取消关注"
+
+#: src/Integrations/voxel/triggers/voxel-user-mentioned-in-comment.php:72
+msgid "User Mentioned In Comment"
+msgstr "用户在评论中被提及"
+
+#: src/Integrations/voxel/triggers/voxel-user-mentioned-in-post.php:72
+msgid "User Mentioned In Post"
+msgstr "用户在帖子中被提及"
+
+#: src/Integrations/voxel/triggers/wall-post-approved.php:74
+msgid "Wall Post Approved"
+msgstr "墙帖子已批准"
+
+#: src/Integrations/voxel/voxel.php:36
+msgid "Voxel"
+msgstr "体素"
+
+#: src/Integrations/voxel/voxel.php:37
+msgid "Voxel is a complete no code solution in a single packageto create WordPress dynamic sites."
+msgstr "Voxel 是一个完整的无代码解决方案，打包在一个包中以创建 WordPress 动态网站。"
+
+#: src/Integrations/voxel/voxel.php:64
+msgid "Post not found"
+msgstr "帖子未找到"
+
+#: src/Integrations/voxel/voxel.php:286
+msgid "Description"
+msgstr "描述"
+
+#: src/Integrations/voxel/voxel.php:297
+msgid "Timezone"
+msgstr "时区"
+
+#: src/Integrations/voxel/voxel.php:312
+msgid "Address"
+msgstr "地址"
+
+#: src/Integrations/voxel/voxel.php:317
+msgid "Latitude"
+msgstr "纬度"
+
+#: src/Integrations/voxel/voxel.php:322
+msgid "Longitude"
+msgstr "经度"
+
+#: src/Integrations/voxel/voxel.php:333
+msgid "Email"
+msgstr "电子邮件"
+
+#: src/Integrations/voxel/voxel.php:344
+#: src/Integrations/voxel/voxel.php:356
+#: src/Integrations/voxel/voxel.php:370
+#: src/Integrations/voxel/voxel.php:382
+#: src/Integrations/voxel/voxel.php:484
+#: src/Integrations/voxel/voxel.php:496
+#: src/Integrations/voxel/voxel.php:613
+msgid "Image ID"
+msgstr "图像 ID"
+
+#: src/Integrations/voxel/voxel.php:346
+#: src/Integrations/voxel/voxel.php:358
+#: src/Integrations/voxel/voxel.php:486
+#: src/Integrations/voxel/voxel.php:498
+msgid "Provide Image ID"
+msgstr "提供图像 ID"
+
+#: src/Integrations/voxel/voxel.php:372
+#: src/Integrations/voxel/voxel.php:384
+msgid "Provide Image IDs, separated by comma"
+msgstr "提供图像 ID，以逗号分隔"
+
+#: src/Integrations/voxel/voxel.php:394
+msgid "Website URL"
+msgstr "网站 URL"
+
+#: src/Integrations/voxel/voxel.php:405
+msgid "Phone Number"
+msgstr "电话号码"
+
+#: src/Integrations/voxel/voxel.php:422
+#: src/Integrations/voxel/voxel.php:664
+msgid "Event Start Date"
+msgstr "事件开始日期"
+
+#: src/Integrations/voxel/voxel.php:427
+#: src/Integrations/voxel/voxel.php:669
+msgid "Event End Date"
+msgstr "事件结束日期"
+
+#: src/Integrations/voxel/voxel.php:432
+#: src/Integrations/voxel/voxel.php:674
+msgid "Event Frequency"
+msgstr "事件频率"
+
+#: src/Integrations/voxel/voxel.php:437
+#: src/Integrations/voxel/voxel.php:679
+msgid "Event Unit"
+msgstr "事件单位"
+
+#: src/Integrations/voxel/voxel.php:439
+#: src/Integrations/voxel/voxel.php:681
+msgid "Accepted values: day, week, month, year"
+msgstr "接受的值：天，周，月，年"
+
+#: src/Integrations/voxel/voxel.php:443
+#: src/Integrations/voxel/voxel.php:685
+msgid "Event Until"
+msgstr "事件截止"
+
+#: src/Integrations/voxel/voxel.php:460
+msgid "Work Days"
+msgstr "工作日"
+
+#: src/Integrations/voxel/voxel.php:462
+msgid "Accepted values: mon, tue, wed, thu, fri, sat, sun"
+msgstr "接受的值：周一，周二，周三，周四，周五，周六，周日"
+
+#: src/Integrations/voxel/voxel.php:466
+msgid "Work Hours"
+msgstr "工作时间"
+
+#: src/Integrations/voxel/voxel.php:468
+msgid ""
+"Enter value pairs as start and end time, separated by dash. For multiple pairs, use comma separator. Eg. 09:00-17:00, "
+"09:00-12:00"
+msgstr "输入值对作为开始和结束时间，用破折号分隔。对于多个对，使用逗号分隔。例如：09:00-17:00，09:00-12:00"
+
+#: src/Integrations/voxel/voxel.php:472
+msgid "Work Status"
+msgstr "工作状态"
+
+#: src/Integrations/voxel/voxel.php:474
+msgid "Accepted values: hours, open, close, appointments_only"
+msgstr "接受的值：小时，开放，关闭，仅限预约"
+
+#: src/Integrations/voxel/voxel.php:508
+msgid "Profile Name"
+msgstr "个人资料名称"
+
+#: src/Integrations/voxel/voxel.php:520
+msgid "Text"
+msgstr "文本"
+
+#: src/Integrations/voxel/voxel.php:531
+msgid "Number"
+msgstr "数字"
+
+#: src/Integrations/voxel/voxel.php:542
+msgid "Switcher"
+msgstr "切换器"
+
+#: src/Integrations/voxel/voxel.php:553
+msgid "Text Editor"
+msgstr "文本编辑器"
+
+#: src/Integrations/voxel/voxel.php:564
+msgid "Taxonomy Slug"
+msgstr "分类法别名"
+
+#: src/Integrations/voxel/voxel.php:566
+msgid "Provide related taxonomy slug(s). If multiples allowed, separate with comma."
+msgstr "提供相关的分类法别名。如果允许多个，请用逗号分隔。"
+
+#: src/Integrations/voxel/voxel.php:576
+msgid "Product ID"
+msgstr "产品 ID"
+
+#: src/Integrations/voxel/voxel.php:578
+msgid "Provide Product ID"
+msgstr "提供产品 ID"
+
+#: src/Integrations/voxel/voxel.php:588
+msgid "Phone"
+msgstr "电话"
+
+#: src/Integrations/voxel/voxel.php:599
+msgid "URL"
+msgstr "URL"
+
+#: src/Integrations/voxel/voxel.php:615
+#: src/Integrations/voxel/voxel.php:744
+msgid "Provide Image IDs. Separate with comma."
+msgstr "提供图像 ID。用逗号分隔。"
+
+#: src/Integrations/voxel/voxel.php:628
+msgid "File ID"
+msgstr "文件 ID"
+
+#: src/Integrations/voxel/voxel.php:630
+msgid "Provide File ID"
+msgstr "提供文件 ID"
+
+#: src/Integrations/voxel/voxel.php:645
+msgid "Repeater"
+msgstr "重复器"
+
+#: src/Integrations/voxel/voxel.php:696
+msgid "Post ID"
+msgstr "帖子 ID"
+
+#: src/Integrations/voxel/voxel.php:698
+msgid "Provide Post ID"
+msgstr "提供帖子 ID"
+
+#: src/Integrations/voxel/voxel.php:708
+msgid "Date"
+msgstr "日期"
+
+#: src/Integrations/voxel/voxel.php:719
+msgid "Select"
+msgstr "选择"
+
+#: src/Integrations/voxel/voxel.php:730
+msgid "Color"
+msgstr "颜色"
+
+#: src/Integrations/voxel/voxel.php:742
+msgid "Image IDs"
+msgstr "图像 ID"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-add-update-user.php:59
+msgid "Add/Update Member"
+msgstr "添加/更新成员"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-check-if-user-is-member.php:59
+msgid "Check if User is Member"
+msgstr "检查用户是否为成员"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-check-if-user-is-member.php:91
+msgid "User exists in the membership level."
+msgstr "用户存在于会员级别中。"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-check-if-user-is-member.php:96
+msgid "User does not exist in the membership level."
+msgstr "用户不存在于会员级别中。"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-create-new-level.php:59
+msgid "Create New Level"
+msgstr "创建新级别"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-create-new-level.php:96
+msgid "Failed to create a level"
+msgstr "创建级别失败"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-existing-member.php:59
+msgid "Delete Existing Member"
+msgstr "删除现有成员"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-existing-member.php:90
+msgid "Member deleted successfully."
+msgstr "成员已成功删除。"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-existing-member.php:96
+msgid "Failed to delete a member."
+msgstr "删除成员失败。"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-level.php:59
+msgid "Delete Level"
+msgstr "删除级别"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-delete-level.php:90
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-specific-level-details.php:90
+#: src/Integrations/wishlistmember/actions/wishlist-member-update-existing-level.php:97
+msgid "Failed to update a level"
+msgstr "更新级别失败"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-all-levels.php:59
+msgid "Get all Levels"
+msgstr "获取所有级别"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-all-levels.php:91
+msgid "Failed to fetch a level"
+msgstr "获取级别失败"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-by-email.php:91
+msgid "No user found for the searched email"
+msgstr "未找到搜索的电子邮件用户"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-by-username.php:59
+msgid "Get Member By Username"
+msgstr "通过用户名获取成员"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-by-username.php:94
+msgid "No user found for the searched username"
+msgstr "未找到搜索的用户名用户"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-information.php:59
+msgid "Get Member Information"
+msgstr "获取成员信息"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-member-information.php:91
+msgid "Failed to get a member information"
+msgstr "获取成员信息失败"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-specific-level-details.php:59
+msgid "Get Specific Level Details"
+msgstr "获取特定级别详细信息"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-specific-member-level.php:59
+msgid "Get specific Members Levels"
+msgstr "获取特定成员级别"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-get-specific-member-level.php:91
+msgid "Member is not added to any level."
+msgstr "成员未添加到任何级别。"
+
+#: src/Integrations/wishlistmember/actions/wishlist-member-update-existing-level.php:59
+msgid "Update Existing Level"
+msgstr "更新现有级别"
+
+#: src/Integrations/wishlistmember/triggers/wishlist-membership-add-user.php:74
+msgid "User Added to Membership Level"
+msgstr "用户已添加到会员级别"
+
+#: src/Integrations/wishlistmember/triggers/wishlist-membership-remove-user.php:74
+msgid "User Removed from Membership Level"
+msgstr "用户已从会员级别中移除"
+
+#: src/Integrations/wishlistmember/wishlistmember.php:36
+msgid "WishlistMember"
+msgstr "WishlistMember"
+
+#: src/Integrations/woocommerce-bookings/triggers/booking-created.php:70
+#: src/Integrations/woocommerce-bookings/triggers/booking-status-changed.php:70
+msgid "Booking Created"
+msgstr "预订已创建"
+
+#: src/Integrations/woocommerce-bookings/woocommerce-bookings.php:35
+msgid "Woocommerce Bookings"
+msgstr "Woocommerce 预订"
+
+#: src/Integrations/woocommerce-bookings/woocommerce-bookings.php:36
+msgid ""
+"WooCommerce Bookings is an extension for WooCommerce that allow customers to book appointments, make reservations or "
+"rent equipment without leaving your site."
+msgstr "WooCommerce 预订是 WooCommerce 的一个扩展，允许客户预约、预订或租赁设备，而无需离开您的网站。"
+
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:56
+msgid "Add the user to a membership plan."
+msgstr "将用户添加到会员计划。"
+
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:88
+msgid "This user has already an active membership in the specified membership plan."
+msgstr "该用户在指定的会员计划中已经有一个有效的会员资格。"
+
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:116
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:136
+msgid "This user is not registered."
+msgstr "该用户尚未注册。"
+
+#: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:123
+msgid "The user email is not valid."
+msgstr "用户邮箱无效。"
+
+#: src/Integrations/woocommerce-memberships/actions/change-user-membership-plan.php:57
+msgid "Change User Membership Plan"
+msgstr "更改用户会员计划"
+
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:55
+msgid "Remove the user from a membership plan."
+msgstr "将用户从会员计划中移除。"
+
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:88
+msgid "The user was not a member of any membership plans."
+msgstr "该用户不是任何会员计划的成员。"
+
+#: src/Integrations/woocommerce-memberships/actions/remove-user-from-membership-plan.php:112
+msgid "The user was not a member of the specified membership plan."
+msgstr "该用户不是指定会员计划的成员。"
+
+#: src/Integrations/woocommerce-memberships/triggers/add-user-membership-plan.php:69
+msgid "A user is added to a membership plan"
+msgstr "用户已添加到会员计划"
+
+#: src/Integrations/woocommerce-memberships/triggers/user-membership-plan-cancelled.php:69
+msgid "A user's access to a membership plan is cancelled"
+msgstr "用户对会员计划的访问已被取消"
+
+#: src/Integrations/woocommerce-memberships/triggers/user-membership-plan-expires.php:69
+msgid "A user's access to a membership plan expires"
+msgstr "用户对会员计划的访问已过期"
+
+#: src/Integrations/woocommerce-memberships/triggers/user-membership-status-changed.php:69
+msgid "User's membership status is changed"
+msgstr "用户的会员状态已更改"
+
+#: src/Integrations/woocommerce-memberships/woocommerce-memberships.php:35
+msgid "WoocommerceMemberships"
+msgstr "WoocommerceMemberships"
+
+#: src/Integrations/woocommerce-memberships/woocommerce-memberships.php:36
+msgid "Woocommerce memberships plugin."
+msgstr "Woocommerce 会员插件。"
+
+#: src/Integrations/woocommerce-shipstation/triggers/order-shipped.php:70
+msgid "Order Is Shipped"
+msgstr "订单已发货"
+
+#: src/Integrations/woocommerce-shipstation/triggers/specific-amount-order-shipped.php:70
+msgid "Order For Specific Amount Shipped"
+msgstr "特定金额的订单已发货"
+
+#: src/Integrations/woocommerce-shipstation/triggers/specific-product-order-shipped.php:70
+msgid "Order For Specific Product Shipped"
+msgstr "特定产品的订单已发货"
+
+#: src/Integrations/woocommerce-shipstation/woocommerce-shipstation.php:35
+msgid "WoocommerceShipstation"
+msgstr "WoocommerceShipstation"
+
+#: src/Integrations/woocommerce-shipstation/woocommerce-shipstation.php:36
+msgid "Woocommerce shipstation plugin."
+msgstr "Woocommerce shipstation 插件。"
+
+#: src/Integrations/woocommerce-subscriptions/actions/add-subscription-coupon.php:57
+msgid "Add Coupon"
+msgstr "添加优惠券"
+
+#: src/Integrations/woocommerce-subscriptions/actions/add-update-subscription-custom-fields.php:56
+#: src/Integrations/woocommerce/actions/add-update-order-custom-fields.php:58
+msgid "Add or Update Custom Fields"
+msgstr "添加或更新自定义字段"
+
+#: src/Integrations/woocommerce-subscriptions/actions/change-subscription-status.php:57
+msgid "Change Subscription Status"
+msgstr "更改订阅状态"
+
+#: src/Integrations/woocommerce-subscriptions/actions/create-subscription-order-cost.php:59
+#: src/Integrations/woocommerce-subscriptions/actions/create-subscription-order-product.php:59
+msgid "Create a subscription order with a product"
+msgstr "创建带有产品的订阅订单"
+
+#: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:58
+msgid "Extend User Subscription"
+msgstr "延长用户订阅"
+
+#: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:115
+msgid "#%s"
+msgstr "#%s"
+
+#: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:121
+msgid "Subscription successfully extended by SureTriggers. Order %s"
+msgstr "订阅已成功延长，来自 SureTriggers。订单 %s"
+
+#: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:124
+msgid "Failed to extend subscription after customer renewed early. Order %s"
+msgstr "客户提前续订后，延长订阅失败。订单 %s"
+
+#: src/Integrations/woocommerce-subscriptions/actions/find-subscription-by-user-id.php:57
+msgid "Find Subscription by User ID"
+msgstr "通过用户 ID 查找订阅"
+
+#: src/Integrations/woocommerce-subscriptions/actions/remove-product-user-subscription.php:57
+msgid "Remove Product User Subscription"
+msgstr "移除产品用户订阅"
+
+#: src/Integrations/woocommerce-subscriptions/actions/update-subscription-end-date.php:57
+msgid "Update Subscription End Date"
+msgstr "更新订阅结束日期"
+
+#: src/Integrations/woocommerce-subscriptions/actions/update-subscription-next-payment-date.php:57
+msgid "Update Subscription Next Payment Date"
+msgstr "更新订阅下次付款日期"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-cancels-subscription-product.php:71
+msgid "User Cancels Subscription"
+msgstr "用户取消订阅"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-purchases-variable-subscription.php:71
+msgid "User Purchases Variable Subscription"
+msgstr "用户购买可变订阅"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-renewal-subscription-payment-failed.php:71
+msgid "User Renewal Subscription Payment Failed"
+msgstr "用户续订订阅付款失败"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-renews-subscription-product.php:71
+msgid "User Renews Subscription"
+msgstr "用户续订订阅"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-subscribes-product.php:71
+msgid "User Subscribes To Product"
+msgstr "用户订阅产品"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-subscription-product-expires.php:71
+msgid "User Subscription Expires"
+msgstr "用户订阅过期"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-subscription-trial-end.php:71
+msgid "User Subscription Trial End"
+msgstr "用户订阅试用结束"
+
+#: src/Integrations/woocommerce-subscriptions/triggers/user-subscription-updated.php:71
+msgid "User Subscription Updated"
+msgstr "用户订阅已更新"
+
+#: src/Integrations/woocommerce-subscriptions/woocommerce-subscriptions.php:35
+msgid "WoocommerceSubscriptions"
+msgstr "WoocommerceSubscriptions"
+
+#: src/Integrations/woocommerce-subscriptions/woocommerce-subscriptions.php:36
+msgid "Woocommerce subscriptions plugin."
+msgstr "Woocommerce 订阅插件。"
+
+#: src/Integrations/woocommerce/actions/add-attribute-terms.php:57
+msgid "Add Attribute Terms"
+msgstr "添加属性术语"
+
+#: src/Integrations/woocommerce/actions/add-customer.php:58
+msgid "Add New Customer in WooCommerce"
+msgstr "在 WooCommerce 中添加新客户"
+
+#: src/Integrations/woocommerce/actions/add-customer.php:92
+msgid "Email already exists."
+msgstr "邮箱已存在。"
+
+#: src/Integrations/woocommerce/actions/add-order-note.php:58
+msgid "Add Order Note"
+msgstr "添加订单备注"
+
+#: src/Integrations/woocommerce/actions/add-product-attributes.php:56
+msgid "Add Product Attributes"
+msgstr "添加产品属性"
+
+#: src/Integrations/woocommerce/actions/add-product-attributes.php:117
+msgid "Attributes added succcessfully."
+msgstr "属性添加成功。"
+
+#: src/Integrations/woocommerce/actions/create-attribute.php:57
+msgid "Create Attributes"
+msgstr "创建属性"
+
+#: src/Integrations/woocommerce/actions/create-coupon-code.php:55
+msgid "Generate a coupon code."
+msgstr "生成优惠券代码。"
+
+#: src/Integrations/woocommerce/actions/create-new-order.php:56
+msgid "Create a new order for the user"
+msgstr "为用户创建新订单"
+
+#: src/Integrations/woocommerce/actions/create-new-order.php:79
+msgid "Unable to create order."
+msgstr "无法创建订单。"
+
+#: src/Integrations/woocommerce/actions/create-product-variation.php:57
+msgid "Create Product Variation"
+msgstr "创建产品变体"
+
+#: src/Integrations/woocommerce/actions/create-product.php:58
+msgid "Create Product in WooCommerce"
+msgstr "在 WooCommerce 中创建产品"
+
+#: src/Integrations/woocommerce/actions/create-product.php:119
+msgid "Failed to get the product."
+msgstr "获取产品失败。"
+
+#: src/Integrations/woocommerce/actions/delete-coupon.php:56
+msgid "Delete a coupon code."
+msgstr "删除优惠券代码。"
+
+#: src/Integrations/woocommerce/actions/find-orders-by-user-id.php:57
+msgid "Find Orders by User ID"
+msgstr "通过用户 ID 查找订单"
+
+#: src/Integrations/woocommerce/actions/get-order-details-by-order-id.php:57
+msgid "Get Order Details by Order ID"
+msgstr "通过订单 ID 获取订单详情"
+
+#: src/Integrations/woocommerce/actions/get-product-by-id.php:57
+msgid "Get Product By ID"
+msgstr "通过 ID 获取产品"
+
+#: src/Integrations/woocommerce/actions/update-status-of-order.php:58
+msgid "Update Status of Order."
+msgstr "更新订单状态。"
+
+#: src/Integrations/woocommerce/triggers/add-product-to-cart.php:69
+msgid "Product is added to cart"
+msgstr "产品已添加到购物车"
+
+#: src/Integrations/woocommerce/triggers/customer-created.php:66
+#: src/Integrations/woocommerce/triggers/customer-total-spend-reach-specific-amount.php:66
+msgid "Customer Created"
+msgstr "客户已创建"
+
+#: src/Integrations/woocommerce/triggers/customer-order-count-reach-specific-count.php:66
+msgid "Customer Order Count Reaches Specific Count"
+msgstr "客户订单数量达到特定数量"
+
+#: src/Integrations/woocommerce/triggers/order-created.php:70
+msgid "Order created"
+msgstr "订单已创建"
+
+#: src/Integrations/woocommerce/triggers/order-note-added.php:66
+msgid "Order Note Added"
+msgstr "订单备注已添加"
+
+#: src/Integrations/woocommerce/triggers/order-paid.php:70
+msgid "Order Paid"
+msgstr "订单已支付"
+
+#: src/Integrations/woocommerce/triggers/purchase-product-category.php:71
+msgid "Product Category Purchased"
+msgstr "产品类别已购买"
+
+#: src/Integrations/woocommerce/triggers/purchase-product.php:71
+msgid "User purchases a product"
+msgstr "用户购买了一个产品"
+
+#: src/Integrations/woocommerce/triggers/purchase-variable-product.php:66
+msgid "User purchases a variable product with a variation selected"
+msgstr "用户购买了一个已选择变体的可变产品"
+
+#: src/Integrations/woocommerce/triggers/review-product.php:68
+msgid "User reviews a product"
+msgstr "用户评论产品"
+
+#: src/Integrations/woocommerce/triggers/subscription-var-purchase.php:68
+msgid "User purchases a variable subscription"
+msgstr "用户购买可变订阅"
+
+#: src/Integrations/woocommerce/triggers/view-product.php:66
+msgid "User views a product"
+msgstr "用户查看产品"
+
+#: src/Integrations/wordpress/actions/add-new-media.php:57
+msgid "Add New Image To Media Library"
+msgstr "将新图像添加到媒体库"
+
+#: src/Integrations/wordpress/actions/add-new-role.php:57
+msgid "Role: Add a new role to the user's roles"
+msgstr "角色：向用户的角色添加新角色"
+
+#: src/Integrations/wordpress/actions/add-tag-to-post.php:57
+#: src/Integrations/wordpress/actions/get-user-by-role.php:57
+msgid "Get All Users By Role"
+msgstr "按角色获取所有用户"
+
+#: src/Integrations/wordpress/actions/add-taxonomy-to-post.php:57
+msgid "Add Taxonomy"
+msgstr "添加分类法"
+
+#: src/Integrations/wordpress/actions/change-role.php:57
+msgid "Role: Change the user's role to a new role"
+msgstr "角色：将用户的角色更改为新角色"
+
+#: src/Integrations/wordpress/actions/create-category.php:57
+msgid "Create New Category"
+msgstr "创建新类别"
+
+#: src/Integrations/wordpress/actions/create-comment.php:56
+msgid "Create Comment"
+msgstr "创建评论"
+
+#: src/Integrations/wordpress/actions/create-role.php:57
+msgid "Create Role"
+msgstr "创建角色"
+
+#: src/Integrations/wordpress/actions/create-tag.php:57
+msgid "Create New Tag"
+msgstr "创建新标签"
+
+#: src/Integrations/wordpress/actions/create-user-if-not-exists.php:56
+msgid "User: Create new user if not exists with Email"
+msgstr "用户：如果不存在，则使用电子邮件创建新用户"
+
+#: src/Integrations/wordpress/actions/create-user-if-not-exists.php:207
+msgid "Unable to show the password while updating the user"
+msgstr "更新用户时无法显示密码"
+
+#: src/Integrations/wordpress/actions/delete-user.php:57
+msgid "Delete User"
+msgstr "删除用户"
+
+#: src/Integrations/wordpress/actions/find-posts.php:55
+msgid "Find Posts"
+msgstr "查找帖子"
+
+#: src/Integrations/wordpress/actions/find-user-by-email.php:57
+msgid "Find User By Email"
+msgstr "按电子邮件查找用户"
+
+#: src/Integrations/wordpress/actions/find-user-by-id.php:57
+msgid "Find User By ID"
+msgstr "按ID查找用户"
+
+#: src/Integrations/wordpress/actions/find-user-meta-by-key.php:56
+msgid "User: Find User meta by key"
+msgstr "用户：按键查找用户元数据"
+
+#: src/Integrations/wordpress/actions/find-user-metas.php:56
+msgid "User: Find User meta"
+msgstr "用户：查找用户元数据"
+
+#: src/Integrations/wordpress/actions/get-post-by-id.php:56
+msgid "Get Post by ID"
+msgstr "按ID获取帖子"
+
+#: src/Integrations/wordpress/actions/get-post-metadata.php:56
+msgid "Get Post Metadata"
+msgstr "获取帖子元数据"
+
+#: src/Integrations/wordpress/actions/get-post-taxonomy.php:57
+msgid "Get Post Taxonomies"
+msgstr "获取帖子分类法"
+
+#: src/Integrations/wordpress/actions/get-post-terms.php:57
+msgid "Get Post Terms"
+msgstr "获取帖子术语"
+
+#: src/Integrations/wordpress/actions/get-taxonomy-by-name.php:57
+msgid "Get Taxonomy By Name"
+msgstr "按名称获取分类法"
+
+#: src/Integrations/wordpress/actions/remove-role.php:57
+#: src/Integrations/wordpress/triggers/remove-user-role.php:71
+msgid "Role: Remove a role from the user"
+msgstr "角色：从用户中移除角色"
+
+#: src/Integrations/wordpress/actions/remove-user-meta.php:56
+msgid "Remove User Meta"
+msgstr "移除用户元数据"
+
+#: src/Integrations/wordpress/actions/remove-user.php:56
+msgid "User: Remove User"
+msgstr "用户：移除用户"
+
+#: src/Integrations/wordpress/actions/remove-user.php:103
+msgid "User deleted successfully."
+msgstr "用户删除成功。"
+
+#: src/Integrations/wordpress/actions/remove-user.php:108
+msgid "User not found."
+msgstr "未找到用户。"
+
+#: src/Integrations/wordpress/actions/remove-user.php:114
+msgid "Please enter valid email."
+msgstr "请输入有效的电子邮件。"
+
+#: src/Integrations/wordpress/actions/send-mail.php:57
+msgid "Send an email"
+msgstr "发送电子邮件"
+
+#: src/Integrations/wordpress/actions/set-post-meta.php:56
+msgid "Post: Set Post meta"
+msgstr "帖子：设置帖子元数据"
+
+#: src/Integrations/wordpress/actions/set-post-meta.php:78
+msgid "No post meta operation found!"
+msgstr "未找到帖子元数据操作！"
+
+#: src/Integrations/wordpress/actions/set-user-meta.php:56
+msgid "User: Set User meta"
+msgstr "用户：设置用户元数据"
+
+#: src/Integrations/wordpress/actions/update-comment-status.php:57
+msgid "Update Comment Status"
+msgstr "更新评论状态"
+
+#: src/Integrations/wordpress/actions/update-post.php:56
+msgid "Post: Update a Post"
+msgstr "帖子：更新帖子"
+
+#: src/Integrations/wordpress/actions/update-post.php:102
+msgid "No post meta array found to update!"
+msgstr "未找到可更新的帖子元数据数组！"
+
+#: src/Integrations/wordpress/actions/update-user.php:56
+msgid "User: Update User Details"
+msgstr "用户：更新用户详细信息"
+
+#: src/Integrations/wordpress/actions/update-user.php:93
+msgid "Invalid username: %1$s."
+msgstr "无效的用户名：%1$s。"
+
+#: src/Integrations/wordpress/actions/update-user.php:98
+msgid "Username \"%1$s\" already exists."
+msgstr "用户名“%1$s”已存在。"
+
+#: src/Integrations/wordpress/actions/update-user.php:107
+msgid "Invalid email address: %1$s."
+msgstr "无效的电子邮件地址：%1$s。"
+
+#: src/Integrations/wordpress/actions/update-user.php:113
+msgid "Email address \"%1$s\" already exists."
+msgstr "电子邮件地址“%1$s”已存在。"
+
+#: src/Integrations/wordpress/triggers/add-user-role.php:67
+msgid "Role: Add a new role to the users roles"
+msgstr "角色：向用户的角色添加新角色"
+
+#: src/Integrations/wordpress/triggers/change-specific-role-to-specific.php:71
+msgid "Role: A user's role changed from a specific role to a specific role"
+msgstr "角色：用户的角色从特定角色更改为特定角色"
+
+#: src/Integrations/wordpress/triggers/insert-comment.php:74
+msgid "User submits a comment on a post"
+msgstr "用户在帖子上提交评论"
+
+#: src/Integrations/wordpress/triggers/post-of-type-set-to-status.php:70
+msgid "User's specific type of post is set to a status"
+msgstr "用户的特定类型帖子设置为状态"
+
+#: src/Integrations/wordpress/triggers/post-trashed.php:72
+msgid "Post/Page/CPT is moved to Trash"
+msgstr "帖子/页面/CPT已移至垃圾箱"
+
+#: src/Integrations/wordpress/triggers/update-post.php:72
+msgid "User updates a post"
+msgstr "用户更新帖子"
+
+#: src/Integrations/wordpress/triggers/update-specific-post.php:71
+msgid "User updates a post in a specific status"
+msgstr "用户在特定状态下更新帖子"
+
+#: src/Integrations/wordpress/triggers/update-user-role.php:71
+msgid "Role: Change the users role to a new role"
+msgstr "角色：将用户的角色更改为新角色"
+
+#: src/Integrations/wordpress/triggers/user-comment-approved.php:71
+msgid "User's comment on a post is approved"
+msgstr "用户在帖子上的评论已批准"
+
+#: src/Integrations/wordpress/triggers/user-create.php:71
+msgid "User is created"
+msgstr "用户已创建"
+
+#: src/Integrations/wordpress/triggers/user-login.php:70
+msgid "User logs in to the site"
+msgstr "用户登录到网站"
+
+#: src/Integrations/wordpress/triggers/user-meta-key-updated.php:68
+msgid "User's specific meta key is updated"
+msgstr "用户的特定元键已更新"
+
+#: src/Integrations/wordpress/triggers/user-password-reset.php:72
+msgid "User resets their password"
+msgstr "用户重置他们的密码"
+
+#: src/Integrations/wordpress/triggers/user-profile-field-updated.php:72
+msgid "User's profile field is updated"
+msgstr "用户的个人资料字段已更新"
+
+#: src/Integrations/wordpress/triggers/view-post.php:69
+msgid "User views any post"
+msgstr "用户查看任何帖子"
+
+#: src/Integrations/wp-all-import/triggers/wp-all-import-completed.php:69
+msgid "Import Completed"
+msgstr "导入完成"
+
+#: src/Integrations/wp-all-import/triggers/wp-all-import-failed.php:69
+msgid "Import Failed"
+msgstr "导入失败"
+
+#: src/Integrations/wp-all-import/triggers/wp-all-import-post-type-imported.php:69
+msgid "Post Type Imported"
+msgstr "帖子类型已导入"
+
+#: src/Integrations/wp-all-import/wp-all-import.php:35
+msgid "WPAllImport"
+msgstr "WPAllImport"
+
+#: src/Integrations/wp-all-import/wp-all-import.php:36
+msgid "WP All Import plugin."
+msgstr "WP All Import 插件。"
+
+#: src/Integrations/wp-courseware/tiggerrs/wpcw-user-completes-module.php:67
+msgid "User Completes Module"
+msgstr "用户完成模块"
+
+#: src/Integrations/wp-courseware/tiggerrs/wpcw-user-completes-unit.php:67
+msgid "User Completes Unit"
+msgstr "用户完成单元"
+
+#: src/Integrations/wp-courseware/wp-courseware.php:35
+msgid "WP Courseware"
+msgstr "WP Courseware"
+
+#: src/Integrations/wp-courseware/wp-courseware.php:36
+msgid ""
+"WP Courseware is a popular WordPress plugin for creating and managing online courses. It allows you to easily organize "
+"course content, track student progress, and create engaging learning experiences on your WordPress website."
+msgstr "WP Courseware 是一个流行的 WordPress 插件，用于创建和管理在线课程。它允许您轻松组织课程内容，跟踪学生进度，并在您的 WordPress 网站上创建引人入胜的学习体验。"
+
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:57
+msgid "Add Tag To User"
+msgstr "向用户添加标签"
+
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:109
+msgid "Failed to create new tag."
+msgstr "创建新标签失败。"
+
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:115
+msgid "WP Fusion CRM does not support tag creation."
+msgstr "WP Fusion CRM 不支持标签创建。"
+
+#: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:156
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:111
+msgid "Please enter valid user."
+msgstr "请输入有效的用户。"
+
+#: src/Integrations/wp-fusion/actions/wf-get-contact-id.php:56
+msgid "Get Contact ID"
+msgstr "获取联系人ID"
+
+#: src/Integrations/wp-fusion/actions/wf-get-contact-id.php:100
+msgid "No contact found for the given email"
+msgstr "未找到给定电子邮件的联系人"
+
+#: src/Integrations/wp-fusion/actions/wf-get-contact-tags.php:56
+msgid "Get Contact Tags"
+msgstr "获取联系人标签"
+
+#: src/Integrations/wp-fusion/actions/wf-get-contact-tags.php:98
+msgid "No tags found for the given contact ID."
+msgstr "未找到给定联系人ID的标签。"
+
+#: src/Integrations/wp-fusion/actions/wf-remove-tag-from-user.php:57
+msgid "Remove Tag From User"
+msgstr "从用户中移除标签"
+
+#: src/Integrations/wp-fusion/triggers/wf-tag-added-to-user.php:67
+msgid "Tag Added To User"
+msgstr "标签已添加到用户"
+
+#: src/Integrations/wp-fusion/triggers/wf-tag-modified.php:67
+msgid "User Tag Modified"
+msgstr "用户标签已修改"
+
+#: src/Integrations/wp-fusion/triggers/wf-tag-removed-from-user.php:67
+msgid "Tag Removed From User"
+msgstr "标签已从用户中移除"
+
+#: src/Integrations/wp-fusion/wp-fusion.php:35
+msgid "WP Fusion"
+msgstr "WP Fusion"
+
+#: src/Integrations/wp-fusion/wp-fusion.php:36
+msgid "WP Fusion links WordPress with CRM."
+msgstr "WP Fusion将WordPress与CRM连接起来。"
+
+#: src/Integrations/wp-job-manager/triggers/publish-job.php:67
+msgid "User publishes a job of a type"
+msgstr "用户发布了一种类型的工作"
+
+#: src/Integrations/wp-job-manager/wp-job-manager.php:36
+msgid "WPJobManager"
+msgstr "WPJobManager"
+
+#: src/Integrations/wp-job-manager/wp-job-manager.php:37
+msgid "Manage job listings from the WordPress admin panel."
+msgstr "从WordPress管理面板管理工作列表。"
+
+#: src/Integrations/wp-polls/triggers/poll-submitted-with-specific-answer.php:70
+msgid "Poll Submitted with a Specific Answer"
+msgstr "提交了带有特定答案的投票"
+
+#: src/Integrations/wp-polls/triggers/poll-submitted.php:70
+msgid "Poll Submitted"
+msgstr "投票已提交"
+
+#: src/Integrations/wp-polls/wp-polls.php:35
+msgid "WP-Polls"
+msgstr "WP-Polls"
+
+#: src/Integrations/wp-polls/wp-polls.php:36
+msgid "WP-Polls is a WordPress polls plugin."
+msgstr "WP-Polls是一个WordPress投票插件。"
+
+#: src/Integrations/wp-simple-pay/triggers/payment-for-form-completed.php:72
+msgid "Payment For Form Completed"
+msgstr "表单完成后的付款"
+
+#: src/Integrations/wp-simple-pay/triggers/subscription-for-form-created.php:72
+msgid "Subscription For Form Created"
+msgstr "表单创建的订阅"
+
+#: src/Integrations/wp-simple-pay/triggers/subscription-for-form-renewed.php:72
+msgid "Subscription For Form Renewed"
+msgstr "表单续订的订阅"
+
+#: src/Integrations/wp-simple-pay/wp-simple-pay.php:36
+msgid "WP Simple Pay"
+msgstr "WP Simple Pay"
+
+#: src/Integrations/wp-simple-pay/wp-simple-pay.php:37
+msgid "WP Simple Pay is a WordPress Payment form plugin."
+msgstr "WP Simple Pay是一个WordPress支付表单插件。"
+
+#: src/Integrations/wp-travel-engine/actions/create-coupon.php:55
+msgid "Create a Coupon"
+msgstr "创建优惠券"
+
+#: src/Integrations/wp-travel-engine/actions/create-coupon.php:56
+msgid "Create a new coupon for WP Travel Engine"
+msgstr "为WP旅行引擎创建新优惠券"
+
+#: src/Integrations/wp-travel-engine/actions/create-coupon.php:77
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:76
+#: src/Integrations/wp-travel-engine/actions/list-bookings.php:77
+#: src/Integrations/wp-travel-engine/actions/list-trips.php:77
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:76
+msgid "WP Travel Engine plugin is not active."
+msgstr "WP旅行引擎插件未激活。"
+
+#: src/Integrations/wp-travel-engine/actions/create-coupon.php:84
+msgid "Coupon code is required."
+msgstr "优惠券代码是必需的。"
+
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:55
+msgid "Create a Trip"
+msgstr "创建旅行"
+
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:105
+msgid "Trip name is required."
+msgstr "旅行名称是必需的。"
+
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:152
+msgid "Failed to create trip."
+msgstr "创建旅行失败。"
+
+#: src/Integrations/wp-travel-engine/actions/create-trip.php:196
+msgid "Trip created with ID %d"
+msgstr "旅行已创建，ID为%d"
+
+#: src/Integrations/wp-travel-engine/actions/list-bookings.php:55
+msgid "List Bookings"
+msgstr "列出预订"
+
+#: src/Integrations/wp-travel-engine/actions/list-bookings.php:56
+msgid "Get a list of bookings with optional filtering"
+msgstr "获取带有可选过滤的预订列表"
+
+#: src/Integrations/wp-travel-engine/actions/list-trips.php:55
+msgid "List Trips"
+msgstr "列出旅行"
+
+#: src/Integrations/wp-travel-engine/actions/list-trips.php:56
+msgid "Get a list of trips with optional filtering"
+msgstr "获取带有可选过滤的旅行列表"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-booking.php:55
+msgid "Retrieve a Booking"
+msgstr "检索预订"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-booking.php:75
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:83
+msgid "Booking ID is required."
+msgstr "预订ID是必需的。"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-booking.php:85
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:101
+msgid "Booking not found."
+msgstr "未找到预订。"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-enquiry.php:55
+msgid "Retrieve an Enquiry"
+msgstr "检索查询"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-enquiry.php:75
+msgid "Enquiry ID is required."
+msgstr "查询ID是必需的。"
+
+#: src/Integrations/wp-travel-engine/actions/retrieve-enquiry.php:85
+msgid "Enquiry not found."
+msgstr "未找到查询。"
+
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:55
+msgid "Update Booking Status"
+msgstr "更新预订状态"
+
+#: src/Integrations/wp-travel-engine/actions/update-booking-status.php:90
+msgid "New status is required."
+msgstr "新状态是必需的。"
+
+#: src/Integrations/wp-travel-engine/triggers/new-enquiry-submitted.php:69
+msgid "New Enquiry Submitted"
+msgstr "提交了新查询"
+
+#: src/Integrations/wp-travel-engine/wp-travel-engine.php:36
+msgid "WP Travel Engine"
+msgstr "WP旅行引擎"
+
+#: src/Integrations/wp-travel-engine/wp-travel-engine.php:37
+msgid "WP Travel Engine is a complete travel booking WordPress plugin to create travel and tour packages."
+msgstr "WP旅行引擎是一个完整的旅行预订WordPress插件，用于创建旅行和旅游套餐。"
+
+#: src/Integrations/wp-user-manager/triggers/user-removes-profile-cover-image.php:67
+msgid "User Removes Profile Cover Image"
+msgstr "用户移除个人资料封面图片"
+
+#: src/Integrations/wp-user-manager/triggers/user-removes-profile-photo.php:67
+msgid "User Removes Profile Photo"
+msgstr "用户移除个人资料照片"
+
+#: src/Integrations/wp-user-manager/triggers/user-updates-account-information.php:67
+msgid "User Updates Account Information"
+msgstr "用户更新账户信息"
+
+#: src/Integrations/wp-user-manager/triggers/user-updates-cover-photo.php:67
+msgid "User Updates Cover Photo"
+msgstr "用户更新封面照片"
+
+#: src/Integrations/wp-user-manager/triggers/user-updates-profile-description.php:67
+msgid "User Updates Profile Description"
+msgstr "用户更新个人资料描述"
+
+#: src/Integrations/wp-user-manager/triggers/user-updates-profile-photo.php:67
+msgid "User Updates Profile Photo"
+msgstr "用户更新个人资料照片"
+
+#: src/Integrations/wp-user-manager/wp-user-manager.php:36
+msgid "WP User Manager"
+msgstr "WP用户管理器"
+
+#: src/Integrations/wp-user-manager/wp-user-manager.php:37
+msgid "WP User Manager is a User management form plugin."
+msgstr "WP用户管理器是一个用户管理表单插件。"
+
+#: src/Integrations/wpforms/wpforms.php:35
+msgid "WPForms"
+msgstr "WPForms"
+
+#: src/Integrations/wpforms/wpforms.php:36
+msgid "Building forms in WordPress can be hard. WPForms makes it easy."
+msgstr "在WordPress中构建表单可能很困难。WPForms使其变得简单。"
+
+#: src/Integrations/wpforo/actions/set-user-reputation.php:57
+msgid "Set User Reputation"
+msgstr "设置用户声誉"
+
+#: src/Integrations/wpforo/actions/wf-create-topic.php:60
+msgid "Create Topic"
+msgstr "创建主题"
+
+#: src/Integrations/wpforo/actions/wf-delete-topic.php:57
+msgid "Delete Topic"
+msgstr "删除主题"
+
+#: src/Integrations/wpforo/wpforo.php:35
+msgid "wpForo"
+msgstr "wpForo"
+
+#: src/Integrations/wplms/wplms.php:35
+msgid "WPLMS"
+msgstr "WPLMS"
+
+#: src/Integrations/wplms/wplms.php:36
+msgid "WPLMS is a social network plugin for WordPress that allows you to quickly add a social network."
+msgstr "WPLMS是一个社交网络插件，允许您快速添加社交网络。"
+
+#: src/Integrations/wployalty/actions/wployalty-add-points-customer.php:59
+msgid "Add Points to Customer"
+msgstr "为客户添加积分"
+
+#: src/Integrations/wployalty/actions/wployalty-remove-points-customer.php:59
+msgid "Remove Points of Customer"
+msgstr "移除客户积分"
+
+#: src/Integrations/wployalty/triggers/wployalty-points-awarded-customer.php:73
+msgid "Points Awarded Customer"
+msgstr "授予客户积分"
+
+#: src/Integrations/wployalty/wployalty.php:35
+msgid "WPLoyalty"
+msgstr "WPLoyalty"
+
+#: src/Integrations/wployalty/wployalty.php:36
+msgid ""
+"The best WordPress forum plugin, \n"
+"\t\tfull-fledged yet easy and light forum solution for your WordPress website. \n"
+"\t\tThe only forum software with multiple forum layouts."
+msgstr "最佳WordPress论坛插件，功能齐全且轻便的论坛解决方案，适用于您的WordPress网站。唯一具有多种论坛布局的论坛软件。"
+
+#: src/Integrations/ws-form/ws-form.php:35
+msgid "WS Form"
+msgstr "WS Form"
+
+#: src/Integrations/ws-form/ws-form.php:36
+msgid "WS Form LITE is a powerful contact form builder plugin for WordPress."
+msgstr "WS Form LITE是一个强大的WordPress联系表单构建插件。"
+
+#: src/Loader.php:92
+msgid "Please Connect OttoKit"
+msgstr "请连接OttoKit"
+
+#: src/Loader.php:108
+msgid "Please connect to or create your OttoKit account."
+msgstr "请连接或创建您的OttoKit账户。"
+
+#: src/Loader.php:109
+msgid "This will enable you to connect your various plugins, and apps together and automate repetitive tasks."
+msgstr "这将使您能够将各种插件和应用程序连接在一起，并自动化重复任务。"
+
+#: src/Loader.php:110
+msgid "Get Started"
+msgstr "开始使用"
+
+#: src/Loader.php:185
+msgid "Connect your plugins and apps together with OttoKit"
+msgstr "将您的插件和应用程序与 OttoKit 连接在一起"
+
+#: src/Loader.php:189
+msgid ""
+"Please connect to or create your OttoKit account. This will enable you to connect your various plugins and apps "
+"together and automate repetitive tasks."
+msgstr "请连接或创建您的 OttoKit 账户。这将使您能够将各种插件和应用程序连接在一起，并自动化重复的任务。"
+
+#: src/Loader.php:191
+msgid "Get Started With OttoKit"
+msgstr "与 OttoKit 开始使用"
+
+#: src/Loader.php:192
+msgid "Learn More"
+msgstr "了解更多"
+
+#: src/Loader.php:233
+msgid "OttoKit Connection Issue"
+msgstr "OttoKit 连接问题"
+
+#: src/Loader.php:238
+msgid ""
+"There is an issue with the established connection between WordPress and OttoKit. Please visit the OttoKit dashboard to "
+"verify and re-establish the connection if necessary."
+msgstr "与 WordPress 和 OttoKit 之间的连接存在问题。请访问 OttoKit 仪表板以验证并在必要时重新建立连接。"
+
+#: src/Loader.php:241
+msgid "Go To OttoKit"
+msgstr "前往 OttoKit"
+
+#: src/Loader.php:273
+msgid "Dashboard"
+msgstr "仪表板"
+
+#: src/Loader.php:275
+msgid "Connect"
+msgstr "连接"
+
+#: src/Loader.php:384
+#: src/Loader.php:385
+msgid "OttoKit Settings"
+msgstr "OttoKit 设置"
+
+#: src/Loader.php:547
+msgid "OttoKit is connected."
+msgstr "OttoKit 已连接。"
+
+#: src/Loader.php:550
+msgid ""
+"Your WordPress site is successfully connected to the OttoKit SaaS platform. However, the OttoKit interface display is "
+"currently disabled. Click below to enable it."
+msgstr "您的 WordPress 网站已成功连接到 OttoKit SaaS 平台。然而，OttoKit 界面显示当前已禁用。点击下面以启用它。"
+
+#: src/Loader.php:553
+msgid "Access Connection Page"
+msgstr "访问连接页面"
+
+#: src/Loader.php:571
+#: src/Loader.php:604
+msgid "OttoKit Not Connected."
+msgstr "OttoKit 未连接。"
+
+#: src/Loader.php:574
+msgid ""
+"It looks like your WordPress site’s connection with OttoKit has been affected because the URL used for communication "
+"has changed. The current link for your site is different from the one OttoKit was originally connected to."
+msgstr "看起来您的 WordPress 网站与 OttoKit 的连接受到影响，因为用于通信的 URL 已更改。您网站的当前链接与 OttoKit 最初连接的链接不同。"
+
+#: src/Loader.php:577
+msgid "Access Dashboard"
+msgstr "访问仪表板"
+
+#: src/Loader.php:580
+msgid "Disconnect OttoKit"
+msgstr "断开 OttoKit 连接"
+
+#: src/Loader.php:607
+msgid "Please connect your OttoKit account to access registered events and outgoing requests."
+msgstr "请连接您的 OttoKit 账户以访问注册的事件和外发请求。"
+
+#: src/Loader.php:609
+msgid "Connect With OttoKit"
+msgstr "与 OttoKit 连接"
+
+#: src/Loader.php:621
+msgid "Outgoing Requests"
+msgstr "外发请求"
+
+#: app/build/main.js:4923
+#: app/src/components/Settings/Settings.jsx:179
+#: app/build/main.js:4825
+msgid "Settings saved successfully!"
+msgstr "设置已成功保存！"
+
+#: app/build/main.js:4926
+#: app/src/components/Settings/Settings.jsx:182
+#: app/build/main.js:4828
+msgid "Failed to save settings. Please try again."
+msgstr "保存设置失败。请再试一次。"
+
+#: app/build/main.js:4933
+#: app/src/components/Settings/Settings.jsx:185
+#: app/build/main.js:4831
+msgid "Network error. Please check your connection and try again."
+msgstr "网络错误。请检查您的连接并重试。"
+
+#: app/build/main.js:4960
+#: app/src/components/Settings/Settings.jsx:205
+#: app/build/main.js:4851
+msgid "user"
+msgstr "用户"
+
+#: app/build/main.js:4960
+#: app/src/components/Settings/Settings.jsx:206
+#: app/build/main.js:4852
+msgid "users"
+msgstr "用户"
+
+#: app/build/main.js:4961
+#: app/src/components/Settings/Settings.jsx:209
+#: app/build/main.js:4855
+msgid "role"
+msgstr "角色"
+
+#: app/build/main.js:4961
+#: app/src/components/Settings/Settings.jsx:210
+#: app/build/main.js:4856
+msgid "roles"
+msgstr "角色"
+
+#: app/build/main.js:4986
+#: app/src/components/Settings/Settings.jsx:236
+#: app/build/main.js:4882
+msgid "Control who can access the OttoKit Interface"
+msgstr "控制谁可以访问 OttoKit 界面"
+
+#: app/build/main.js:4990
+#: app/src/components/Settings/Settings.jsx:239
+#: app/build/main.js:4885
+msgid ""
+"Only administrators can access OttoKit by default. Use the options below to grant access to other users or roles. "
+"Anyone not added here won’t see OttoKit in their WordPress admin menu."
+msgstr "默认情况下，只有管理员可以访问 OttoKit。使用下面的选项授予其他用户或角色访问权限。未在此处添加的任何人将无法在其 WordPress 管理菜单中看到 OttoKit。"
+
+#: app/build/main.js:4994
+#: app/src/components/Settings/Settings.jsx:244
+#: app/build/main.js:4890
+msgid "Select Users"
+msgstr "选择用户"
+
+#: app/build/main.js:4999
+#: app/src/components/Settings/Settings.jsx:249
+#: app/build/main.js:4895
+msgid "Select users who can view and access the OttoKit interface."
+msgstr "选择可以查看和访问 OttoKit 界面的用户。"
+
+#: app/build/main.js:5020
+#: app/build/main.js:5065
+#: app/src/components/Settings/Settings.jsx:268
+#: app/src/components/Settings/Settings.jsx:317
+#: app/build/main.js:4914
+#: app/build/main.js:4963
+msgid "No options"
+msgstr "没有选项"
+
+#: app/build/main.js:5036
+#: app/src/components/Settings/Settings.jsx:293
+#: app/build/main.js:4939
+msgid "Select Roles"
+msgstr "选择角色"
+
+#: app/build/main.js:5041
+#: app/src/components/Settings/Settings.jsx:298
+#: app/build/main.js:4944
+msgid "Select user roles who can view and access the OttoKit interface."
+msgstr "选择可以查看和访问 OttoKit 界面的用户角色。"
+
+#: app/build/main.js:5086
+#: app/src/components/Settings/Settings.jsx:349
+#: app/build/main.js:4995
+msgid "Save"
+msgstr "保存"
+
+#: app/build/main.js:5090
+#: app/src/components/Settings/Settings.jsx:359
+#: app/build/main.js:5005
+msgid "Note:"
+msgstr "注意："
+
+#: app/build/main.js:5090
+#: app/src/components/Settings/Settings.jsx:360
+#: app/build/main.js:5006
+msgid "Administrators already have full access by default - you don’t need to add them here."
+msgstr "管理员默认已拥有完全访问权限 - 您无需在此处添加他们。"
+
+#: app/build/main.js:5096
+#: app/src/components/Settings/Settings.jsx:367
+#: app/build/main.js:5013
+msgid "Confirm Changes"
+msgstr "确认更改"
+
+#: app/build/main.js:5098
+#: app/src/components/Settings/Settings.jsx:371
+#: app/build/main.js:5017
+msgid "By continuing, the selected"
+msgstr "继续后，所选的"
+
+#: app/build/main.js:5098
+#: app/src/components/Settings/Settings.jsx:375
+#: app/build/main.js:5021
+msgid "and"
+msgstr "和"
+
+#: app/build/main.js:5098
+#: app/src/components/Settings/Settings.jsx:376
+#: app/build/main.js:5022
+msgid ""
+"will be able to access and view the OttoKit Interface from their WordPress dashboard. Are you sure you want to allow "
+"this?"
+msgstr "将能够从他们的 WordPress 仪表板访问和查看 OttoKit 界面。您确定要允许这样做吗？"
+
+#: app/build/main.js:5105
+#: app/src/components/Settings/Settings.jsx:389
+#: app/build/main.js:5035
+msgid "Cancel"
+msgstr "取消"
+
+#: app/build/main.js:5108
+#: app/src/components/Settings/Settings.jsx:395
+#: app/build/main.js:5041
+msgid "Confirm"
+msgstr "确认"
+
+#: app/build/main.js:5255
+#: app/src/components/dashboard/index.jsx:105
+#: app/build/main.js:5158
+msgid "Disconnecting"
+msgstr "正在断开连接"
+
+#: app/build/main.js:5256
+#: app/src/components/dashboard/index.jsx:106
+#: app/build/main.js:5159
+msgid "Something went wrong! please try again later"
+msgstr "出现问题！请稍后再试"
+
+#: app/src/components/notification/index.js:62
+msgid "Close"
+msgstr "关闭"
+
+#: src/Loader.php
+msgid "Workflows"
+msgstr "工作流"
+
+#: src/Loader.php
+msgid "Tables"
+msgstr "表格"
+
+#: src/Loader.php
+msgid "Forms"
+msgstr "表单"
+
+#: src/Loader.php
+msgid "MCP"
+msgstr "MCP"
+
+#: src/Loader.php
+msgid "Recipes"
+msgstr "食谱"
+
+#: src/Loader.php
+msgid "Folders"
+msgstr "文件夹"
+
+#: src/Loader.php
+msgid "Email Templates"
+msgstr "电子邮件模板"
+
+#: src/Loader.php
+msgid "Variables"
+msgstr "变量"
+
+#: src/Loader.php
+msgid "History"
+msgstr "历史"
+
+#: src/Loader.php
+msgid "Apps"
+msgstr "应用"
+
+#: src/Loader.php
+msgid "Members"
+msgstr "成员"
+
+#: src/Loader.php
+msgid "Settings"
+msgstr "设置"
+
+#: src/Loader.php
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Troubleshooting"
+msgstr "故障排除"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If you are experiencing issues with OttoKit, clearing the cache will disconnect and re-connect your site. Your "
+"automations and settings will be preserved."
+msgstr "如果您在使用 OttoKit 时遇到问题，清除缓存将断开并重新连接您的网站。您的自动化和设置将被保留。"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Clear Cache & Reconnect"
+msgstr "清除缓存并重新连接"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "When should you clear the cache?"
+msgstr "您什么时候应该清除缓存？"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "1. Connection issues after site migration"
+msgstr "1. 网站迁移后的连接问题"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If you recently migrated your site to a new domain or hosting provider, the stored connection tokens may still point to "
+"the old URL. Clearing the cache re-establishes the OttoKit connection with the new site URL so triggers and actions can "
+"communicate correctly."
+msgstr "如果您最近将网站迁移到新域名或托管提供商，存储的连接令牌可能仍指向旧的 URL。清除缓存会重新建立 OttoKit 与新网站 URL 的连接，以便触发器和操作可以正确通信。"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "2. Automations suddenly stopped firing"
+msgstr "2. 自动化突然停止触发"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If your triggers and automations were working previously but have suddenly stopped, the authentication token or "
+"registered events may have become stale. Clearing the cache refreshes the token, re-syncs all registered events with "
+"the OttoKit server, and restores the connection."
+msgstr "如果您的触发器和自动化之前正常工作，但突然停止，身份验证令牌或注册事件可能已过期。清除缓存会刷新令牌，重新同步所有注册事件与 OttoKit 服务器，并恢复连接。"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "3. Unexpected behavior after a plugin update"
+msgstr "3. 插件更新后出现意外行为"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"After updating OttoKit (or related plugins like WooCommerce, LearnDash, etc.), cached data from the previous version "
+"may cause triggers to not appear, events to not register, or the status page to show stale information. Clearing the "
+"cache resolves these version mismatch issues."
+msgstr "在更新 OttoKit（或相关插件如 WooCommerce、LearnDash 等）后，之前版本的缓存数据可能导致触发器不出现、事件不注册或状态页面显示过时信息。清除缓存可以解决这些版本不匹配的问题。"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"Clearing the cache will not delete your automations, settings, or connected integrations. It only resets the local "
+"connection data so your site can re-authenticate with the OttoKit platform."
+msgstr "清除缓存不会删除您的自动化、设置或连接的集成。它只会重置本地连接数据，以便您的网站可以重新进行 OttoKit 平台的身份验证。"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Outgoing Request Logging"
+msgstr "外发请求日志记录"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is currently disabled. No new requests are being stored. Failed requests cannot be retried automatically."
+msgstr "日志记录当前已禁用。没有新的请求被存储。失败的请求无法自动重试。"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is enabled. Every outgoing webhook request is stored in the database for retry and history."
+msgstr "日志记录已启用。每个外发的 webhook 请求都存储在数据库中以便重试和历史记录。"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Enable Logging"
+msgstr "启用日志记录"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Disable Logging"
+msgstr "禁用日志记录"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Actions"
+msgstr "操作"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Select request %s"
+msgstr "选择请求 %s"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Retry Selected"
+msgstr "重试所选项"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Delete Selected"
+msgstr "删除所选项"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Rerun"
+msgstr "重新运行"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "View Response"
+msgstr "查看响应"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Pending Requests"
+msgstr "待处理请求"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "From date"
+msgstr "开始日期"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "To date"
+msgstr "结束日期"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request & Response Details"
+msgstr "请求和响应详情"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request Data"
+msgstr "请求数据"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Please select at least one request."
+msgstr "请至少选择一个请求。"

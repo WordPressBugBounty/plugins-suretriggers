@@ -11,22 +11,25 @@ msgstr ""
 "PO-Revision-Date: 2025-06-30T11:39:29+00:00\n"
 "Language: \n"
 
-#. Plugin Name of the plugin
-#. Author of the plugin
-#: suretriggers.php
+#: src/Controllers/RestController.php:625
+#: src/Loader.php:353
 msgid "OttoKit"
 msgstr "OttoKit"
 
+#: suretriggers.php
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: suretriggers.php
 msgid "https://ottokit.com/"
 msgstr "https://ottokit.com/"
 
-#. Description of the plugin
 #: suretriggers.php
-msgid "OttoKit helps people automate their work by integrating multiple apps and plugins, allowing them to share data and perform tasks automatically."
-msgstr "OttoKit ayuda a las personas a automatizar su trabajo integrando múltiples aplicaciones y complementos, permitiéndoles compartir datos y realizar tareas automáticamente."
+#. Description of the plugin
+msgid ""
+"OttoKit helps people automate their work by integrating multiple apps and plugins, allowing them to share data and "
+"perform tasks automatically."
+msgstr ""
+"OttoKit ayuda a las personas a automatizar su trabajo integrando múltiples aplicaciones y complementos, permitiéndoles "
+"compartir datos y realizar tareas automáticamente."
 
 #: functions.php:95
 msgid "Click here"
@@ -89,8 +92,12 @@ msgid "Filter"
 msgstr "Filtrar"
 
 #: src/Admin/Views/st-admin-outgoing-req-page.php:258
-msgid "Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be automatically deleted after 60 days."
-msgstr "Nota: Las solicitudes salientes exitosas se eliminarán automáticamente después de 30 días, mientras que las solicitudes salientes fallidas se eliminarán automáticamente después de 60 días."
+msgid ""
+"Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be "
+"automatically deleted after 60 days."
+msgstr ""
+"Nota: Las solicitudes salientes exitosas se eliminarán automáticamente después de 30 días, mientras que las solicitudes "
+"salientes fallidas se eliminarán automáticamente después de 60 días."
 
 #: src/Admin/Views/st-admin-system-page.php:15
 msgid "Registered Events"
@@ -262,11 +269,6 @@ msgstr "Definido"
 msgid "Encryption Salt"
 msgstr "Sal de cifrado"
 
-#: src/Controllers/RestController.php:625
-#: src/Loader.php:353
-msgid "OttoKit"
-msgstr "OttoKit"
-
 #: src/Controllers/WebhookRequestsController.php:72
 msgid "Every 30 minutes"
 msgstr "Cada 30 minutos"
@@ -282,7 +284,9 @@ msgstr "Academia LMS"
 #: src/Integrations/academylms/academylms.php:36
 #: src/Integrations/advanced-ads/advanced-ads.php:36
 msgid "A Powerful WordPress Ad Management Plugin. Advanced Ads is a great plugin that makes it easier to manage your ads."
-msgstr "Un potente complemento de gestión de anuncios de WordPress. Advanced Ads es un gran complemento que facilita la gestión de tus anuncios."
+msgstr ""
+"Un potente complemento de gestión de anuncios de WordPress. Advanced Ads es un gran complemento que facilita la gestión "
+"de tus anuncios."
 
 #: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:54
 #: src/Integrations/learnpress/actions/lp-enroll-user-course.php:55
@@ -497,7 +501,9 @@ msgstr "Campos personalizados avanzados"
 
 #: src/Integrations/advanced-custom-fields/advanced-custom-fields.php:36
 msgid "Advanced Custom Fields (ACF) helps you easily customize WordPress with powerful, professional and intuitive fields."
-msgstr "Advanced Custom Fields (ACF) te ayuda a personalizar WordPress fácilmente con campos potentes, profesionales e intuitivos."
+msgstr ""
+"Advanced Custom Fields (ACF) te ayuda a personalizar WordPress fácilmente con campos potentes, profesionales e "
+"intuitivos."
 
 #: src/Integrations/advanced-custom-fields/triggers/options-acf-field-updated.php:73
 msgid "Field Updated On Options Page"
@@ -652,8 +658,12 @@ msgstr "Asgaros"
 
 #: src/Integrations/asgaros/asgaros.php:36
 #: src/Integrations/wpforo/wpforo.php:36
-msgid "The best WordPress forum plugin, full-fledged yet easy and light forum solution for your WordPress website. The only forum software with multiple forum layouts."
-msgstr "El mejor plugin de foro para WordPress, solución de foro completa pero fácil y ligera para tu sitio web de WordPress. El único software de foro con múltiples diseños de foro."
+msgid ""
+"The best WordPress forum plugin, full-fledged yet easy and light forum solution for your WordPress website. The only "
+"forum software with multiple forum layouts."
+msgstr ""
+"El mejor plugin de foro para WordPress, solución de foro completa pero fácil y ligera para tu sitio web de WordPress. "
+"El único software de foro con múltiples diseños de foro."
 
 #: src/Integrations/asgaros/triggers/user-creates-new-topic-forum.php:74
 #: src/Integrations/wpforo/triggers/user-creates-new-topic-forum.php:73
@@ -723,8 +733,12 @@ msgid "Better Messages"
 msgstr "Mejores Mensajes"
 
 #: src/Integrations/better-messages/better-messages.php:37
-msgid "Better Messages – is realtime private messaging system for WordPress, BuddyPress, BuddyBoss Platform, Ultimate Member, PeepSo and any other WordPress powered websites."
-msgstr "Mejores Mensajes – es un sistema de mensajería privada en tiempo real para WordPress, BuddyPress, BuddyBoss Platform, Ultimate Member, PeepSo y cualquier otro sitio web impulsado por WordPress."
+msgid ""
+"Better Messages – is realtime private messaging system for WordPress, BuddyPress, BuddyBoss Platform, Ultimate Member, "
+"PeepSo and any other WordPress powered websites."
+msgstr ""
+"Mejores Mensajes – es un sistema de mensajería privada en tiempo real para WordPress, BuddyPress, BuddyBoss Platform, "
+"Ultimate Member, PeepSo y cualquier otro sitio web impulsado por WordPress."
 
 #: src/Integrations/better-messages/triggers/bm-new-message-received.php:67
 msgid "New Message Received"
@@ -1202,8 +1216,12 @@ msgid "Elementor"
 msgstr "Elementor"
 
 #: src/Integrations/elementor-pro/elementor-pro.php:37
-msgid "Elementor is the platform web creators choose to build professional WordPress websites, grow their skills, and build their business."
-msgstr "Elementor es la plataforma que los creadores web eligen para construir sitios web profesionales de WordPress, mejorar sus habilidades y hacer crecer su negocio."
+msgid ""
+"Elementor is the platform web creators choose to build professional WordPress websites, grow their skills, and build "
+"their business."
+msgstr ""
+"Elementor es la plataforma que los creadores web eligen para construir sitios web profesionales de WordPress, mejorar "
+"sus habilidades y hacer crecer su negocio."
 
 #: src/Integrations/elementor-pro/triggers/elementor-new-submit-form.php:66
 #: src/Integrations/elementor-pro/triggers/elementor-submit-form.php:66
@@ -1352,8 +1370,12 @@ msgid "FluentBoards"
 msgstr "FluentBoards"
 
 #: src/Integrations/fluent-boards/fluent-boards.php:36
-msgid "FluentBoards is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, webinars, events, sales calls, etc., and save time with scheduling automation."
-msgstr "FluentBoards es la solución de programación definitiva para WordPress. Aprovecha el poder de citas, reservas, seminarios web, eventos, llamadas de ventas, etc., y ahorra tiempo con la automatización de programación."
+msgid ""
+"FluentBoards is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, "
+"webinars, events, sales calls, etc., and save time with scheduling automation."
+msgstr ""
+"FluentBoards es la solución de programación definitiva para WordPress. Aprovecha el poder de citas, reservas, "
+"seminarios web, eventos, llamadas de ventas, etc., y ahorra tiempo con la automatización de programación."
 
 #: src/Integrations/fluent-boards/triggers/board-created.php:72
 msgid "New Board Created"
@@ -1376,8 +1398,12 @@ msgid "FluentBooking"
 msgstr "FluentBooking"
 
 #: src/Integrations/fluent-booking/fluent-booking.php:36
-msgid "FluentBooking is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, webinars, events, sales calls, etc., and save time with scheduling automation."
-msgstr "FluentBooking es la solución de programación definitiva para WordPress. Aprovecha el poder de citas, reservas, seminarios web, eventos, llamadas de ventas, etc., y ahorra tiempo con la automatización de programación."
+msgid ""
+"FluentBooking is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, "
+"webinars, events, sales calls, etc., and save time with scheduling automation."
+msgstr ""
+"FluentBooking es la solución de programación definitiva para WordPress. Aprovecha el poder de citas, reservas, "
+"seminarios web, eventos, llamadas de ventas, etc., y ahorra tiempo con la automatización de programación."
 
 #: src/Integrations/fluent-booking/triggers/appointment-completed.php:69
 msgid "Appointment Completed"
@@ -1719,8 +1745,12 @@ msgid "FluentSMTP"
 msgstr "FluentSMTP"
 
 #: src/Integrations/fluentsmtp/fluentsmtp.php:36
-msgid "FluentSMTP is the ultimate WP Mail Plugin that connects with your Email Service Provider natively and makes sure your emails are delivered."
-msgstr "FluentSMTP es el plugin de correo WP definitivo que se conecta con tu proveedor de servicios de correo electrónico de forma nativa y asegura que tus correos electrónicos sean entregados."
+msgid ""
+"FluentSMTP is the ultimate WP Mail Plugin that connects with your Email Service Provider natively and makes sure your "
+"emails are delivered."
+msgstr ""
+"FluentSMTP es el plugin de correo WP definitivo que se conecta con tu proveedor de servicios de correo electrónico de "
+"forma nativa y asegura que tus correos electrónicos sean entregados."
 
 #: src/Integrations/fluentsmtp/triggers/error-in-email-delivery.php:68
 msgid "Error in Email Delivery"
@@ -1732,7 +1762,9 @@ msgstr "FormidableForms"
 
 #: src/Integrations/formidable-forms/formidable-forms.php:37
 msgid "A WordPress form builder plugin that lets you build single or multi-page contact forms. "
-msgstr "Un plugin de creación de formularios de WordPress que te permite crear formularios de contacto de una sola página o de varias páginas."
+msgstr ""
+"Un plugin de creación de formularios de WordPress que te permite crear formularios de contacto de una sola página o de "
+"varias páginas."
 
 #: src/Integrations/formidable-forms/triggers/user-updates-entry-in-form.php:73
 #: src/Integrations/gravity-form/triggers/form-entry-updated.php:73
@@ -1876,8 +1908,12 @@ msgid "GiveWP"
 msgstr "GiveWP"
 
 #: src/Integrations/givewp/givewp.php:38
-msgid "GiveWP is an evolving WordPress donation plugin with a team that genuinely cares about advancing the democratization of generosity."
-msgstr "GiveWP es un plugin de donaciones de WordPress en evolución con un equipo que realmente se preocupa por avanzar en la democratización de la generosidad."
+msgid ""
+"GiveWP is an evolving WordPress donation plugin with a team that genuinely cares about advancing the democratization of "
+"generosity."
+msgstr ""
+"GiveWP es un plugin de donaciones de WordPress en evolución con un equipo que realmente se preocupa por avanzar en la "
+"democratización de la generosidad."
 
 #: src/Integrations/givewp/triggers/donation-submit-specific-amount.php:73
 msgid "User Submits Donation Form Specific Amount"
@@ -1985,8 +2021,12 @@ msgid "Groundhogg"
 msgstr "Groundhogg"
 
 #: src/Integrations/groundhogg/groundhogg.php:37
-msgid "Groundhogg is the best WordPress CRM & Marketing Automation plugin. Create funnels, email campaigns, newsletters, marketing automation."
-msgstr "Groundhogg es el mejor plugin de CRM y automatización de marketing de WordPress. Crea embudos, campañas de correo electrónico, boletines, automatización de marketing."
+msgid ""
+"Groundhogg is the best WordPress CRM & Marketing Automation plugin. Create funnels, email campaigns, newsletters, "
+"marketing automation."
+msgstr ""
+"Groundhogg es el mejor plugin de CRM y automatización de marketing de WordPress. Crea embudos, campañas de correo "
+"electrónico, boletines, automatización de marketing."
 
 #: src/Integrations/happyforms/happyforms.php:36
 msgid "HappyForms"
@@ -2182,8 +2222,12 @@ msgid "LearnDash Achievements"
 msgstr "Logros de LearnDash"
 
 #: src/Integrations/learndash-achievements/learndash-achievements.php:36
-msgid "The most powerful learning management system for WordPress. LearnDash Achievements empowers you to recognize and celebrate your learners` accomplishments with customizable rewards and achievements."
-msgstr "El sistema de gestión de aprendizaje más poderoso para WordPress. Los logros de LearnDash te permiten reconocer y celebrar los logros de tus alumnos con recompensas y logros personalizables."
+msgid ""
+"The most powerful learning management system for WordPress. LearnDash Achievements empowers you to recognize and "
+"celebrate your learners` accomplishments with customizable rewards and achievements."
+msgstr ""
+"El sistema de gestión de aprendizaje más poderoso para WordPress. Los logros de LearnDash te permiten reconocer y "
+"celebrar los logros de tus alumnos con recompensas y logros personalizables."
 
 #: src/Integrations/learndash/actions/add-user-group.php:58
 msgid "Add user to a group"
@@ -2724,7 +2768,9 @@ msgstr "MetaBox"
 
 #: src/Integrations/metabox/metabox.php:36
 msgid "Meta Box is a framework that helps you create custom post types and custom fields quickly and easily."
-msgstr "Meta Box es un marco que te ayuda a crear tipos de publicaciones personalizadas y campos personalizados de manera rápida y sencilla."
+msgstr ""
+"Meta Box es un marco que te ayuda a crear tipos de publicaciones personalizadas y campos personalizados de manera "
+"rápida y sencilla."
 
 #: src/Integrations/metabox/triggers/metabox-after-form-submission.php:73
 #: src/Integrations/metabox/triggers/user-metabox-field-updated.php:73
@@ -2818,8 +2864,12 @@ msgid "Newsletter"
 msgstr "Boletín"
 
 #: src/Integrations/newsletter/newsletter.php:36
-msgid "Newsletter is a powerful yet simple email creation tool that helps you get in touch with your subscribers and engage them with your own content."
-msgstr "El boletín es una herramienta poderosa pero simple para la creación de correos electrónicos que te ayuda a ponerte en contacto con tus suscriptores y a involucrarlos con tu propio contenido."
+msgid ""
+"Newsletter is a powerful yet simple email creation tool that helps you get in touch with your subscribers and engage "
+"them with your own content."
+msgstr ""
+"El boletín es una herramienta poderosa pero simple para la creación de correos electrónicos que te ayuda a ponerte en "
+"contacto con tus suscriptores y a involucrarlos con tu propio contenido."
 
 #: src/Integrations/newsletter/triggers/subscription-form-submitted-list.php:73
 msgid "Subscription Form Submitted with Specific List"
@@ -3020,8 +3070,13 @@ msgid "Powerful Docs"
 msgstr "Documentos Poderosos"
 
 #: src/Integrations/powerful-docs/powerful-docs.php:37
-msgid "Easily build documentation website with AJAX based live search functionality and keep track of search term. This plugin provides shortcodes to display category list & live search input box."
-msgstr "Crea fácilmente un sitio web de documentación con funcionalidad de búsqueda en vivo basada en AJAX y realiza un seguimiento de los términos de búsqueda. Este plugin proporciona códigos cortos para mostrar la lista de categorías y el cuadro de entrada de búsqueda en vivo."
+msgid ""
+"Easily build documentation website with AJAX based live search functionality and keep track of search term. This plugin "
+"provides shortcodes to display category list & live search input box."
+msgstr ""
+"Crea fácilmente un sitio web de documentación con funcionalidad de búsqueda en vivo basada en AJAX y realiza un "
+"seguimiento de los términos de búsqueda. Este plugin proporciona códigos cortos para mostrar la lista de categorías y "
+"el cuadro de entrada de búsqueda en vivo."
 
 #: src/Integrations/powerful-docs/triggers/pfd-feedback-received.php:73
 msgid "Feedback Received"
@@ -3066,8 +3121,14 @@ msgid "ProfileGrid"
 msgstr "ProfileGrid"
 
 #: src/Integrations/profilegrid/profilegrid.php:36
-msgid "Create WordPress user profiles, groups, communities, paid memberships, directories, WooCommerce profiles, bbPress profiles, content restriction, sign-up pages, blog submissions, notifications, social activity and private messaging, beautiful threaded interface and a lot more!"
-msgstr "Crea perfiles de usuario de WordPress, grupos, comunidades, membresías pagadas, directorios, perfiles de WooCommerce, perfiles de bbPress, restricción de contenido, páginas de registro, envíos de blogs, notificaciones, actividad social y mensajería privada, interfaz hermosa en hilo y mucho más!"
+msgid ""
+"Create WordPress user profiles, groups, communities, paid memberships, directories, WooCommerce profiles, bbPress "
+"profiles, content restriction, sign-up pages, blog submissions, notifications, social activity and private messaging, "
+"beautiful threaded interface and a lot more!"
+msgstr ""
+"Crea perfiles de usuario de WordPress, grupos, comunidades, membresías pagadas, directorios, perfiles de WooCommerce, "
+"perfiles de bbPress, restricción de contenido, páginas de registro, envíos de blogs, notificaciones, actividad social y "
+"mensajería privada, interfaz hermosa en hilo y mucho más!"
 
 #: src/Integrations/profilegrid/triggers/group-deleted.php:74
 msgid "Group Deleted"
@@ -3206,8 +3267,14 @@ msgid "Services For SureCart"
 msgstr "Servicios para SureCart"
 
 #: src/Integrations/services-for-surecart/services-for-surecart.php:37
-msgid "Services For SureCart plugin empowers you to sell services and custom deliverables with SureCart. Enjoy features like status and activity tracking, built-in messaging, and final delivery and approvals, all beautifully integrated directly into your website and customer dashboard."
-msgstr "Los servicios para el plugin SureCart te permiten vender servicios y entregas personalizadas con SureCart. Disfruta de características como seguimiento de estado y actividad, mensajería integrada y entrega final y aprobaciones, todo bellamente integrado directamente en tu sitio web y el panel de control del cliente."
+msgid ""
+"Services For SureCart plugin empowers you to sell services and custom deliverables with SureCart. Enjoy features like "
+"status and activity tracking, built-in messaging, and final delivery and approvals, all beautifully integrated directly "
+"into your website and customer dashboard."
+msgstr ""
+"Los servicios para el plugin SureCart te permiten vender servicios y entregas personalizadas con SureCart. Disfruta de "
+"características como seguimiento de estado y actividad, mensajería integrada y entrega final y aprobaciones, todo "
+"bellamente integrado directamente en tu sitio web y el panel de control del cliente."
 
 #: src/Integrations/services-for-surecart/triggers/contract-signed.php:73
 msgid "Contract Signed"
@@ -3302,8 +3369,14 @@ msgid "Support Portal For SureCart"
 msgstr "Portal de Soporte para SureCart"
 
 #: src/Integrations/support-portal-for-surecart/support-portal-for-surecart.php:37
-msgid "Support Portal For SureCart plugin allows customers to request support directly from their SureCart Customer Dashboard, seamlessly integrating a ticketing system with automated notifications and streamlined management within the SureCart interface."
-msgstr "El portal de soporte para el plugin SureCart permite a los clientes solicitar soporte directamente desde su panel de control de cliente de SureCart, integrando sin problemas un sistema de tickets con notificaciones automáticas y gestión simplificada dentro de la interfaz de SureCart."
+msgid ""
+"Support Portal For SureCart plugin allows customers to request support directly from their SureCart Customer Dashboard, "
+"seamlessly integrating a ticketing system with automated notifications and streamlined management within the SureCart "
+"interface."
+msgstr ""
+"El portal de soporte para el plugin SureCart permite a los clientes solicitar soporte directamente desde su panel de "
+"control de cliente de SureCart, integrando sin problemas un sistema de tickets con notificaciones automáticas y gestión "
+"simplificada dentro de la interfaz de SureCart."
 
 #: src/Integrations/support-portal-for-surecart/triggers/new-email-message-fetched.php:73
 msgid "New Email Message Fetched"
@@ -3967,8 +4040,12 @@ msgid "Work Hours"
 msgstr "Horas laborables"
 
 #: src/Integrations/voxel/voxel.php:468
-msgid "Enter value pairs as start and end time, separated by dash. For multiple pairs, use comma separator. Eg. 09:00-17:00, 09:00-12:00"
-msgstr "Ingrese pares de valores como hora de inicio y fin, separados por un guion. Para múltiples pares, use coma como separador. Ej. 09:00-17:00, 09:00-12:00"
+msgid ""
+"Enter value pairs as start and end time, separated by dash. For multiple pairs, use comma separator. Eg. 09:00-17:00, "
+"09:00-12:00"
+msgstr ""
+"Ingrese pares de valores como hora de inicio y fin, separados por un guion. Para múltiples pares, use coma como "
+"separador. Ej. 09:00-17:00, 09:00-12:00"
 
 #: src/Integrations/voxel/voxel.php:472
 msgid "Work Status"
@@ -4175,8 +4252,12 @@ msgid "Woocommerce Bookings"
 msgstr "Reservas de Woocommerce"
 
 #: src/Integrations/woocommerce-bookings/woocommerce-bookings.php:36
-msgid "WooCommerce Bookings is an extension for WooCommerce that allow customers to book appointments, make reservations or rent equipment without leaving your site."
-msgstr "Las reservas de WooCommerce son una extensión para WooCommerce que permite a los clientes reservar citas, hacer reservas o alquilar equipos sin salir de su sitio."
+msgid ""
+"WooCommerce Bookings is an extension for WooCommerce that allow customers to book appointments, make reservations or "
+"rent equipment without leaving your site."
+msgstr ""
+"Las reservas de WooCommerce son una extensión para WooCommerce que permite a los clientes reservar citas, hacer "
+"reservas o alquilar equipos sin salir de su sitio."
 
 #: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:56
 msgid "Add the user to a membership plan."
@@ -4717,8 +4798,13 @@ msgid "WP Courseware"
 msgstr "WP Courseware"
 
 #: src/Integrations/wp-courseware/wp-courseware.php:36
-msgid "WP Courseware is a popular WordPress plugin for creating and managing online courses. It allows you to easily organize course content, track student progress, and create engaging learning experiences on your WordPress website."
-msgstr "WP Courseware es un popular plugin de WordPress para crear y gestionar cursos en línea. Te permite organizar fácilmente el contenido del curso, rastrear el progreso de los estudiantes y crear experiencias de aprendizaje atractivas en tu sitio web de WordPress."
+msgid ""
+"WP Courseware is a popular WordPress plugin for creating and managing online courses. It allows you to easily organize "
+"course content, track student progress, and create engaging learning experiences on your WordPress website."
+msgstr ""
+"WP Courseware es un popular plugin de WordPress para crear y gestionar cursos en línea. Te permite organizar fácilmente "
+"el contenido del curso, rastrear el progreso de los estudiantes y crear experiencias de aprendizaje atractivas en tu "
+"sitio web de WordPress."
 
 #: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:57
 msgid "Add Tag To User"
@@ -5008,7 +5094,9 @@ msgid ""
 "The best WordPress forum plugin, \n"
 "\t\tfull-fledged yet easy and light forum solution for your WordPress website. \n"
 "\t\tThe only forum software with multiple forum layouts."
-msgstr "El mejor plugin de foro para WordPress, una solución de foro completa, fácil y ligera para tu sitio web de WordPress. El único software de foro con múltiples diseños de foro."
+msgstr ""
+"El mejor plugin de foro para WordPress, una solución de foro completa, fácil y ligera para tu sitio web de WordPress. "
+"El único software de foro con múltiples diseños de foro."
 
 #: src/Integrations/ws-form/ws-form.php:35
 msgid "WS Form"
@@ -5020,7 +5108,7 @@ msgstr "WS Form LITE es un potente plugin de creación de formularios de contact
 
 #: src/Loader.php:92
 msgid "Please Connect OttoKit"
-msgstr "Por favor, conecta OttoKit "
+msgstr "Por favor, conecta OttoKit"
 
 #: src/Loader.php:108
 msgid "Please connect to or create your OttoKit account."
@@ -5036,15 +5124,19 @@ msgstr "Comenzar"
 
 #: src/Loader.php:185
 msgid "Connect your plugins and apps together with OttoKit"
-msgstr "Conecta tus plugins y aplicaciones con OttoKit "
+msgstr "Conecta tus plugins y aplicaciones con OttoKit"
 
 #: src/Loader.php:189
-msgid "Please connect to or create your OttoKit account. This will enable you to connect your various plugins and apps together and automate repetitive tasks."
-msgstr "Por favor, conéctate o crea tu cuenta de OttoKit . Esto te permitirá conectar tus diversos plugins y aplicaciones entre sí y automatizar tareas repetitivas."
+msgid ""
+"Please connect to or create your OttoKit account. This will enable you to connect your various plugins and apps "
+"together and automate repetitive tasks."
+msgstr ""
+"Por favor, conéctate o crea tu cuenta de OttoKit . Esto te permitirá conectar tus diversos plugins y aplicaciones entre "
+"sí y automatizar tareas repetitivas."
 
 #: src/Loader.php:191
 msgid "Get Started With OttoKit"
-msgstr "Comienza con OttoKit "
+msgstr "Comienza con OttoKit"
 
 #: src/Loader.php:192
 msgid "Learn More"
@@ -5055,8 +5147,12 @@ msgid "OttoKit Connection Issue"
 msgstr "Problema de conexión de OttoKit"
 
 #: src/Loader.php:238
-msgid "There is an issue with the established connection between WordPress and OttoKit. Please visit the OttoKit dashboard to verify and re-establish the connection if necessary."
-msgstr "Hay un problema con la conexión establecida entre WordPress y OttoKit. Por favor, visita el panel de control de OttoKit para verificar y restablecer la conexión si es necesario."
+msgid ""
+"There is an issue with the established connection between WordPress and OttoKit. Please visit the OttoKit dashboard to "
+"verify and re-establish the connection if necessary."
+msgstr ""
+"Hay un problema con la conexión establecida entre WordPress y OttoKit. Por favor, visita el panel de control de OttoKit "
+"para verificar y restablecer la conexión si es necesario."
 
 #: src/Loader.php:241
 msgid "Go To OttoKit"
@@ -5080,8 +5176,12 @@ msgid "OttoKit is connected."
 msgstr "OttoKit está conectado."
 
 #: src/Loader.php:550
-msgid "Your WordPress site is successfully connected to the OttoKit SaaS platform. However, the OttoKit interface display is currently disabled. Click below to enable it."
-msgstr "Tu sitio de WordPress está conectado con éxito a la plataforma SaaS de OttoKit. Sin embargo, la visualización de la interfaz de OttoKit está actualmente deshabilitada. Haz clic a continuación para habilitarla."
+msgid ""
+"Your WordPress site is successfully connected to the OttoKit SaaS platform. However, the OttoKit interface display is "
+"currently disabled. Click below to enable it."
+msgstr ""
+"Tu sitio de WordPress está conectado con éxito a la plataforma SaaS de OttoKit. Sin embargo, la visualización de la "
+"interfaz de OttoKit está actualmente deshabilitada. Haz clic a continuación para habilitarla."
 
 #: src/Loader.php:553
 msgid "Access Connection Page"
@@ -5093,8 +5193,12 @@ msgid "OttoKit Not Connected."
 msgstr "OttoKit no conectado."
 
 #: src/Loader.php:574
-msgid "It looks like your WordPress site’s connection with OttoKit has been affected because the URL used for communication has changed. The current link for your site is different from the one OttoKit was originally connected to."
-msgstr "Parece que la conexión de tu sitio de WordPress con OttoKit se ha visto afectada porque la URL utilizada para la comunicación ha cambiado. El enlace actual de tu sitio es diferente del que OttoKit estaba conectado originalmente."
+msgid ""
+"It looks like your WordPress site’s connection with OttoKit has been affected because the URL used for communication "
+"has changed. The current link for your site is different from the one OttoKit was originally connected to."
+msgstr ""
+"Parece que la conexión de tu sitio de WordPress con OttoKit se ha visto afectada porque la URL utilizada para la "
+"comunicación ha cambiado. El enlace actual de tu sitio es diferente del que OttoKit estaba conectado originalmente."
 
 #: src/Loader.php:577
 msgid "Access Dashboard"
@@ -5110,7 +5214,7 @@ msgstr "Por favor, conecta tu cuenta de OttoKit  para acceder a eventos registra
 
 #: src/Loader.php:609
 msgid "Connect With OttoKit"
-msgstr "Conectar con OttoKit "
+msgstr "Conectar con OttoKit"
 
 #: src/Loader.php:621
 msgid "Outgoing Requests"
@@ -5167,8 +5271,12 @@ msgstr "Controla quién puede acceder a la interfaz de OttoKit"
 #: app/build/main.js:4990
 #: app/src/components/Settings/Settings.jsx:239
 #: app/build/main.js:4885
-msgid "Only administrators can access OttoKit by default. Use the options below to grant access to other users or roles. Anyone not added here won’t see OttoKit in their WordPress admin menu."
-msgstr "Solo los administradores pueden acceder a OttoKit por defecto. Usa las opciones a continuación para otorgar acceso a otros usuarios o roles. Cualquiera que no esté agregado aquí no verá OttoKit en su menú de administración de WordPress."
+msgid ""
+"Only administrators can access OttoKit by default. Use the options below to grant access to other users or roles. "
+"Anyone not added here won’t see OttoKit in their WordPress admin menu."
+msgstr ""
+"Solo los administradores pueden acceder a OttoKit por defecto. Usa las opciones a continuación para otorgar acceso a "
+"otros usuarios o roles. Cualquiera que no esté agregado aquí no verá OttoKit en su menú de administración de WordPress."
 
 #: app/build/main.js:4994
 #: app/src/components/Settings/Settings.jsx:244
@@ -5224,7 +5332,9 @@ msgstr "y"
 #: app/build/main.js:5098
 #: app/src/components/Settings/Settings.jsx:376
 #: app/build/main.js:5022
-msgid "will be able to access and view the OttoKit Interface from their WordPress dashboard. Are you sure you want to allow this?"
+msgid ""
+"will be able to access and view the OttoKit Interface from their WordPress dashboard. Are you sure you want to allow "
+"this?"
 msgstr "podrán acceder y ver la interfaz de OttoKit desde su panel de WordPress. ¿Estás seguro de que deseas permitir esto?"
 
 #: app/build/main.js:5105
@@ -5280,6 +5390,197 @@ msgstr "Selecciona los roles de usuario que pueden ver y acceder a la interfaz d
 #: app/build/main.js:4995
 msgid "Save"
 msgstr "Guardar"
+
+#: src/Loader.php
+msgid "Workflows"
+msgstr "Flujos de trabajo"
+
+#: src/Loader.php
+msgid "Tables"
+msgstr "Tablas"
+
+#: src/Loader.php
+msgid "Forms"
+msgstr "Formularios"
+
+#: src/Loader.php
+msgid "MCP"
+msgstr "MCP"
+
+#: src/Loader.php
+msgid "Recipes"
+msgstr "Recetas"
+
+#: src/Loader.php
+msgid "Folders"
+msgstr "Carpetas"
+
+#: src/Loader.php
+msgid "Email Templates"
+msgstr "Plantillas de correo electrónico"
+
+#: src/Loader.php
+msgid "Variables"
+msgstr "Variables"
+
+#: src/Loader.php
+msgid "History"
+msgstr "Historial"
+
+#: src/Loader.php
+msgid "Apps"
+msgstr "Aplicaciones"
+
+#: src/Loader.php
+msgid "Members"
+msgstr "Miembros"
+
+#: src/Loader.php
+msgid "Settings"
+msgstr "Configuraciones"
+
+#: src/Loader.php
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Troubleshooting"
+msgstr "Solución de problemas"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If you are experiencing issues with OttoKit, clearing the cache will disconnect and re-connect your site. Your "
+"automations and settings will be preserved."
+msgstr ""
+"Si está experimentando problemas con OttoKit, borrar la caché desconectará y volverá a conectar su sitio. Sus "
+"automatizaciones y configuraciones se conservarán."
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Clear Cache & Reconnect"
+msgstr "Borrar caché y reconectar"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "When should you clear the cache?"
+msgstr "¿Cuándo deberías borrar la caché?"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "1. Connection issues after site migration"
+msgstr "1. Problemas de conexión después de la migración del sitio"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If you recently migrated your site to a new domain or hosting provider, the stored connection tokens may still point to "
+"the old URL. Clearing the cache re-establishes the OttoKit connection with the new site URL so triggers and actions can "
+"communicate correctly."
+msgstr ""
+"Si recientemente migró su sitio a un nuevo dominio o proveedor de alojamiento, los tokens de conexión almacenados "
+"pueden seguir apuntando a la URL antigua. Borrar la caché restablece la conexión de OttoKit con la nueva URL del sitio "
+"para que los disparadores y acciones puedan comunicarse correctamente."
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "2. Automations suddenly stopped firing"
+msgstr "2. Las automatizaciones dejaron de activarse repentinamente"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If your triggers and automations were working previously but have suddenly stopped, the authentication token or "
+"registered events may have become stale. Clearing the cache refreshes the token, re-syncs all registered events with "
+"the OttoKit server, and restores the connection."
+msgstr ""
+"Si sus disparadores y automatizaciones funcionaban anteriormente pero han dejado de hacerlo repentinamente, el token de "
+"autenticación o los eventos registrados pueden haberse vuelto obsoletos. Borrar la caché actualiza el token, vuelve a "
+"sincronizar todos los eventos registrados con el servidor de OttoKit y restaura la conexión."
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "3. Unexpected behavior after a plugin update"
+msgstr "3. Comportamiento inesperado después de una actualización de plugin"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"After updating OttoKit (or related plugins like WooCommerce, LearnDash, etc.), cached data from the previous version "
+"may cause triggers to not appear, events to not register, or the status page to show stale information. Clearing the "
+"cache resolves these version mismatch issues."
+msgstr ""
+"Después de actualizar OttoKit (o plugins relacionados como WooCommerce, LearnDash, etc.), los datos en caché de la "
+"versión anterior pueden causar que los disparadores no aparezcan, los eventos no se registren o la página de estado "
+"muestre información obsoleta. Borrar la caché resuelve estos problemas de desajuste de versiones."
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"Clearing the cache will not delete your automations, settings, or connected integrations. It only resets the local "
+"connection data so your site can re-authenticate with the OttoKit platform."
+msgstr ""
+"Borrar la caché no eliminará sus automatizaciones, configuraciones o integraciones conectadas. Solo restablece los "
+"datos de conexión locales para que su sitio pueda volver a autenticarse con la plataforma de OttoKit."
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Outgoing Request Logging"
+msgstr "Registro de solicitudes salientes"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is currently disabled. No new requests are being stored. Failed requests cannot be retried automatically."
+msgstr ""
+"El registro está actualmente deshabilitado. No se están almacenando nuevas solicitudes. Las solicitudes fallidas no "
+"pueden ser reintentadas automáticamente."
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is enabled. Every outgoing webhook request is stored in the database for retry and history."
+msgstr ""
+"El registro está habilitado. Cada solicitud de webhook saliente se almacena en la base de datos para reintentos e "
+"historial."
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Enable Logging"
+msgstr "Habilitar registro"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Disable Logging"
+msgstr "Deshabilitar registro"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Actions"
+msgstr "Acciones"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Select request %s"
+msgstr "Seleccionar solicitud %s"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Retry Selected"
+msgstr "Reintentar seleccionado"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Delete Selected"
+msgstr "Eliminar seleccionado"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Rerun"
+msgstr "Reejecutar"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "View Response"
+msgstr "Ver respuesta"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Pending Requests"
+msgstr "Solicitudes pendientes"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "From date"
+msgstr "Desde la fecha"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "To date"
+msgstr "Hasta la fecha"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request & Response Details"
+msgstr "Detalles de solicitud y respuesta"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request Data"
+msgstr "Datos de solicitud"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Please select at least one request."
+msgstr "Por favor, seleccione al menos una solicitud."
 
 #: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:115
 msgctxt "hash before order number"

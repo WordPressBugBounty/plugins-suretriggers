@@ -11,22 +11,25 @@ msgstr ""
 "PO-Revision-Date: 2025-07-01T11:49:30+00:00\n"
 "Language: \n"
 
-#. Plugin Name of the plugin
-#. Author of the plugin
-#: suretriggers.php
+#: src/Controllers/RestController.php:625
+#: src/Loader.php:353
 msgid "OttoKit"
-msgstr "ऑटोकीट"
+msgstr "OttoKit"
 
+#: suretriggers.php
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: suretriggers.php
 msgid "https://ottokit.com/"
 msgstr "https://ottokit.com/"
 
-#. Description of the plugin
 #: suretriggers.php
-msgid "OttoKit helps people automate their work by integrating multiple apps and plugins, allowing them to share data and perform tasks automatically."
-msgstr "ऑटोकीट लोगों को कई ऐप्स और प्लगइन्स को एकीकृत करके उनके काम को स्वचालित करने में मदद करता है, जिससे वे डेटा साझा कर सकते हैं और स्वचालित रूप से कार्य कर सकते हैं।"
+#. Description of the plugin
+msgid ""
+"OttoKit helps people automate their work by integrating multiple apps and plugins, allowing them to share data and "
+"perform tasks automatically."
+msgstr ""
+"ऑटोकीट लोगों को कई ऐप्स और प्लगइन्स को एकीकृत करके उनके काम को स्वचालित करने में मदद करता है, जिससे वे डेटा साझा कर "
+"सकते हैं और स्वचालित रूप से कार्य कर सकते हैं।"
 
 #: functions.php:95
 msgid "Click here"
@@ -89,8 +92,12 @@ msgid "Filter"
 msgstr "फिल्टर"
 
 #: src/Admin/Views/st-admin-outgoing-req-page.php:258
-msgid "Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be automatically deleted after 60 days."
-msgstr "नोट: सफल आउटगोइंग अनुरोध 30 दिनों के बाद स्वचालित रूप से हटा दिए जाएंगे, जबकि विफल आउटगोइंग अनुरोध 60 दिनों के बाद स्वचालित रूप से हटा दिए जाएंगे।"
+msgid ""
+"Note: Successful outgoing requests will be automatically deleted after 30 days, while failed outgoing requests will be "
+"automatically deleted after 60 days."
+msgstr ""
+"नोट: सफल आउटगोइंग अनुरोध 30 दिनों के बाद स्वचालित रूप से हटा दिए जाएंगे, जबकि विफल आउटगोइंग अनुरोध 60 दिनों के बाद "
+"स्वचालित रूप से हटा दिए जाएंगे।"
 
 #: src/Admin/Views/st-admin-system-page.php:15
 msgid "Registered Events"
@@ -262,11 +269,6 @@ msgstr "परिभाषित"
 msgid "Encryption Salt"
 msgstr "एन्क्रिप्शन नमक"
 
-#: src/Controllers/RestController.php:625
-#: src/Loader.php:353
-msgid "OttoKit"
-msgstr "OttoKit"
-
 #: src/Controllers/WebhookRequestsController.php:72
 msgid "Every 30 minutes"
 msgstr "हर 30 मिनट में"
@@ -282,7 +284,9 @@ msgstr "अकादमी LMS"
 #: src/Integrations/academylms/academylms.php:36
 #: src/Integrations/advanced-ads/advanced-ads.php:36
 msgid "A Powerful WordPress Ad Management Plugin. Advanced Ads is a great plugin that makes it easier to manage your ads."
-msgstr "एक शक्तिशाली वर्डप्रेस विज्ञापन प्रबंधन प्लगइन। एडवांस्ड एड्स एक शानदार प्लगइन है जो आपके विज्ञापनों को प्रबंधित करना आसान बनाता है।"
+msgstr ""
+"एक शक्तिशाली वर्डप्रेस विज्ञापन प्रबंधन प्लगइन। एडवांस्ड एड्स एक शानदार प्लगइन है जो आपके विज्ञापनों को प्रबंधित करना "
+"आसान बनाता है।"
 
 #: src/Integrations/academylms/actions/ac-enroll-user-to-course.php:54
 #: src/Integrations/learnpress/actions/lp-enroll-user-course.php:55
@@ -497,7 +501,9 @@ msgstr "एडवांस्ड कस्टम फ़ील्ड्स"
 
 #: src/Integrations/advanced-custom-fields/advanced-custom-fields.php:36
 msgid "Advanced Custom Fields (ACF) helps you easily customize WordPress with powerful, professional and intuitive fields."
-msgstr "एडवांस्ड कस्टम फ़ील्ड्स (ACF) आपको शक्तिशाली, पेशेवर और सहज फ़ील्ड के साथ वर्डप्रेस को आसानी से अनुकूलित करने में मदद करता है।"
+msgstr ""
+"एडवांस्ड कस्टम फ़ील्ड्स (ACF) आपको शक्तिशाली, पेशेवर और सहज फ़ील्ड के साथ वर्डप्रेस को आसानी से अनुकूलित करने में मदद "
+"करता है।"
 
 #: src/Integrations/advanced-custom-fields/triggers/options-acf-field-updated.php:73
 msgid "Field Updated On Options Page"
@@ -652,8 +658,12 @@ msgstr "असगरोस"
 
 #: src/Integrations/asgaros/asgaros.php:36
 #: src/Integrations/wpforo/wpforo.php:36
-msgid "The best WordPress forum plugin, full-fledged yet easy and light forum solution for your WordPress website. The only forum software with multiple forum layouts."
-msgstr "सर्वश्रेष्ठ वर्डप्रेस फोरम प्लगइन, पूर्ण-फledged फिर भी आसान और हल्का फोरम समाधान आपके वर्डप्रेस वेबसाइट के लिए। एकमात्र फोरम सॉफ़्टवेयर जिसमें कई फोरम लेआउट हैं।"
+msgid ""
+"The best WordPress forum plugin, full-fledged yet easy and light forum solution for your WordPress website. The only "
+"forum software with multiple forum layouts."
+msgstr ""
+"सर्वश्रेष्ठ वर्डप्रेस फोरम प्लगइन, पूर्ण-फledged फिर भी आसान और हल्का फोरम समाधान आपके वर्डप्रेस वेबसाइट के लिए। "
+"एकमात्र फोरम सॉफ़्टवेयर जिसमें कई फोरम लेआउट हैं।"
 
 #: src/Integrations/asgaros/triggers/user-creates-new-topic-forum.php:74
 #: src/Integrations/wpforo/triggers/user-creates-new-topic-forum.php:73
@@ -680,7 +690,9 @@ msgstr "बैजओएस"
 
 #: src/Integrations/badgeos/badgeos.php:36
 msgid "BadgeOS lets your site’s users complete tasks and earn badges that recognize their achievement."
-msgstr "बैजओएस आपके साइट के उपयोगकर्ताओं को कार्य पूरा करने और उनके उपलब्धियों को मान्यता देने वाले बैज अर्जित करने की अनुमति देता है।"
+msgstr ""
+"बैजओएस आपके साइट के उपयोगकर्ताओं को कार्य पूरा करने और उनके उपलब्धियों को मान्यता देने वाले बैज अर्जित करने की अनुमति "
+"देता है।"
 
 #: src/Integrations/bbpress/actions/addreplyintopic.php:53
 msgid "Add Reply In Topic"
@@ -723,8 +735,12 @@ msgid "Better Messages"
 msgstr "बेहतर संदेश"
 
 #: src/Integrations/better-messages/better-messages.php:37
-msgid "Better Messages – is realtime private messaging system for WordPress, BuddyPress, BuddyBoss Platform, Ultimate Member, PeepSo and any other WordPress powered websites."
-msgstr "बेहतर संदेश - वर्डप्रेस, बडीप्रेस, बडीबॉस प्लेटफॉर्म, अल्टीमेट सदस्य, पीपसो और किसी अन्य वर्डप्रेस संचालित वेबसाइटों के लिए रीयलटाइम निजी संदेश प्रणाली है।"
+msgid ""
+"Better Messages – is realtime private messaging system for WordPress, BuddyPress, BuddyBoss Platform, Ultimate Member, "
+"PeepSo and any other WordPress powered websites."
+msgstr ""
+"बेहतर संदेश - वर्डप्रेस, बडीप्रेस, बडीबॉस प्लेटफॉर्म, अल्टीमेट सदस्य, पीपसो और किसी अन्य वर्डप्रेस संचालित वेबसाइटों के "
+"लिए रीयलटाइम निजी संदेश प्रणाली है।"
 
 #: src/Integrations/better-messages/triggers/bm-new-message-received.php:67
 msgid "New Message Received"
@@ -1202,8 +1218,12 @@ msgid "Elementor"
 msgstr "एलेमेंटोर"
 
 #: src/Integrations/elementor-pro/elementor-pro.php:37
-msgid "Elementor is the platform web creators choose to build professional WordPress websites, grow their skills, and build their business."
-msgstr "एलेमेंटोर वह प्लेटफ़ॉर्म है जिसे वेब निर्माता पेशेवर वर्डप्रेस वेबसाइट बनाने, अपने कौशल को बढ़ाने और अपने व्यवसाय को विकसित करने के लिए चुनते हैं।"
+msgid ""
+"Elementor is the platform web creators choose to build professional WordPress websites, grow their skills, and build "
+"their business."
+msgstr ""
+"एलेमेंटोर वह प्लेटफ़ॉर्म है जिसे वेब निर्माता पेशेवर वर्डप्रेस वेबसाइट बनाने, अपने कौशल को बढ़ाने और अपने व्यवसाय को "
+"विकसित करने के लिए चुनते हैं।"
 
 #: src/Integrations/elementor-pro/triggers/elementor-new-submit-form.php:66
 #: src/Integrations/elementor-pro/triggers/elementor-submit-form.php:66
@@ -1352,8 +1372,12 @@ msgid "FluentBoards"
 msgstr "फ्लुएंटबोर्ड्स"
 
 #: src/Integrations/fluent-boards/fluent-boards.php:36
-msgid "FluentBoards is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, webinars, events, sales calls, etc., and save time with scheduling automation."
-msgstr "फ्लुएंटबोर्ड्स वर्डप्रेस के लिए अंतिम शेड्यूलिंग समाधान है। अनलिमिटेड अपॉइंटमेंट्स, बुकिंग, वेबिनार, इवेंट्स, बिक्री कॉल आदि की शक्ति का लाभ उठाएं, और शेड्यूलिंग स्वचालन के साथ समय बचाएं।"
+msgid ""
+"FluentBoards is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, "
+"webinars, events, sales calls, etc., and save time with scheduling automation."
+msgstr ""
+"फ्लुएंटबोर्ड्स वर्डप्रेस के लिए अंतिम शेड्यूलिंग समाधान है। अनलिमिटेड अपॉइंटमेंट्स, बुकिंग, वेबिनार, इवेंट्स, बिक्री "
+"कॉल आदि की शक्ति का लाभ उठाएं, और शेड्यूलिंग स्वचालन के साथ समय बचाएं।"
 
 #: src/Integrations/fluent-boards/triggers/board-created.php:72
 msgid "New Board Created"
@@ -1376,8 +1400,12 @@ msgid "FluentBooking"
 msgstr "फ्लुएंटबुकिंग"
 
 #: src/Integrations/fluent-booking/fluent-booking.php:36
-msgid "FluentBooking is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, webinars, events, sales calls, etc., and save time with scheduling automation."
-msgstr "फ्लुएंटबुकिंग वर्डप्रेस के लिए अंतिम शेड्यूलिंग समाधान है। अनलिमिटेड अपॉइंटमेंट्स, बुकिंग, वेबिनार, इवेंट्स, बिक्री कॉल आदि की शक्ति का लाभ उठाएं, और शेड्यूलिंग स्वचालन के साथ समय बचाएं।"
+msgid ""
+"FluentBooking is the Ultimate Scheduling Solution for WordPress. Harness the power of unlimited appointments, bookings, "
+"webinars, events, sales calls, etc., and save time with scheduling automation."
+msgstr ""
+"फ्लुएंटबुकिंग वर्डप्रेस के लिए अंतिम शेड्यूलिंग समाधान है। अनलिमिटेड अपॉइंटमेंट्स, बुकिंग, वेबिनार, इवेंट्स, बिक्री कॉल "
+"आदि की शक्ति का लाभ उठाएं, और शेड्यूलिंग स्वचालन के साथ समय बचाएं।"
 
 #: src/Integrations/fluent-booking/triggers/appointment-completed.php:69
 msgid "Appointment Completed"
@@ -1719,8 +1747,12 @@ msgid "FluentSMTP"
 msgstr "फ्लुएंटSMTP"
 
 #: src/Integrations/fluentsmtp/fluentsmtp.php:36
-msgid "FluentSMTP is the ultimate WP Mail Plugin that connects with your Email Service Provider natively and makes sure your emails are delivered."
-msgstr "फ्लुएंटSMTP अंतिम WP मेल प्लगइन है जो आपके ईमेल सेवा प्रदाता के साथ स्वदेशी रूप से जुड़ता है और सुनिश्चित करता है कि आपके ईमेल भेजे जाएं।"
+msgid ""
+"FluentSMTP is the ultimate WP Mail Plugin that connects with your Email Service Provider natively and makes sure your "
+"emails are delivered."
+msgstr ""
+"फ्लुएंटSMTP अंतिम WP मेल प्लगइन है जो आपके ईमेल सेवा प्रदाता के साथ स्वदेशी रूप से जुड़ता है और सुनिश्चित करता है कि "
+"आपके ईमेल भेजे जाएं।"
 
 #: src/Integrations/fluentsmtp/triggers/error-in-email-delivery.php:68
 msgid "Error in Email Delivery"
@@ -1876,8 +1908,12 @@ msgid "GiveWP"
 msgstr "गिवWP"
 
 #: src/Integrations/givewp/givewp.php:38
-msgid "GiveWP is an evolving WordPress donation plugin with a team that genuinely cares about advancing the democratization of generosity."
-msgstr "गिवWP एक विकसित हो रहा वर्डप्रेस दान प्लगइन है जिसमें एक टीम है जो वास्तव में उदारता के लोकतंत्रीकरण को आगे बढ़ाने की परवाह करती है।"
+msgid ""
+"GiveWP is an evolving WordPress donation plugin with a team that genuinely cares about advancing the democratization of "
+"generosity."
+msgstr ""
+"गिवWP एक विकसित हो रहा वर्डप्रेस दान प्लगइन है जिसमें एक टीम है जो वास्तव में उदारता के लोकतंत्रीकरण को आगे बढ़ाने की "
+"परवाह करती है।"
 
 #: src/Integrations/givewp/triggers/donation-submit-specific-amount.php:73
 msgid "User Submits Donation Form Specific Amount"
@@ -1985,8 +2021,12 @@ msgid "Groundhogg"
 msgstr "ग्राउंडहॉग"
 
 #: src/Integrations/groundhogg/groundhogg.php:37
-msgid "Groundhogg is the best WordPress CRM & Marketing Automation plugin. Create funnels, email campaigns, newsletters, marketing automation."
-msgstr "ग्राउंडहॉग सबसे अच्छा वर्डप्रेस सीआरएम और मार्केटिंग ऑटोमेशन प्लगइन है। फ़नल, ईमेल अभियान, न्यूज़लेटर्स, मार्केटिंग ऑटोमेशन बनाएं।"
+msgid ""
+"Groundhogg is the best WordPress CRM & Marketing Automation plugin. Create funnels, email campaigns, newsletters, "
+"marketing automation."
+msgstr ""
+"ग्राउंडहॉग सबसे अच्छा वर्डप्रेस सीआरएम और मार्केटिंग ऑटोमेशन प्लगइन है। फ़नल, ईमेल अभियान, न्यूज़लेटर्स, मार्केटिंग "
+"ऑटोमेशन बनाएं।"
 
 #: src/Integrations/happyforms/happyforms.php:36
 msgid "HappyForms"
@@ -2184,8 +2224,12 @@ msgid "LearnDash Achievements"
 msgstr "लर्नडैश उपलब्धियां"
 
 #: src/Integrations/learndash-achievements/learndash-achievements.php:36
-msgid "The most powerful learning management system for WordPress. LearnDash Achievements empowers you to recognize and celebrate your learners` accomplishments with customizable rewards and achievements."
-msgstr "वर्डप्रेस के लिए सबसे शक्तिशाली लर्निंग मैनेजमेंट सिस्टम। लर्नडैश उपलब्धियां आपको अपने शिक्षार्थियों की उपलब्धियों को मान्यता देने और मनाने के लिए अनुकूलन योग्य पुरस्कार और उपलब्धियों के साथ सशक्त बनाती हैं।"
+msgid ""
+"The most powerful learning management system for WordPress. LearnDash Achievements empowers you to recognize and "
+"celebrate your learners` accomplishments with customizable rewards and achievements."
+msgstr ""
+"वर्डप्रेस के लिए सबसे शक्तिशाली लर्निंग मैनेजमेंट सिस्टम। लर्नडैश उपलब्धियां आपको अपने शिक्षार्थियों की उपलब्धियों को "
+"मान्यता देने और मनाने के लिए अनुकूलन योग्य पुरस्कार और उपलब्धियों के साथ सशक्त बनाती हैं।"
 
 #: src/Integrations/learndash/actions/add-user-group.php:58
 msgid "Add user to a group"
@@ -2820,8 +2864,12 @@ msgid "Newsletter"
 msgstr "न्यूज़लेटर"
 
 #: src/Integrations/newsletter/newsletter.php:36
-msgid "Newsletter is a powerful yet simple email creation tool that helps you get in touch with your subscribers and engage them with your own content."
-msgstr "न्यूज़लेटर एक शक्तिशाली लेकिन सरल ईमेल निर्माण उपकरण है जो आपको अपने ग्राहकों के साथ संपर्क में रहने और उन्हें अपनी सामग्री के साथ संलग्न करने में मदद करता है।"
+msgid ""
+"Newsletter is a powerful yet simple email creation tool that helps you get in touch with your subscribers and engage "
+"them with your own content."
+msgstr ""
+"न्यूज़लेटर एक शक्तिशाली लेकिन सरल ईमेल निर्माण उपकरण है जो आपको अपने ग्राहकों के साथ संपर्क में रहने और उन्हें अपनी "
+"सामग्री के साथ संलग्न करने में मदद करता है।"
 
 #: src/Integrations/newsletter/triggers/subscription-form-submitted-list.php:73
 msgid "Subscription Form Submitted with Specific List"
@@ -3022,8 +3070,12 @@ msgid "Powerful Docs"
 msgstr "शक्तिशाली दस्तावेज़"
 
 #: src/Integrations/powerful-docs/powerful-docs.php:37
-msgid "Easily build documentation website with AJAX based live search functionality and keep track of search term. This plugin provides shortcodes to display category list & live search input box."
-msgstr "AJAX आधारित लाइव खोज कार्यक्षमता के साथ दस्तावेज़ वेबसाइट आसानी से बनाएं और खोज शब्दों पर नज़र रखें। यह प्लगइन श्रेणी सूची और लाइव खोज इनपुट बॉक्स प्रदर्शित करने के लिए शॉर्टकोड प्रदान करता है।"
+msgid ""
+"Easily build documentation website with AJAX based live search functionality and keep track of search term. This plugin "
+"provides shortcodes to display category list & live search input box."
+msgstr ""
+"AJAX आधारित लाइव खोज कार्यक्षमता के साथ दस्तावेज़ वेबसाइट आसानी से बनाएं और खोज शब्दों पर नज़र रखें। यह प्लगइन श्रेणी "
+"सूची और लाइव खोज इनपुट बॉक्स प्रदर्शित करने के लिए शॉर्टकोड प्रदान करता है।"
 
 #: src/Integrations/powerful-docs/triggers/pfd-feedback-received.php:73
 msgid "Feedback Received"
@@ -3068,8 +3120,14 @@ msgid "ProfileGrid"
 msgstr "ProfileGrid"
 
 #: src/Integrations/profilegrid/profilegrid.php:36
-msgid "Create WordPress user profiles, groups, communities, paid memberships, directories, WooCommerce profiles, bbPress profiles, content restriction, sign-up pages, blog submissions, notifications, social activity and private messaging, beautiful threaded interface and a lot more!"
-msgstr "वर्डप्रेस उपयोगकर्ता प्रोफाइल, समूह, समुदाय, भुगतान सदस्यता, निर्देशिकाएँ, WooCommerce प्रोफाइल, bbPress प्रोफाइल, सामग्री प्रतिबंध, साइन-अप पृष्ठ, ब्लॉग सबमिशन, सूचनाएँ, सामाजिक गतिविधि और निजी संदेश भेजने, सुंदर थ्रेडेड इंटरफ़ेस और बहुत कुछ बनाएं!"
+msgid ""
+"Create WordPress user profiles, groups, communities, paid memberships, directories, WooCommerce profiles, bbPress "
+"profiles, content restriction, sign-up pages, blog submissions, notifications, social activity and private messaging, "
+"beautiful threaded interface and a lot more!"
+msgstr ""
+"वर्डप्रेस उपयोगकर्ता प्रोफाइल, समूह, समुदाय, भुगतान सदस्यता, निर्देशिकाएँ, WooCommerce प्रोफाइल, bbPress प्रोफाइल, "
+"सामग्री प्रतिबंध, साइन-अप पृष्ठ, ब्लॉग सबमिशन, सूचनाएँ, सामाजिक गतिविधि और निजी संदेश भेजने, सुंदर थ्रेडेड इंटरफ़ेस और "
+"बहुत कुछ बनाएं!"
 
 #: src/Integrations/profilegrid/triggers/group-deleted.php:74
 msgid "Group Deleted"
@@ -3208,8 +3266,14 @@ msgid "Services For SureCart"
 msgstr "SureCart के लिए सेवाएँ"
 
 #: src/Integrations/services-for-surecart/services-for-surecart.php:37
-msgid "Services For SureCart plugin empowers you to sell services and custom deliverables with SureCart. Enjoy features like status and activity tracking, built-in messaging, and final delivery and approvals, all beautifully integrated directly into your website and customer dashboard."
-msgstr "SureCart प्लगइन के लिए सेवाएँ आपको SureCart के साथ सेवाएँ और कस्टम डिलीवर करने में सक्षम बनाती हैं। स्थिति और गतिविधि ट्रैकिंग, अंतर्निहित संदेश, और अंतिम डिलीवरी और अनुमोदन जैसी सुविधाओं का आनंद लें, जो सभी आपके वेबसाइट और ग्राहक डैशबोर्ड में सुंदरता से एकीकृत हैं।"
+msgid ""
+"Services For SureCart plugin empowers you to sell services and custom deliverables with SureCart. Enjoy features like "
+"status and activity tracking, built-in messaging, and final delivery and approvals, all beautifully integrated directly "
+"into your website and customer dashboard."
+msgstr ""
+"SureCart प्लगइन के लिए सेवाएँ आपको SureCart के साथ सेवाएँ और कस्टम डिलीवर करने में सक्षम बनाती हैं। स्थिति और गतिविधि "
+"ट्रैकिंग, अंतर्निहित संदेश, और अंतिम डिलीवरी और अनुमोदन जैसी सुविधाओं का आनंद लें, जो सभी आपके वेबसाइट और ग्राहक "
+"डैशबोर्ड में सुंदरता से एकीकृत हैं।"
 
 #: src/Integrations/services-for-surecart/triggers/contract-signed.php:73
 msgid "Contract Signed"
@@ -3304,8 +3368,14 @@ msgid "Support Portal For SureCart"
 msgstr "SureCart के लिए समर्थन पोर्टल"
 
 #: src/Integrations/support-portal-for-surecart/support-portal-for-surecart.php:37
-msgid "Support Portal For SureCart plugin allows customers to request support directly from their SureCart Customer Dashboard, seamlessly integrating a ticketing system with automated notifications and streamlined management within the SureCart interface."
-msgstr "SureCart प्लगइन के लिए समर्थन पोर्टल ग्राहकों को उनके SureCart ग्राहक डैशबोर्ड से सीधे समर्थन अनुरोध करने की अनुमति देता है, जो स्वचालित सूचनाओं और SureCart इंटरफ़ेस के भीतर सुव्यवस्थित प्रबंधन के साथ एक टिकटिंग प्रणाली को सहजता से एकीकृत करता है।"
+msgid ""
+"Support Portal For SureCart plugin allows customers to request support directly from their SureCart Customer Dashboard, "
+"seamlessly integrating a ticketing system with automated notifications and streamlined management within the SureCart "
+"interface."
+msgstr ""
+"SureCart प्लगइन के लिए समर्थन पोर्टल ग्राहकों को उनके SureCart ग्राहक डैशबोर्ड से सीधे समर्थन अनुरोध करने की अनुमति "
+"देता है, जो स्वचालित सूचनाओं और SureCart इंटरफ़ेस के भीतर सुव्यवस्थित प्रबंधन के साथ एक टिकटिंग प्रणाली को सहजता से "
+"एकीकृत करता है।"
 
 #: src/Integrations/support-portal-for-surecart/triggers/new-email-message-fetched.php:73
 msgid "New Email Message Fetched"
@@ -3969,8 +4039,12 @@ msgid "Work Hours"
 msgstr "कार्य घंटे"
 
 #: src/Integrations/voxel/voxel.php:468
-msgid "Enter value pairs as start and end time, separated by dash. For multiple pairs, use comma separator. Eg. 09:00-17:00, 09:00-12:00"
-msgstr "मान जोड़ी को प्रारंभ और समाप्ति समय के रूप में दर्ज करें, डैश से अलग करें। कई जोड़ों के लिए, अल्पविराम का उपयोग करें। उदाहरण: 09:00-17:00, 09:00-12:00"
+msgid ""
+"Enter value pairs as start and end time, separated by dash. For multiple pairs, use comma separator. Eg. 09:00-17:00, "
+"09:00-12:00"
+msgstr ""
+"मान जोड़ी को प्रारंभ और समाप्ति समय के रूप में दर्ज करें, डैश से अलग करें। कई जोड़ों के लिए, अल्पविराम का उपयोग करें। "
+"उदाहरण: 09:00-17:00, 09:00-12:00"
 
 #: src/Integrations/voxel/voxel.php:472
 msgid "Work Status"
@@ -4177,8 +4251,12 @@ msgid "Woocommerce Bookings"
 msgstr "वूकॉमर्स बुकिंग"
 
 #: src/Integrations/woocommerce-bookings/woocommerce-bookings.php:36
-msgid "WooCommerce Bookings is an extension for WooCommerce that allow customers to book appointments, make reservations or rent equipment without leaving your site."
-msgstr "वूकॉमर्स बुकिंग एक एक्सटेंशन है जो ग्राहकों को आपकी साइट छोड़े बिना अपॉइंटमेंट बुक करने, आरक्षण करने या उपकरण किराए पर लेने की अनुमति देता है।"
+msgid ""
+"WooCommerce Bookings is an extension for WooCommerce that allow customers to book appointments, make reservations or "
+"rent equipment without leaving your site."
+msgstr ""
+"वूकॉमर्स बुकिंग एक एक्सटेंशन है जो ग्राहकों को आपकी साइट छोड़े बिना अपॉइंटमेंट बुक करने, आरक्षण करने या उपकरण किराए पर "
+"लेने की अनुमति देता है।"
 
 #: src/Integrations/woocommerce-memberships/actions/add-user-to-membership-plan.php:56
 msgid "Add the user to a membership plan."
@@ -4719,8 +4797,13 @@ msgid "WP Courseware"
 msgstr "WP कोर्सवेयर"
 
 #: src/Integrations/wp-courseware/wp-courseware.php:36
-msgid "WP Courseware is a popular WordPress plugin for creating and managing online courses. It allows you to easily organize course content, track student progress, and create engaging learning experiences on your WordPress website."
-msgstr "WP कोर्सवेयर एक लोकप्रिय वर्डप्रेस प्लगइन है जो ऑनलाइन पाठ्यक्रम बनाने और प्रबंधित करने के लिए है। यह आपको पाठ्यक्रम सामग्री को आसानी से व्यवस्थित करने, छात्र प्रगति को ट्रैक करने और अपने वर्डप्रेस वेबसाइट पर आकर्षक सीखने के अनुभव बनाने की अनुमति देता है।"
+msgid ""
+"WP Courseware is a popular WordPress plugin for creating and managing online courses. It allows you to easily organize "
+"course content, track student progress, and create engaging learning experiences on your WordPress website."
+msgstr ""
+"WP कोर्सवेयर एक लोकप्रिय वर्डप्रेस प्लगइन है जो ऑनलाइन पाठ्यक्रम बनाने और प्रबंधित करने के लिए है। यह आपको पाठ्यक्रम "
+"सामग्री को आसानी से व्यवस्थित करने, छात्र प्रगति को ट्रैक करने और अपने वर्डप्रेस वेबसाइट पर आकर्षक सीखने के अनुभव बनाने "
+"की अनुमति देता है।"
 
 #: src/Integrations/wp-fusion/actions/wf-add-tag-to-user.php:57
 msgid "Add Tag To User"
@@ -5010,7 +5093,9 @@ msgid ""
 "The best WordPress forum plugin, \n"
 "\t\tfull-fledged yet easy and light forum solution for your WordPress website. \n"
 "\t\tThe only forum software with multiple forum layouts."
-msgstr "सर्वश्रेष्ठ वर्डप्रेस फोरम प्लगइन, आपके वर्डप्रेस वेबसाइट के लिए पूर्ण विकसित फिर भी आसान और हल्का फोरम समाधान। कई फोरम लेआउट के साथ एकमात्र फोरम सॉफ़्टवेयर।"
+msgstr ""
+"सर्वश्रेष्ठ वर्डप्रेस फोरम प्लगइन, आपके वर्डप्रेस वेबसाइट के लिए पूर्ण विकसित फिर भी आसान और हल्का फोरम समाधान। कई फोरम "
+"लेआउट के साथ एकमात्र फोरम सॉफ़्टवेयर।"
 
 #: src/Integrations/ws-form/ws-form.php:35
 msgid "WS Form"
@@ -5041,8 +5126,12 @@ msgid "Connect your plugins and apps together with OttoKit"
 msgstr "अपने प्लगइन्स और ऐप्स को ऑटोकीट (पूर्व में स्योरट्रिगर्स) के साथ जोड़ें"
 
 #: src/Loader.php:189
-msgid "Please connect to or create your OttoKit account. This will enable you to connect your various plugins and apps together and automate repetitive tasks."
-msgstr "कृपया अपने ऑटोकीट (पूर्व में स्योरट्रिगर्स) खाते से कनेक्ट करें या बनाएं। यह आपको अपने विभिन्न प्लगइन्स और ऐप्स को एक साथ जोड़ने और दोहराए जाने वाले कार्यों को स्वचालित करने में सक्षम करेगा।"
+msgid ""
+"Please connect to or create your OttoKit account. This will enable you to connect your various plugins and apps "
+"together and automate repetitive tasks."
+msgstr ""
+"कृपया अपने ऑटोकीट (पूर्व में स्योरट्रिगर्स) खाते से कनेक्ट करें या बनाएं। यह आपको अपने विभिन्न प्लगइन्स और ऐप्स को एक "
+"साथ जोड़ने और दोहराए जाने वाले कार्यों को स्वचालित करने में सक्षम करेगा।"
 
 #: src/Loader.php:191
 msgid "Get Started With OttoKit"
@@ -5057,8 +5146,12 @@ msgid "OttoKit Connection Issue"
 msgstr "OttoKit कनेक्शन समस्या"
 
 #: src/Loader.php:238
-msgid "There is an issue with the established connection between WordPress and OttoKit. Please visit the OttoKit dashboard to verify and re-establish the connection if necessary."
-msgstr "WordPress और OttoKit के बीच स्थापित कनेक्शन में एक समस्या है। कृपया कनेक्शन की पुष्टि करने और आवश्यक होने पर इसे फिर से स्थापित करने के लिए OttoKit डैशबोर्ड पर जाएं।"
+msgid ""
+"There is an issue with the established connection between WordPress and OttoKit. Please visit the OttoKit dashboard to "
+"verify and re-establish the connection if necessary."
+msgstr ""
+"WordPress और OttoKit के बीच स्थापित कनेक्शन में एक समस्या है। कृपया कनेक्शन की पुष्टि करने और आवश्यक होने पर इसे फिर से "
+"स्थापित करने के लिए OttoKit डैशबोर्ड पर जाएं।"
 
 #: src/Loader.php:241
 msgid "Go To OttoKit"
@@ -5082,8 +5175,12 @@ msgid "OttoKit is connected."
 msgstr "OttoKit कनेक्टेड है।"
 
 #: src/Loader.php:550
-msgid "Your WordPress site is successfully connected to the OttoKit SaaS platform. However, the OttoKit interface display is currently disabled. Click below to enable it."
-msgstr "आपकी WordPress साइट सफलतापूर्वक OttoKit SaaS प्लेटफ़ॉर्म से जुड़ी हुई है। हालाँकि, OttoKit इंटरफ़ेस डिस्प्ले वर्तमान में अक्षम है। इसे सक्षम करने के लिए नीचे क्लिक करें।"
+msgid ""
+"Your WordPress site is successfully connected to the OttoKit SaaS platform. However, the OttoKit interface display is "
+"currently disabled. Click below to enable it."
+msgstr ""
+"आपकी WordPress साइट सफलतापूर्वक OttoKit SaaS प्लेटफ़ॉर्म से जुड़ी हुई है। हालाँकि, OttoKit इंटरफ़ेस डिस्प्ले वर्तमान "
+"में अक्षम है। इसे सक्षम करने के लिए नीचे क्लिक करें।"
 
 #: src/Loader.php:553
 msgid "Access Connection Page"
@@ -5095,8 +5192,12 @@ msgid "OttoKit Not Connected."
 msgstr "OttoKit कनेक्ट नहीं है।"
 
 #: src/Loader.php:574
-msgid "It looks like your WordPress site’s connection with OttoKit has been affected because the URL used for communication has changed. The current link for your site is different from the one OttoKit was originally connected to."
-msgstr "ऐसा लगता है कि आपकी WordPress साइट का OttoKit के साथ कनेक्शन प्रभावित हुआ है क्योंकि संचार के लिए उपयोग किया जाने वाला URL बदल गया है। आपकी साइट के लिए वर्तमान लिंक उस लिंक से भिन्न है जिससे OttoKit मूल रूप से जुड़ा था।"
+msgid ""
+"It looks like your WordPress site’s connection with OttoKit has been affected because the URL used for communication "
+"has changed. The current link for your site is different from the one OttoKit was originally connected to."
+msgstr ""
+"ऐसा लगता है कि आपकी WordPress साइट का OttoKit के साथ कनेक्शन प्रभावित हुआ है क्योंकि संचार के लिए उपयोग किया जाने वाला "
+"URL बदल गया है। आपकी साइट के लिए वर्तमान लिंक उस लिंक से भिन्न है जिससे OttoKit मूल रूप से जुड़ा था।"
 
 #: src/Loader.php:577
 msgid "Access Dashboard"
@@ -5169,8 +5270,12 @@ msgstr "नियंत्रित करें कि कौन OttoKit इं
 #: app/build/main.js:4990
 #: app/src/components/Settings/Settings.jsx:239
 #: app/build/main.js:4885
-msgid "Only administrators can access OttoKit by default. Use the options below to grant access to other users or roles. Anyone not added here won’t see OttoKit in their WordPress admin menu."
-msgstr "डिफ़ॉल्ट रूप से केवल प्रशासक ही OttoKit तक पहुँच सकते हैं। अन्य उपयोगकर्ताओं या भूमिकाओं को पहुँच देने के लिए नीचे दिए गए विकल्पों का उपयोग करें। यहाँ जोड़े गए बिना कोई भी अपने WordPress प्रशासन मेनू में OttoKit नहीं देखेगा।"
+msgid ""
+"Only administrators can access OttoKit by default. Use the options below to grant access to other users or roles. "
+"Anyone not added here won’t see OttoKit in their WordPress admin menu."
+msgstr ""
+"डिफ़ॉल्ट रूप से केवल प्रशासक ही OttoKit तक पहुँच सकते हैं। अन्य उपयोगकर्ताओं या भूमिकाओं को पहुँच देने के लिए नीचे दिए "
+"गए विकल्पों का उपयोग करें। यहाँ जोड़े गए बिना कोई भी अपने WordPress प्रशासन मेनू में OttoKit नहीं देखेगा।"
 
 #: app/build/main.js:4994
 #: app/src/components/Settings/Settings.jsx:244
@@ -5226,8 +5331,12 @@ msgstr "और"
 #: app/build/main.js:5098
 #: app/src/components/Settings/Settings.jsx:376
 #: app/build/main.js:5022
-msgid "will be able to access and view the OttoKit Interface from their WordPress dashboard. Are you sure you want to allow this?"
-msgstr "अपने WordPress डैशबोर्ड से OttoKit इंटरफ़ेस तक पहुँच और देख सकेंगे। क्या आप सुनिश्चित हैं कि आप इसे अनुमति देना चाहते हैं?"
+msgid ""
+"will be able to access and view the OttoKit Interface from their WordPress dashboard. Are you sure you want to allow "
+"this?"
+msgstr ""
+"अपने WordPress डैशबोर्ड से OttoKit इंटरफ़ेस तक पहुँच और देख सकेंगे। क्या आप सुनिश्चित हैं कि आप इसे अनुमति देना चाहते "
+"हैं?"
 
 #: app/build/main.js:5105
 #: app/src/components/Settings/Settings.jsx:389
@@ -5282,6 +5391,195 @@ msgstr "उपयोगकर्ता भूमिकाओं का चयन
 #: app/build/main.js:4995
 msgid "Save"
 msgstr "सहेजें"
+
+#: src/Loader.php
+msgid "Workflows"
+msgstr "कार्यप्रवाह"
+
+#: src/Loader.php
+msgid "Tables"
+msgstr "तालिकाएँ"
+
+#: src/Loader.php
+msgid "Forms"
+msgstr "फॉर्म"
+
+#: src/Loader.php
+msgid "MCP"
+msgstr "एमसीपी"
+
+#: src/Loader.php
+msgid "Recipes"
+msgstr "रेसिपी"
+
+#: src/Loader.php
+msgid "Folders"
+msgstr "फोल्डर"
+
+#: src/Loader.php
+msgid "Email Templates"
+msgstr "ईमेल टेम्पलेट्स"
+
+#: src/Loader.php
+msgid "Variables"
+msgstr "चर"
+
+#: src/Loader.php
+msgid "History"
+msgstr "इतिहास"
+
+#: src/Loader.php
+msgid "Apps"
+msgstr "ऐप्स"
+
+#: src/Loader.php
+msgid "Members"
+msgstr "सदस्य"
+
+#: src/Loader.php
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+#: src/Loader.php
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Troubleshooting"
+msgstr "समस्या निवारण"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If you are experiencing issues with OttoKit, clearing the cache will disconnect and re-connect your site. Your "
+"automations and settings will be preserved."
+msgstr ""
+"यदि आप OttoKit के साथ समस्याओं का सामना कर रहे हैं, तो कैश को साफ़ करना आपके साइट को डिस्कनेक्ट और फिर से कनेक्ट करेगा। "
+"आपकी स्वचालन और सेटिंग्स सुरक्षित रहेंगी।"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "Clear Cache & Reconnect"
+msgstr "कैश साफ़ करें और पुनः कनेक्ट करें"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "When should you clear the cache?"
+msgstr "आपको कैश कब साफ़ करना चाहिए?"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "1. Connection issues after site migration"
+msgstr "1. साइट माइग्रेशन के बाद कनेक्शन समस्याएँ"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If you recently migrated your site to a new domain or hosting provider, the stored connection tokens may still point to "
+"the old URL. Clearing the cache re-establishes the OttoKit connection with the new site URL so triggers and actions can "
+"communicate correctly."
+msgstr ""
+"यदि आपने हाल ही में अपनी साइट को नए डोमेन या होस्टिंग प्रदाता पर माइग्रेट किया है, तो संग्रहीत कनेक्शन टोकन अभी भी "
+"पुराने URL की ओर इशारा कर सकते हैं। कैश को साफ़ करने से OttoKit कनेक्शन को नए साइट URL के साथ फिर से स्थापित किया जाता "
+"है ताकि ट्रिगर्स और क्रियाएँ सही ढंग से संवाद कर सकें।"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "2. Automations suddenly stopped firing"
+msgstr "2. स्वचालन अचानक बंद हो गए"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"If your triggers and automations were working previously but have suddenly stopped, the authentication token or "
+"registered events may have become stale. Clearing the cache refreshes the token, re-syncs all registered events with "
+"the OttoKit server, and restores the connection."
+msgstr ""
+"यदि आपके ट्रिगर्स और स्वचालन पहले काम कर रहे थे लेकिन अचानक बंद हो गए हैं, तो प्रमाणीकरण टोकन या पंजीकृत घटनाएँ पुरानी "
+"हो गई हो सकती हैं। कैश को साफ़ करने से टोकन को ताज़ा किया जाता है, सभी पंजीकृत घटनाओं को OttoKit सर्वर के साथ फिर से "
+"समन्वयित किया जाता है, और कनेक्शन को पुनर्स्थापित किया जाता है।"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid "3. Unexpected behavior after a plugin update"
+msgstr "3. प्लगइन अपडेट के बाद अप्रत्याशित व्यवहार"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"After updating OttoKit (or related plugins like WooCommerce, LearnDash, etc.), cached data from the previous version "
+"may cause triggers to not appear, events to not register, or the status page to show stale information. Clearing the "
+"cache resolves these version mismatch issues."
+msgstr ""
+"OttoKit (या संबंधित प्लगइन्स जैसे WooCommerce, LearnDash, आदि) को अपडेट करने के बाद, पिछले संस्करण से कैश किया गया डेटा "
+"ट्रिगर्स को दिखाई नहीं देने, घटनाओं को पंजीकृत नहीं करने, या स्थिति पृष्ठ पर पुरानी जानकारी दिखाने का कारण बन सकता है। "
+"कैश को साफ़ करने से इन संस्करण असंगति समस्याओं का समाधान होता है।"
+
+#: src/Admin/Views/st-admin-troubleshooting-page.php
+msgid ""
+"Clearing the cache will not delete your automations, settings, or connected integrations. It only resets the local "
+"connection data so your site can re-authenticate with the OttoKit platform."
+msgstr ""
+"कैश को साफ़ करने से आपकी स्वचालन, सेटिंग्स, या कनेक्टेड इंटीग्रेशन हटाए नहीं जाएंगे। यह केवल स्थानीय कनेक्शन डेटा को "
+"रीसेट करता है ताकि आपकी साइट OttoKit प्लेटफ़ॉर्म के साथ फिर से प्रमाणीकरण कर सके।"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Outgoing Request Logging"
+msgstr "आउटगोइंग अनुरोध लॉगिंग"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is currently disabled. No new requests are being stored. Failed requests cannot be retried automatically."
+msgstr ""
+"लॉगिंग वर्तमान में अक्षम है। कोई नए अनुरोध संग्रहीत नहीं किए जा रहे हैं। विफल अनुरोधों को स्वचालित रूप से पुनः प्रयास "
+"नहीं किया जा सकता।"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Logging is enabled. Every outgoing webhook request is stored in the database for retry and history."
+msgstr "लॉगिंग सक्षम है। हर आउटगोइंग वेबहुक अनुरोध को पुनः प्रयास और इतिहास के लिए डेटाबेस में संग्रहीत किया जाता है।"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Enable Logging"
+msgstr "लॉगिंग सक्षम करें"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Disable Logging"
+msgstr "लॉगिंग अक्षम करें"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Actions"
+msgstr "क्रियाएँ"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Select request %s"
+msgstr "अनुरोध %s चुनें"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Retry Selected"
+msgstr "चुने हुए को पुनः प्रयास करें"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Delete Selected"
+msgstr "चुने हुए को हटाएँ"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Rerun"
+msgstr "फिर से चलाएँ"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "View Response"
+msgstr "प्रतिक्रिया देखें"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Pending Requests"
+msgstr "लंबित अनुरोध"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "From date"
+msgstr "तारीख से"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "To date"
+msgstr "तारीख तक"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request & Response Details"
+msgstr "अनुरोध और प्रतिक्रिया विवरण"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Request Data"
+msgstr "अनुरोध डेटा"
+
+#: src/Admin/Views/st-admin-outgoing-req-page.php
+msgid "Please select at least one request."
+msgstr "कृपया कम से कम एक अनुरोध चुनें।"
 
 #: src/Integrations/woocommerce-subscriptions/actions/extend-user-subscription.php:115
 msgctxt "hash before order number"
