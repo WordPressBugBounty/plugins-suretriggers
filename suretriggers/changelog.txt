@@ -1,3 +1,8 @@
+Version 1.1.32 - Thursday, 2nd July 2026
+- New: Added "SureDonation" Integration
+- Improvement: "Bricks Builder" – Added new "User Account Activated" Trigger
+- Improvement: "FluentCRM" – Added slug sanitization to the "Create Tag" Action
+
 Version 1.1.31 - Thursday, 11th June 2026
 - Improvement: "Amelia" – Added event period start/end dates and amount paid to the "New Event Attendee" Trigger
 - Fix: "MemberPress" – Fixed "Membership Signup Completed" Trigger not firing for Stripe subscription payments

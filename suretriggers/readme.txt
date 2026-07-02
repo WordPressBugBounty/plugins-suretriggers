@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.0
-Stable tag: 1.1.31
+Stable tag: 1.1.32
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,11 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.32 - Thursday, 2nd July 2026 =
+* New: Added "SureDonation" Integration
+* Improvement: "Bricks Builder" – Added new "User Account Activated" Trigger
+* Improvement: "FluentCRM" – Added slug sanitization to the "Create Tag" Action
+
 = Version 1.1.31 - Thursday, 11th June 2026 =
 * Improvement: "Amelia" – Added event period start/end dates and amount paid to the "New Event Attendee" Trigger
 * Fix: "MemberPress" – Fixed "Membership Signup Completed" Trigger not firing for Stripe subscription payments

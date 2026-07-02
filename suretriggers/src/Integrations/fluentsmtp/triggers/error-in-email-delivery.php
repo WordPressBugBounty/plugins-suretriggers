@@ -91,15 +91,15 @@ if ( ! class_exists( 'ErrorInEmailDelivery' ) ) :
 				return;
 			}
 			
-			$context['to']          = unserialize( $data['to'] );
+			$context['to']          = st_safe_unserialize( $data['to'] );
 			$context['from']        = $data['from'];
 			$context['subject']     = $data['subject'];
 			$context['body']        = $data['body'];
-			$context['attachments'] = unserialize( $data['attachments'] );
+			$context['attachments'] = st_safe_unserialize( $data['attachments'] );
 			$context['status']      = $data['status'];
-			$context['response']    = unserialize( $data['response'] );
-			$context['headers']     = unserialize( $data['headers'] );
-			$context['extra']       = unserialize( $data['extra'] );
+			$context['response']    = st_safe_unserialize( $data['response'] );
+			$context['headers']     = st_safe_unserialize( $data['headers'] );
+			$context['extra']       = st_safe_unserialize( $data['extra'] );
 
 			AutomationController::sure_trigger_handle_trigger(
 				[

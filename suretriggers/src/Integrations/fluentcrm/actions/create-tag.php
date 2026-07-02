@@ -74,15 +74,15 @@ class CreateTag extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		
+
 		if ( ! class_exists( '\FluentCrm\App\Models\Tag' ) ) {
 			return [];
 		}
 		$tag_name = $selected_options['tag_name'];
+		$slug     = sanitize_title( $tag_name );
 		$tag      = \FluentCrm\App\Models\Tag::updateOrCreate(
-			[
-				'title' => sanitize_text_field( $tag_name ),
-			]
+			[ 'slug' => $slug ],
+			[ 'title' => sanitize_text_field( $tag_name ) ]
 		);
 		if ( $tag->wasRecentlyCreated ) { // @phpcs:ignore
 			do_action( 'fluentcrm_tag_created', $tag->id );

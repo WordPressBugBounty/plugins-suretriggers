@@ -100,7 +100,7 @@ class AddRecipientsToCampaign extends AutomateAction {
 		}
 		CampaignModel::insert_or_update_campaign_meta( $campaign_id, 'recipients', maybe_serialize( $value ) );
 		$campaign_data               = CampaignModel::get( $campaign_id );
-		$campaign_data['meta_value'] = unserialize( $campaign_data['meta_value'] );
+		$campaign_data['meta_value'] = st_safe_unserialize( $campaign_data['meta_value'] );
 		return $campaign_data;
 		
 	}
