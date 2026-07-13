@@ -3680,6 +3680,80 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Prepare mailster lists.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_mailster_lists( $data ) {
+		if ( ! function_exists( 'mailster' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$all_lists = mailster( 'lists' )->get();
+		$options   = [];
+
+		if ( ! empty( $all_lists ) && is_array( $all_lists ) ) {
+			foreach ( $all_lists as $list ) {
+				if ( ! is_object( $list ) || ! isset( $list->ID, $list->name ) ) {
+					continue;
+				}
+
+				$options[] = [
+					'label' => $list->name,
+					'value' => absint( $list->ID ),
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Prepare mailster tags.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_mailster_tags( $data ) {
+		if ( ! function_exists( 'mailster' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$all_tags = mailster( 'tags' )->get();
+		$options  = [];
+
+		if ( ! empty( $all_tags ) && is_array( $all_tags ) ) {
+			foreach ( $all_tags as $tag ) {
+				if ( ! is_object( $tag ) || ! isset( $tag->ID, $tag->name ) ) {
+					continue;
+				}
+
+				$options[] = [
+					'label' => $tag->name,
+					'value' => absint( $tag->ID ),
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
 	 * Prepare fluentcrm tags.
 	 *
 	 * @param array $data Search Params.

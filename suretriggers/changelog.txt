@@ -1,3 +1,8 @@
+Version 1.1.33 - Monday, 13th July 2026
+- New: Added "Mailster" Integration
+- Improvement: "BuddyBoss" – Added support for attaching photos/videos directly to activity feed posts
+- Improvement: "WooCommerce Subscriptions" – Added new "Find Subscription by Subscription ID" Action
+
 Version 1.1.32 - Thursday, 2nd July 2026
 - New: Added "SureDonation" Integration
 - Improvement: "Bricks Builder" – Added new "User Account Activated" Trigger

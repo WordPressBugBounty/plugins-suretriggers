@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.0
-Stable tag: 1.1.32
+Stable tag: 1.1.33
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,11 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.33 - Monday, 13th July 2026 =
+* New: Added "Mailster" Integration
+* Improvement: "BuddyBoss" – Added support for attaching photos/videos directly to activity feed posts
+* Improvement: "WooCommerce Subscriptions" – Added new "Find Subscription by Subscription ID" Action
+
 = Version 1.1.32 - Thursday, 2nd July 2026 =
 * New: Added "SureDonation" Integration
 * Improvement: "Bricks Builder" – Added new "User Account Activated" Trigger

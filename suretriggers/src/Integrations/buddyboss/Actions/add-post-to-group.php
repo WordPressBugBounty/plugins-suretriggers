@@ -120,6 +120,10 @@ class AddPostToActivityStreamOfGroup extends AutomateAction {
 			]
 		);
 
+		if ( $activity_id && ! empty( $selected_options['bb_activity_media'] ) ) {
+			BuddyBoss::st_attach_media_to_activity( $activity_id, $selected_options['bb_activity_media'], $user_id, $group_id );
+		}
+
 		// Check if link preview is active.
 		if ( ! function_exists( 'bp_is_activity_link_preview_active' ) ) {
 			return [
