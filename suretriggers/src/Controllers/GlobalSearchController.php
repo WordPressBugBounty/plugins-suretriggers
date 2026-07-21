@@ -532,6 +532,50 @@ class GlobalSearchController {
 	}
 
 	/**
+	 * Search SureDash Event/Calendar Spaces.
+	 *
+	 * @param array $data query params.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function search_suredash_event_spaces( $data ) {
+		if ( ! defined( 'SUREDASHBOARD_POST_TYPE' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$spaces = get_posts(
+			[
+				'post_type'   => SUREDASHBOARD_POST_TYPE,
+				'post_status' => 'publish',
+				'meta_query'  => [
+					[
+						'key'   => 'integration',
+						'value' => 'events',
+					],
+				],
+				'numberposts' => -1,
+			]
+		);
+
+		$options = [];
+		foreach ( $spaces as $space ) {
+			$options[] = [
+				'label' => $space->post_title,
+				'value' => $space->ID,
+			];
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
 	 * Search SureDash Badges.
 	 *
 	 * @param array $data query params.

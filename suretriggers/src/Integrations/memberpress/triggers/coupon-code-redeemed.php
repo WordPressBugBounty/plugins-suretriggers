@@ -73,10 +73,11 @@ if ( ! class_exists( 'CouponCodeRedeemed' ) ) :
 				'action'        => $this->trigger,
 				'common_action' => [
 					'mepr-event-transaction-completed',
+					'mepr_txn_transition_status',
 				],
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
-				'accepted_args' => 1,
+				'accepted_args' => 3,
 			];
 
 			return $triggers;
@@ -88,18 +89,71 @@ if ( ! class_exists( 'CouponCodeRedeemed' ) ) :
 		 * Trigger listener
 		 * This will trigger for both recurring and non-recurring transactions.
 		 *
-		 * @param object $event event.
+		 * Handles two WordPress hooks with different signatures:
+		 * - `mepr-event-transaction-completed` ($event) fires for transactions that are
+		 *   charged and completed immediately.
+		 * - `mepr_txn_transition_status` ($old_status, $new_status, $txn) is also needed
+		 *   because a coupon that grants a free trial (0 due today) never reaches the
+		 *   "complete" status at signup - MemberPress only marks it "confirmed" and the
+		 *   "transaction-completed" event isn't recorded until the trial converts to a
+		 *   paid charge days later. Watching the status transition catches the coupon
+		 *   redemption at the moment it actually happens.
+		 *
+		 * @param object      $event_or_old_status MeprEvent instance, or the previous transaction status string.
+		 * @param string|null $new_status          The new transaction status (only set for the status-transition hook).
+		 * @param object|null $txn                  The MeprTransaction instance (only set for the status-transition hook).
 		 *
 		 * @return void
 		 */
-		public function trigger_listener( $event ) {
-			if ( ! class_exists( 'MeprEvent' ) || ! $event instanceof \MeprEvent ) {
+		public function trigger_listener( $event_or_old_status, $new_status = null, $txn = null ) {
+			if ( ! class_exists( 'MeprTransaction' ) ) {
 				return;
 			}
-			$transaction = $event->get_data();
-			if ( empty( $transaction->coupon() ) ) {
+
+			if ( class_exists( 'MeprEvent' ) && $event_or_old_status instanceof \MeprEvent ) {
+				$transaction = $event_or_old_status->get_data();
+			} elseif ( $txn instanceof MeprTransaction ) {
+				$old_status = $event_or_old_status;
+				// Only act the moment the transaction first becomes "confirmed".
+				if ( MeprTransaction::$confirmed_str !== $new_status || MeprTransaction::$confirmed_str === $old_status ) {
+					return;
+				}
+
+				// "confirmed" is also used as a generic placeholder status for every new
+				// subscription, trial or not - a non-trial signup gets a *separate*
+				// transaction row with status "complete" in the same request, which the
+				// other hook above already handles. Only continue here for a genuine
+				// zero-cost trial, since that is the one case where "complete" never
+				// fires at signup time (it only fires days later when the trial converts
+				// to a real charge). This keeps the two hooks from firing for the same
+				// coupon redemption.
+				$sub = $txn->subscription();
+				if (
+					! $sub
+					|| ! isset( $sub->trial, $sub->trial_amount )
+					|| ! $sub->trial
+					|| (float) $sub->trial_amount > 0.00
+				) {
+					return;
+				}
+
+				$transaction = $txn;
+			} else {
 				return;
 			}
+
+			if ( ! ( $transaction instanceof MeprTransaction ) || empty( $transaction->coupon() ) ) {
+				return;
+			}
+
+			// Defensive dedupe in case something in a customized checkout flow ends up
+			// calling this for the same transaction more than once.
+			$dedupe_key = 'st_mepr_coupon_redeemed_' . $transaction->id;
+			if ( get_transient( $dedupe_key ) ) {
+				return;
+			}
+			set_transient( $dedupe_key, 1, DAY_IN_SECONDS );
+
 			$context              = array_merge(
 				WordPress::get_user_context( $transaction->user_id ),
 				MemberPress::get_membership_context( $transaction )
