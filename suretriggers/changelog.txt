@@ -1,3 +1,8 @@
+Version 1.1.35 - Thursday, 30th July 2026
+- New: Added "Directories Pro" Integration
+- Improvement: "WP Travel Engine" – Added new Actions
+- Improvement: "SureMembers" – Added new "Get User Details" Action
+
 Version 1.1.34 - Tuesday, 21st July 2026
 - New: Added "JetBooking" Integration
 - Improvement: "SureDash" – Added new "Create Event" Action

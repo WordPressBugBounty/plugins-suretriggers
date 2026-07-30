@@ -27385,6 +27385,109 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 
 		return $context;
 	}
+
+	/**
+	 * Search Directories Pro listing directories (bundles/post types).
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_directories_pro_listing_types( $data ) {
+		$options = [];
+
+		if ( function_exists( 'drts' ) ) {
+			$bundles = drts()->Entity_Bundles_byType( 'directory__listing' );
+
+			foreach ( $bundles as $bundle ) {
+				if ( ! empty( $bundle->info['is_taxonomy'] ) ) {
+					continue;
+				}
+
+				$label = $bundle->name;
+				if ( is_object( $bundle ) && method_exists( $bundle, 'getGroupLabel' ) && method_exists( $bundle, 'getLabel' ) ) {
+					$label = $bundle->getGroupLabel() . ' - ' . $bundle->getLabel( 'singular' );
+				}
+
+				$options[] = [
+					'label' => $label,
+					'value' => $bundle->name,
+				];
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Search Directories Pro listings by title, across all listing directories.
+	 *
+	 * @param array $data Search Params.
+	 * @return array
+	 */
+	public function search_directories_pro_listings( $data ) {
+		if ( ! function_exists( 'drts' ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$filter_type = isset( $data['filter']['post_type'] ) ? sanitize_key( $data['filter']['post_type'] ) : '';
+		$post_types  = [];
+
+		foreach ( drts()->Entity_Bundles_byType( 'directory__listing' ) as $bundle ) {
+			if ( ! empty( $bundle->info['is_taxonomy'] ) ) {
+				continue;
+			}
+			if ( $filter_type && $bundle->name !== $filter_type ) {
+				continue;
+			}
+			$post_types[] = $bundle->name;
+		}
+
+		if ( empty( $post_types ) ) {
+			return [
+				'options' => [],
+				'hasMore' => false,
+			];
+		}
+
+		$term  = isset( $data['search_term'] ) ? sanitize_text_field( $data['search_term'] ) : '';
+		$page  = isset( $data['page'] ) ? absint( $data['page'] ) : 1;
+		$limit = 20;
+
+		$query = new WP_Query(
+			[
+				'post_type'      => $post_types,
+				'post_status'    => [ 'publish', 'pending', 'draft' ],
+				's'              => $term,
+				'posts_per_page' => $limit,
+				'paged'          => $page,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			]
+		);
+
+		$options = [];
+		foreach ( $query->posts as $listing_post ) {
+			if ( ! $listing_post instanceof WP_Post ) {
+				continue;
+			}
+			$options[] = [
+				'label' => $listing_post->post_title,
+				'value' => $listing_post->ID,
+			];
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => $page < $query->max_num_pages,
+		];
+	}
+
 }
 
 

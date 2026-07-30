@@ -133,21 +133,36 @@ class AddContact extends AutomateAction {
 			$data['status'] = $selected_options['contact_status'];
 		}
 
-		if ( isset( $selected_options['show_custom_fields'] ) 
+		if ( isset( $selected_options['show_custom_fields'] )
 			&& in_array( $selected_options['show_custom_fields'], [ true, 1, 'true', '1' ], true ) ) {
 			$fcrm_custom_fields = fluentcrm_get_custom_contact_fields();
+
+			$fcrm_custom_fields_by_slug = [];
+			if ( is_array( $fcrm_custom_fields ) ) {
+				foreach ( $fcrm_custom_fields as $fcrm_custom_field ) {
+					if ( isset( $fcrm_custom_field['slug'] ) ) {
+						$fcrm_custom_fields_by_slug[ $fcrm_custom_field['slug'] ] = $fcrm_custom_field;
+					}
+				}
+			}
+
 			foreach ( $selected_options['field_row_repeater'] as $key => $field ) {
-				$type       = $fcrm_custom_fields[ $key ]['type'];
-				$label      = $fcrm_custom_fields[ $key ]['label'];
-				$field_name = $field['value']['name'];
-				$value      = trim( $selected_options['field_row'][ $key ][ $field_name ] );
+				$field_name = ( isset( $field['value']['name'] ) && is_string( $field['value']['name'] ) ) ? $field['value']['name'] : '';
+
+				if ( '' === $field_name || ! isset( $fcrm_custom_fields_by_slug[ $field_name ] ) ) {
+					continue;
+				}
+
+				$type  = $fcrm_custom_fields_by_slug[ $field_name ]['type'];
+				$label = $fcrm_custom_fields_by_slug[ $field_name ]['label'];
+				$value = isset( $selected_options['field_row'][ $key ][ $field_name ] ) ? trim( $selected_options['field_row'][ $key ][ $field_name ] ) : '';
 
 				if ( empty( $value ) ) {
 					continue;
 				}
 
 				if ( in_array( $type, [ 'select-one', 'radio' ], true ) ) {
-					$field_options = $fcrm_custom_fields[ $key ]['options'];
+					$field_options = $fcrm_custom_fields_by_slug[ $field_name ]['options'];
 					$field_value   = null;
 
 					foreach ( $field_options as $option ) {
@@ -163,12 +178,12 @@ class AddContact extends AutomateAction {
 						];
 					}
 
-					$data[ $field_name ] = $field_value;
+					$data['custom_values'][ $field_name ] = $field_value;
 
 				} elseif ( in_array( $type, [ 'select-multi', 'checkbox' ], true ) ) {
 					$option_values = explode( ',', $value );
 					$option_values = array_map( 'trim', $option_values );
-					$field_options = $fcrm_custom_fields[ $key ]['options'];
+					$field_options = $fcrm_custom_fields_by_slug[ $field_name ]['options'];
 
 					$options = [];
 					foreach ( $option_values as $option_value ) {
@@ -190,9 +205,9 @@ class AddContact extends AutomateAction {
 						$options[] = $field_value;
 					}
 
-					
-					$data[ $field_name ] = $options;
-					
+
+					$data['custom_values'][ $field_name ] = $options;
+
 				} elseif ( 'date' === $type ) {
 					$date = DateTime::createFromFormat( 'Y-m-d', $value );
 					if ( ! $date ) {
@@ -202,7 +217,7 @@ class AddContact extends AutomateAction {
 						];
 					}
 
-					$data[ $field_name ] = $value;
+					$data['custom_values'][ $field_name ] = $value;
 				} elseif ( 'date_time' === $type ) {
 					$date = DateTime::createFromFormat( 'Y-m-d H:i:s', $value );
 					if ( ! $date ) {
@@ -212,9 +227,9 @@ class AddContact extends AutomateAction {
 						];
 					}
 
-					$data[ $field_name ] = $value;
+					$data['custom_values'][ $field_name ] = $value;
 				} else {
-					$data[ $field_name ] = $value;
+					$data['custom_values'][ $field_name ] = $value;
 				}
 			}
 		}

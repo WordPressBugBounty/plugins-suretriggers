@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.0
-Stable tag: 1.1.34
+Stable tag: 1.1.35
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,11 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.35 - Thursday, 30th July 2026 =
+* New: Added "Directories Pro" Integration
+* Improvement: "WP Travel Engine" – Added new Actions
+* Improvement: "SureMembers" – Added new "Get User Details" Action
+
 = Version 1.1.34 - Tuesday, 21st July 2026 =
 * New: Added "JetBooking" Integration
 * Improvement: "SureDash" – Added new "Create Event" Action
