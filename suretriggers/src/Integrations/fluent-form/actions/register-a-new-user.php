@@ -102,6 +102,10 @@ class RegisterANewUser extends AutomateAction {
 				'role'       => $selected_options['role'],
 			];
 
+			if ( ! empty( $userdata['role'] ) && ! st_is_assignable_user_role( $userdata['role'] ) ) {
+				$userdata['role'] = '';
+			}
+
 			$user_id = wp_insert_user( wp_slash( $userdata ) );
 
 			if ( is_wp_error( $user_id ) ) {

@@ -223,8 +223,17 @@ class CreateProduct extends AutomateAction {
 	 * @return int|false Attachment ID or false on failure.
 	 */
 	private function upload_image_from_url( $image_url, $post_id ) {
-		$response = wp_remote_get( $image_url );
-		$image    = wp_remote_retrieve_body( $response );
+		if ( ! filter_var( $image_url, FILTER_VALIDATE_URL ) ) {
+			return false;
+		}
+
+		$response = wp_safe_remote_get( $image_url, [ 'reject_unsafe_urls' => true ] );
+
+		if ( is_wp_error( $response ) ) {
+			return false;
+		}
+
+		$image = wp_remote_retrieve_body( $response );
 
 		if ( empty( $image ) ) {
 			return false;

@@ -15,6 +15,7 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
+use SureTriggers\Integrations\FluentBoards\FluentBoards;
 use SureTriggers\Traits\SingletonLoader;
 use FluentBoardsPro\App\Services\AttachmentService;
 
@@ -46,7 +47,6 @@ class CreateTask extends AutomateAction {
 	public $action = 'fbs_create_task';
 
 	use SingletonLoader;
-	
 
 	/**
 	 * Register a action.
@@ -79,19 +79,19 @@ class CreateTask extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$title           = $selected_options['title'] ? sanitize_text_field( $selected_options['title'] ) : '';
-		$description     = $selected_options['description'] ? sanitize_text_field( $selected_options['description'] ) : '';
-		$board_id        = $selected_options['board_id'] ? sanitize_text_field( $selected_options['board_id'] ) : '';
-		$stage_id        = $selected_options['stage_id'] ? sanitize_text_field( $selected_options['stage_id'] ) : '';
-		$priority        = $selected_options['priority'] ? sanitize_text_field( $selected_options['priority'] ) : '';
-		$status          = $selected_options['status'] ? sanitize_text_field( $selected_options['status'] ) : '';
-		$due_at          = $selected_options['due_date'] ? sanitize_text_field( $selected_options['due_date'] ) : '';
-		$labels          = $selected_options['labels'] ? explode( ',', sanitize_text_field( $selected_options['labels'] ) ) : '';
-		$crm_contact_id  = $selected_options['crm_contact_id'] ? sanitize_text_field( $selected_options['crm_contact_id'] ) : '';
-		$created_by      = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
-		$attachment_url  = isset( $selected_options['attachment_url'] ) ? esc_url_raw( $selected_options['attachment_url'] ) : '';
-		$attachment_name = $selected_options['attachment_name'] ? sanitize_text_field( $selected_options['attachment_name'] ) : '';
-		$assignees       = isset( $selected_options['assignees'] ) ? sanitize_text_field( $selected_options['assignees'] ) : '';
+		$title           = ! empty( $selected_options['title'] ) ? sanitize_text_field( $selected_options['title'] ) : '';
+		$description     = ! empty( $selected_options['description'] ) ? sanitize_text_field( $selected_options['description'] ) : '';
+		$board_id        = ! empty( $selected_options['board_id'] ) ? sanitize_text_field( $selected_options['board_id'] ) : '';
+		$stage_id        = ! empty( $selected_options['stage_id'] ) ? sanitize_text_field( $selected_options['stage_id'] ) : '';
+		$priority        = ! empty( $selected_options['priority'] ) ? sanitize_text_field( $selected_options['priority'] ) : '';
+		$status          = ! empty( $selected_options['status'] ) ? sanitize_text_field( $selected_options['status'] ) : '';
+		$due_at          = ! empty( $selected_options['due_date'] ) ? sanitize_text_field( $selected_options['due_date'] ) : '';
+		$labels          = ! empty( $selected_options['labels'] ) ? explode( ',', sanitize_text_field( $selected_options['labels'] ) ) : '';
+		$crm_contact_id  = ! empty( $selected_options['crm_contact_id'] ) ? sanitize_text_field( $selected_options['crm_contact_id'] ) : '';
+		$created_by      = ! empty( $selected_options['created_by'] ) ? sanitize_text_field( $selected_options['created_by'] ) : '';
+		$attachment_url  = ! empty( $selected_options['attachment_url'] ) ? esc_url_raw( $selected_options['attachment_url'] ) : '';
+		$attachment_name = ! empty( $selected_options['attachment_name'] ) ? sanitize_text_field( $selected_options['attachment_name'] ) : '';
+		$assignees       = ! empty( $selected_options['assignees'] ) ? sanitize_text_field( $selected_options['assignees'] ) : '';
 		
 		$task_data = array_filter(
 			[
@@ -112,12 +112,23 @@ class CreateTask extends AutomateAction {
 		if ( ! function_exists( 'FluentBoardsApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentBoardsApi function not found.', 'suretriggers' ), 
-					
+				'message' => __( 'FluentBoardsApi function not found.', 'suretriggers' ),
+
 			];
 		}
-			
-			$task = FluentBoardsApi( 'tasks' )->create( $task_data );
+
+		/**
+		 * FluentBoards' Tasks::create() now checks board write permission via
+		 * PermissionManager::userHasBoardPermission(), which falls back to
+		 * get_current_user_id(). A real (webhook-triggered) automation run
+		 * has no logged-in WP user, so that check silently fails unless we
+		 * set one. See FluentBoards::maybe_set_acting_user().
+		 */
+		if ( class_exists( '\SureTriggers\Integrations\FluentBoards\FluentBoards' ) ) {
+			FluentBoards::maybe_set_acting_user( $user_id );
+		}
+
+		$task = FluentBoardsApi( 'tasks' )->create( $task_data );
 		if ( empty( $task ) ) {
 			return [
 				'status'  => 'error',

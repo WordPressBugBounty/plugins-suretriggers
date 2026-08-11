@@ -78,21 +78,9 @@ class SureFormsSendData extends AutomateAction {
 		$file_attachment = isset( $selected_options['sf_attachment'] ) ? $selected_options['sf_attachment'] : '';
 
 		// Handling SSRF Attack.
-		$blocked_hosts = [
-			'127.0.0.1', // Local access.
-			'localhost',
-			'192.168.0.0/16', // Organization access.
-			'10.0.0.0/8',
-			'172.16.0.0/12',
-			'169.254.0.0/16',
-			'0.0.0.0',
-			'0.0.0.0/0',
-			'169.254.169.254', // EC2 meta-data access.
-		];
-
 		$host = wp_parse_url( $endpoint_url, PHP_URL_HOST );
 
-		if ( in_array( $host, $blocked_hosts ) ) {
+		if ( empty( $host ) || $this->is_host_blocked( $host ) ) {
 			throw new \Exception( 'Access blocked.' );
 		}
 
@@ -119,8 +107,9 @@ class SureFormsSendData extends AutomateAction {
 		if ( null === $endpoint_url ) {
 			return [];
 		}
-		// Send the HTTP request based on the method.
-		$response = wp_remote_request( $endpoint_url, $args );
+		// Send the HTTP request based on the method. wp_safe_remote_request() re-validates
+		// the resolved host (including on redirects) against internal/reserved IP ranges.
+		$response = wp_safe_remote_request( $endpoint_url, $args );
 		if ( is_wp_error( $response ) ) {
 			$error_message = $response->get_error_message();
 			if ( ! empty( $selected_options['test_action'] ) ) {
@@ -150,6 +139,154 @@ class SureFormsSendData extends AutomateAction {
 			$result = [ 'response' => wp_remote_retrieve_body( $response ) ];
 		}
 		return $result;
+	}
+
+	/**
+	 * Determine whether a host resolves to a private or reserved IP address.
+	 *
+	 * Resolves the host name (normalizing decimal/octal/hex IP literals first)
+	 * and validates every resolved address against private and reserved IP
+	 * ranges, rather than string-comparing the host against CIDR literals.
+	 *
+	 * @param string $host Host name or IP literal parsed from the endpoint URL.
+	 * @return bool
+	 */
+	private function is_host_blocked( $host ) {
+		$host = strtolower( trim( $host, '[]' ) );
+
+		if ( 'localhost' === $host ) {
+			return true;
+		}
+
+		$ips = $this->resolve_host_ips( $host );
+
+		if ( empty( $ips ) ) {
+			// Host could not be resolved to any address - fail securely.
+			return true;
+		}
+
+		foreach ( $ips as $ip ) {
+			if ( $this->is_blocked_ip( $ip ) ) {
+				return true;
+			}
+
+			// Unwrap IPv4-mapped IPv6 addresses (e.g. ::ffff:127.0.0.1) - PHP's
+			// range flags don't evaluate the embedded IPv4 address on their own.
+			$mapped_ipv4 = $this->extract_mapped_ipv4( $ip );
+			if ( null !== $mapped_ipv4 && $this->is_blocked_ip( $mapped_ipv4 ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check a single IP address against private and reserved IP ranges.
+	 *
+	 * @param string $ip IP address.
+	 * @return bool
+	 */
+	private function is_blocked_ip( $ip ) {
+		return false === filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE );
+	}
+
+	/**
+	 * Extract the embedded IPv4 address from an IPv4-mapped IPv6 address.
+	 *
+	 * @param string $ip IP address.
+	 * @return string|null
+	 */
+	private function extract_mapped_ipv4( $ip ) {
+		$binary = @inet_pton( $ip ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, Generic.PHP.NoSilencedErrors.Discouraged
+		if ( false === $binary || 16 !== strlen( $binary ) ) {
+			return null;
+		}
+
+		if ( "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff" !== substr( $binary, 0, 12 ) ) {
+			return null;
+		}
+
+		$ipv4 = inet_ntop( substr( $binary, 12, 4 ) );
+		return false !== $ipv4 ? $ipv4 : null;
+	}
+
+	/**
+	 * Resolve a host name (or IP literal) to its IP address(es).
+	 *
+	 * @param string $host Host name or IP literal.
+	 * @return string[]
+	 */
+	private function resolve_host_ips( $host ) {
+		$normalized = $this->normalize_ip_literal( $host );
+
+		if ( null !== $normalized ) {
+			return [ $normalized ];
+		}
+
+		if ( false !== filter_var( $host, FILTER_VALIDATE_IP ) ) {
+			return [ $host ];
+		}
+
+		$ips = gethostbynamel( $host );
+		$ips = false !== $ips ? $ips : [];
+
+		if ( function_exists( 'dns_get_record' ) ) {
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, Generic.PHP.NoSilencedErrors.Discouraged
+			$records = @dns_get_record( $host, DNS_AAAA );
+			if ( is_array( $records ) ) {
+				foreach ( $records as $record ) {
+					if ( ! empty( $record['ipv6'] ) ) {
+						$ips[] = $record['ipv6'];
+					}
+				}
+			}
+		}
+
+		return $ips;
+	}
+
+	/**
+	 * Normalize decimal, octal, and hexadecimal IPv4 literals (e.g. `2130706433`
+	 * or `0177.0.0.1`) to dotted-quad form so they can't slip past validation
+	 * in a format that never gets resolved via DNS.
+	 *
+	 * @param string $host Host name or IP literal.
+	 * @return string|null
+	 */
+	private function normalize_ip_literal( $host ) {
+		if ( ctype_digit( $host ) && strlen( $host ) <= 10 ) {
+			$decimal = (float) $host;
+			if ( $decimal >= 0 && $decimal <= 4294967295 ) {
+				$ip = long2ip( (int) $decimal );
+				return false !== $ip ? $ip : null;
+			}
+		}
+
+		$parts = explode( '.', $host );
+		if ( 4 !== count( $parts ) ) {
+			return null;
+		}
+
+		$octets = [];
+		foreach ( $parts as $part ) {
+			if ( ! preg_match( '/^(0x[0-9a-f]+|0[0-7]*|[1-9][0-9]*)$/i', $part ) ) {
+				return null;
+			}
+			if ( 0 === strncasecmp( $part, '0x', 2 ) ) {
+				$octet = hexdec( $part );
+			} elseif ( strlen( $part ) > 1 && '0' === $part[0] ) {
+				$octet = octdec( $part );
+			} else {
+				$octet = (int) $part;
+			}
+			if ( $octet < 0 || $octet > 255 ) {
+				return null;
+			}
+			$octets[] = $octet;
+		}
+
+		return implode( '.', $octets );
 	}
 }
 

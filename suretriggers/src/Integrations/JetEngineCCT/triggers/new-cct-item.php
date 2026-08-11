@@ -132,7 +132,7 @@ if ( ! class_exists( 'NewCCTItem' ) ) :
 
 			if ( is_array( $item ) ) {
 				foreach ( $item as $key => $value ) {
-					$context[ $key ] = maybe_unserialize( $value );
+					$context[ $key ] = st_safe_unserialize( $value );
 				}
 			}
 

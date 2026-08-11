@@ -139,14 +139,14 @@ if ( ! class_exists( 'UpdatedCCTItem' ) ) :
 
 			if ( is_array( $item ) ) {
 				foreach ( $item as $key => $value ) {
-					$context[ $key ] = maybe_unserialize( $value );
+					$context[ $key ] = st_safe_unserialize( $value );
 				}
 			}
 
 			if ( is_array( $prev_item ) ) {
 				$previous = [];
 				foreach ( $prev_item as $key => $value ) {
-					$previous[ $key ] = maybe_unserialize( $value );
+					$previous[ $key ] = st_safe_unserialize( $value );
 				}
 				$context['previous_item'] = $previous;
 			}

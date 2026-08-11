@@ -136,7 +136,7 @@ class GetCCTRecordsByField extends AutomateAction {
 
 				if ( is_array( $record ) ) {
 					foreach ( $record as $key => $value ) {
-						$record[ $key ] = maybe_unserialize( $value );
+						$record[ $key ] = st_safe_unserialize( $value );
 					}
 				}
 

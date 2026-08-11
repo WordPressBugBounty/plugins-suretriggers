@@ -25,6 +25,38 @@ function st_safe_unserialize( $data ) {
 }
 
 /**
+ * Check whether an automation is allowed to assign the given role to a user.
+ *
+ * Role-assignment actions (WordPress "Change Role"/"Add New Role", Ultimate
+ * Member equivalents, user-creation actions, etc.) take the role as a plain
+ * string from the automation's `selected_options`. That value can originate
+ * from a hard-coded dropdown choice, but it can just as easily come from a
+ * mapped field fed by an incoming webhook, form submission, or raw REST
+ * request body — there is no reliable way at execution time to tell those
+ * apart. `administrator` is therefore blocked by default so no automation
+ * can be used, intentionally or via a spoofed payload, to escalate a user to
+ * Administrator. Site owners who deliberately need an automation to grant
+ * Administrator can restore that via the `suretriggers_blocked_user_roles`
+ * filter.
+ *
+ * @param string $role Role slug requested by the automation.
+ * @return bool True if the role may be assigned, false if it is blocked.
+ */
+function st_is_assignable_user_role( $role ) {
+	if ( ! is_string( $role ) || '' === $role ) {
+		return false;
+	}
+
+	$blocked_roles = apply_filters( 'suretriggers_blocked_user_roles', [ 'administrator' ] );
+
+	if ( ! is_array( $blocked_roles ) ) {
+		$blocked_roles = [ 'administrator' ];
+	}
+
+	return ! in_array( strtolower( $role ), array_map( 'strtolower', $blocked_roles ), true );
+}
+
+/**
  * Get or prepare user id.
  *
  * @return int

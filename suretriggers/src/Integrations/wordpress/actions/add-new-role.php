@@ -82,7 +82,16 @@ class AddNewRole extends AutomateAction {
 				'message' => 'This user is not type of WP_User',
 			];
 		}
-		$user->add_role( $selected_options[ $field['name'] ] );
+		$new_role = $selected_options[ $field['name'] ];
+
+		if ( ! st_is_assignable_user_role( $new_role ) ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'Assigning this role is not allowed.', 'suretriggers' ),
+			];
+		}
+
+		$user->add_role( $new_role );
 
 		return (array) $user;
 	}

@@ -102,6 +102,15 @@ if ( ! class_exists( 'SureFormsFormSubmitted' ) ) :
 				}
 			}
 
+			if ( ! empty( $response['message'] ) && is_string( $response['message'] ) ) {
+				$trimmed_message = $this->trim_large_message( $response['message'] );
+				if ( null === $trimmed_message ) {
+					unset( $response['message'] );
+				} else {
+					$response['message'] = $trimmed_message;
+				}
+			}
+
 			AutomationController::sure_trigger_handle_trigger(
 				[
 					'trigger'    => $this->trigger,
@@ -109,6 +118,39 @@ if ( ! class_exists( 'SureFormsFormSubmitted' ) ) :
 					'context'    => $response,
 				]
 			);
+		}
+
+		/**
+		 * Trim inline base64 media from the confirmation message before it is sent to the SaaS,
+		 * as authors pasting images directly into the SureForms success message inflate it enough
+		 * to fail SaaS-side processing. Falls back to dropping the whole field if it is still oversized.
+		 *
+		 * @param string $message Confirmation message markup.
+		 * @since 1.0.0
+		 *
+		 * @return string|null Trimmed message, or null if it should be dropped entirely.
+		 */
+		public function trim_large_message( $message ) {
+			$message = (string) preg_replace(
+				'/src=(["\'])(?:data:)?[a-zA-Z0-9\/+.-]+;base64,[A-Za-z0-9+\/=]+\1/i',
+				'src=$1$1',
+				$message
+			);
+
+			/**
+			 * Filters the maximum allowed size (in bytes) of the SureForms confirmation message
+			 * sent as trigger context. If the message still exceeds this after stripping inline
+			 * base64 media, it is dropped entirely rather than sent.
+			 *
+			 * @param int $max_size Maximum size in bytes. Default 30720 (30KB).
+			 */
+			$max_size = apply_filters( 'sure_trigger_sureforms_max_message_size', 30720 );
+
+			if ( strlen( $message ) > $max_size ) {
+				return null;
+			}
+
+			return $message;
 		}
 	}
 

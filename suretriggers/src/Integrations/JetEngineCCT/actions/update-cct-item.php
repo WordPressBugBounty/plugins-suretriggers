@@ -173,7 +173,7 @@ class UpdateCCTItem extends AutomateAction {
 
 		if ( is_array( $item_array ) ) {
 			foreach ( $item_array as $key => $value ) {
-				$context[ $key ] = maybe_unserialize( $value );
+				$context[ $key ] = st_safe_unserialize( $value );
 			}
 		}
 

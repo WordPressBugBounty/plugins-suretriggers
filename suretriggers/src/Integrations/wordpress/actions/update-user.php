@@ -61,6 +61,27 @@ class UpdateUser extends AutomateAction {
 	}
 
 	/**
+	 * Fields that this action is allowed to set via wp_update_user().
+	 *
+	 * Matches the fixed field list offered by the "User: Update User
+	 * Details" field picker (see
+	 * GlobalSearchController::search_user_field_options()). Deliberately
+	 * excludes `role` and any other key — `role` has no entry in that
+	 * picker and must never be settable through this generic key/value
+	 * list; changing a user's role has its own dedicated, capability
+	 * checked `change_role` action.
+	 *
+	 * @var string[]
+	 */
+	private $allowed_user_keys = [
+		'user_login',
+		'user_email',
+		'display_name',
+		'user_pass',
+		'user_url',
+	];
+
+	/**
 	 * Action listener.
 	 *
 	 * @param int   $user_id user_id.
@@ -81,7 +102,12 @@ class UpdateUser extends AutomateAction {
 		$meta_array['ID'] = $user_id;
 
 		foreach ( $selected_options['user_details'] as $meta ) {
-			$meta_key                = $meta['user_key'];
+			$meta_key = $meta['user_key'];
+
+			if ( ! in_array( $meta_key, $this->allowed_user_keys, true ) ) {
+				continue;
+			}
+
 			$meta_value              = $meta['user_value'];
 			$meta_array[ $meta_key ] = $meta_value;
 

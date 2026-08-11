@@ -81,7 +81,7 @@ class CreateUserIfNotExists extends AutomateAction {
 		
 		$user_pass = empty( $selected_options['password'] ) ? wp_generate_password() : $selected_options['password'];
 		
-		$userdata               = [
+		$userdata = [
 			'user_login' => $selected_options['user_name'],
 			'user_email' => $email,
 			'first_name' => $selected_options['first_name'],
@@ -89,6 +89,11 @@ class CreateUserIfNotExists extends AutomateAction {
 			'user_pass'  => $user_pass,
 			'role'       => $selected_options['role'],
 		];
+
+		if ( ! empty( $userdata['role'] ) && ! st_is_assignable_user_role( $userdata['role'] ) ) {
+			$userdata['role'] = '';
+		}
+
 		$force_update_user_role = $selected_options['force_update_user_role'] ? 'yes' : 'no';
 
 		$add_user_roles = $selected_options['add_user_roles'] ? 'yes' : 'no';
@@ -138,7 +143,7 @@ class CreateUserIfNotExists extends AutomateAction {
 						}
 					} else {
 						if ( 'yes' == $add_user_roles && 'yes' != $force_update_user_role ) {
-							$user->add_role( $selected_options['role'] );
+							$user->add_role( $userdata['role'] );
 							unset( $userdata['role'] );
 						} else {
 							$user_role = $user->roles[0];

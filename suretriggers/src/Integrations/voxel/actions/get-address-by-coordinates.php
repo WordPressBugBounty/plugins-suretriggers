@@ -117,7 +117,6 @@ class GetAddressByCoordinates extends AutomateAction {
 				sprintf( $url, $location, http_build_query( $params ) ),
 				[
 					'httpversion' => '1.1',
-					'sslverify'   => false,
 				]
 			);
 
@@ -158,7 +157,6 @@ class GetAddressByCoordinates extends AutomateAction {
 				sprintf( 'https://maps.googleapis.com/maps/api/geocode/json?%s', http_build_query( $params ) ),
 				[
 					'httpversion' => '1.1',
-					'sslverify'   => false,
 				]
 			);
 	

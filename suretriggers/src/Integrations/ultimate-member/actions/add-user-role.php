@@ -83,7 +83,19 @@ class AddUserRole extends AutomateAction {
 			);
 			return false;
 		}
-		$user->add_role( $selected_options[ $field['name'] ] );
+		$new_role = $selected_options[ $field['name'] ];
+
+		if ( ! st_is_assignable_user_role( $new_role ) ) {
+			$this->set_error(
+				[
+					'wp_user_id' => $user_id,
+					'msg'        => __( 'Assigning this role is not allowed.', 'suretriggers' ),
+				]
+			);
+			return false;
+		}
+
+		$user->add_role( $new_role );
 
 		return true;
 	}

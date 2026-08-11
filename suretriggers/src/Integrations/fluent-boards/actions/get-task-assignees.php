@@ -15,6 +15,7 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
+use SureTriggers\Integrations\FluentBoards\FluentBoards;
 use SureTriggers\Traits\SingletonLoader;
 
 /**
@@ -85,7 +86,18 @@ class GetTaskAssignees extends AutomateAction {
 			return [ 'error' => 'FluentBoards plugin is not active.' ];
 		}
 
-		$task = FluentBoardsApi( 'tasks' )->find( $task_id );
+		/**
+		 * FluentBoards' Tasks API wrapper no longer proxies arbitrary Eloquent
+		 * methods like find() — it now only exposes explicit, permission-gated
+		 * methods such as getTask(), which checks board-read permission via
+		 * PermissionManager::userHasBoardPermission(), falling back to
+		 * get_current_user_id(). See FluentBoards::maybe_set_acting_user().
+		 */
+		if ( class_exists( '\SureTriggers\Integrations\FluentBoards\FluentBoards' ) ) {
+			FluentBoards::maybe_set_acting_user( $user_id );
+		}
+
+		$task = FluentBoardsApi( 'tasks' )->getTask( $task_id );
 		if ( empty( $task ) ) {
 			return [ 'error' => 'Task not found.' ];
 		}

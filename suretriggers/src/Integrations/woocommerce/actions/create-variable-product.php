@@ -674,7 +674,13 @@ class CreateVariableProduct extends AutomateAction {
 			}
 
 			// Get image data.
-			$response = wp_remote_get( $image_url, [ 'timeout' => 3 ] );
+			$response = wp_safe_remote_get(
+				$image_url,
+				[
+					'timeout'            => 3,
+					'reject_unsafe_urls' => true,
+				]
+			);
 			
 			if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
 				return false;

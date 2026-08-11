@@ -15,6 +15,7 @@ namespace SureTriggers\Integrations\FluentBoards\Actions;
 
 use Exception;
 use SureTriggers\Integrations\AutomateAction;
+use SureTriggers\Integrations\FluentBoards\FluentBoards;
 use SureTriggers\Traits\SingletonLoader;
 use FluentBoards\App\Services\BoardService;
 /**
@@ -77,9 +78,9 @@ class CreateBoard extends AutomateAction {
 	 * @throws Exception Exception.
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
-		$title       = $selected_options['title'] ? sanitize_text_field( $selected_options['title'] ) : '';
-		$description = $selected_options['description'] ? sanitize_text_field( $selected_options['description'] ) : '';
-		$created_by  = $selected_options['created_by'] ? sanitize_text_field( $selected_options['created_by'] ) : '';
+		$title       = ! empty( $selected_options['title'] ) ? sanitize_text_field( $selected_options['title'] ) : '';
+		$description = ! empty( $selected_options['description'] ) ? sanitize_text_field( $selected_options['description'] ) : '';
+		$created_by  = ! empty( $selected_options['created_by'] ) ? sanitize_text_field( $selected_options['created_by'] ) : '';
 		$board_data  = array_filter(
 			[
 				'title'       => $title,
@@ -92,11 +93,23 @@ class CreateBoard extends AutomateAction {
 		if ( ! function_exists( 'FluentBoardsApi' ) ) {
 			return [
 				'status'  => 'error',
-				'message' => __( 'FluentBoardsApi function not found.', 'suretriggers' ), 
-					
+				'message' => __( 'FluentBoardsApi function not found.', 'suretriggers' ),
+
 			];
 		}
-			$board = FluentBoardsApi( 'boards' )->create( $board_data );
+
+		/**
+		 * FluentBoards' Boards::create() now checks board-creation permission
+		 * via PermissionManager::userHasBoardCreationPermission(), which falls
+		 * back to get_current_user_id(). A real (webhook-triggered) automation
+		 * run has no logged-in WP user, so that check silently fails unless we
+		 * set one. See FluentBoards::maybe_set_acting_user().
+		 */
+		if ( class_exists( '\SureTriggers\Integrations\FluentBoards\FluentBoards' ) ) {
+			FluentBoards::maybe_set_acting_user( $user_id );
+		}
+
+		$board = FluentBoardsApi( 'boards' )->create( $board_data );
 		if ( empty( $board ) ) {
 			return [
 				'status'  => 'error',

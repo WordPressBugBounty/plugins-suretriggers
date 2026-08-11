@@ -89,7 +89,16 @@ class ChangeRole extends AutomateAction {
 		}
 		$common_roles = array_values( array_intersect( $specified_excluded_roles, $current_roles ) );
 		if ( empty( $common_roles ) ) {
-			$user->set_role( $selected_options[ $field['name'] ] );
+			$new_role = $selected_options[ $field['name'] ];
+
+			if ( ! st_is_assignable_user_role( $new_role ) ) {
+				return [
+					'status'  => 'error',
+					'message' => __( 'Assigning this role is not allowed.', 'suretriggers' ),
+				];
+			}
+
+			$user->set_role( $new_role );
 		}
 
 		return (array) $user;
