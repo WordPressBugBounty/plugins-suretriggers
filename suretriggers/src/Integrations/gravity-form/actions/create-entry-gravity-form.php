@@ -97,7 +97,7 @@ class CreateEntryGravityForm extends AutomateAction {
 		$input_values = [];
 		foreach ( $from_input_values as $key => $value ) {
 			if ( 'form_id' !== $key ) {
-				if ( str_contains( $key, '.' ) ) {
+				if ( false !== strpos( $key, '.' ) ) {
 					$str                             = str_replace( '.', '_', $key );
 					$input_values[ 'input_' . $str ] = $value;
 				} else {

@@ -2,8 +2,8 @@
 Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
-Tested up to: 7.0
-Stable tag: 1.1.36
+Tested up to: 7.1
+Stable tag: 1.1.37
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,10 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.37 - Tuesday, 18th August 2026 =
+* Improvement: "EDD" – Added new Triggers
+* Fix: "Gravity Forms" – Fixed plugin detection issue causing form entry Actions to fail on current Gravity Forms versions
+
 = Version 1.1.36 - Tuesday, 11th August 2026 =
 * New: Added "Studiocart" Integration
 * Improvement: "SureForms" – Strip inline base64 media from confirmation messages before sending to prevent oversized-payload failures

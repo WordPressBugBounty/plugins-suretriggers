@@ -215,6 +215,40 @@ class SureDashCreateEvent extends AutomateAction {
 		$response_data['status']  = 'success';
 		$response_data['message'] = __( 'Event created successfully.', 'suretriggers' );
 
+		// create_post_for_space() doesn't add the event to the space's 'event_ids' list,
+		// so the Events tab won't show it unless we register it here too.
+		$new_event_id = ! empty( $response_data['id'] ) ? absint( $response_data['id'] ) : 0;
+
+		if ( $new_event_id ) {
+			$event_ids = function_exists( 'sd_get_post_meta' )
+				? sd_get_post_meta( $space_id, 'event_ids', true )
+				: get_post_meta( $space_id, 'event_ids', true );
+
+			if ( ! is_array( $event_ids ) ) {
+				$event_ids = [];
+			}
+
+			if ( ! in_array( (string) $new_event_id, array_map( 'strval', $event_ids ), true ) ) {
+				$old_event_ids = $event_ids;
+				$event_ids[]   = $new_event_id;
+
+				if ( function_exists( 'sd_update_post_meta' ) ) {
+					sd_update_post_meta( $space_id, 'event_ids', $event_ids );
+				} else {
+					update_post_meta( $space_id, 'event_ids', $event_ids );
+				}
+
+				// Mirror the hooks SureDash's update_a_space() save flow fires.
+				do_action(
+					'suredash_space_data_updated',
+					$space_id,
+					[ 'event_ids' => $old_event_ids ],
+					[ 'event_ids' => $event_ids ]
+				);
+				do_action( 'suredash_space_saved', $space_id, [ 'event_ids' => $event_ids ] );
+			}
+		}
+
 		return $response_data;
 	}
 }

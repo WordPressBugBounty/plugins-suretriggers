@@ -12,6 +12,7 @@ use Easy_Digital_Downloads;
 use EDD_Payment;
 use EDD_Customer;
 use EDD_SL_Download;
+use EDD_Subscription;
 use SureTriggers\Controllers\IntegrationsController;
 use SureTriggers\Integrations\Integrations;
 use SureTriggers\Traits\SingletonLoader;
@@ -178,6 +179,42 @@ class EDD extends Integrations {
 		$context['order_tax']             = number_format( $order_detail->tax, 2 );
 		$context['order_total']           = number_format( $order_detail->total, 2 );
 		$context['payment_method']        = $order_detail->gateway;
+
+		return $context;
+	}
+
+	/**
+	 * Get context for EDD Recurring subscription triggers.
+	 *
+	 * @param  EDD_Subscription|object|null $subscription EDD Recurring subscription instance.
+	 * @return array
+	 */
+	public static function get_subscription_context( $subscription ) {
+		if ( ! class_exists( 'EDD_Subscription' ) || ! ( $subscription instanceof EDD_Subscription ) ) {
+			return [];
+		}
+
+		$customer = $subscription->customer;
+
+		$context                      = [];
+		$context['subscription_id']   = $subscription->id;
+		$context['customer_id']       = $subscription->customer_id;
+		$context['customer_email']    = ! empty( $customer ) ? $customer->email : '';
+		$context['customer_name']     = ! empty( $customer ) ? $customer->name : '';
+		$context['user_id']           = ! empty( $customer ) ? $customer->user_id : 0;
+		$context['product_id']        = $subscription->product_id;
+		$context['product_name']      = get_the_title( $subscription->product_id );
+		$context['price_id']          = $subscription->price_id;
+		$context['period']            = $subscription->period;
+		$context['initial_amount']    = $subscription->initial_amount;
+		$context['recurring_amount']  = $subscription->recurring_amount;
+		$context['bill_times']        = $subscription->bill_times;
+		$context['gateway']           = $subscription->gateway;
+		$context['profile_id']        = $subscription->profile_id;
+		$context['parent_payment_id'] = $subscription->parent_payment_id;
+		$context['date_created']      = $subscription->date_created;
+		$context['expiration']        = $subscription->expiration;
+		$context['status']            = $subscription->status;
 
 		return $context;
 	}

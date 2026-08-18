@@ -14,6 +14,7 @@
 namespace SureTriggers\Controllers;
 
 use DOMDocument;
+use EDD_Subscription;
 use FluentCrm\App\Models\CustomContactField;
 use FluentCrm\App\Models\Subscriber;
 use FluentCrm\App\Models\Tag;
@@ -5993,6 +5994,34 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 	}
 
 	/**
+	 * Prepare EDD Recurring subscription status list.
+	 *
+	 * @param array $data Search Params.
+	 * @return array{options: array<int, array{label: string, value: string}>, hasMore: bool}
+	 */
+	public function search_edd_subscription_status_list( $data ) {
+		$options = [];
+
+		if ( function_exists( 'edd_recurring_get_subscription_statuses' ) ) {
+			$subscription_statuses = edd_recurring_get_subscription_statuses();
+
+			if ( ! empty( $subscription_statuses ) ) {
+				foreach ( $subscription_statuses as $key => $label ) {
+					$options[] = [
+						'label' => $label,
+						'value' => $key,
+					];
+				}
+			}
+		}
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
 	 * Get last data for trigger.
 	 *
 	 * @param array $data data.
@@ -6114,7 +6143,55 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				$order_data               = EDD::get_purchase_refund_context( $payments[0] );
 				$context['response_type'] = 'live';
 			}
-		} else {    
+		} elseif ( 'subscription_status_changed' === $term || 'subscription_cancelled' === $term ) {
+			if ( ! class_exists( 'EDD_Subscription' ) ) {
+				return $context;
+			}
+
+			$subscription_id = $wpdb->get_var( "SELECT id FROM {$wpdb->prefix}edd_subscriptions ORDER BY id DESC LIMIT 1" );
+			$subscription    = ! empty( $subscription_id ) ? new EDD_Subscription( $subscription_id ) : null;
+
+			if ( ! empty( $subscription ) && ! empty( $subscription->id ) ) {
+				$subscription_data = EDD::get_subscription_context( $subscription );
+
+				if ( 'subscription_status_changed' === $term ) {
+					$subscription_data['from_status'] = 'pending';
+					$subscription_data['to_status']   = $subscription->status;
+				}
+
+				$context['pluggable_data'] = $subscription_data;
+				$context['response_type']  = 'live';
+			} else {
+				$subscription_data = [
+					'subscription_id'   => 1,
+					'customer_id'       => 5,
+					'customer_email'    => 'sample@example.com',
+					'customer_name'     => 'Sure Test',
+					'user_id'           => 1,
+					'product_id'        => 101,
+					'product_name'      => 'Sample Subscription Product',
+					'price_id'          => null,
+					'period'            => 'month',
+					'initial_amount'    => '9.99',
+					'recurring_amount'  => '9.99',
+					'bill_times'        => 0,
+					'gateway'           => 'manual',
+					'profile_id'        => 'sample_profile_id',
+					'parent_payment_id' => 187,
+					'date_created'      => current_time( 'mysql' ),
+					'expiration'        => current_time( 'mysql' ),
+					'status'            => 'active',
+				];
+
+				if ( 'subscription_status_changed' === $term ) {
+					$subscription_data['from_status'] = 'pending';
+					$subscription_data['to_status']   = 'active';
+				}
+
+				$context['pluggable_data'] = $subscription_data;
+				$context['response_type']  = 'sample';
+			}
+		} else {
 			$status = isset( $data['post_type'] ) ? $data['post_type'] : '';
 			if ( ! empty( $status ) ) {
 				if ( $download_id > 0 ) {

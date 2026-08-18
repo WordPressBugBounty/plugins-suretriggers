@@ -46,7 +46,7 @@ class GravityForms extends Integrations {
 	 * @return bool
 	 */
 	public function is_plugin_installed() {
-		return class_exists( 'RGForms' );
+		return class_exists( 'GFForms' );
 	}
 
 }

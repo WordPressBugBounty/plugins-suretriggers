@@ -1,3 +1,7 @@
+Version 1.1.37 - Tuesday, 18th August 2026
+- Improvement: "EDD" – Added new Triggers
+- Fix: "Gravity Forms" – Fixed plugin detection issue causing form entry Actions to fail on current Gravity Forms versions
+
 Version 1.1.36 - Tuesday, 11th August 2026
 - New: Added "Studiocart" Integration
 - Improvement: "SureForms" – Strip inline base64 media from confirmation messages before sending to prevent oversized-payload failures
