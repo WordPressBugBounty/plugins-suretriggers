@@ -305,6 +305,48 @@ class LatePoint extends Integrations {
 	}
 
 	/**
+	 * Find booking by customer email.
+	 *
+	 * @param array $selected_options selected options.
+	 * @return array
+	 * @throws Exception Exception.
+	 */
+	public static function find_booking_by_customer_email( $selected_options ) {
+
+		if ( ! class_exists( 'OsBookingModel' ) || ! class_exists( 'OsCustomerModel' ) ) {
+			throw new Exception( 'LatePoint plugin not installed.' );
+		}
+
+		$email = isset( $selected_options['email'] ) ? trim( $selected_options['email'] ) : '';
+
+		if ( empty( $email ) ) {
+			throw new Exception( 'Customer Email Address not provided.' );
+		}
+
+		$booking_data          = [];
+		$booking_data['found'] = 'no';
+
+		$customer_model = new OsCustomerModel();
+		$customer       = $customer_model->where( [ 'email' => $email ] )->set_limit( 1 )->get_results( ARRAY_A );
+
+		if ( empty( $customer['id'] ) ) {
+			return $booking_data;
+		}
+
+		$booking_model = new OsBookingModel();
+		$booking       = $booking_model->where( [ 'customer_id' => $customer['id'] ] )->order_by( 'id DESC' )->set_limit( 1 )->get_results( ARRAY_A );
+
+		if ( ! empty( $booking['id'] ) ) {
+			$booking = new OsBookingModel( $booking['id'] );
+
+			$booking_data          = $booking->get_data_vars();
+			$booking_data['found'] = 'yes';
+		}
+
+		return $booking_data;
+	}
+
+	/**
 	 * Is Plugin depended on plugin is installed or not.
 	 *
 	 * @return bool

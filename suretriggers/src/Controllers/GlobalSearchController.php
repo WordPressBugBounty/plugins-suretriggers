@@ -8277,13 +8277,32 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		$post_type = $data['post_type'];
 		$meta_key  = '_is_complete';
 		$trigger   = $data['search_term'];
-		$post_id   = $data['filter']['group_id']['value'];
+		$post_id   = isset( $data['filter']['group_id']['value'] ) ? $data['filter']['group_id']['value'] : 0;
 
 		if ( 'suremember_updated_group' === $trigger ) {
 			if ( -1 === $post_id ) {
 				$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  {$wpdb->prefix}posts as posts WHERE posts.post_type=%s", $post_type ) );
 			} else {
 				$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  {$wpdb->prefix}posts as posts WHERE posts.ID=%s AND posts.post_type=%s", $post_id, $post_type ) );
+			}
+		} elseif ( 'suremember_team_member_added_to_access_group' === $trigger ) {
+			$sub_table  = $wpdb->prefix . 'suremembers_sub_accounts';
+			$corp_table = $wpdb->prefix . 'suremembers_corporate_accounts';
+			if ( -1 === $post_id ) {
+				$result = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT sub.*, corp.access_group_id, corp.user_id AS owner_id FROM {$sub_table} AS sub INNER JOIN {$corp_table} AS corp ON corp.id = sub.corporate_account_id WHERE sub.status = %s ORDER BY sub.id DESC LIMIT 1", //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+						'active'
+					)
+				);
+			} else {
+				$result = $wpdb->get_results(
+					$wpdb->prepare(
+						"SELECT sub.*, corp.access_group_id, corp.user_id AS owner_id FROM {$sub_table} AS sub INNER JOIN {$corp_table} AS corp ON corp.id = sub.corporate_account_id WHERE sub.status = %s AND corp.access_group_id = %d ORDER BY sub.id DESC LIMIT 1", //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+						'active',
+						$post_id
+					)
+				);
 			}
 		} else {
 			$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM  {$wpdb->prefix}usermeta as usermeta WHERE usermeta.meta_key = %s", 'suremembers_user_access_group_' . $post_id ) );
@@ -8332,6 +8351,21 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 							$response['pluggable_data'] = $context;
 							$response['response_type']  = 'live';
 						}
+					}
+					break;
+				case 'suremember_team_member_added_to_access_group':
+					foreach ( $result as $res ) {
+						$context               = WordPress::get_user_context( $res->user_id );
+						$context['account_id'] = (int) $res->corporate_account_id;
+						$context['added_via']  = $res->added_via;
+						$context['group_id']   = (int) $res->access_group_id;
+						$context['group']      = WordPress::get_post_context( $res->access_group_id );
+						unset( $context['group']['ID'] );
+						if ( ! empty( $res->owner_id ) ) {
+							$context['team_owner'] = WordPress::get_user_context( $res->owner_id );
+						}
+						$response['pluggable_data'] = $context;
+						$response['response_type']  = 'live';
 					}
 					break;
 				default:
@@ -10728,11 +10762,12 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				];
 			}
 
-			$context['pluggable_data'] = array_merge( $result, $fields_arr, $event, $customer_result, $coupon_result, $tags, $event_period_data, $payment_data );
-			$context['response_type']  = 'live';
+			$context['pluggable_data']               = array_merge( $result, $fields_arr, $event, $customer_result, $coupon_result, $tags, $event_period_data, $payment_data );
+			$context['pluggable_data']['event_name'] = isset( $event['name'] ) ? $event['name'] : '';
+			$context['response_type']                = 'live';
 		} else {
 
-			$context = json_decode( '{"response_type": "sample","pluggable_data": {"id": "1","appointmentId": null,"customerId": "1","status": "visible","price": "10","persons": "1","couponId": null,"token": "6485b07ce9","info": "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"phone\":\"+213551223123\",\"locale\":\"en_US\",\"timeZone\":\"Asia\\/Kolkata\",\"urlParams\":null}","utcOffset": null,"aggregatedPrice": "1","packageCustomerServiceId": null,"duration": null,"created": "2023-02-02 06:35:18","actionsCompleted": "1","Do You Know Automation?": "Yes","When Are You Coming?": "2023-04-20","Upload Something": "","Tell Us About You!": "Hey there!","customerBookingId": "105","eventPeriodId": "5","parentId": null,"name": "Music Event","bookingOpens": null,"bookingCloses": "2023-02-09 08:00:00","bookingOpensRec": "same","bookingClosesRec": "same","ticketRangeRec": "calculate","recurringCycle": null,"recurringOrder": null,"recurringInterval": null,"recurringMonthly": null,"monthlyDate": null,"monthlyOnRepeat": null,"monthlyOnDay": null,"recurringUntil": null,"maxCapacity": "12","maxCustomCapacity": null,"maxExtraPeople": null,"locationId": null,"customLocation": "Kolkata","description": null,"color": "#1788FB","show": "1","notifyParticipants": "1","settings": "{\"payments\":{\"onSite\":true,\"payPal\":{\"enabled\":false},\"stripe\":{\"enabled\":false},\"mollie\":{\"enabled\":false},\"razorpay\":{\"enabled\":false}},\"general\":{\"minimumTimeRequirementPriorToCanceling\":null,\"redirectUrlAfterAppointment\":null},\"zoom\":{\"enabled\":false},\"lessonSpace\":{\"enabled\":false}}","zoomUserId": null,"bringingAnyone": "1","bookMultipleTimes": "1","translations": "{\"defaultLanguage\":\"en_US\"}","depositPayment": "disabled","depositPerPerson": "1","fullPayment": "0","deposit": "0","customPricing": "0","organizerId": "2","closeAfterMin": null,"closeAfterMinBookings": "0","type": "customer","externalId": "91","firstName": "John","lastName": "Doe","email": "johnd@gmail.com","birthday": null,"phone": "+213551223123","gender": null,"note": null,"pictureFullPath": null,"pictureThumbPath": null,"password": null,"usedTokens": null,"countryPhoneIso": "dz","timeZone": null,"periodStart": "2023-04-20 10:00:00","periodEnd": "2023-04-20 12:00:00","amountPaid": "10"}}', true );
+			$context = json_decode( '{"response_type": "sample","pluggable_data": {"id": "1","appointmentId": null,"customerId": "1","status": "visible","price": "10","persons": "1","couponId": null,"token": "6485b07ce9","info": "{\"firstName\":\"John\",\"lastName\":\"Doe\",\"phone\":\"+213551223123\",\"locale\":\"en_US\",\"timeZone\":\"Asia\\/Kolkata\",\"urlParams\":null}","utcOffset": null,"aggregatedPrice": "1","packageCustomerServiceId": null,"duration": null,"created": "2023-02-02 06:35:18","actionsCompleted": "1","Do You Know Automation?": "Yes","When Are You Coming?": "2023-04-20","Upload Something": "","Tell Us About You!": "Hey there!","customerBookingId": "105","eventPeriodId": "5","parentId": null,"name": "Music Event","event_name": "Music Event","bookingOpens": null,"bookingCloses": "2023-02-09 08:00:00","bookingOpensRec": "same","bookingClosesRec": "same","ticketRangeRec": "calculate","recurringCycle": null,"recurringOrder": null,"recurringInterval": null,"recurringMonthly": null,"monthlyDate": null,"monthlyOnRepeat": null,"monthlyOnDay": null,"recurringUntil": null,"maxCapacity": "12","maxCustomCapacity": null,"maxExtraPeople": null,"locationId": null,"customLocation": "Kolkata","description": null,"color": "#1788FB","show": "1","notifyParticipants": "1","settings": "{\"payments\":{\"onSite\":true,\"payPal\":{\"enabled\":false},\"stripe\":{\"enabled\":false},\"mollie\":{\"enabled\":false},\"razorpay\":{\"enabled\":false}},\"general\":{\"minimumTimeRequirementPriorToCanceling\":null,\"redirectUrlAfterAppointment\":null},\"zoom\":{\"enabled\":false},\"lessonSpace\":{\"enabled\":false}}","zoomUserId": null,"bringingAnyone": "1","bookMultipleTimes": "1","translations": "{\"defaultLanguage\":\"en_US\"}","depositPayment": "disabled","depositPerPerson": "1","fullPayment": "0","deposit": "0","customPricing": "0","organizerId": "2","closeAfterMin": null,"closeAfterMinBookings": "0","type": "customer","externalId": "91","firstName": "John","lastName": "Doe","email": "johnd@gmail.com","birthday": null,"phone": "+213551223123","gender": null,"note": null,"pictureFullPath": null,"pictureThumbPath": null,"password": null,"usedTokens": null,"countryPhoneIso": "dz","timeZone": null,"periodStart": "2023-04-20 10:00:00","periodEnd": "2023-04-20 12:00:00","amountPaid": "10"}}', true );
 		}
 
 		return $context;
@@ -26615,6 +26650,67 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'options' => $options,
 			'hasMore' => false,
 		];
+	}
+
+	/**
+	 * Prepare mailerpress show custom fields toggle options.
+	 *
+	 * @param array $data Search Params.
+	 *
+	 * @return array
+	 */
+	public function search_mailerpress_fetch_custom_fields( $data ) {
+
+		$options = [
+			[
+				'label' => __( 'Yes', 'suretriggers' ),
+				'value' => 'true',
+			],
+			[
+				'label' => __( 'No', 'suretriggers' ),
+				'value' => 'false',
+			],
+		];
+
+		return [
+			'options' => $options,
+			'hasMore' => false,
+		];
+	}
+
+	/**
+	 * Get MailerPress custom field definitions.
+	 *
+	 * @param array $data data.
+	 *
+	 * @return array
+	 */
+	public function search_mailerpress_custom_fields( $data ) {
+		global $wpdb;
+
+		$context    = [];
+		$table_name = $wpdb->prefix . 'mailerpress_cpt_definitions';
+
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) !== $table_name ) {
+			$context['fields'] = [];
+			return $context;
+		}
+
+		$definitions = $wpdb->get_results( "SELECT field_key, label, type FROM {$wpdb->prefix}mailerpress_cpt_definitions ORDER BY id ASC" );
+		$fields      = [];
+
+		if ( ! empty( $definitions ) ) {
+			foreach ( $definitions as $definition ) {
+				$fields[] = [
+					'slug'  => $definition->field_key,
+					'label' => $definition->label,
+					'type'  => $definition->type,
+				];
+			}
+		}
+
+		$context['fields'] = $fields;
+		return $context;
 	}
 
 	/**

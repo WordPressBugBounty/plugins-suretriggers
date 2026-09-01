@@ -127,7 +127,7 @@ class Utilities extends Model {
 
 		$model->table = $model->db->posts;
 
-		$sql_query = "SELECT `ID`, `post_content`, `post_title` FROM {$model->table} WHERE post_status = 'publish' AND post_type = 'page' AND post_content LIKE '%%et_pb_contact_form%%'";
+		$sql_query = "SELECT `ID`, `post_content`, `post_title` FROM {$model->table} WHERE post_status = 'publish' AND post_content LIKE '%%et_pb_contact_form%%'";
 
 		return $model->db->get_results(
 			$model->db->prepare( $sql_query ),

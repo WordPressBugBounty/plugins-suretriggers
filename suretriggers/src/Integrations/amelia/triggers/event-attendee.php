@@ -212,6 +212,7 @@ if ( ! class_exists( 'EventAttendee' ) ) :
 
 			$context                       = array_merge( $result, $fields_arr, $event, $customer_result, $coupon_result, $tags, $event_period_data, $payment_data );
 			$context['amelia_events_list'] = $args['event']['id'];
+			$context['event_name']         = isset( $event['name'] ) ? $event['name'] : '';
 
 			AutomationController::sure_trigger_handle_trigger(
 				[

@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.1
-Stable tag: 1.1.37
+Stable tag: 1.1.38
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,11 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.38 - Tuesday, 1st September 2026 =
+* Improvement: "MailerPress" – Added custom fields support to "Create/Update Contact" Action
+* Improvement: "LatePoint" – Added new "Find Booking By Customer Email" Action
+* Improvement: "SureMembers" – Added new "Team Member Added to Access Group" Trigger
+
 = Version 1.1.37 - Tuesday, 18th August 2026 =
 * Improvement: "EDD" – Added new Triggers
 * Fix: "Gravity Forms" – Fixed plugin detection issue causing form entry Actions to fail on current Gravity Forms versions

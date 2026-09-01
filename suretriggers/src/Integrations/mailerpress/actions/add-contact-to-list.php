@@ -362,15 +362,115 @@ class AddContactToList extends AutomateAction {
 				}
 			}
 
+			// Save custom fields.
+			$custom_fields_added   = [];
+			$custom_fields_updated = [];
+
+			if ( isset( $selected_options['show_custom_fields'] )
+				&& in_array( $selected_options['show_custom_fields'], [ true, 1, 'true', '1' ], true )
+				&& ! empty( $selected_options['field_row'] ) && is_array( $selected_options['field_row'] ) ) {
+
+				$custom_fields_table = $wpdb->prefix . 'mailerpress_contact_custom_fields';
+
+				foreach ( $selected_options['field_row'] as $field_row ) {
+					if ( ! is_array( $field_row ) || empty( $field_row ) ) {
+						continue;
+					}
+
+					$field_key   = isset( $field_row['field_column_name'] ) && is_string( $field_row['field_column_name'] ) ? sanitize_key( $field_row['field_column_name'] ) : '';
+					$field_value = null;
+
+					// The value input's name is swapped at runtime to the actual field key,
+					// so any key that isn't one of the boilerplate repeater columns holds the value.
+					foreach ( $field_row as $row_key => $row_value ) {
+						if ( is_string( $row_key ) && false === strpos( $row_key, 'field_column' ) ) {
+							$field_value = $row_value;
+							if ( '' === $field_key ) {
+								$field_key = sanitize_key( $row_key );
+							}
+							break;
+						}
+					}
+
+					if ( null === $field_value && isset( $field_row['field_column_value'] ) ) {
+						$field_value = $field_row['field_column_value'];
+					}
+
+					if ( '' === $field_key || null === $field_value || '' === $field_value || ! is_scalar( $field_value ) ) {
+						continue;
+					}
+
+					// Use MailerPress's own type-aware sanitizer (normalizes checkboxes to 0/1,
+					// reformats dates, validates select values against defined options, etc.)
+					// when available, falling back to plain text sanitization otherwise.
+					if ( class_exists( '\MailerPress\Models\CustomFields' ) ) {
+						$sanitized_value = \MailerPress\Models\CustomFields::sanitizeValue( $field_key, $field_value );
+
+						if ( null === $sanitized_value || ! is_scalar( $sanitized_value ) ) {
+							continue;
+						}
+
+						$field_value = (string) $sanitized_value;
+					} else {
+						$field_value = sanitize_text_field( (string) $field_value );
+
+						if ( '' === $field_value ) {
+							continue;
+						}
+					}
+
+					$existing_field = $wpdb->get_row(
+						$wpdb->prepare(
+							"SELECT field_id FROM {$wpdb->prefix}mailerpress_contact_custom_fields WHERE contact_id = %d AND field_key = %s",
+							$contact_id,
+							$field_key
+						)
+					);
+
+					if ( $existing_field ) {
+						$wpdb->update(
+							$custom_fields_table,
+							[
+								'field_value' => $field_value,
+								'updated_at'  => current_time( 'mysql' ),
+							],
+							[ 'field_id' => $existing_field->field_id ],
+							[ '%s', '%s' ],
+							[ '%d' ]
+						);
+
+						$custom_fields_updated[ $field_key ] = $field_value;
+						do_action( 'mailerpress_contact_custom_field_updated', $contact_id, $field_key, $field_value );
+					} else {
+						$wpdb->insert(
+							$custom_fields_table,
+							[
+								'contact_id'  => $contact_id,
+								'field_key'   => $field_key,
+								'field_value' => $field_value,
+								'created_at'  => current_time( 'mysql' ),
+								'updated_at'  => current_time( 'mysql' ),
+							],
+							[ '%d', '%s', '%s', '%s', '%s' ]
+						);
+
+						$custom_fields_added[ $field_key ] = $field_value;
+						do_action( 'mailerpress_contact_custom_field_added', $contact_id, $field_key, $field_value );
+					}
+				}
+			}
+
 			return [
-				'contact_id'          => $contact_id,
-				'email'               => $email,
-				'first_name'          => $first_name,
-				'last_name'           => $last_name,
-				'subscription_status' => $subscription_status,
-				'lists_added'         => $lists,
-				'tags_added'          => $tags,
-				'success'             => true,
+				'contact_id'            => $contact_id,
+				'email'                 => $email,
+				'first_name'            => $first_name,
+				'last_name'             => $last_name,
+				'subscription_status'   => $subscription_status,
+				'lists_added'           => $lists,
+				'tags_added'            => $tags,
+				'custom_fields_added'   => $custom_fields_added,
+				'custom_fields_updated' => $custom_fields_updated,
+				'success'               => true,
 			];
 
 		} catch ( Exception $e ) {
