@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.1
-Stable tag: 1.1.38
+Stable tag: 1.1.39
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,11 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.39 - Thursday, 10th September 2026 =
+* New: Added "WholesaleX" Integration
+* Improvement: "FluentCommunity" – Added permalink field to "Feed Created"/"Feed Updated" Trigger sample data
+* Fix: "LatePoint" – Fixed a crash when updating a booking's status due to unnecessary price recalculation
+
 = Version 1.1.38 - Tuesday, 1st September 2026 =
 * Improvement: "MailerPress" – Added custom fields support to "Create/Update Contact" Action
 * Improvement: "LatePoint" – Added new "Find Booking By Customer Email" Action

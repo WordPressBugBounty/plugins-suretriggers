@@ -200,41 +200,78 @@ class LatePoint extends Integrations {
 			}
 		}
 
-		$order                     = new OsOrderModel();
-		$order->status             = isset( $selected_options['status'] ) ? $selected_options['status'] : OsOrdersHelper::get_default_order_status();
-		$order->fulfillment_status = $order->get_default_fulfillment_status();
-		$order->customer_comment   = isset( $selected_options['customer_comment'] ) ? $selected_options['customer_comment'] : '';
-		$order->customer_id        = $customer->id;
-		$order->payment_status     = 'not_paid';
-
-		// Save the order and check for errors.
-		if ( ! $order->save() ) {
-			$errors    = $order->get_error_messages();
-			$error_msg = isset( $errors[0] ) ? $errors[0] : 'Order could not be created.';
-			throw new Exception( $error_msg );
+		// On update, reuse the booking's existing order/order item instead of
+		// always creating a new one, and skip LatePoint's price recalculation
+		// entirely when nothing pricing-related actually changed (e.g. a
+		// status-only update). Some LatePoint pricing add-ons (e.g. base-fee
+		// pricing) can fatal during recalculation for bookings that don't
+		// carry the pricing data they expect, so we should only pay that
+		// cost when the update could actually affect price.
+		$existing_order = null;
+		if ( $is_update && ! empty( $booking->order_item_id ) ) {
+			$existing_order_item = new OsOrderItemModel( $booking->order_item_id );
+			if ( ! empty( $existing_order_item->id ) && ! empty( $existing_order_item->order_id ) ) {
+				$existing_order = new OsOrderModel( $existing_order_item->order_id );
+				if ( empty( $existing_order->id ) ) {
+					$existing_order = null;
+				}
+			}
 		}
 
-		$order_item_model           = new OsOrderItemModel();
-		$order_item_model->variant  = 'booking';
-		$order_item_model->order_id = $order->id;
+		$requires_price_recalculation = ! $is_update || ! $existing_order
+			|| (string) $old_booking->service_id !== (string) $booking->service_id
+			|| (string) $old_booking->start_date !== (string) $booking->start_date
+			|| (string) $old_booking->start_time !== (string) $booking->start_time
+			|| (string) $old_booking->end_time !== (string) $booking->end_time
+			|| (int) $old_booking->total_attendees !== (int) $booking->total_attendees;
 
-		if ( $order_item_model->save() ) {
-			$booking->customer_id   = $order->customer_id;
-			$booking->order_item_id = $order_item_model->id;
-			if ( $booking->save() ) {
-				$order_item_model->item_data = $booking->generate_item_data();
-				$order_item_model->recalculate_prices();
-				$order->total    = $order_item_model->total;
-				$order->subtotal = $order_item_model->subtotal;
-				$order->save();
-				$order_item_model->save();
+		if ( $requires_price_recalculation ) {
+			$order                     = new OsOrderModel();
+			$order->status             = isset( $selected_options['status'] ) ? $selected_options['status'] : OsOrdersHelper::get_default_order_status();
+			$order->fulfillment_status = $order->get_default_fulfillment_status();
+			$order->customer_comment   = isset( $selected_options['customer_comment'] ) ? $selected_options['customer_comment'] : '';
+			$order->customer_id        = $customer->id;
+			$order->payment_status     = 'not_paid';
+
+			// Save the order and check for errors.
+			if ( ! $order->save() ) {
+				$errors    = $order->get_error_messages();
+				$error_msg = isset( $errors[0] ) ? $errors[0] : 'Order could not be created.';
+				throw new Exception( $error_msg );
+			}
+
+			$order_item_model           = new OsOrderItemModel();
+			$order_item_model->variant  = 'booking';
+			$order_item_model->order_id = $order->id;
+
+			if ( $order_item_model->save() ) {
+				$booking->customer_id   = $order->customer_id;
+				$booking->order_item_id = $order_item_model->id;
+				if ( $booking->save() ) {
+					$order_item_model->item_data = $booking->generate_item_data();
+					$order_item_model->recalculate_prices();
+					$order->total    = $order_item_model->total;
+					$order->subtotal = $order_item_model->subtotal;
+					$order->save();
+					$order_item_model->save();
+				}
+			} else {
+				$errors    = $order_item_model->get_error_messages();
+				$error_msg = isset( $errors[0] ) ? $errors[0] : 'Order Item could not be created.';
+				throw new Exception( $error_msg );
 			}
 		} else {
-			$errors    = $order_item_model->get_error_messages();
-			$error_msg = isset( $errors[0] ) ? $errors[0] : 'Order Item could not be created.';
-			throw new Exception( $error_msg );
+			// Status-only (or similarly non-pricing) update: keep the booking
+			// on its existing order and just sync the order status, without
+			// touching pricing.
+			$order                = $existing_order;
+			$booking->customer_id = $customer->id;
+			if ( isset( $selected_options['status'] ) ) {
+				$order->status = $selected_options['status'];
+				$order->save();
+			}
 		}
-		
+
 		$booking->set_utc_datetimes();
 
 		if ( ! $booking->save() ) {

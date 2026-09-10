@@ -1971,7 +1971,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		}
 
 		foreach ( (array) $form_posts as $form_post ) {
-			$pattern_regex = '/\[et_pb_contact_form(.*?)](.+?)\[\/et_pb_contact_form]/';
+			$pattern_regex = '/\[et_pb_contact_form(.*?)](.+?)\[\/et_pb_contact_form]/s';
 			preg_match_all( $pattern_regex, $form_post['post_content'], $forms, PREG_SET_ORDER );
 			if ( empty( $forms ) ) {
 				continue;
@@ -2650,7 +2650,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		}
 		$fields = [];
 		foreach ( (array) $form_posts as $form_post ) {
-			$pattern_regex = '/\[et_pb_contact_form(.*?)](.+?)\[\/et_pb_contact_form]/';
+			$pattern_regex = '/\[et_pb_contact_form(.*?)](.+?)\[\/et_pb_contact_form]/s';
 			preg_match_all( $pattern_regex, $form_post['post_content'], $forms, PREG_SET_ORDER );
 			if ( empty( $forms ) ) {
 				continue;
@@ -23504,7 +23504,21 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			$result         = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fcom_posts ORDER BY id DESC LIMIT 1", ARRAY_A );
 			$profile_result = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}fcom_xprofile ORDER BY id DESC LIMIT 1", ARRAY_A );
 			$user_result    = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}users ORDER BY id DESC LIMIT 1", ARRAY_A );
-			$feed_data      = [
+			$feed_permalink = '';
+			if ( ! empty( $result ) && class_exists( '\FluentCommunity\App\Services\Helper' ) ) {
+				$is_lesson      = isset( $result['type'] ) && 'course_lesson' === $result['type'];
+				$content_prefix = $is_lesson ? 'lessons' : 'post';
+				$section_prefix = $is_lesson ? 'course' : 'space';
+				$url_path       = $content_prefix . '/' . $result['slug'];
+				if ( ! empty( $result['space_id'] ) && ! empty( $space_result['slug'] ) ) {
+					$url_path = $section_prefix . '/' . $space_result['slug'] . '/' . $content_prefix . '/' . $result['slug'];
+					if ( $is_lesson ) {
+						$url_path .= '/view';
+					}
+				}
+				$feed_permalink = \FluentCommunity\App\Services\Helper::baseUrl( $url_path );
+			}
+			$feed_data = [
 				'feed' => [
 					'id'               => $result['id'],
 					'user_id'          => $result['user_id'],
@@ -23528,6 +23542,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 					'scheduledat'      => $result['scheduled_at'],
 					'created_at'       => $result['created_at'],
 					'updated_at'       => $result['updated_at'],
+					'permalink'        => $feed_permalink,
 					'space'            => $space_result,
 					'xprofile'         => [
 						'id'                => $profile_result['id'],

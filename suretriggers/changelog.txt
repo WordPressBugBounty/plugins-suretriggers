@@ -1,3 +1,8 @@
+Version 1.1.39 - Thursday, 10th September 2026
+- New: Added "WholesaleX" Integration
+- Improvement: "FluentCommunity" – Added permalink field to "Feed Created"/"Feed Updated" Trigger sample data
+- Fix: "LatePoint" – Fixed a crash when updating a booking's status due to unnecessary price recalculation
+
 Version 1.1.38 - Tuesday, 1st September 2026
 - Improvement: "MailerPress" – Added custom fields support to "Create/Update Contact" Action
 - Improvement: "LatePoint" – Added new "Find Booking By Customer Email" Action
