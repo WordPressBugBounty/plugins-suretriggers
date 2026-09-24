@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.1
-Stable tag: 1.1.39
+Stable tag: 1.1.40
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,10 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.40 - Thursday, 24th September 2026 =
+* Improvement: "Divi Builder" – Added compatibility with Divi 5 block-based Contact Form modules
+* Fix: "FluentCRM" – Fixed "Send Email By Campaign" Action leaving the campaign stuck in Draft instead of sending it
+
 = Version 1.1.39 - Thursday, 10th September 2026 =
 * New: Added "WholesaleX" Integration
 * Improvement: "FluentCommunity" – Added permalink field to "Feed Created"/"Feed Updated" Trigger sample data

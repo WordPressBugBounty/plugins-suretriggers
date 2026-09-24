@@ -1,3 +1,7 @@
+Version 1.1.40 - Thursday, 24th September 2026
+- Improvement: "Divi Builder" – Added compatibility with Divi 5 block-based Contact Form modules
+- Fix: "FluentCRM" – Fixed "Send Email By Campaign" Action leaving the campaign stuck in Draft instead of sending it
+
 Version 1.1.39 - Thursday, 10th September 2026
 - New: Added "WholesaleX" Integration
 - Improvement: "FluentCommunity" – Added permalink field to "Feed Created"/"Feed Updated" Trigger sample data

@@ -207,6 +207,9 @@ class SendEmailByCampaign extends AutomateAction {
 		if ( ! empty( $response_context ) && is_array( $response_context ) && isset( $response_context['campaign'] ) ) {
 			$response_context = $response_context['campaign'];
 		}
+		// Track whether this is a pre-existing campaign, so we know below whether it's
+		// safe to reset its recipients/status or whether that would resend a live campaign.
+		$campaign_existed = ( 404 !== $response_code );
 		// Campaign not exists, so create new one.
 		if ( 404 === $response_code ) {
 			$args = [
@@ -229,6 +232,15 @@ class SendEmailByCampaign extends AutomateAction {
 			}
 		} elseif ( 200 !== $response_code ) {
 			return $response_context;
+		}
+		// Refuse to touch a pre-existing campaign that's already past draft (sent/processing/
+		// scheduled) — FluentCRM's draft-recipients endpoint would otherwise silently reset it
+		// back to draft and wipe its sent-email history, causing a duplicate send on re-run.
+		if ( $campaign_existed && is_array( $response_context ) && isset( $response_context['status'] ) && 'draft' !== $response_context['status'] ) {
+			return [
+				'status'  => 'error',
+				'message' => __( 'This campaign is no longer in draft status (it may have already been sent or scheduled) and cannot be modified.', 'suretriggers' ),
+			];
 		}
 		// Prepare email body.
 		$args = array_merge(
@@ -310,6 +322,13 @@ class SendEmailByCampaign extends AutomateAction {
 				'body'      => $args['body'],
 			];
 		}
+		$campaign_id = '';
+		if ( is_array( $settings_context ) && isset( $settings_context['campaign'] ) && is_array( $settings_context['campaign'] ) && isset( $settings_context['campaign']['id'] ) ) {
+			$raw_campaign_id = $settings_context['campaign']['id'];
+			if ( is_string( $raw_campaign_id ) || is_numeric( $raw_campaign_id ) ) {
+				$campaign_id = (string) $raw_campaign_id;
+			}
+		}
 		$contact_body_data = [
 			'subscribers'    => $tags_lists,
 			'sending_filter' => 'list_tag',
@@ -329,8 +348,28 @@ class SendEmailByCampaign extends AutomateAction {
 			if ( is_array( $contacts_context ) && 0 == $contacts_context['count'] ) {
 				return [
 					'status'  => 'error',
-					'message' => __( 'No contacts found based on your selection!!', 'suretriggers' ), 
-					
+					'message' => __( 'No contacts found based on your selection!!', 'suretriggers' ),
+
+				];
+			}
+			// Persist the recipients selection on the campaign so FluentCRM's schedule
+			// endpoint has a recipients_count to check; without this call the campaign
+			// remains in Draft status and scheduling is rejected as "no recipients".
+			$draft_recipients_request = wp_remote_post(
+				$selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns/' . $campaign_id . '/draft-recipients',
+				[
+					'headers'   => $header_data,
+					'sslverify' => false,
+					'body'      => $contact_body,
+				]
+			);
+			$draft_recipients_code    = wp_remote_retrieve_response_code( $draft_recipients_request );
+			$draft_recipients_body    = wp_remote_retrieve_body( $draft_recipients_request );
+			$draft_recipients_context = json_decode( $draft_recipients_body, true );
+			if ( 200 !== $draft_recipients_code ) {
+				return [
+					'status'  => 'error',
+					'message' => is_array( $draft_recipients_context ) && isset( $draft_recipients_context['message'] ) ? $draft_recipients_context['message'] : __( 'Failed to set campaign recipients.', 'suretriggers' ),
 				];
 			}
 		}
@@ -340,13 +379,35 @@ class SendEmailByCampaign extends AutomateAction {
 		 *
 		 * @phpstan-ignore-next-line
 		 */
-		$final_request       = wp_remote_post( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns/' . $settings_context['campaign']['id'] . '/schedule', $args );
+		$final_request       = wp_remote_post( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns/' . $campaign_id . '/schedule', $args );
+		$final_response_code = wp_remote_retrieve_response_code( $final_request );
 		$final_response_body = wp_remote_retrieve_body( $final_request );
 		$final_context       = json_decode( $final_response_body, true );
 		if ( is_wp_error( $final_request ) ) {
-			return $final_request->errors;
+			// Keep the original WP_Error errors shape intact (for anything already reading it)
+			// and additionally flag 'status' so failures are no longer reported as a success.
+			$error_result           = $final_request->errors;
+			$error_result['status'] = 'error';
+			return $error_result;
 		}
-		return $final_context;
+		if ( 200 !== $final_response_code ) {
+			// Preserve whatever body FluentCRM returned (e.g. its own 'message') and just
+			// flag it as an error instead of replacing the payload.
+			$error_result = is_array( $final_context ) ? $final_context : [];
+			if ( ! isset( $error_result['message'] ) ) {
+				$error_result['message'] = __( 'Failed to send campaign.', 'suretriggers' );
+			}
+			$error_result['status'] = 'error';
+			return $error_result;
+		}
+		// Preserve the original success payload (campaign, message, current_timestamp, …) as-is
+		// and only add 'status'/'campaign_id' on top, so existing field mappings keep working.
+		$success_result           = is_array( $final_context ) ? $final_context : [];
+		$success_result['status'] = 'success';
+		if ( ! isset( $success_result['campaign_id'] ) ) {
+			$success_result['campaign_id'] = $campaign_id;
+		}
+		return $success_result;
 	}
 
 }

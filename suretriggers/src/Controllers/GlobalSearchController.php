@@ -1973,11 +1973,6 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		foreach ( (array) $form_posts as $form_post ) {
 			$pattern_regex = '/\[et_pb_contact_form(.*?)](.+?)\[\/et_pb_contact_form]/s';
 			preg_match_all( $pattern_regex, $form_post['post_content'], $forms, PREG_SET_ORDER );
-			if ( empty( $forms ) ) {
-				continue;
-			}
-
-			$count = 0;
 
 			foreach ( $forms as $form ) {
 				$pattern_form = get_shortcode_regex( [ 'et_pb_contact_form' ] );
@@ -2001,7 +1996,18 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 						'value' => $form_id,
 					];
 				}
-				$count++;
+			}
+
+			foreach ( self::get_divi5_contact_form_blocks( $form_post['post_content'] ) as $block ) {
+				$unique_id = self::array_get( $block['attrs'], 'module.advanced.uniqueId.desktop.value' );
+				if ( empty( $unique_id ) || ! is_string( $unique_id ) ) {
+					continue;
+				}
+				$form_title = self::array_get( $block['attrs'], 'title.innerContent.desktop.value', '' );
+				$options[]  = [
+					'label' => trim( sprintf( '%s %s', $form_post['post_title'], is_string( $form_title ) ? $form_title : '' ) ),
+					'value' => sprintf( '%d-%s', $form_post['ID'], $unique_id ),
+				];
 			}
 		}
 
@@ -2009,6 +2015,44 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 			'options' => $options,
 			'hasMore' => false,
 		];
+	}
+
+	/**
+	 * Find Divi 5 native `divi/contact-form` blocks inside a post's content.
+	 *
+	 * Divi 5's block-based builder no longer stores modules as `[et_pb_contact_form]`
+	 * shortcodes, so the legacy shortcode regex never matches. This walks the block
+	 * tree instead to support sites built with the new (block) Divi Builder.
+	 *
+	 * @param string $post_content Post content.
+	 * @return array
+	 */
+	private static function get_divi5_contact_form_blocks( $post_content ) {
+		if ( false === strpos( $post_content, 'wp:divi/contact-form' ) ) {
+			return [];
+		}
+
+		return self::find_blocks_by_name( parse_blocks( $post_content ), 'divi/contact-form' );
+	}
+
+	/**
+	 * Recursively search a parsed block tree for blocks matching a given block name.
+	 *
+	 * @param array  $blocks Parsed blocks, as returned by parse_blocks().
+	 * @param string $block_name Block name to search for, e.g. 'divi/contact-form'.
+	 * @return array
+	 */
+	private static function find_blocks_by_name( $blocks, $block_name ) {
+		$found = [];
+		foreach ( $blocks as $block ) {
+			if ( isset( $block['blockName'] ) && $block_name === $block['blockName'] ) {
+				$found[] = $block;
+			}
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$found = array_merge( $found, self::find_blocks_by_name( $block['innerBlocks'], $block_name ) );
+			}
+		}
+		return $found;
 	}
 
 	/**
@@ -2652,11 +2696,6 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 		foreach ( (array) $form_posts as $form_post ) {
 			$pattern_regex = '/\[et_pb_contact_form(.*?)](.+?)\[\/et_pb_contact_form]/s';
 			preg_match_all( $pattern_regex, $form_post['post_content'], $forms, PREG_SET_ORDER );
-			if ( empty( $forms ) ) {
-				continue;
-			}
-
-			$count = 0;
 
 			foreach ( $forms as $form ) {
 				$pattern = get_shortcode_regex( [ 'et_pb_contact_field' ] );
@@ -2664,7 +2703,7 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 				preg_match_all( "/$pattern/", $form[0], $contact_fields, PREG_SET_ORDER );
 
 				if ( empty( $contact_fields ) ) {
-					return $fields;
+					continue;
 				}
 
 				foreach ( $contact_fields as $contact_field ) {
@@ -2677,6 +2716,22 @@ Cc:johnDoe@xyz.com Bcc:johnDoe@xyz.com',
 							'field_id'    => $field_id,
 						];
 					}
+				}
+			}
+
+			foreach ( self::get_divi5_contact_form_blocks( $form_post['post_content'] ) as $contact_form_block ) {
+				$inner_blocks = isset( $contact_form_block['innerBlocks'] ) && is_array( $contact_form_block['innerBlocks'] ) ? $contact_form_block['innerBlocks'] : [];
+
+				foreach ( self::find_blocks_by_name( $inner_blocks, 'divi/contact-field' ) as $contact_field_block ) {
+					$field_id = self::array_get( $contact_field_block['attrs'], 'fieldItem.advanced.id.desktop.value' );
+					if ( ! is_string( $field_id ) || '' === $field_id ) {
+						continue;
+					}
+					$field_title = self::array_get( $contact_field_block['attrs'], 'fieldItem.innerContent.desktop.value', __( 'No title', 'suretriggers' ) );
+					$fields[]    = [
+						'field_title' => is_string( $field_title ) && '' !== $field_title ? $field_title : __( 'No title', 'suretriggers' ),
+						'field_id'    => strtolower( $field_id ),
+					];
 				}
 			}
 		}

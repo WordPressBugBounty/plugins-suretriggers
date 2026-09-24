@@ -15,6 +15,7 @@ use OsCustomerModel;
 use OsOrderModel;
 use OsOrdersHelper;
 use OsOrderItemModel;
+use OsServiceModel;
 use SureTriggers\Controllers\IntegrationsController;
 use SureTriggers\Integrations\Integrations;
 use SureTriggers\Traits\SingletonLoader;
@@ -43,7 +44,26 @@ class LatePoint extends Integrations {
 		$this->description = __( 'Appointment Scheduling Plugin for WordPress.', 'suretriggers' );
 		$this->icon_url    = SURE_TRIGGERS_URL . 'assets/icons/late-point.svg';
 
+		// Some LatePoint pricing add-ons (e.g. base-fee pricing) type-hint a
+		// non-nullable float on this filter and fatal when a service has no
+		// charge_amount configured. Sanitize at the source, before any other
+		// callback receives it - this protects every caller (our own actions,
+		// LatePoint's native admin UI, any other integration), not just the
+		// specific code path inside this class.
+		add_filter( 'latepoint_full_amount_for_service', [ __CLASS__, 'sanitize_full_amount_for_service' ], 1 );
+
 		parent::__construct();
+	}
+
+	/**
+	 * Coerce a null full-amount-for-service value to 0.0 before any other
+	 * 'latepoint_full_amount_for_service' filter callback can receive it.
+	 *
+	 * @param mixed $amount Amount to charge for the service.
+	 * @return mixed
+	 */
+	public static function sanitize_full_amount_for_service( $amount ) {
+		return null === $amount ? 0.0 : $amount;
 	}
 
 	/**
@@ -109,12 +129,38 @@ class LatePoint extends Integrations {
 			$end_time = $convert_to_minutes( $selected_options['end_time'] );
 		}
 
+		$agent_id   = isset( $selected_options['agent_id'] ) ? $selected_options['agent_id'] : null;
+		$service_id = isset( $selected_options['service_id'] ) ? $selected_options['service_id'] : null;
+
+		// The action has no dedicated "Select Location" field. location_id
+		// previously fell back to $agent_id's own value, which silently wrote
+		// an agent ID into a column that references a completely different
+		// table, corrupting the booking's location on every create and
+		// update. Resolve a real location instead: keep the existing
+		// booking's location on update, or look up a location genuinely
+		// connected to this agent/service pair via the same connector table
+		// LatePoint itself uses for that relationship.
+		if ( isset( $selected_options['location_id'] ) ) {
+			$location_id = $selected_options['location_id'];
+		} elseif ( $is_update && ! empty( $old_booking->location_id ) ) {
+			$location_id = $old_booking->location_id;
+		} else {
+			global $wpdb;
+			$location_id = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT location_id FROM {$wpdb->prefix}latepoint_agents_services WHERE agent_id = %d AND service_id = %d AND location_id IS NOT NULL LIMIT 1", //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					$agent_id,
+					$service_id
+				)
+			);
+		}
+
 		$booking_params        = [
-			'agent_id'         => isset( $selected_options['agent_id'] ) ? $selected_options['agent_id'] : null,
-			'location_id'      => isset( $selected_options['agent_id'] ) ? $selected_options['agent_id'] : null,
+			'agent_id'         => $agent_id,
+			'location_id'      => $location_id,
 			'status'           => isset( $selected_options['status'] ) ? $selected_options['status'] : '',
 			'total_attendees'  => isset( $selected_options['total_attendees'] ) ? $selected_options['total_attendees'] : 1,
-			'service_id'       => isset( $selected_options['service_id'] ) ? $selected_options['service_id'] : null,
+			'service_id'       => $service_id,
 			'start_date'       => $start_date,
 			'start_time'       => $start_time,
 			'end_time'         => $end_time,
@@ -249,7 +295,25 @@ class LatePoint extends Integrations {
 				$booking->order_item_id = $order_item_model->id;
 				if ( $booking->save() ) {
 					$order_item_model->item_data = $booking->generate_item_data();
-					$order_item_model->recalculate_prices();
+
+					// Some LatePoint pricing add-ons (e.g. base-fee pricing) type-hint a
+					// non-nullable float on the 'latepoint_full_amount_for_service' filter
+					// and fatal when the service has no charge_amount configured. That
+					// only affects updates re-using an already-priced booking, so skip
+					// recalculation for that specific, detectable case rather than
+					// risking masking unrelated recalculation failures on new bookings.
+					$service_has_no_charge_amount = false;
+					if ( $is_update && class_exists( 'OsServiceModel' ) && ! empty( $booking->service_id ) ) {
+						$service = new OsServiceModel( $booking->service_id );
+						if ( ! empty( $service->id ) && null === $service->get_full_amount_for_duration( $booking->duration ) ) {
+							$service_has_no_charge_amount = true;
+							do_action( 'suretriggers_latepoint_price_recalculation_skipped', $booking, $service );
+						}
+					}
+
+					if ( ! $service_has_no_charge_amount ) {
+						$order_item_model->recalculate_prices();
+					}
 					$order->total    = $order_item_model->total;
 					$order->subtotal = $order_item_model->subtotal;
 					$order->save();

@@ -165,8 +165,9 @@ if ( ! class_exists( 'AppointmentBooked' ) ) :
 				$fields_arr = [];
 			}
 
-			$context                        = array_merge( $result, $fields_arr, $payment_result, $customer_result, $service_result, $category_result, $coupon_result );
-			$context['amelia_service_list'] = $args['appointment']['serviceId'];
+			$context                         = array_merge( $result, $fields_arr, $payment_result, $customer_result, $service_result, $category_result, $coupon_result );
+			$context['amelia_category_list'] = $service_result['categoryId'];
+			$context['amelia_service_list']  = $args['appointment']['serviceId'];
 
 			AutomationController::sure_trigger_handle_trigger(
 				[
