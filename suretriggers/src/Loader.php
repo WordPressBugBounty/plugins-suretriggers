@@ -326,8 +326,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.1.40' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.1.40' );
+		define( 'SURE_TRIGGERS_VER', '1.1.41' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.1.41' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -898,8 +898,8 @@ class Loader {
 		add_filter( 'suretriggers_get_iframe_url', [ $this, 'suretriggers_iframe_data' ] );
 		add_filter( 'suretriggers_is_user_connected', [ $this, 'suretriggers_saas_connected_data' ] );
 
-		// Create Webhook Request Log table.
-		WebhookRequestsController::suretriggers_webhook_request_log_table();
+		// Create Webhook Request Log table (only when the schema version is outdated).
+		WebhookRequestsController::suretriggers_maybe_create_table();
 		// Schedule the cron jon to retry failed triggers.
 		WebhookRequestsController::suretriggers_setup_custom_cron();
 

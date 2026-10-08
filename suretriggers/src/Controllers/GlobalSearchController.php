@@ -670,7 +670,7 @@ class GlobalSearchController {
 		$courses = get_posts(
 			[
 				'post_type'   => tutor()->course_post_type,
-				'post_status' => 'publish',
+				'post_status' => 'any',
 				'numberposts' => -1,
 			]
 		);

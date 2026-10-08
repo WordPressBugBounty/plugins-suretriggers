@@ -14,6 +14,7 @@
 namespace SureTriggers\Integrations\Voxel\Actions;
 
 use SureTriggers\Integrations\AutomateAction;
+use SureTriggers\Integrations\WordPress\WordPress;
 use SureTriggers\Traits\SingletonLoader;
 use Exception;
 
@@ -82,7 +83,23 @@ class SendEmail extends AutomateAction {
 			return false;
 		}
 
-		if ( is_email( $recipient ) ) {
+		if ( ! is_email( $recipient ) ) {
+			return [
+				'status'  => 'error',
+				'message' => 'Please enter valid email address.',
+			];
+		}
+
+		$downloaded = WordPress::download_attachments( isset( $selected_options['attachment_url'] ) ? $selected_options['attachment_url'] : '' );
+
+		if ( ! empty( $downloaded['attachments'] ) ) {
+			// Voxel's Async_Email queue does not forward attachments to wp_mail(), so send synchronously instead.
+			$headers = [ 'Content-type: text/html; charset=UTF-8' ];
+			$body    = function_exists( 'Voxel\email_template' ) ? \Voxel\email_template( $message ) : $message;
+			$email   = wp_mail( $recipient, $subject, $body, $headers, $downloaded['attachments'] ); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
+
+			WordPress::cleanup_attachments( $downloaded['attachments'] );
+		} else {
 			$args  = [
 				'emails' => [
 					[
@@ -96,24 +113,25 @@ class SendEmail extends AutomateAction {
 				],
 			];
 			$email = \Voxel\Queues\Async_Email::instance()->data( $args )->dispatch();
-			if ( ! $email ) {
-				return [
-					'status'  => 'error',
-					'message' => 'Email not sent',
-				];
-			} else {
-				return [
-					'success' => true,
-					'message' => esc_attr__( 'Email sent successfully', 'suretriggers' ), 
-					
-				];
-			}
-		} else {
+		}
+
+		if ( ! $email ) {
 			return [
 				'status'  => 'error',
-				'message' => 'Please enter valid email address.',
+				'message' => 'Email not sent',
 			];
 		}
+
+		$response = [
+			'success' => true,
+			'message' => esc_attr__( 'Email sent successfully', 'suretriggers' ),
+		];
+
+		if ( $downloaded['skipped'] > 0 ) {
+			$response['attachments_skipped'] = $downloaded['skipped'];
+		}
+
+		return $response;
 	}
 
 }

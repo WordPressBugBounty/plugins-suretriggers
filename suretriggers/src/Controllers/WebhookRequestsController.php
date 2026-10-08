@@ -41,6 +41,20 @@ class WebhookRequestsController {
 	protected static $name = 'suretriggers_webhook_requests';
 
 	/**
+	 * Webhook Requests table schema version. Bump when the CREATE TABLE definition changes.
+	 *
+	 * @var string
+	 */
+	const DB_VERSION = '1.0';
+
+	/**
+	 * Option that stores the installed table schema version.
+	 *
+	 * @var string
+	 */
+	const DB_VERSION_OPTION = 'suretriggers_webhook_requests_db_version';
+
+	/**
 	 * Initialise data.
 	 */
 	public function __construct() {
@@ -76,6 +90,47 @@ class WebhookRequestsController {
 			'display'  => __( 'Every 6 hours', 'suretriggers' ),
 		];
 		return $schedules;
+	}
+
+	/**
+	 * Create/upgrade the webhook requests table only when the stored schema
+	 * version is outdated, instead of running dbDelta on every request.
+	 *
+	 * On wp-admin page loads the table's existence is also verified, so a dropped
+	 * table is recreated. AJAX requests are skipped to avoid a SHOW TABLES query on each call.
+	 *
+	 * @return void
+	 */
+	public static function suretriggers_maybe_create_table() {
+		$installed = get_option( self::DB_VERSION_OPTION, '0' );
+		$installed = is_string( $installed ) ? $installed : '0';
+
+		// '>=' so a plugin rollback to an older release does not re-run dbDelta.
+		if ( version_compare( $installed, self::DB_VERSION, '>=' ) ) {
+			if ( ! is_admin() || wp_doing_ajax() || self::table_exists() ) {
+				return;
+			}
+		}
+
+		self::suretriggers_webhook_request_log_table();
+
+		// Store the version only once the table really exists, so a failed dbDelta is retried.
+		if ( self::table_exists() ) {
+			update_option( self::DB_VERSION_OPTION, self::DB_VERSION );
+		}
+	}
+
+	/**
+	 * Whether the webhook requests table exists.
+	 *
+	 * @return bool
+	 */
+	private static function table_exists() {
+		global $wpdb;
+		$table_name = self::get_table_name();
+		$found      = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table_name ) ) );
+		// Case-insensitive: hosts with lower_case_table_names return the name lowercased.
+		return is_string( $found ) && 0 === strcasecmp( $table_name, $found );
 	}
 
 	/**
@@ -360,6 +415,8 @@ class WebhookRequestsController {
 		if ( $webhook_requests_cleanup ) {
 			wp_unschedule_event( $webhook_requests_cleanup, 'suretriggers_verify_api_connection' );
 		}
+
+		delete_option( self::DB_VERSION_OPTION );
 
 		// Delete table on plugin delete.
 		global $wpdb;

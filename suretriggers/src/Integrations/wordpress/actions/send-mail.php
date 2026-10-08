@@ -170,8 +170,12 @@ class SendMail extends AutomateAction {
 
 			$result_arr['headers'][] = 'BCC: ' . $bcc_email;
 		}
-		
-		$result = wp_mail( $to_email, $result_arr['subject'], $result_arr['email_body'], $result_arr['headers'], $attachments = [] ); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
+
+		$downloaded = WordPress::download_attachments( isset( $selected_options['attachment_url'] ) ? $selected_options['attachment_url'] : '' );
+
+		$result = wp_mail( $to_email, $result_arr['subject'], $result_arr['email_body'], $result_arr['headers'], $downloaded['attachments'] ); //phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
+
+		WordPress::cleanup_attachments( $downloaded['attachments'] );
 
 		if ( ! $result ) {
 			return [
@@ -180,8 +184,13 @@ class SendMail extends AutomateAction {
 			];
 		}
 
+		if ( $downloaded['skipped'] > 0 ) {
+			$result_arr['attachments_skipped'] = $downloaded['skipped'];
+		}
+
 		return $result_arr;
 	}
+
 }
 
 SendMail::get_instance();

@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.1
-Stable tag: 1.1.40
+Stable tag: 1.1.41
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,13 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.41 - Thursday, 8th October 2026 =
+* New: Added "Bit CRM" Integration
+* Improvement: "WordPress" – Added file attachment support (via URL) to "Send Email" Action
+* Improvement: "Voxel" – Added new Actions
+* Improvement: "SureForms" – Added new "Create Form" and "Create Form from Prompt" Actions
+* Improvement: Optimized database schema check so the webhook requests table is updated only when its schema version is outdated
+
 = Version 1.1.40 - Thursday, 24th September 2026 =
 * Improvement: "Divi Builder" – Added compatibility with Divi 5 block-based Contact Form modules
 * Fix: "FluentCRM" – Fixed "Send Email By Campaign" Action leaving the campaign stuck in Draft instead of sending it
