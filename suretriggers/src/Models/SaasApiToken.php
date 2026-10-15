@@ -66,6 +66,10 @@ class SaasApiToken {
 				$token = null;
 			}
 		}
+		// Legacy sentinel stored by older versions on a denied connection; never a valid secret.
+		if ( 'connection-denied' === $token ) {
+			$token = null;
+		}
 		return $token;
 	}
 

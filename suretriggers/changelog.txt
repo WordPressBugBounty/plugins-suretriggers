@@ -1,3 +1,7 @@
+Version 1.1.42 - Thursday, 15th October 2026
+- New: Added "HBook" Integration
+- Fix: This update addressed a security bug. Props to Peter Tang and Patchstack for privately reporting it to our team. Please make sure you are using the latest version on your website.
+
 Version 1.1.41 - Thursday, 8th October 2026
 - New: Added "Bit CRM" Integration
 - Improvement: "WordPress" – Added file attachment support (via URL) to "Send Email" Action

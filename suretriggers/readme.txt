@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.1
-Stable tag: 1.1.41
+Stable tag: 1.1.42
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,10 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.42 - Thursday, 15th October 2026 =
+* New: Added "HBook" Integration
+* Fix: This update addressed a security bug. Props to Peter Tang and Patchstack for privately reporting it to our team. Please make sure you are using the latest version on your website.
+
 = Version 1.1.41 - Thursday, 8th October 2026 =
 * New: Added "Bit CRM" Integration
 * Improvement: "WordPress" – Added file attachment support (via URL) to "Send Email" Action

@@ -111,13 +111,12 @@ class AuthController {
 
 		$access_key = isset( $_GET['sure-triggers-access-key'] ) ? sanitize_text_field( wp_unslash( $_GET['sure-triggers-access-key'] ) ) : false;
 
-		if ( false === $connection_status ) {
-			$access_key = 'connection-denied';
-		}
-
 		$connected_email_id = isset( $_GET['connected_email'] ) ? sanitize_email( wp_unslash( $_GET['connected_email'] ) ) : '';
 
-		if ( isset( $access_key ) ) {
+		if ( false === $connection_status ) {
+			// Denied: clear the secret instead of storing a placeholder string.
+			SaasApiToken::save( null );
+		} elseif ( isset( $access_key ) ) {
 			SaasApiToken::save( $access_key );
 		}
 		OptionController::set_option( 'connected_email_key', $connected_email_id );
