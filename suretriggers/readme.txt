@@ -3,12 +3,12 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.1
-Stable tag: 1.1.42
+Stable tag: 1.1.43
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Experience the power of automation within WordPress: Connect 1,500+ apps, automate manual tasks, and unlock your full potential. Get started now!
+Experience the power of automation within WordPress: Connect 1,600+ apps, automate manual tasks, and unlock your full potential. Get started now!
 
 == Description ==
 
@@ -334,6 +334,10 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.43 - Thursday, 29th October 2026 =
+* New: Added "Fluent Player" Integration
+* Improvement: "WP Travel Engine" – Added new "Export Bookings" Action
+
 = Version 1.1.42 - Thursday, 15th October 2026 =
 * New: Added "HBook" Integration
 * Fix: This update addressed a security bug. Props to Peter Tang and Patchstack for privately reporting it to our team. Please make sure you are using the latest version on your website.
