@@ -27,6 +27,7 @@ use SureTriggers\Controllers\SettingsController;
 use SureTriggers\Traits\SingletonLoader;
 use SureTriggers\Models\SaasApiToken;
 use SureTriggers\Abilities\AbilitiesController;
+use SureTriggers\Admin\NudgesController;
 use function add_menu_page;
 use function add_submenu_page;
 
@@ -304,7 +305,7 @@ class Loader {
 		$verification_data = get_option( 'suretriggers_lifetime_user_plan_data' );
 		$plan_id           = is_array( $verification_data ) && isset( $verification_data['plan_id'] ) ? $verification_data['plan_id'] : '';
 		if ( in_array( $plan_id, [ 'free', 'pro' ], true ) ) {
-			$button_text  = ( 'free' === $plan_id ) ? __( 'Get OttoKit Pro', 'suretriggers' ) : __( 'Upgrade', 'suretriggers' );
+			$button_text  = ( 'free' === $plan_id ) ? __( 'Upgrade · 20× more tasks', 'suretriggers' ) : __( 'Upgrade', 'suretriggers' );
 			$upgrade_link = '<a href="https://ottokit.com/pricing/?utm_source=wpplugin&utm_medium=plugin+list&utm_campaign=plugin+list" target="_blank" style="color: #28a745; font-weight: bold;">' . $button_text . '</a>';
 			$links[]      = $upgrade_link;
 		}
@@ -326,8 +327,8 @@ class Loader {
 		define( 'SURE_TRIGGERS_BASE', plugin_basename( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_DIR', plugin_dir_path( SURE_TRIGGERS_FILE ) );
 		define( 'SURE_TRIGGERS_URL', plugins_url( '/', SURE_TRIGGERS_FILE ) );
-		define( 'SURE_TRIGGERS_VER', '1.1.43' );
-		define( 'SURE_TRIGGERS_DB_VER', '1.1.43' );
+		define( 'SURE_TRIGGERS_VER', '1.1.44' );
+		define( 'SURE_TRIGGERS_DB_VER', '1.1.44' );
 		define( 'SURE_TRIGGERS_REST_NAMESPACE', 'sure-triggers/v1' );
 		define( 'SURE_TRIGGERS_SASS_URL', $sass_url . '/wp-json/wp-plugs/v1/' );
 		define( 'SURE_TRIGGERS_SITE_URL', $sass_url );
@@ -893,6 +894,7 @@ class Loader {
 		WebhookRequestsController::get_instance();
 		SettingsController::get_instance();
 		AbilitiesController::get_instance();
+		NudgesController::get_instance();
 
 		// SureTriggers Custom Filter data.
 		add_filter( 'suretriggers_get_iframe_url', [ $this, 'suretriggers_iframe_data' ] );

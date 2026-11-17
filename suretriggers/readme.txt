@@ -3,7 +3,7 @@ Contributors: sujaypawar, wpcrafter
 Tags: automation, google sheets, webhooks, schedule, SureCart
 Requires at least: 5.4
 Tested up to: 7.1
-Stable tag: 1.1.43
+Stable tag: 1.1.44
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -334,6 +334,13 @@ You can report the issue through our [Bug Bounty Program](https://brainstormforc
 8. Workspace Notification Settings.
 
 == Changelog ==
+= Version 1.1.44 - Tuesday, 17th November 2026 =
+* New: "FluentCommunity" – Added new "Add User To Courses" Action
+* New: "FluentCommunity" – Added new "Lesson Video Watched" Trigger
+* Improvement: "Studiocart" – Added compatibility with PublishPress Cart
+* Fix: "EDD" – Fixed discount handling in "Create Purchase" Action
+* Fix: This update addressed a security bug. Props to Ibrahim and Patchstack for privately reporting it to our team. Please make sure you are using the latest version on your website
+
 = Version 1.1.43 - Thursday, 29th October 2026 =
 * New: Added "Fluent Player" Integration
 * Improvement: "WP Travel Engine" – Added new "Export Bookings" Action

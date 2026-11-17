@@ -7,7 +7,9 @@
  * @author   BSF <username@example.com>
  */
 
+use SureTriggers\Admin\RecipeSuggestions;
 use SureTriggers\Controllers\OptionController;
+$saved_triggers = OptionController::get_option( 'triggers' );
 ?>
 <table class="widefat suretriggers-system-table suretriggers-system-table-trigger" cellspacing="0">
 	<thead>
@@ -17,47 +19,42 @@ use SureTriggers\Controllers\OptionController;
 	</thead>
 	<tbody>
 		<?php
-		$saved_triggers = OptionController::get_option( 'triggers' );
-		if ( ! empty( $saved_triggers ) ) {
-			$grouped_data = [];
-			foreach ( (array) $saved_triggers as $row ) {
-				if ( ! is_array( $row ) || ! isset( $row['trigger'], $row['integration'] ) ) {
-					continue;
-				}
-				$grouped_data[ $row['integration'] ][] = $row['trigger'];
-			}
-			$output = [];
-			foreach ( $grouped_data as $integration => $triggers ) {
-				$output[] = [
-					'integration' => $integration,
-					'triggers'    => array_unique( $triggers ),
-				];
-			}
-			foreach ( (array) $output as $key => $trigger ) {
-				$count = count( $trigger['triggers'] );
-				?>
-				<tr>
-					<th rowspan="<?php echo esc_attr( (string) $count ); ?>"><?php echo esc_html( (string) $trigger['integration'] ); ?></th>
-					<td><?php echo esc_html( $trigger['triggers'][0] ); ?></td>
-				</tr>
-				<?php
-				for ( $i = 1; $i < $count; $i++ ) {
-					?>
-					<tr>
-						<td><?php echo esc_html( $trigger['triggers'][ $i ] ); ?></td>
-					</tr>
-					<?php
-				}
-			}
-		} else {
+		if ( empty( $saved_triggers ) ) {
 			?>
 			<tr>
-				<td>
-					<?php
-						echo esc_html__( 'No Trigger registered yet.', 'suretriggers' ); 
-					?>
-				</td>
+				<td><?php RecipeSuggestions::render(); ?></td>
+			</tr>
 			<?php
+		}
+		$grouped_data = [];
+		foreach ( (array) $saved_triggers as $row ) {
+			if ( ! is_array( $row ) || ! isset( $row['trigger'], $row['integration'] ) ) {
+				continue;
+			}
+			$grouped_data[ $row['integration'] ][] = $row['trigger'];
+		}
+		$output = [];
+		foreach ( $grouped_data as $integration => $triggers ) {
+			$output[] = [
+				'integration' => $integration,
+				'triggers'    => array_unique( $triggers ),
+			];
+		}
+		foreach ( (array) $output as $key => $trigger ) {
+			$count = count( $trigger['triggers'] );
+			?>
+			<tr>
+				<th rowspan="<?php echo esc_attr( (string) $count ); ?>"><?php echo esc_html( (string) $trigger['integration'] ); ?></th>
+				<td><?php echo esc_html( $trigger['triggers'][0] ); ?></td>
+			</tr>
+			<?php
+			for ( $i = 1; $i < $count; $i++ ) {
+				?>
+				<tr>
+					<td><?php echo esc_html( $trigger['triggers'][ $i ] ); ?></td>
+				</tr>
+				<?php
+			}
 		}
 		?>
 	</tbody>

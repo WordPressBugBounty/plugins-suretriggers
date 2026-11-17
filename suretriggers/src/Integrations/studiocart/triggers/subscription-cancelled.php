@@ -68,7 +68,7 @@ if ( ! class_exists( 'StudiocartSubscriptionCancelled' ) ) :
 			$triggers[ $this->integration ][ $this->trigger ] = [
 				'label'         => __( 'Subscription Cancelled', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => 'sc_subscription_canceled',
+				'common_action' => [ 'sc_subscription_canceled', 'ppcart_subscription_canceled' ],
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
 				'accepted_args' => 3,

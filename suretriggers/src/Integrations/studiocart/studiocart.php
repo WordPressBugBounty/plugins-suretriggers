@@ -33,8 +33,8 @@ class Studiocart extends Integrations {
 	 * Studiocart constructor.
 	 */
 	public function __construct() {
-		$this->name        = __( 'Studiocart', 'suretriggers' );
-		$this->description = __( 'Studiocart is a checkout page builder for WordPress that lets you sell products, order bumps and subscriptions.', 'suretriggers' );
+		$this->name        = __( 'PublishPress Cart', 'suretriggers' );
+		$this->description = __( 'PublishPress Cart (formerly Studiocart) is a checkout and funnel builder for WordPress that lets you sell products, order bumps and subscriptions.', 'suretriggers' );
 		$this->icon_url    = SURE_TRIGGERS_URL . 'assets/icons/studiocart.svg';
 
 		parent::__construct();
@@ -46,7 +46,8 @@ class Studiocart extends Integrations {
 	 * @return bool
 	 */
 	public function is_plugin_installed() {
-		return class_exists( 'NCS_Cart' );
+		// PublishPress Cart (successor of Studiocart) or legacy Studiocart.
+		return class_exists( 'PPCart' ) || defined( 'PPCART_VERSION' ) || class_exists( 'NCS_Cart' );
 	}
 
 	/**

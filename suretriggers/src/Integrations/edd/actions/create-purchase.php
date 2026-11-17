@@ -138,49 +138,22 @@ class CreatePurchase extends AutomateAction {
 		}
 		$subtotal = $item_price * $quantity;
 		
-		$discount_code   = isset( $selected_options['discount_code'] ) ? sanitize_text_field( $selected_options['discount_code'] ) : '';
-		$discount_amount = 0;
-		$total           = $subtotal;
+		$discount_code    = isset( $selected_options['discount_code'] ) ? sanitize_text_field( $selected_options['discount_code'] ) : '';
+		$discount_amount  = 0;
+		$applied_discount = '';
+		$discount_message = '';
 
-		if ( ! empty( $discount_code ) && function_exists( 'edd_get_discount_by_code' ) ) {
-			$discount = edd_get_discount_by_code( $discount_code );
-			if ( $discount && 'active' === $discount->status ) {
-				$product_reqs      = $discount->get_product_reqs();
-				$excluded_products = $discount->get_excluded_products();
-				
-				$discount_valid = true;
-				
-				if ( ! empty( $product_reqs ) && ! in_array( $download_id, $product_reqs ) ) {
-					$discount_valid = false;
-				}
-				
-				if ( ! empty( $excluded_products ) && in_array( $download_id, $excluded_products ) ) {
-					$discount_valid = false;
-				}
-				
-				$min_amount = $discount->get_min_charge_amount();
-				if ( $min_amount > 0 && $subtotal < $min_amount ) {
-					$discount_valid = false;
-				}
-				
-				if ( $discount_valid ) {
-					$discount_type  = $discount->get_amount_type();
-					$discount_value = $discount->get_amount();
-					
-					if ( 'percent' === $discount_type ) {
-						$discount_amount = ( $subtotal * $discount_value ) / 100;
-					} else {
-						$discount_amount = $discount_value;
-					}
-					
-					if ( $discount_amount > $subtotal ) {
-						$discount_amount = $subtotal;
-					}
-					
-					$total = $subtotal - $discount_amount;
-				}
+		// Only a discount that EDD itself accepts for this download/price option is applied.
+		if ( ! empty( $discount_code ) ) {
+			$discount_result  = $this->get_valid_discount_amount( $discount_code, $download_id, $price_id, $item_price, $quantity, $customer_email );
+			$discount_amount  = $discount_result['amount'];
+			$discount_message = $discount_result['message'];
+			if ( $discount_amount > 0 ) {
+				$applied_discount = $discount_code;
 			}
 		}
+
+		$total = $subtotal - $discount_amount;
 
 		$download_options = [
 			'quantity' => $quantity,
@@ -202,7 +175,8 @@ class CreatePurchase extends AutomateAction {
 			'email'      => $customer_email,
 			'first_name' => isset( $selected_options['first_name'] ) ? sanitize_text_field( $selected_options['first_name'] ) : '',
 			'last_name'  => isset( $selected_options['last_name'] ) ? sanitize_text_field( $selected_options['last_name'] ) : '',
-			'discount'   => isset( $selected_options['discount_code'] ) ? sanitize_text_field( $selected_options['discount_code'] ) : 'none',
+			// EDD records this as the order-level discount adjustment (used for usage tracking), so only send a discount that was applied to the item.
+			'discount'   => ! empty( $applied_discount ) ? $applied_discount : 'none',
 			'address'    => [
 				'line1'   => isset( $selected_options['address_line1'] ) ? sanitize_text_field( $selected_options['address_line1'] ) : '',
 				'line2'   => isset( $selected_options['address_line2'] ) ? sanitize_text_field( $selected_options['address_line2'] ) : '',
@@ -247,7 +221,7 @@ class CreatePurchase extends AutomateAction {
 				'id'      => $download_id,
 				'options' => $item_options,
 			],
-			'price'       => $item_price,
+			'price'       => $total,
 			'item_price'  => $item_price,
 			'quantity'    => $quantity,
 			'discount'    => $discount_amount,
@@ -266,7 +240,19 @@ class CreatePurchase extends AutomateAction {
 		}
 
 		$payment = new \EDD_Payment( $payment_id );
-		
+
+		/*
+		 * Discount usage:
+		 * - EDD 3.7.2+ claims a use inside edd_build_order() (tracked per order, released on fail/cancel),
+		 *   so nothing must be counted here or it would be counted twice.
+		 * - Older EDD only counts usage when an order transitions to complete, reading the order's discount
+		 *   adjustments. An order inserted already complete transitions before those adjustments exist, so
+		 *   its usage is missed. Count it here, once, in that case only.
+		 */
+		if ( ! empty( $applied_discount ) && ! class_exists( '\EDD\Discounts\Claims' ) && function_exists( 'edd_increase_discount_usage' ) && function_exists( 'edd_get_complete_order_statuses' ) && in_array( $payment_data['status'], edd_get_complete_order_statuses(), true ) ) {
+			edd_increase_discount_usage( $applied_discount );
+		}
+
 		// Auto-generate license keys for EDD Software Licensing.
 		$this->auto_generate_license_keys( $payment_id, $payment_data );
 		
@@ -287,6 +273,9 @@ class CreatePurchase extends AutomateAction {
 			'total_amount'   => $payment->total,
 			'subtotal'       => $payment->subtotal,
 			'tax'            => $payment->tax,
+			'discount'       => $payment->discounted_amount,
+			'discount_code'  => $applied_discount,
+			'discount_note'  => $discount_message,
 			'currency'       => $payment->currency,
 			'status'         => $payment->status,
 			'payment_method' => $payment->gateway,
@@ -312,6 +301,80 @@ class CreatePurchase extends AutomateAction {
 		];
 	}
 	
+	/**
+	 * Get the discount amount EDD would apply to this item, or 0 with a reason if the code is not applicable.
+	 *
+	 * Validation and calculation are delegated to EDD (the same ItemAmount logic edd_build_order() uses for the
+	 * order-level adjustment) so the item-level discount and the adjustment can never disagree.
+	 *
+	 * @param string   $code           Discount code.
+	 * @param int      $download_id    Download ID.
+	 * @param int|null $price_id       Variable price ID.
+	 * @param float    $item_price     Unit price.
+	 * @param int      $quantity       Quantity.
+	 * @param string   $customer_email Customer email.
+	 * @since 1.0.0
+	 *
+	 * @return array{amount: float, message: string}
+	 */
+	private function get_valid_discount_amount( $code, $download_id, $price_id, $item_price, $quantity, $customer_email ) {
+		if ( ! class_exists( '\EDD_Discount' ) || ! function_exists( 'edd_get_discount_by_code' ) || ! function_exists( 'edd_get_item_discount_amount' ) ) {
+			return [
+				'amount'  => 0,
+				'message' => 'EDD discount functions are not available.',
+			];
+		}
+
+		$discount = edd_get_discount_by_code( $code );
+		if ( ! $discount instanceof \EDD_Discount ) {
+			return [
+				'amount'  => 0,
+				'message' => 'Discount code not found.',
+			];
+		}
+
+		// Archived, not started, expired/inactive, maxed out or already used by this customer.
+		if ( $discount->is_archived( false ) || ! $discount->is_started( false ) || ! $discount->is_active( false, false ) || $discount->is_maxed_out( false ) || $discount->is_used( $customer_email, false ) ) {
+			return [
+				'amount'  => 0,
+				'message' => 'Discount code is not currently usable (inactive, expired, not started, usage limit reached or already used by this customer).',
+			];
+		}
+
+		$subtotal = (float) $item_price * $quantity;
+		if ( $discount->get_min_price() > 0 && $subtotal < $discount->get_min_price() ) {
+			return [
+				'amount'  => 0,
+				'message' => 'Order does not meet the discount code minimum amount.',
+			];
+		}
+
+		$item_options = [];
+		if ( null !== $price_id ) {
+			$item_options['price_id'] = $price_id;
+		}
+
+		// Same item shape edd_build_order() receives in cart_details.
+		$item = [
+			'id'          => $download_id,
+			'item_number' => [
+				'id'      => $download_id,
+				'options' => $item_options,
+			],
+			'item_price'  => $item_price,
+			'quantity'    => $quantity,
+		];
+
+		$amount = (float) edd_get_item_discount_amount( $item, [ $item ], [ $discount ], $item_price );
+
+		$amount = max( 0, min( $amount, $subtotal ) );
+
+		return [
+			'amount'  => $amount,
+			'message' => $amount > 0 ? '' : 'Discount code does not apply to this download or price option.',
+		];
+	}
+
 	/**
 	 * Auto-generate license keys for purchased products
 	 *

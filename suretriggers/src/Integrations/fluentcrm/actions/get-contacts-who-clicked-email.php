@@ -92,13 +92,15 @@ class GetContactsWhoClickedEmail extends AutomateAction {
 		}
 
 		$args             = [
-			'headers'   => [
+			'headers'             => [
 				'Authorization' => 'Basic ' . base64_encode( $username . ':' . $password ),
 				'Content-Type'  => 'application/json',
 			],
-			'sslverify' => false,
+			'reject_unsafe_urls'  => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+			'sslverify'           => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+			'limit_response_size' => 5 * MB_IN_BYTES,
 		];
-		$request          = wp_remote_get( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns/' . $campaign_id . '/emails?filter_type=click', $args );
+		$request          = wp_remote_get( $wp_url . '/wp-json/fluent-crm/v2/campaigns/' . $campaign_id . '/emails?filter_type=click', $args );
 		$response_code    = wp_remote_retrieve_response_code( $request );
 		$response_body    = wp_remote_retrieve_body( $request );
 		$response_context = json_decode( $response_body, true );

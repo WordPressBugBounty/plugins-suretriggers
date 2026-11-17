@@ -166,7 +166,7 @@ class SendEmailByTemplate extends AutomateAction {
 
 		$api_username  = isset( $selected_options['api_username'] ) ? $selected_options['api_username'] : '';
 		$api_password  = isset( $selected_options['api_password'] ) ? $selected_options['api_password'] : '';
-		$wordpress_url = isset( $selected_options['wordpress_url'] ) ? $selected_options['wordpress_url'] : site_url();
+		$wordpress_url = isset( $selected_options['wordpress_url'] ) ? esc_url_raw( $selected_options['wordpress_url'] ) : site_url();
 
 		$header_data = [
 			'Content-Type'  => 'application/json',
@@ -179,9 +179,10 @@ class SendEmailByTemplate extends AutomateAction {
 		}
 
 		$args = [
-			'headers'   => $header_data,
-			'sslverify' => false,
-			'body'      => $body_data,
+			'headers'            => $header_data,
+			'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+			'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+			'body'               => $body_data,
 		];
 
 		$new_campaign_request       = wp_remote_post( $wordpress_url . '/wp-json/fluent-crm/v2/campaigns', $args );
@@ -253,10 +254,11 @@ class SendEmailByTemplate extends AutomateAction {
 		}
 
 		$args = [
-			'headers'   => $header_data,
-			'sslverify' => false,
-			'method'    => 'PUT',
-			'body'      => $settings_data,
+			'headers'            => $header_data,
+			'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+			'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+			'method'             => 'PUT',
+			'body'               => $settings_data,
 		];
 
 		if ( ! is_array( $response_context ) || ! isset( $response_context['id'] ) ) {
@@ -297,9 +299,10 @@ class SendEmailByTemplate extends AutomateAction {
 		$check_estimated_contacts = wp_remote_post(
 			$wordpress_url . '/wp-json/fluent-crm/v2/campaigns/estimated-contacts',
 			[
-				'headers'   => $header_data,
-				'sslverify' => false,
-				'body'      => $contact_body,
+				'headers'            => $header_data,
+				'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+				'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+				'body'               => $contact_body,
 			]
 		);
 		$contacts                 = wp_remote_retrieve_body( $check_estimated_contacts );
@@ -331,9 +334,10 @@ class SendEmailByTemplate extends AutomateAction {
 		$final_request = wp_remote_post( 
 			$wordpress_url . '/wp-json/fluent-crm/v2/campaigns/' . $settings_context['campaign']['id'] . '/schedule', 
 			[
-				'headers'   => $header_data,
-				'sslverify' => false,
-				'body'      => $schedule_data,
+				'headers'            => $header_data,
+				'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+				'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+				'body'               => $schedule_data,
 			]
 		);
 		

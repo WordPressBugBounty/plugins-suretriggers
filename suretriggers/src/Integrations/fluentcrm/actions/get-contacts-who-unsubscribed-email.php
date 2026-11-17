@@ -93,11 +93,13 @@ class GetContactsWhoUnsubscribedFromEmail extends AutomateAction {
 		}
 
 		$args = [
-			'headers'   => [
+			'headers'             => [
 				'Authorization' => 'Basic ' . base64_encode( $username . ':' . $password ),
 				'Content-Type'  => 'application/json',
 			],
-			'sslverify' => false,
+			'reject_unsafe_urls'  => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+			'sslverify'           => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+			'limit_response_size' => 5 * MB_IN_BYTES,
 		];
 
 		$request          = wp_remote_get( trailingslashit( $wp_url ) . 'wp-json/fluent-crm/v2/campaigns/' . $campaign_id . '/unsubscribers', $args );

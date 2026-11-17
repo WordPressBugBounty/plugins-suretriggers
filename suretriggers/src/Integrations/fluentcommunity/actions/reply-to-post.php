@@ -347,12 +347,14 @@ class ReplyToPost extends AutomateAction {
 		}
 		
 		// Validate URL.
-		if ( ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
+		if ( ! is_string( $url ) || ! filter_var( $url, FILTER_VALIDATE_URL ) || ! wp_http_validate_url( $url ) ) {
 			return null;
 		}
 		
+		global $wpdb;
+
 		// Check if media already exists for this URL.
-		$existing_media = Media::where( 'settings', 'LIKE', '%' . $url . '%' )
+		$existing_media = Media::where( 'settings', 'LIKE', '%' . $wpdb->esc_like( $url ) . '%' )
 			->where( 'is_active', 1 )
 			->first();
 			
@@ -362,16 +364,19 @@ class ReplyToPost extends AutomateAction {
 		
 		try {
 			// Download the file.
-			$response = wp_remote_get(
+			$response = wp_safe_remote_get(
 				$url,
 				[
-					'headers' => [
+					'reject_unsafe_urls'  => true,
+					'limit_response_size' => 10 * MB_IN_BYTES,
+					'timeout'             => 3,
+					'headers'             => [
 						'User-Agent' => 'FluentCommunity/1.0',
 					],
 				] 
 			);
 			
-			if ( is_wp_error( $response ) ) {
+			if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
 				return null;
 			}
 			
@@ -394,6 +399,24 @@ class ReplyToPost extends AutomateAction {
 			
 			// Prepare file name for WordPress upload.
 			$file_name = sanitize_file_name( $file_name );
+			
+			// Only allow media/document types; reject anything else (e.g. txt, json, html).
+			$ext_check = strtolower( pathinfo( $file_name, PATHINFO_EXTENSION ) );
+			$image_ext = [ 'jpg', 'jpeg', 'png', 'gif', 'webp' ];
+			$doc_ext   = [ 'pdf', 'doc', 'docx', 'xls', 'xlsx' ];
+			if ( ! in_array( $ext_check, array_merge( $image_ext, $doc_ext ), true ) ) {
+				return null;
+			}
+			
+			// Verify the downloaded content really matches the claimed type.
+			if ( in_array( $ext_check, $image_ext, true ) ) {
+				$tmp_info = @getimagesizefromstring( $body ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				if ( ! $tmp_info ) {
+					return null;
+				}
+			} elseif ( 'pdf' === $ext_check && 0 !== strpos( $body, '%PDF' ) ) {
+				return null;
+			}
 			
 			// Save file.
 			$upload = wp_upload_bits( $file_name, null, $body );

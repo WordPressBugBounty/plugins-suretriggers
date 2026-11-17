@@ -68,7 +68,7 @@ if ( ! class_exists( 'StudiocartOrderRefunded' ) ) :
 			$triggers[ $this->integration ][ $this->trigger ] = [
 				'label'         => __( 'Order Refunded', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => 'sc_order_refunded',
+				'common_action' => [ 'sc_order_refunded', 'ppcart_order_refunded' ],
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
 				'accepted_args' => 3,

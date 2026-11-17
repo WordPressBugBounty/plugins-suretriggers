@@ -77,8 +77,9 @@ class SendEmailToListContacts extends AutomateAction {
 	 */
 	public function _action_listener( $user_id, $automation_id, $fields, $selected_options ) {
 
-		$username = $selected_options['api_username'];
-		$password = $selected_options['api_password'];
+		$username      = $selected_options['api_username'];
+		$password      = $selected_options['api_password'];
+		$wordpress_url = isset( $selected_options['wordpress_url'] ) ? esc_url_raw( $selected_options['wordpress_url'] ) : '';
 
 		$selected_list = $selected_options['list_id'];
 		$selected_tag  = $selected_options['tag_id'];
@@ -107,11 +108,12 @@ class SendEmailToListContacts extends AutomateAction {
 		// Check if selected list not exists then return error.
 		if ( 'all' != $selected_list ) {
 			$args = [
-				'headers'   => $header_data,
-				'sslverify' => false,
+				'headers'            => $header_data,
+				'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+				'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
 			];
 			if ( is_array( $selected_list ) ) {
-				$all_lists_request         = wp_remote_get( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/lists/', $args );
+				$all_lists_request         = wp_remote_get( $wordpress_url . '/wp-json/fluent-crm/v2/lists/', $args );
 				$all_lists_response_body   = wp_remote_retrieve_body( $all_lists_request );
 				$all_list_response_context = json_decode( $all_lists_response_body, true );
 				if ( is_array( $all_list_response_context ) && ! empty( $all_list_response_context['lists'] ) ) {
@@ -137,7 +139,7 @@ class SendEmailToListContacts extends AutomateAction {
 					}
 				}
 			} else {
-				$list_request          = wp_remote_get( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/lists/' . $selected_list, $args );
+				$list_request          = wp_remote_get( $wordpress_url . '/wp-json/fluent-crm/v2/lists/' . $selected_list, $args );
 				$list_response_body    = wp_remote_retrieve_body( $list_request );
 				$list_response_context = json_decode( $list_response_body, true );
 				if ( '' == $list_response_context ) {
@@ -153,11 +155,12 @@ class SendEmailToListContacts extends AutomateAction {
 		// Check if selected tag not exists then return error.
 		if ( 'all' != $selected_tag ) {
 			$args = [
-				'headers'   => $header_data,
-				'sslverify' => false,
+				'headers'            => $header_data,
+				'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+				'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
 			];
 			if ( is_array( $selected_tag ) ) {
-				$all_tags_request         = wp_remote_get( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/tags/', $args );
+				$all_tags_request         = wp_remote_get( $wordpress_url . '/wp-json/fluent-crm/v2/tags/', $args );
 				$all_tags_response_body   = wp_remote_retrieve_body( $all_tags_request );
 				$all_tag_response_context = json_decode( $all_tags_response_body, true );
 				if ( is_array( $all_tag_response_context ) && ! empty( $all_tag_response_context['tags']['data'] ) ) {
@@ -183,7 +186,7 @@ class SendEmailToListContacts extends AutomateAction {
 					}
 				}
 			} else {
-				$tags_response = wp_remote_get( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/tags/' . $selected_tag, $args );
+				$tags_response = wp_remote_get( $wordpress_url . '/wp-json/fluent-crm/v2/tags/' . $selected_tag, $args );
 				$tags_body     = wp_remote_retrieve_body( $tags_response );
 				$tags_context  = json_decode( $tags_body, true );
 				if ( is_array( $tags_context ) && '' == $tags_context['tag'] ) {
@@ -196,11 +199,20 @@ class SendEmailToListContacts extends AutomateAction {
 			}
 		}
 		// Check if selected campaign not exists then create new campaign.
-		$args             = [
-			'headers'   => $header_data,
-			'sslverify' => false,
+		$args    = [
+			'headers'            => $header_data,
+			'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+			'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
 		];
-		$request          = wp_remote_get( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns/' . $selected_options['campaign'], $args );
+		$request = wp_remote_get( $wordpress_url . '/wp-json/fluent-crm/v2/campaigns/' . $selected_options['campaign'], $args );
+		// A blocked URL or failed SSL check comes back as a WP_Error; say so instead of returning nothing.
+		if ( is_wp_error( $request ) ) {
+			return [
+				'status'  => 'error',
+				/* translators: 1: site URL, 2: error message. */
+				'message' => sprintf( __( 'Could not reach the FluentCRM REST API at %1$s: %2$s. For a local or self-signed site, see the suretriggers_fluentcrm_sslverify and suretriggers_fluentcrm_reject_unsafe_urls filters.', 'suretriggers' ), $wordpress_url, $request->get_error_message() ),
+			];
+		}
 		$response_code    = wp_remote_retrieve_response_code( $request );
 		$response_body    = wp_remote_retrieve_body( $request );
 		$response_context = json_decode( $response_body, true );
@@ -210,9 +222,10 @@ class SendEmailToListContacts extends AutomateAction {
 		// Campaign not exists, so create new one.
 		if ( 404 === $response_code ) {
 			$args = [
-				'headers'   => $header_data,
-				'sslverify' => false,
-				'body'      => wp_json_encode( [ 'title' => $selected_options['campaign'] ] ),
+				'headers'            => $header_data,
+				'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+				'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+				'body'               => wp_json_encode( [ 'title' => $selected_options['campaign'] ] ),
 			];
 			/**
 			 *
@@ -220,15 +233,21 @@ class SendEmailToListContacts extends AutomateAction {
 			 *
 			 * @phpstan-ignore-next-line
 			 */
-			$new_campaign_request       = wp_remote_post( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns', $args );
+			$new_campaign_request       = wp_remote_post( $wordpress_url . '/wp-json/fluent-crm/v2/campaigns', $args );
 			$response_code              = wp_remote_retrieve_response_code( $new_campaign_request );
 			$new_campaign_response_body = wp_remote_retrieve_body( $new_campaign_request );
 			$response_context           = json_decode( $new_campaign_response_body, true );
 			if ( 200 !== $response_code ) {
-				return $response_context;
+				return is_array( $response_context ) ? $response_context : [
+					'status'  => 'error',
+					'message' => __( 'Unexpected response from the FluentCRM REST API.', 'suretriggers' ),
+				];
 			}
 		} elseif ( 200 !== $response_code ) {
-			return $response_context;
+			return is_array( $response_context ) ? $response_context : [
+				'status'  => 'error',
+				'message' => __( 'Unexpected response from the FluentCRM REST API.', 'suretriggers' ),
+			];
 		}
 		// Prepare email body.
 		$args = array_merge(
@@ -275,7 +294,7 @@ class SendEmailToListContacts extends AutomateAction {
 		 *
 		 * @phpstan-ignore-next-line
 		 */
-		$settings_request       = wp_remote_request( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns/' . $response_context['id'], $args );
+		$settings_request       = wp_remote_request( $wordpress_url . '/wp-json/fluent-crm/v2/campaigns/' . $response_context['id'], $args );
 		$settings_response_code = wp_remote_retrieve_response_code( $settings_request );
 		$settings_response_body = wp_remote_retrieve_body( $settings_request );
 		$settings_context       = json_decode( $settings_response_body, true );
@@ -284,9 +303,10 @@ class SendEmailToListContacts extends AutomateAction {
 		}
 		if ( ! empty( $args['body'] ) ) {
 			$args = [
-				'headers'   => $header_data,
-				'sslverify' => false,
-				'body'      => $args['body'],
+				'headers'            => $header_data,
+				'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+				'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+				'body'               => $args['body'],
 			];
 		}
 		$contact_body_data = [
@@ -296,11 +316,12 @@ class SendEmailToListContacts extends AutomateAction {
 		$contact_body      = wp_json_encode( $contact_body_data );
 		if ( $contact_body ) {
 			$check_estimated_contacts = wp_remote_post(
-				$selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns/estimated-contacts',
+				$wordpress_url . '/wp-json/fluent-crm/v2/campaigns/estimated-contacts',
 				[
-					'headers'   => $header_data,
-					'sslverify' => false,
-					'body'      => $contact_body,
+					'headers'            => $header_data,
+					'reject_unsafe_urls' => (bool) apply_filters( 'suretriggers_fluentcrm_reject_unsafe_urls', true ),
+					'sslverify'          => (bool) apply_filters( 'suretriggers_fluentcrm_sslverify', true ),
+					'body'               => $contact_body,
 				]
 			);
 			$contacts                 = wp_remote_retrieve_body( $check_estimated_contacts );
@@ -319,7 +340,7 @@ class SendEmailToListContacts extends AutomateAction {
 		 *
 		 * @phpstan-ignore-next-line
 		 */
-		$final_request       = wp_remote_post( $selected_options['wordpress_url'] . '/wp-json/fluent-crm/v2/campaigns/' . $settings_context['campaign']['id'] . '/schedule', $args );
+		$final_request       = wp_remote_post( $wordpress_url . '/wp-json/fluent-crm/v2/campaigns/' . $settings_context['campaign']['id'] . '/schedule', $args );
 		$final_response_body = wp_remote_retrieve_body( $final_request );
 		$final_context       = json_decode( $final_response_body, true );
 		if ( is_wp_error( $final_request ) ) {

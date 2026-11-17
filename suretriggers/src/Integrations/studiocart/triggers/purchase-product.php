@@ -68,7 +68,7 @@ if ( ! class_exists( 'StudiocartPurchaseProduct' ) ) :
 			$triggers[ $this->integration ][ $this->trigger ] = [
 				'label'         => __( 'Product Purchased', 'suretriggers' ),
 				'action'        => $this->trigger,
-				'common_action' => 'sc_order_complete',
+				'common_action' => [ 'sc_order_complete', 'ppcart_order_complete' ],
 				'function'      => [ $this, 'trigger_listener' ],
 				'priority'      => 10,
 				'accepted_args' => 3,

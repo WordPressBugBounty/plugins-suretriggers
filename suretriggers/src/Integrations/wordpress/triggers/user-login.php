@@ -88,9 +88,14 @@ class UserLogin {
 	 * @return void
 	 */
 	public function trigger_listener( $user_login, $user ) {
-		if ( ! property_exists( $user, 'ID' ) ) {
+		if ( ! is_object( $user ) || ! property_exists( $user, 'ID' ) ) {
 			return;
 		}
+
+		if ( $this->is_duplicate_login( (int) $user->ID ) ) {
+			return;
+		}
+
 		AutomationController::sure_trigger_handle_trigger(
 			[
 				'trigger' => $this->trigger,
@@ -98,6 +103,44 @@ class UserLogin {
 			]
 		);
 
+	}
+
+	/**
+	 * Check whether this login was already reported a moment ago.
+	 *
+	 * Some setups fire `wp_login` more than once for a single login (for example
+	 * login widgets or user-sync plugins that log the user in again). Without a
+	 * guard each of those fires would start the automation again.
+	 *
+	 * The same user is only reported once per window. The window defaults to
+	 * 5 seconds and can be changed, or switched off by returning 0, with the
+	 * `suretriggers_user_login_dedupe_window` filter.
+	 *
+	 * @param int $user_id User ID.
+	 * @return bool True when the login should be skipped.
+	 */
+	private function is_duplicate_login( $user_id ) {
+		/**
+		 * Filters the number of seconds in which a repeated login of the same user is ignored.
+		 *
+		 * @param int $window  Seconds. Return 0 to disable the check.
+		 * @param int $user_id User ID.
+		 */
+		$window = (int) apply_filters( 'suretriggers_user_login_dedupe_window', 5, $user_id );
+
+		if ( $window <= 0 || $user_id <= 0 ) {
+			return false;
+		}
+
+		$key = 'suretriggers_wp_login_' . $user_id;
+
+		if ( false !== get_transient( $key ) ) {
+			return true;
+		}
+
+		set_transient( $key, time(), $window );
+
+		return false;
 	}
 
 }
